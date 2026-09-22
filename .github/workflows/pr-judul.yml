@@ -1,0 +1,41 @@
+name: pr-judul
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  periksa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Judul PR harus Conventional Commit
+        env:
+          JUDUL: ${{ github.event.pull_request.title }}
+        run: |
+          POLA='^(feat|fix|docs|refactor|test|chore|build|ci|perf|revert)(\([a-z0-9-]+\))?: .{1,72}$'
+          if ! echo "$JUDUL" | grep -Eq "$POLA"; then
+            echo "Judul PR tidak sesuai format."
+            echo "Dapat  : $JUDUL"
+            echo "Format : <tipe>(<lingkup>): <subjek huruf kecil, maksimal 72 karakter>"
+            echo "Contoh : feat(api): tambah endpoint penukaran kode pickup"
+            exit 1
+          fi
+          echo "Judul PR sesuai format."
+
+      - name: Commit tidak boleh memuat atribusi AI
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          PESAN=$(git log --format='%B' "$BASE..$HEAD")
+          if echo "$PESAN" | grep -Eiq 'co-authored-by:[[:space:]]*claude|generated with \[?claude|🤖'; then
+            echo "Ditemukan baris atribusi AI di pesan commit."
+            echo "Aturan proyek: kepemilikan kode hanya lewat committer git, tanpa baris atribusi alat bantu."
+            echo "$PESAN" | grep -Eni 'co-authored-by:[[:space:]]*claude|generated with \[?claude|🤖' || true
+            exit 1
+          fi
+          echo "Tidak ada atribusi AI."

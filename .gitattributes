@@ -1,0 +1,24 @@
+* text=auto eol=lf
+
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+gradlew     text eol=lf
+*.sh        text eol=lf
+
+*.php       text diff=php
+*.java      text diff=java
+*.xml       text
+*.sql       text
+
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.webp      binary
+*.ico       binary
+*.jar       binary
+*.apk       binary
+*.ttf       binary
+*.woff2     binary
+
+/api/composer.lock   -diff
+/android/gradle/wrapper/gradle-wrapper.jar   binary

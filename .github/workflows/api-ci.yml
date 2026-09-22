@@ -1,0 +1,80 @@
+name: api-ci
+
+on:
+  pull_request:
+    paths: ['api/**', '.github/workflows/api-ci.yml']
+  push:
+    branches: [main]
+    paths: ['api/**', '.github/workflows/api-ci.yml']
+
+defaults:
+  run:
+    working-directory: api
+
+jobs:
+  uji:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: rahasia
+          MYSQL_DATABASE: life_of_foods_test
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -prahasia"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Siapkan PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, gd, intl, zip, fileinfo, exif
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer-${{ hashFiles('api/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Pasang dependensi
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Siapkan environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Migrasi harus bisa maju, mundur, lalu maju lagi
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: life_of_foods_test
+          DB_USERNAME: root
+          DB_PASSWORD: rahasia
+        run: |
+          php artisan migrate --force
+          php artisan migrate:rollback --force
+          php artisan migrate --force
+
+      - name: Gaya kode PSR-12
+        run: vendor/bin/pint --test
+
+      - name: Uji fitur
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: life_of_foods_test
+          DB_USERNAME: root
+          DB_PASSWORD: rahasia
+        run: php artisan test
