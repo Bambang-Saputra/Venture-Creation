@@ -1,0 +1,3 @@
+nama_toko,kategori,alamat,latitude,longitude,nama_pemilik,whatsapp_pemilik,label_halal,no_sertifikat_halal,kandungan_default,tanggal_persetujuan
+Contoh Bakery,bakery,Jl. Contoh No. 1 Jakarta Selatan,-6.2297,106.8583,Nama Pemilik,081234567890,self_claim,,"Tepung terigu, gula, telur, susu sapi",2026-09-25
+Contoh Warung,resto,Jl. Contoh No. 2 Jakarta Selatan,-6.2105,106.8501,Nama Pemilik Dua,+6281234567891,certified,ID12345678,"Nasi, ayam, bumbu rempah",2026-09-26
