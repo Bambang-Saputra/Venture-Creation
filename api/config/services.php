@@ -28,6 +28,13 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // ADR-0006. Web client ID dari Google Cloud Console; Android memakai
+    // nilai yang sama sebagai serverClientId di Credential Manager.
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'jwks_url' => 'https://www.googleapis.com/oauth2/v3/certs',
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

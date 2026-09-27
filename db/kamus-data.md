@@ -12,7 +12,8 @@ menghasilkan bug yang baru ketahuan saat demo.
 | Berat | `INT UNSIGNED` dalam gram. Tampilkan sebagai kilogram di layar, simpan sebagai gram |
 | Waktu | `*_at` untuk `TIMESTAMP`, `*_date` untuk `DATE`, `*_time` untuk `TIME` |
 | Boolean | selalu berawalan `is_` |
-| Nomor HP | ternormalisasi `628xxxxxxxxx`, tanpa tanda plus, tanpa spasi |
+| Nomor HP | ternormalisasi `628xxxxxxxxx`, tanpa tanda plus, tanpa spasi. `users.phone` boleh `NULL` untuk akun dari Google (ADR-0006), jadi kode yang mengirim WhatsApp wajib memeriksanya dulu |
+| Identitas Google | `users.google_sub` berisi klaim `sub` ID token, bukan email. Unik, dan hanya diisi server di `POST /auth/google` |
 | Zona waktu | database menyimpan waktu apa adanya; aplikasi memakai `Asia/Jakarta` |
 
 ## Kolom salinan, dan kenapa ada
@@ -82,3 +83,4 @@ Penegakannya dua lapis: middleware `ability:` dan Policy.
 
 Nomor HP lengkap di `audit_logs.meta`, kode OTP mentah di mana pun, dan
 kode pickup mentah di log. `otp_codes` hanya menyimpan hash.
+ID token Google juga tidak pernah disimpan; yang disimpan hanya `sub`-nya.
