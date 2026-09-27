@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Partner;
 
+use App\Console\Commands\TutupPesananLewat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class PesananMitraController extends Controller
 {
     use AksesToko;
 
-    // Pembeli yang datang sedikit terlambat tetap dilayani.
-    private const TOLERANSI_MENIT = 30;
+    // Pembeli yang datang sedikit terlambat tetap dilayani. Setelah itu
+    // pesanan ditutup sebagai no_show oleh pesanan:tutup-yang-lewat.
+    private const TOLERANSI_MENIT = TutupPesananLewat::TOLERANSI_MENIT;
 
     /** GET /api/partner/stores/{store}/orders?status=pending|history&date= */
     public function daftar(Request $request, int $store): JsonResponse
