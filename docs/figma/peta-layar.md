@@ -75,8 +75,8 @@ Catatan layar konsumen:
 | M10 | Kelola jualan | F-09 | MUST | `GET .../listings`, `POST .../listings/{id}/pause` | `listings` |
 | M11 | Pesanan masuk | F-10 | MUST | `GET /partner/stores/{id}/orders` | `orders`, `order_items` |
 | M12 | Cocokkan kode | F-11 | MUST | `POST /pickup-codes/redeem` | `pickup_codes`, `orders`, `listings`, `balance_transactions`, `audit_logs` |
-| M13 | Saldo dan pencairan | F-17 | SHOULD | `GET /balance`, `GET /balance/transactions` | `store_balances`, `balance_transactions` |
-| M14 | Profil toko | F-16 | SHOULD | `GET/PUT /partner/stores/{id}` | `stores`, `store_hours` |
+| M13 | Saldo dan pencairan | F-17 | SHOULD | `GET /partner/stores/{id}/balance`, `GET .../balance/transactions` | `store_balances`, `balance_transactions` |
+| M14 | Profil toko | F-16 | SHOULD | `GET /partner/stores`, `GET/PUT /partner/stores/{id}` | `stores`, `store_hours` |
 | M15 | Pengaturan toko | F-16 | SHOULD | `GET/POST/DELETE .../members` | `store_members`, `audit_logs` |
 | M16 | Pasang menu satuan | F-09 | MUST | `POST .../listings` tipe `menu` | `listings`, `listing_items`, `products` |
 | M17 | Kelola menu satuan | F-09 | MUST | `GET .../listings?type=menu` | `listings`, `listing_items` |
