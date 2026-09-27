@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\LayananPesanan;
+use App\Services\Notifikasi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -16,7 +17,10 @@ use Illuminate\Validation\Rule;
  */
 class PesananController extends Controller
 {
-    public function __construct(private readonly LayananPesanan $pesanan) {}
+    public function __construct(
+        private readonly LayananPesanan $pesanan,
+        private readonly Notifikasi $notifikasi,
+    ) {}
 
     /** POST /api/orders/preview */
     public function pratinjau(Request $request): JsonResponse
@@ -41,6 +45,7 @@ class PesananController extends Controller
         ]);
 
         $id = $this->pesanan->buat($request->user(), $data);
+        $this->notifikasi->pesananBaru($id);
 
         return response()->json(['data' => $this->detailPesanan($id, $request->user()->id)], 201);
     }

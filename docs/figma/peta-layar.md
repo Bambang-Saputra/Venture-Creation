@@ -39,7 +39,7 @@ Dokumen ini adalah rujukan tunggal saat menulis PRD, endpoint, dan layar Android
 | K14 | Kode pickup | F-07 | MUST | `GET /orders/{id}` | `orders`, `pickup_codes` |
 | K15 | Pesanan saya | F-08 | MUST | `GET /orders` | `orders`, `order_items` |
 | K16 | Favorit | F-22 | COULD | `GET/POST/DELETE /favorites` | `favorites`, `stores` |
-| K17 | Notifikasi | F-18 | SHOULD | `GET /notifications` | `notifications` |
+| K17 | Notifikasi | F-18 | SHOULD | `GET /notifications`, `POST /notifications/{id}/read`, `POST /notifications/read-all` | `notifications` |
 | K18 | Profil | F-19 | SHOULD | `GET /me` | `users`, `consumer_profiles`, `orders` |
 | K19 | Edit profil | F-19 | SHOULD | `PATCH /me` | `users`, `consumer_profiles` |
 | K20 | Pengaturan | F-19 | SHOULD | `PATCH /me`, `DELETE /me` | `users` |
@@ -54,6 +54,9 @@ Catatan layar konsumen:
 - **K08** dibangun di balik sakelar `maps_enabled`. Saat mati, layar menampilkan daftar berurut jarak dengan tombol yang membuka Google Maps lewat intent `geo:`, tanpa API key dan tanpa biaya.
 - **K10 dan K11** wajib menampilkan label kandungan dan status halal apa adanya: `certified` menyebut nomor sertifikat, `self_claim` berbunyi "klaim mitra, belum bersertifikat", `not_stated` berbunyi "tidak disebutkan". Aplikasi tidak pernah menulis "halal" tanpa dasar.
 - **K12 dan K13** memakai endpoint yang sama; bedanya hanya isi keranjang, satu tas utuh atau daftar item.
+- **K16** baru mendukung tab Mitra. Tab Tas belum ada karena `favorites` hanya menyimpan toko, sedangkan jualan berganti setiap hari.
+- **K17** hanya notifikasi di dalam aplikasi: Android membaca `GET /notifications` saat layar dibuka. Push lewat FCM belum ada. Jenis yang dibuat server: `pesanan_baru` (ke pemilik dan kasir), `pengingat_ambil` (30 menit sebelum jam ambil), `porsi_terselamatkan` (setelah kode ditukar), `mitra_favorit_memasang` (paling banyak satu per toko per hari). Contoh "Cek kandungan" dan voucher di Figma belum dibuat.
+- **K20** "Hapus akun" memanggil `DELETE /me` dengan `{"confirm": true}` setelah dialog konfirmasi. Ditolak 409 kalau masih ada pesanan yang belum diambil. Akun yang pernah memesan dianonimkan, bukan dihapus, supaya laporan mitra tetap utuh.
 - **K21 dan K22** tampilan saja. Pembayaran saat pilot dilakukan tunai atau QRIS milik mitra di tempat, dan tabel voucher belum ada di skema versi pertama.
 
 ---

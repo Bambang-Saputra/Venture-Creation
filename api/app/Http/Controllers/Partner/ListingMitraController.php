@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
+use App\Services\Notifikasi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -149,6 +150,12 @@ class ListingMitraController extends Controller
             return $id;
         });
 
+        if ($terbit) {
+            foreach ($idBaru as $id) {
+                app(Notifikasi::class)->mitraFavoritMemasang($id);
+            }
+        }
+
         return response()->json(['data' => $this->bentuk(DB::table('listings')->whereIn('id', $idBaru)->orderBy('id')->get())], 201);
     }
 
@@ -157,7 +164,7 @@ class ListingMitraController extends Controller
     {
         $this->tokoMilik($request, $store);
 
-        return $this->ubahStatus($store, $listing, ['draft', 'paused'], function (object $l) {
+        $respons = $this->ubahStatus($store, $listing, ['draft', 'paused'], function (object $l) {
             if (Carbon::parse($l->pickup_end)->isPast()) {
                 throw ValidationException::withMessages(['pickup_end' => 'Jam ambil sudah lewat. Pasang jualan baru untuk hari ini.']);
             }
@@ -167,6 +174,11 @@ class ListingMitraController extends Controller
 
             return ['status' => 'active', 'published_at' => $l->published_at ?? now()];
         });
+
+        // Dibatasi satu per toko per orang per hari, jadi jeda lalu terbit ulang tidak membanjiri.
+        app(Notifikasi::class)->mitraFavoritMemasang($listing);
+
+        return $respons;
     }
 
     /** POST /api/partner/stores/{store}/listings/{listing}/pause (aktif -> jeda) */
