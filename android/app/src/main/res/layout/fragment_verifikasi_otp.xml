@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- K03 Verifikasi OTP (Figma 55:966) dan M02 (65:1705). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_kartu"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:text="@string/k03_judul"
+                android:textColor="@color/teks_utama"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/keterangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/teks_sekunder"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tombol_ubah_nomor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:text="@string/k03_ubah_nomor"
+                android:textColor="@color/teks_merek"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/spanduk_uji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_spanduk_uji"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k03_mode_uji_judul"
+                    android:textColor="@color/tanda_proses_teks"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/teks_uji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/tanda_proses_teks" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <!-- Menerima ketikan. Transparan di atas kotak supaya tetap bisa disentuh dan dibaca TalkBack. -->
+                <EditText
+                    android:id="@+id/kode"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:autofillHints="smsOTPCode"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:hint="@string/k03_hint_kode"
+                    android:importantForAutofill="yes"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:textColor="@android:color/transparent"
+                    android:textColorHint="@android:color/transparent" />
+
+                <LinearLayout
+                    android:id="@+id/baris_kotak"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:importantForAccessibility="noHideDescendants"
+                    android:orientation="horizontal">
+
+                    <TextView android:id="@+id/kotak1" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak2" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak3" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak4" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak5" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak6" style="@style/KotakOtp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/galat_kode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityLiveRegion="polite"
+                android:textColor="@color/tanda_bahaya_teks"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k03_tidak_menerima"
+                    android:textColor="@color/teks_sekunder" />
+
+                <Button
+                    android:id="@+id/tombol_kirim_ulang"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="32dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_catatan"
+                android:drawablePadding="12dp"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:text="@string/k03_peringatan"
+                android:textColor="@color/teks_kuat"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_gembok" />
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/garis_halus" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tombol_verifikasi"
+        style="@style/Widget.LifeOfFoods.Tombol.Utama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="@string/k03_verifikasi" />
+</LinearLayout>

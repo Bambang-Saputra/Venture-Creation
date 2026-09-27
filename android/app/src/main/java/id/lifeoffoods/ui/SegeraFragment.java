@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import id.lifeoffoods.LofApp;
+import id.lifeoffoods.R;
+import id.lifeoffoods.data.api.ApiCallback;
+import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.databinding.FragmentSegeraBinding;
 
 /**
@@ -34,8 +38,31 @@ public class SegeraFragment extends Fragment {
         Bundle args = requireArguments();
         binding.kodeLayar.setText(args.getString(ARG_KODE, ""));
         binding.judulLayar.setText(args.getString(ARG_JUDUL, ""));
+
+        // Sesudah masuk, penanda ini berdiri di tempat beranda, jadi tombolnya dipakai untuk
+        // keluar.
+        LofApp app = (LofApp) requireActivity().getApplication();
+        boolean masuk = app.sesi().sudahMasuk();
+        binding.tombolKembali.setText(masuk ? R.string.segera_keluar : R.string.segera_kembali);
         binding.tombolKembali.setOnClickListener(
-                v -> ((MainActivity) requireActivity()).kembaliKeAwal());
+                v -> {
+                    if (masuk) {
+                        // Token di server dicabut kalau jaringan ada; sesi lokal dihapus apa pun
+                        // hasilnya.
+                        app.api()
+                                .keluar("Bearer " + app.sesi().token())
+                                .enqueue(
+                                        new ApiCallback<>() {
+                                            @Override
+                                            public void sukses(Void data) {}
+
+                                            @Override
+                                            public void gagal(ApiError galat) {}
+                                        });
+                        app.sesi().hapus();
+                    }
+                    ((MainActivity) requireActivity()).kembaliKeAwal();
+                });
     }
 
     @Override

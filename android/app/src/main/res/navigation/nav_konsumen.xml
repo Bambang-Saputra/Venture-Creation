@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Alur konsumen K02 sampai K23. Ganti SegeraFragment dengan fragment sungguhan per layar. -->
+<!--
+    Alur konsumen K02 sampai K23. Tujuan awal diatur MainActivity: k02_masuk kalau belum ada sesi,
+    k07_beranda kalau sudah, k04_lengkapi_profil sesudah akun baru dibuat.
+    Ganti SegeraFragment dengan fragment sungguhan per layar.
+-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_konsumen"
@@ -7,14 +11,43 @@
 
     <fragment
         android:id="@+id/k02_masuk"
+        android:name="id.lifeoffoods.ui.masuk.MasukFragment">
+        <argument
+            android:name="peran"
+            android:defaultValue="consumer"
+            app:argType="string" />
+        <action
+            android:id="@+id/ke_verifikasi"
+            app:destination="@id/k03_verifikasi" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k03_verifikasi"
+        android:name="id.lifeoffoods.ui.masuk.VerifikasiOtpFragment" />
+
+    <fragment
+        android:id="@+id/k04_lengkapi_profil"
         android:name="id.lifeoffoods.ui.SegeraFragment">
         <argument
             android:name="kode_layar"
-            android:defaultValue="K02"
+            android:defaultValue="K04"
             app:argType="string" />
         <argument
             android:name="judul"
-            android:defaultValue="Masuk"
+            android:defaultValue="Lengkapi profil"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k07_beranda"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K07"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Beranda"
             app:argType="string" />
     </fragment>
 </navigation>
