@@ -13,4 +13,5 @@ Route::post('/auth/google', LoginGoogleController::class)->middleware('throttle:
 Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::post('/auth/logout', KeluarController::class);
     Route::get('/me', [ProfilController::class, 'tampil']);
+    Route::patch('/me', [ProfilController::class, 'ubah']);
 });
