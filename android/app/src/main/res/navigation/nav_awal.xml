@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Belum masuk: K01 Pilih peran. -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_awal"
+    app:startDestination="@id/k01_pilih_peran">
+
+    <fragment
+        android:id="@+id/k01_pilih_peran"
+        android:name="id.lifeoffoods.ui.awal.PilihPeranFragment" />
+</navigation>

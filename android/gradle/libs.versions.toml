@@ -1,0 +1,29 @@
+# Semua versi dipatok persis. Naikkan versi lewat PR tersendiri dan pastikan android-ci hijau.
+[versions]
+agp = "9.2.1"
+spotless = "8.10.3"
+googleJavaFormat = "1.36.1"
+appcompat = "1.7.1"
+material = "1.14.0"
+constraintlayout = "2.2.1"
+recyclerview = "1.4.0"
+navigation = "2.10.2"
+retrofit = "2.12.0"
+okhttp = "4.12.0"
+junit = "4.13.2"
+
+[libraries]
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- K01 Pilih peran (Figma node 17:2). Slot foto ilustrasi belum diisi. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradien_awal"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/teks_di_gelap"
+            android:textSize="24sp"
+            app:drawableStartCompat="@drawable/ic_logo" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/k01_judul"
+            android:textColor="@color/teks_di_gelap"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/k01_sub"
+            android:textColor="@color/teks_di_gelap"
+            android:textSize="15sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <LinearLayout
+            android:id="@+id/kartu_konsumen"
+            style="@style/KartuPeran"
+            android:background="@drawable/bg_kartu_putih">
+
+            <ImageView
+                style="@style/KartuPeran.Ikon"
+                android:background="@drawable/bg_ikon_mint"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_paket"
+                app:tint="@color/merek_utama" />
+
+            <LinearLayout style="@style/KartuPeran.Teks">
+
+                <TextView
+                    style="@style/KartuPeran.Judul"
+                    android:text="@string/k01_konsumen_judul"
+                    android:textColor="@color/teks_utama" />
+
+                <TextView
+                    style="@style/KartuPeran.Sub"
+                    android:text="@string/k01_konsumen_sub"
+                    android:textColor="@color/teks_sekunder" />
+            </LinearLayout>
+
+            <ImageView
+                style="@style/KartuPeran.Chevron"
+                android:importantForAccessibility="no"
+                app:tint="@color/teks_utama" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/kartu_mitra"
+            style="@style/KartuPeran"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_kartu_transparan">
+
+            <ImageView
+                style="@style/KartuPeran.Ikon"
+                android:background="@drawable/bg_ikon_transparan"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_toko"
+                app:tint="@color/merek_lime" />
+
+            <LinearLayout style="@style/KartuPeran.Teks">
+
+                <TextView
+                    style="@style/KartuPeran.Judul"
+                    android:text="@string/k01_mitra_judul"
+                    android:textColor="@color/teks_di_gelap" />
+
+                <TextView
+                    style="@style/KartuPeran.Sub"
+                    android:text="@string/k01_mitra_sub"
+                    android:textColor="@color/teks_di_gelap" />
+            </LinearLayout>
+
+            <ImageView
+                style="@style/KartuPeran.Chevron"
+                android:importantForAccessibility="no"
+                app:tint="@color/teks_di_gelap" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/k01_belum_punya_akun"
+                android:textColor="@color/teks_di_gelap"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tautan_daftar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:minHeight="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="6dp"
+                android:text="@string/k01_daftar"
+                android:textColor="@color/merek_lime"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

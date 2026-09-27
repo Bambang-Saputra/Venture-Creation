@@ -26,7 +26,7 @@ Uji coba. Akun mitra dibuat manual oleh tim lewat seeder, tanpa pendaftaran mand
 ## Struktur
 
 ```
-api/       Laravel 13 — REST API /api/v1
+api/       Laravel 13 — REST API /api
 android/   aplikasi Android (Java)
 db/        ERD, kamus data, dump demo
 docs/      PRD, ADR, kontrak API, peta layar Figma, panduan tim, berkas kuliah

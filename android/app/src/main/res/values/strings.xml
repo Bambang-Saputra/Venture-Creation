@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Life of Foods</string>
+
+    <!-- K01 Pilih peran -->
+    <string name="k01_judul">Makanan baik,\ntidak berakhir di tempat sampah</string>
+    <string name="k01_sub">Pilih cara kamu masuk. Konsumen mencari tas surplus di sekitar, mitra melepas stok sebelum jam tutup.</string>
+    <string name="k01_konsumen_judul">Saya konsumen</string>
+    <string name="k01_konsumen_sub">Cari tas surplus di sekitar, bayar sepertiga harga</string>
+    <string name="k01_mitra_judul">Saya mitra usaha</string>
+    <string name="k01_mitra_sub">Lepas stok sebelum tutup, pantau nilai yang tertahan</string>
+    <string name="k01_belum_punya_akun">Belum punya akun?</string>
+    <string name="k01_daftar">Daftar sekarang</string>
+
+    <!-- Penanda layar yang belum dibuat -->
+    <string name="segera_keterangan">Layar ini belum dibuat. Lihat docs/figma/peta-layar.md untuk desain dan endpoint-nya.</string>
+    <string name="segera_kembali">Kembali ke pilih peran</string>
+
+</resources>

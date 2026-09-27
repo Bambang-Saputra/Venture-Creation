@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Token warna dari Figma: halaman Fondasi, frame "Warna" (koleksi variabel "Warna").
+     Nama mengikuti variabel semantik Figma. Ubah di Figma dulu, lalu salin ke sini. -->
+<resources>
+    <!-- Merek -->
+    <color name="merek_utama">#1B8A5A</color>
+    <color name="merek_utama_tekan">#156F4A</color>
+    <color name="merek_terang">#3FC078</color>
+    <color name="merek_lime">#A3D977</color>
+    <color name="merek_tinta">#0F2A1E</color>
+
+    <!-- Latar -->
+    <color name="latar_halaman">#F5F9F5</color>
+    <color name="latar_kanvas">#EFF4EF</color>
+    <color name="latar_kartu">#FFFFFF</color>
+    <color name="latar_lembut">#EFF4F0</color>
+    <color name="latar_isian">#F1F6F2</color>
+    <color name="latar_merek_lembut">#E6F4EA</color>
+    <color name="latar_gelap">#0F2A1E</color>
+
+    <!-- Teks -->
+    <color name="teks_utama">#0F2A1E</color>
+    <color name="teks_kuat">#4E5F55</color>
+    <color name="teks_sekunder">#5E6F64</color>
+    <color name="teks_tersier">#64756A</color>
+    <color name="teks_coret">#6B7C71</color>
+    <color name="teks_merek">#1B8A5A</color>
+    <color name="teks_merek_gelap">#14573C</color>
+    <color name="teks_di_gelap">#FFFFFF</color>
+
+    <!-- Garis dan ikon -->
+    <color name="garis_halus">#E8EFE9</color>
+    <color name="garis_tegas">#E2EAE4</color>
+    <color name="garis_redup">#D9E4DB</color>
+    <color name="garis_putus">#C6D5C9</color>
+    <color name="ikon_redup">#BDC9C0</color>
+
+    <!-- Tanda status -->
+    <color name="tanda_hemat_latar">#E6F4EA</color>
+    <color name="tanda_hemat_teks">#14573C</color>
+    <color name="tanda_proses_latar">#FBF0D8</color>
+    <color name="tanda_proses_teks">#8A5A08</color>
+    <color name="tanda_bintang">#E0A82E</color>
+    <color name="tanda_api">#C08A1E</color>
+    <color name="tanda_bahaya_latar">#FCEBE8</color>
+    <color name="tanda_bahaya_teks">#C0392B</color>
+
+    <!-- Grafik -->
+    <color name="grafik_batang_aktif">#1B8A5A</color>
+    <color name="grafik_batang_pasif">#D8ECDD</color>
+</resources>

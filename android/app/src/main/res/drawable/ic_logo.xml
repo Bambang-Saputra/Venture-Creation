@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo lingkaran dengan daun lime, sesuai header K01. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="28"
+    android:viewportHeight="28">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M19.5,6.5A9.5,9.5 0,1 1,8.5 6.5"
+        android:strokeWidth="3.2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#FFA3D977"
+        android:pathData="M17,2.5C19.5,2.5 21.5,4.2 21.8,6.8C19.2,7 17.3,5.2 17,2.5Z" />
+</vector>
