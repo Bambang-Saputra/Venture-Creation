@@ -35,23 +35,20 @@ MYSQL="/d/Laragon/laragon/bin/mysql/mysql-8.4.3-winx64/bin/mysql.exe"
 
 Database kedua dipakai `php artisan test` supaya data pengembangan tidak ikut terhapus saat menjalankan uji.
 
-## 3. Vhost `lof.test`
+## 3. Menjalankan API dengan `php artisan serve`
 
-Repo sengaja tidak diletakkan di `D:\Laragon\laragon\www`, karena document root Laravel adalah `api/public`, bukan akar folder. Buat vhost manual di
-`D:\Laragon\laragon\etc\apache2\sites-enabled\lof.test.conf`:
+Tim tidak memakai vhost Apache. Jalankan server bawaan Laravel dari folder `api`:
 
-```apache
-<VirtualHost *:80>
-    DocumentRoot "D:/Proyek/life-of-foods/api/public"
-    ServerName lof.test
-    <Directory "D:/Proyek/life-of-foods/api/public">
-        AllowOverride All
-        Require all granted
-    </Directory>
-</VirtualHost>
+```bash
+cd api
+php artisan serve
 ```
 
-Laragon menambahkan `lof.test` ke file hosts secara otomatis saat Apache di-restart. Uji dengan membuka `http://lof.test`.
+API terbuka di `http://127.0.0.1:8000`, sesuai `APP_URL` di `.env.example`. Server ini hanya mendengarkan `127.0.0.1`, jadi tidak bisa dibuka perangkat lain di jaringan yang sama. Itu disengaja: jangan menambahkan `--host=0.0.0.0` di Wi-Fi kampus atau kafe, karena API mode pilot menampilkan kode OTP di respons.
+
+- **Emulator Android:** pakai `http://10.0.2.2:8000`. Alamat itu diteruskan emulator ke `127.0.0.1` laptop.
+- **HP fisik:** pakai ngrok (bagian 8).
+- **Penjadwal** (menutup pesanan tak diambil): jalankan `php artisan schedule:work` di terminal kedua.
 
 ## 4. JDK 21
 
@@ -94,8 +91,10 @@ ngrok sudah ikut Laragon di `D:\Laragon\laragon\bin\ngrok`. Daftar akun gratis, 
 
 ```bash
 ngrok config add-authtoken <token-dari-dashboard>
-ngrok http 80 --host-header=lof.test
+ngrok http 8000
 ```
+
+`php artisan serve` harus sudah jalan. URL ngrok bisa dibuka siapa pun yang mengetahuinya, jadi matikan ngrok (Ctrl+C) begitu selesai menguji dan jangan bagikan URL-nya di luar tim.
 
 URL yang muncul dipakai sebagai `API_BASE_URL` di aplikasi Android. Tambahkan header `ngrok-skip-browser-warning: true` di OkHttp, kalau tidak ngrok akan menyisipkan halaman peringatan ke respons.
 
