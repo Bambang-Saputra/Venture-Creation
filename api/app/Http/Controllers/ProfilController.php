@@ -80,6 +80,7 @@ class ProfilController extends Controller
                 'notify_pickup_reminder' => (bool) $profil->notify_pickup_reminder,
                 'notify_promo' => (bool) $profil->notify_promo,
             ],
+            'allergens' => $user->role === 'consumer' ? AlergenController::milik($user->id) : [],
         ]);
     }
 }
