@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\Partner\ListingMitraController;
+use App\Http\Controllers\Partner\PesananMitraController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
@@ -38,5 +39,8 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
         Route::post('/listings', [ListingMitraController::class, 'buat'])->middleware('throttle:30,1');
         Route::post('/listings/{listing}/publish', [ListingMitraController::class, 'terbitkan']);
         Route::post('/listings/{listing}/pause', [ListingMitraController::class, 'jeda']);
+        Route::get('/orders', [PesananMitraController::class, 'daftar']);
     });
+
+    Route::post('/pickup-codes/redeem', [PesananMitraController::class, 'tukar'])->middleware('throttle:20,1');
 });
