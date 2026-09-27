@@ -5,10 +5,12 @@ use App\Http\Controllers\Auth\KeluarController;
 use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\Partner\AnggotaTokoController;
 use App\Http\Controllers\Partner\CatatSisaController;
 use App\Http\Controllers\Partner\DasborMitraController;
 use App\Http\Controllers\Partner\ListingMitraController;
 use App\Http\Controllers\Partner\PesananMitraController;
+use App\Http\Controllers\Partner\TokoController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +36,15 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::get('/orders/{order}', [PesananController::class, 'detail'])->whereNumber('order');
     Route::post('/orders/{order}/cancel', [PesananController::class, 'batalkan'])->whereNumber('order');
 
+    Route::get('/partner/stores', [TokoController::class, 'daftar']);
     Route::prefix('/partner/stores/{store}')->whereNumber(['store', 'listing'])->group(function () {
+        Route::get('/', [TokoController::class, 'tampil']);
+        Route::match(['put', 'patch'], '/', [TokoController::class, 'ubah'])->middleware('throttle:30,1');
+        Route::get('/balance', [TokoController::class, 'saldo']);
+        Route::get('/balance/transactions', [TokoController::class, 'transaksi']);
+        Route::get('/members', [AnggotaTokoController::class, 'daftar']);
+        Route::post('/members', [AnggotaTokoController::class, 'undang'])->middleware('throttle:10,1');
+        Route::delete('/members/{member}', [AnggotaTokoController::class, 'cabut'])->whereNumber('member');
         Route::get('/templates', [ListingMitraController::class, 'template']);
         Route::get('/products', [ListingMitraController::class, 'produk']);
         Route::get('/listings', [ListingMitraController::class, 'daftar']);
