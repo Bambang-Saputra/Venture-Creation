@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\KeluarController;
 use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\Partner\CatatSisaController;
+use App\Http\Controllers\Partner\DasborMitraController;
 use App\Http\Controllers\Partner\ListingMitraController;
 use App\Http\Controllers\Partner\PesananMitraController;
 use App\Http\Controllers\PesananController;
@@ -40,6 +42,14 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
         Route::post('/listings/{listing}/publish', [ListingMitraController::class, 'terbitkan']);
         Route::post('/listings/{listing}/pause', [ListingMitraController::class, 'jeda']);
         Route::get('/orders', [PesananMitraController::class, 'daftar']);
+        Route::get('/waste-logs', [CatatSisaController::class, 'tampil']);
+        Route::post('/waste-logs', [CatatSisaController::class, 'simpan'])->middleware('throttle:30,1');
+        Route::get('/reports/weekly', [CatatSisaController::class, 'laporanMingguan']);
+        Route::get('/summary', [DasborMitraController::class, 'ringkasan']);
+        Route::get('/suggestions', [DasborMitraController::class, 'saran']);
+        Route::post('/suggestions/{suggestion}/{aksi}', [DasborMitraController::class, 'tanggapi'])
+            ->whereNumber('suggestion')->whereIn('aksi', ['accept', 'dismiss']);
+        Route::patch('/products/{product}', [DasborMitraController::class, 'ubahProduksi'])->whereNumber('product');
     });
 
     Route::post('/pickup-codes/redeem', [PesananMitraController::class, 'tukar'])->middleware('throttle:20,1');

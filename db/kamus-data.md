@@ -14,6 +14,7 @@ menghasilkan bug yang baru ketahuan saat demo.
 | Boolean | selalu berawalan `is_` |
 | Nomor HP | ternormalisasi `628xxxxxxxxx`, tanpa tanda plus, tanpa spasi. `users.phone` boleh `NULL` untuk akun dari Google (ADR-0006), jadi kode yang mengirim WhatsApp wajib memeriksanya dulu |
 | Identitas Google | `users.google_sub` berisi klaim `sub` ID token, bukan email. Unik, dan hanya diisi server di `POST /auth/google` |
+| Produksi harian | `products.daily_production_qty`, jumlah yang biasa dibuat per hari, diisi mitra. `NULL` berarti produk itu tidak diberi saran produksi (M08) |
 | Zona waktu | database menyimpan waktu apa adanya; aplikasi memakai `Asia/Jakarta` |
 
 ## Kolom salinan, dan kenapa ada
@@ -78,6 +79,10 @@ Penegakannya dua lapis: middleware `ability:` dan Policy.
   sisa, perubahan saldo, dan perubahan keanggotaan.
 - `production_suggestions.rationale_text` — mitra berhak tahu dasar saran.
   Saran tanpa alasan akan diabaikan, dan pantas diabaikan.
+  Cara hitungnya: rata-rata sisa `discarded` produk itu pada hari yang sama
+  dalam 4 minggu terakhir (hari yang tidak dicatat tidak ikut dihitung,
+  minimal 3 catatan), lalu produksi dipangkas `floor(rata-rata x 0,75)`.
+  Seperempat sisanya dibiarkan karena masih bisa dijual lewat tas.
 
 ## Yang tidak boleh masuk database
 
