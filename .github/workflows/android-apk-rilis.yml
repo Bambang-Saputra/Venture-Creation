@@ -26,6 +26,10 @@ jobs:
 
       - name: Siapkan Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # Bawaan action masih memasang paket 'tools' yang sudah dihapus dari SDK.
+          # Platform dan build-tools diunduh sendiri oleh AGP sesuai compileSdk.
+          packages: 'platform-tools'
 
       - name: Siapkan Gradle
         uses: gradle/actions/setup-gradle@v4

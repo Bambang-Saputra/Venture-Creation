@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Figma hanya punya tampilan terang, jadi tema tidak mengikuti mode gelap sistem. -->
+    <style name="Theme.LifeOfFoods" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/merek_utama</item>
+        <item name="colorOnPrimary">@color/teks_di_gelap</item>
+        <item name="colorPrimaryContainer">@color/latar_merek_lembut</item>
+        <item name="colorOnPrimaryContainer">@color/teks_merek_gelap</item>
+        <item name="colorSecondary">@color/merek_lime</item>
+        <item name="colorOnSecondary">@color/merek_tinta</item>
+        <item name="colorError">@color/tanda_bahaya_teks</item>
+        <item name="colorErrorContainer">@color/tanda_bahaya_latar</item>
+        <item name="android:colorBackground">@color/latar_halaman</item>
+        <item name="colorSurface">@color/latar_kartu</item>
+        <item name="colorOnSurface">@color/teks_utama</item>
+        <item name="colorOnSurfaceVariant">@color/teks_sekunder</item>
+        <item name="colorOutline">@color/garis_tegas</item>
+        <item name="android:statusBarColor">@color/latar_halaman</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Widget.LifeOfFoods.Tombol.Utama" parent="Widget.Material3.Button">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.LifeOfFoods.Tombol.Garis" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="strokeColor">@color/garis_tegas</item>
+        <item name="android:textColor">@color/teks_utama</item>
+    </style>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alur konsumen K02 sampai K23. Ganti SegeraFragment dengan fragment sungguhan per layar. -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_konsumen"
+    app:startDestination="@id/k02_masuk">
+
+    <fragment
+        android:id="@+id/k02_masuk"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K02"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Masuk"
+            app:argType="string" />
+    </fragment>
+</navigation>

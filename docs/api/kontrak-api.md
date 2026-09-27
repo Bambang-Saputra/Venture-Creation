@@ -21,7 +21,7 @@ Authorization: Bearer <token>           (untuk endpoint bertanda Token)
 ngrok-skip-browser-warning: 1           (selalu; tanpa ini ngrok membalas halaman HTML)
 ```
 
-Token didapat dari `POST /auth/otp/verify` atau `POST /auth/google`, disimpan Android di `EncryptedSharedPreferences`, dan berlaku sampai logout atau akun dihapus.
+Token didapat dari `POST /auth/otp/verify` atau `POST /auth/google`, disimpan Android di SharedPreferences privat aplikasi (`SesiPengguna`, tanpa cadangan ke cloud), dan berlaku sampai logout atau akun dihapus.
 
 ### Format data
 

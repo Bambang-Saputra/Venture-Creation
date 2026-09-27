@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gradasi hijau K01: merek/terang di atas ke tinta hijau di bawah. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:centerColor="@color/merek_utama"
+        android:endColor="#0F5A3A"
+        android:startColor="@color/merek_terang" />
+</shape>

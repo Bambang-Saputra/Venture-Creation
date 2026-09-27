@@ -96,7 +96,7 @@ ngrok http 8000
 
 `php artisan serve` harus sudah jalan. URL ngrok bisa dibuka siapa pun yang mengetahuinya, jadi matikan ngrok (Ctrl+C) begitu selesai menguji dan jangan bagikan URL-nya di luar tim.
 
-URL yang muncul dipakai sebagai `API_BASE_URL` di aplikasi Android. Tambahkan header `ngrok-skip-browser-warning: true` di OkHttp, kalau tidak ngrok akan menyisipkan halaman peringatan ke respons.
+URL yang muncul dipakai sebagai `API_BASE_URL` di aplikasi Android (lihat bagian 9). Header `ngrok-skip-browser-warning` sudah dikirim otomatis oleh `ApiClient`, jadi tidak perlu diatur lagi.
 
 ## 9. Verifikasi akhir
 
@@ -107,3 +107,23 @@ php artisan test
 ```
 
 Aplikasi Android: buka folder `android/` di Android Studio, tunggu Gradle sync, lalu **Run**. Kalau sync gagal dengan keluhan SDK, periksa `android/local.properties` memuat `sdk.dir` yang benar.
+
+`android/local.properties` tidak masuk repo. Isinya:
+
+```properties
+sdk.dir=C\:\\Users\\<nama>\\AppData\\Local\\Android\\Sdk
+# Kosongkan untuk emulator: bawaannya http://10.0.2.2:8000/api/
+# HP fisik: URL ngrok ditambah /api/
+API_BASE_URL=https://xxxx.ngrok-free.app/api/
+# Kosongkan selama peta memakai mode gratis (ADR-0005)
+MAPS_API_KEY=
+```
+
+Setelah mengubah `API_BASE_URL`, jalankan ulang build supaya `BuildConfig` ikut berubah. Build debug hanya mengizinkan HTTP biasa ke `10.0.2.2`, `127.0.0.1`, dan `localhost`; selain itu harus HTTPS.
+
+Sebelum push, jalankan perintah yang sama dengan `android-ci` dari folder `android/`:
+
+```bash
+./gradlew spotlessApply
+./gradlew spotlessCheck lintDebug testDebugUnitTest assembleDebug
+```
