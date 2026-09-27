@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Partner;
 
 use App\Console\Commands\TutupPesananLewat;
 use App\Http\Controllers\Controller;
+use App\Services\Notifikasi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -115,6 +116,8 @@ class PesananMitraController extends Controller
 
             return $o->id;
         });
+
+        app(Notifikasi::class)->porsiTerselamatkan($orderId);
 
         $o = DB::table('orders')->join('users', 'users.id', '=', 'orders.user_id')
             ->where('orders.id', $orderId)->select('orders.*', 'users.name as buyer_name')->first();

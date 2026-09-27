@@ -4,7 +4,10 @@ use App\Http\Controllers\AlergenController;
 use App\Http\Controllers\Auth\KeluarController;
 use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Auth\OtpController;
+use App\Http\Controllers\FavoritController;
+use App\Http\Controllers\HapusAkunController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\Partner\AnggotaTokoController;
 use App\Http\Controllers\Partner\CatatSisaController;
 use App\Http\Controllers\Partner\DasborMitraController;
@@ -29,6 +32,15 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::get('/me', [ProfilController::class, 'tampil']);
     Route::patch('/me', [ProfilController::class, 'ubah']);
     Route::put('/me/allergens', [AlergenController::class, 'gantiMilikSaya']);
+    Route::delete('/me', HapusAkunController::class)->middleware('throttle:3,1');
+
+    Route::get('/notifications', [NotifikasiController::class, 'daftar']);
+    Route::post('/notifications/read-all', [NotifikasiController::class, 'bacaSemua']);
+    Route::post('/notifications/{notification}/read', [NotifikasiController::class, 'baca'])->whereNumber('notification');
+
+    Route::get('/favorites', [FavoritController::class, 'daftar']);
+    Route::post('/favorites', [FavoritController::class, 'tambah'])->middleware('throttle:30,1');
+    Route::delete('/favorites/{store}', [FavoritController::class, 'hapus'])->whereNumber('store');
 
     Route::post('/orders/preview', [PesananController::class, 'pratinjau'])->middleware('throttle:60,1');
     Route::post('/orders', [PesananController::class, 'buat'])->middleware('throttle:10,1');
