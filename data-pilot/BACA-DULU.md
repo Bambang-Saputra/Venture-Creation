@@ -11,6 +11,9 @@ berkas contoh dan catatan ini.
    menandatangani surat persetujuan uji coba, format `YYYY-MM-DD`.
    Baris tanpa tanggal itu akan dilewati, bukan karena rewel, tapi karena
    tanggal itu satu-satunya bukti mitra memang setuju.
+   Kolom `email_pemilik` opsional: isi dengan email akun Google pemilik
+   kalau mitra ingin masuk lewat tombol Google di M01 (ADR-0006). Tanpa
+   email itu, mitra hanya bisa masuk lewat OTP.
 3. Jalankan dari folder `api/`:
 
    php artisan db:seed --class=SeederPilot

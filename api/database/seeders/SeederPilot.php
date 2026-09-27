@@ -17,7 +17,7 @@ use RuntimeException;
  * Kolom yang dibaca, urutannya bebas asal judulnya cocok:
  *   nama_toko, kategori, alamat, latitude, longitude,
  *   nama_pemilik, whatsapp_pemilik, label_halal, no_sertifikat_halal,
- *   kandungan_default, tanggal_persetujuan
+ *   kandungan_default, tanggal_persetujuan, email_pemilik (opsional)
  *
  * tanggal_persetujuan wajib terisi. Baris tanpa tanggal itu dilewati,
  * karena tanggal persetujuan adalah satu-satunya bukti mitra memang
@@ -140,10 +140,17 @@ class SeederPilot extends Seeder
 
         return DB::transaction(function () use ($data, $hp, $kategori, $halal, $sekarang) {
             $userId = DB::table('users')->where('phone', $hp)->value('id');
+            // Opsional. Tanpa email, mitra hanya bisa masuk lewat OTP (ADR-0006).
+            $email = filter_var($data['email_pemilik'] ?? '', FILTER_VALIDATE_EMAIL) ? Str::lower($data['email_pemilik']) : null;
+
+            if ($userId !== null && $email !== null) {
+                DB::table('users')->where('id', $userId)->whereNull('email')->update(['email' => $email]);
+            }
 
             if ($userId === null) {
                 $userId = DB::table('users')->insertGetId([
                     'phone' => $hp,
+                    'email' => $email,
                     'name' => $data['nama_pemilik'],
                     'phone_verified_at' => $sekarang,
                     'role' => 'partner',

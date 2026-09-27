@@ -1,6 +1,6 @@
 # ADR-0006 · Login Google sebagai jalur masuk kedua di samping OTP
 
-**Status:** diusulkan · 27 September 2026
+**Status:** diterima · 27 September 2026 (PR #1)
 
 ## Konteks
 Figma K02 (Masuk) dan M01 (Masuk mitra) sama-sama punya tombol "Lanjut dengan akun Google" di bawah pembatas "atau", tetapi peta layar hanya memetakan kedua layar itu ke `POST /auth/otp/request`. Tim memutuskan tombol itu dibangun sebagai fitur, bukan sekadar tampilan.
