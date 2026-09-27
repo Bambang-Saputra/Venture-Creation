@@ -65,7 +65,9 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // Kamus data: database menyimpan waktu apa adanya, aplikasi memakai Asia/Jakarta.
+    // Jam ambil "20.00" di listing adalah jam WIB, jadi now() harus WIB juga.
+    'timezone' => env('APP_TIMEZONE', 'Asia/Jakarta'),
 
     /*
     |--------------------------------------------------------------------------
