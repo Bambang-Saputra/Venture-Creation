@@ -24,6 +24,7 @@ Dokumen ini adalah rujukan tunggal saat menulis PRD, endpoint, dan layar Android
 |---|---|---|---|---|---|
 | K01 | Pilih peran | F-01 | MUST | — | — |
 | K02 | Masuk | F-01 | MUST | `POST /auth/otp/request` | `users`, `otp_codes` |
+| K02 | Masuk (tombol Google) | F-25 | SHOULD | `POST /auth/google` | `users`, `personal_access_tokens` |
 | K03 | Verifikasi OTP | F-01 | MUST | `POST /auth/otp/verify` | `users`, `otp_codes`, `personal_access_tokens` |
 | K04 | Lengkapi profil | F-02 | MUST | `PATCH /me` | `users`, `consumer_profiles` |
 | K05 | Alergi dan pantangan | F-02 | MUST | `GET /allergens`, `PUT /me/allergens` | `allergens`, `user_allergens` |
@@ -48,6 +49,7 @@ Dokumen ini adalah rujukan tunggal saat menulis PRD, endpoint, dan layar Android
 
 Catatan layar konsumen:
 - **K01** hanya memilih graf navigasi (`nav_konsumen.xml` atau `nav_mitra.xml`), tidak memanggil API.
+- **K02 dan M01** punya tombol "Lanjut dengan akun Google" (F-25, lihat ADR-0006). Konsumen baru dari Google langsung ke K04 tanpa K03. Mitra hanya bisa masuk lewat Google kalau emailnya sudah terdaftar di akun mitra. Layer tombol itu di Figma masih bernama `Lanjut ke ringkasan` tanpa tujuan `→`; ganti namanya saat menyambungkan prototipe.
 - **K03** saat `PILOT_MODE=true` menampilkan kode OTP di layar dengan spanduk "mode uji coba". Ini disengaja karena gateway WhatsApp berbayar, dan harus disebut terus terang saat demo.
 - **K08** dibangun di balik sakelar `maps_enabled`. Saat mati, layar menampilkan daftar berurut jarak dengan tombol yang membuka Google Maps lewat intent `geo:`, tanpa API key dan tanpa biaya.
 - **K10 dan K11** wajib menampilkan label kandungan dan status halal apa adanya: `certified` menyebut nomor sertifikat, `self_claim` berbunyi "klaim mitra, belum bersertifikat", `not_stated` berbunyi "tidak disebutkan". Aplikasi tidak pernah menulis "halal" tanpa dasar.
@@ -61,6 +63,7 @@ Catatan layar konsumen:
 | Kode | Layar | Fitur | Prioritas | Endpoint | Tabel |
 |---|---|---|---|---|---|
 | M01 | Masuk mitra | F-01 | MUST | `POST /auth/otp/request` | `users` |
+| M01 | Masuk mitra (tombol Google) | F-25 | SHOULD | `POST /auth/google` | `users`, `personal_access_tokens`, `store_members` |
 | M02 | Verifikasi OTP mitra | F-01 | MUST | `POST /auth/otp/verify` | `users`, `personal_access_tokens`, `store_members` |
 | M03 | Daftar usaha | — | WON'T | — | — |
 | M04 | Verifikasi dan rekening | — | WON'T | — | — |
