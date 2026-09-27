@@ -21,6 +21,8 @@ perbaikan/android-crash-daftar-kosong
 dokumen/prd-catat-sisa
 ```
 
+Satu branch per **modul** (auth, listing, order, catat sisa, ...), bukan per perubahan kecil. ADR, dokumen, migrasi, endpoint, dan tes untuk modul itu masuk ke branch yang sama. Selama PR modulnya masih terbuka, perubahan yang masih satu modul ditambahkan ke PR itu, bukan dibuatkan branch baru.
+
 Hanya ada `main`, tanpa `dev`. Empat orang selama lima minggu tidak butuh branch integrasi; itu cuma menambah satu langkah merge yang bisa gagal.
 
 ## Alur harian
@@ -67,7 +69,7 @@ docs(db): tambah kamus data tabel waste_logs
 
 Judul mengikuti format pesan commit. Badan memakai template repo: Ringkasan, Perubahan, Cara menguji, Tangkapan layar, Checklist.
 
-Batas sekitar 400 baris diff. Lebih dari itu, pecah. Satu persetujuan, dan penulis tidak menyetujui PR-nya sendiri.
+Usahakan sekitar 400 baris diff. PR satu modul boleh lebih besar, asalkan bagian Ringkasan menjelaskan kenapa dan tesnya ikut di PR yang sama. Satu persetujuan, dan penulis tidak menyetujui PR-nya sendiri.
 
 ## Pengaturan `main` di GitHub
 
