@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
+use App\Services\RingkasanSisa;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -24,6 +25,8 @@ class CatatSisaController extends Controller
 
     /** Catatan boleh diubah sampai akhir hari berikutnya, lalu terkunci. */
     private const HARI_BOLEH_UBAH = 1;
+
+    public function __construct(private readonly RingkasanSisa $ringkasan) {}
 
     /** GET /api/partner/stores/{store}/waste-logs?date=Y-m-d */
     public function tampil(Request $request, int $store): JsonResponse
@@ -166,12 +169,8 @@ class CatatSisaController extends Controller
 
         $mulai = Carbon::parse($f['week_start'] ?? now()->toDateString())->startOfWeek(Carbon::MONDAY);
         $akhir = $mulai->copy()->endOfWeek(Carbon::SUNDAY);
-        $ini = $this->ringkasMinggu($store, $mulai, $akhir);
-        $lalu = $this->ringkasMinggu($store, $mulai->copy()->subWeek(), $akhir->copy()->subWeek());
-
-        $harian = DB::table('waste_logs')->where('store_id', $store)
-            ->whereBetween('log_date', [$mulai->toDateString(), $akhir->toDateString()])
-            ->pluck('total_value_rupiah', 'log_date');
+        $ini = $this->ringkasan->rentang($store, $mulai, $akhir);
+        $lalu = $this->ringkasan->rentang($store, $mulai->copy()->subWeek(), $akhir->copy()->subWeek());
 
         $teratas = DB::table('waste_log_items')
             ->join('waste_logs', 'waste_logs.id', '=', 'waste_log_items.waste_log_id')
@@ -192,10 +191,7 @@ class CatatSisaController extends Controller
             'unsold_value_rupiah' => $ini['wasted_value_rupiah'] + $ini['rescued_value_rupiah'],
             'wasted_change_percent' => $this->persen($ini['wasted_value_rupiah'], $lalu['logged_days'] > 0 ? $lalu['wasted_value_rupiah'] : null),
             'top_wasted_products' => $teratas,
-            'daily' => collect(range(0, 6))->map(fn (int $h) => [
-                'date' => $tgl = $mulai->copy()->addDays($h)->toDateString(),
-                'wasted_value_rupiah' => isset($harian[$tgl]) ? (int) $harian[$tgl] : null,
-            ]),
+            'daily' => $this->ringkasan->harian($store, $mulai),
         ];
 
         // Disimpan sebagai cache untuk dashboard dan laporan bisnis; sumber kebenaran tetap tabel mentah.
@@ -209,26 +205,6 @@ class CatatSisaController extends Controller
             'orders_count', 'logged_days', 'top_wasted_products', 'generated_at', 'updated_at']);
 
         return response()->json(['data' => $laporan]);
-    }
-
-    private function ringkasMinggu(int $store, Carbon $mulai, Carbon $akhir): array
-    {
-        $sisa = DB::table('waste_logs')->where('store_id', $store)
-            ->whereBetween('log_date', [$mulai->toDateString(), $akhir->toDateString()])
-            ->selectRaw('COALESCE(SUM(total_value_rupiah), 0) v, COALESCE(SUM(total_weight_gram), 0) w, COUNT(*) d')->first();
-
-        $pesanan = DB::table('orders')->where('store_id', $store)->where('status', 'completed')
-            ->whereBetween('completed_at', [$mulai->copy()->startOfDay(), $akhir->copy()->endOfDay()]);
-
-        return [
-            'wasted_value_rupiah' => (int) $sisa->v,
-            'wasted_weight_gram' => (int) $sisa->w,
-            'logged_days' => (int) $sisa->d,
-            'rescued_value_rupiah' => (int) (clone $pesanan)->sum('total_rupiah'),
-            'orders_count' => (clone $pesanan)->count(),
-            // "62 tas terjual" di M07.
-            'items_sold' => (int) DB::table('order_items')->whereIn('order_id', (clone $pesanan)->select('id'))->sum('qty'),
-        ];
     }
 
     private function nilaiSatuan(object $produk): int
