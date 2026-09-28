@@ -15,5 +15,42 @@
     <!-- Penanda layar yang belum dibuat -->
     <string name="segera_keterangan">Layar ini belum dibuat. Lihat docs/figma/peta-layar.md untuk desain dan endpoint-nya.</string>
     <string name="segera_kembali">Kembali ke pilih peran</string>
+    <string name="segera_keluar">Keluar dari akun</string>
+
+    <!-- Umum -->
+    <string name="kembali">Kembali</string>
+    <string name="nomor_hp">Nomor HP</string>
+    <string name="nomor_contoh">812 3456 7890</string>
+    <string name="kirim_kode">Kirim kode</string>
+    <string name="atau">atau</string>
+    <string name="lanjut_google">Lanjut dengan akun Google</string>
+    <string name="google_gagal">Tidak bisa masuk dengan Google. Coba lagi atau pakai nomor HP.</string>
+    <string name="google_tanpa_akun">Belum ada akun Google di HP ini. Tambahkan lewat Pengaturan, atau pakai nomor HP.</string>
+    <string name="persetujuan">Dengan melanjutkan, kamu menyetujui Syarat Layanan dan Kebijakan Privasi Life of Foods.</string>
+
+    <!-- K02 Masuk dan M01 Masuk mitra -->
+    <string name="masuk_judul_bar">Masuk</string>
+    <string name="k02_label">Masuk sebagai konsumen</string>
+    <string name="k02_judul">Masuk dengan nomor HP</string>
+    <string name="k02_keterangan">Kami kirim kode 6 digit lewat WhatsApp. Nomor yang sama dipakai untuk masuk dan daftar, jadi tidak perlu kata sandi.</string>
+    <string name="k02_bantuan_nomor">Pastikan nomor ini aktif di WhatsApp.</string>
+    <string name="m01_label">Masuk sebagai mitra usaha</string>
+    <string name="m01_judul">Masuk sebagai mitra</string>
+    <string name="m01_keterangan">Pakai nomor WhatsApp pemilik usaha. Akun kasir bisa diundang belakangan dari menu Toko, jadi staf tidak perlu memegang akun pemilik.</string>
+    <string name="m01_bantuan_nomor">Kasir yang sudah diundang juga masuk dengan nomornya sendiri.</string>
+
+    <!-- K03 dan M02 Verifikasi OTP -->
+    <string name="k03_judul_bar">Verifikasi nomor</string>
+    <string name="k03_judul">Masukkan kode</string>
+    <string name="k03_keterangan">Kode 6 digit dikirim ke WhatsApp %1$s.</string>
+    <string name="k03_ubah_nomor">Ubah nomor</string>
+    <string name="k03_hint_kode">Kode 6 digit</string>
+    <string name="k03_tidak_menerima">Tidak menerima kode?</string>
+    <string name="k03_kirim_ulang">Kirim ulang</string>
+    <string name="k03_kirim_ulang_dalam">Kirim ulang dalam %1$s</string>
+    <string name="k03_verifikasi">Verifikasi</string>
+    <string name="k03_peringatan">Jangan berikan kode ini ke siapa pun, termasuk yang mengaku dari Life of Foods.</string>
+    <string name="k03_mode_uji_judul">Mode uji coba</string>
+    <string name="k03_mode_uji">Kode tidak dikirim lewat WhatsApp selama uji coba. Kodemu %1$s, ketuk untuk mengisi.</string>
 
 </resources>

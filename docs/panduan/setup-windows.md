@@ -117,6 +117,9 @@ sdk.dir=C\:\\Users\\<nama>\\AppData\\Local\\Android\\Sdk
 API_BASE_URL=https://xxxx.ngrok-free.app/api/
 # Kosongkan selama peta memakai mode gratis (ADR-0005)
 MAPS_API_KEY=
+# Client ID OAuth tipe Web, sama dengan GOOGLE_CLIENT_ID di api/.env (ADR-0006).
+# Kosong = tombol "Lanjut dengan akun Google" di K02/M01 disembunyikan.
+GOOGLE_WEB_CLIENT_ID=
 ```
 
 Setelah mengubah `API_BASE_URL`, jalankan ulang build supaya `BuildConfig` ikut berubah. Build debug hanya mengizinkan HTTP biasa ke `10.0.2.2`, `127.0.0.1`, dan `localhost`; selain itu harus HTTPS.

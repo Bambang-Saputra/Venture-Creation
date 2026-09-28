@@ -16,6 +16,8 @@ val lokal = Properties().apply {
 val apiBaseUrl = lokal.getProperty("API_BASE_URL").orEmpty().ifBlank { "http://10.0.2.2:8000/api/" }
     .let { if (it.endsWith("/")) it else "$it/" }
 val mapsApiKey = lokal.getProperty("MAPS_API_KEY").orEmpty()
+// Client ID OAuth tipe Web (sama dengan GOOGLE_CLIENT_ID di api/.env). Kosong = tombol Google disembunyikan.
+val googleWebClientId = lokal.getProperty("GOOGLE_WEB_CLIENT_ID").orEmpty()
 
 android {
     namespace = "id.lifeoffoods"
@@ -33,6 +35,7 @@ android {
         versionName = "0.1.0"
 
         buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$googleWebClientId\"")
         // ADR-0005: peta Google Maps hanya menyala kalau ada kunci. Tanpa kunci, K08 memakai daftar + intent geo:.
         buildConfigField("boolean", "MAPS_ENABLED", mapsApiKey.isNotBlank().toString())
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
@@ -76,6 +79,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.logging)
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.credentials)
+    implementation(libs.credentials.play)
+    implementation(libs.googleid)
 
     testImplementation(libs.junit)
 }

@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Alur mitra M01 sampai M21. Ganti SegeraFragment dengan fragment sungguhan per layar. -->
+<!--
+    Alur mitra M01 sampai M21. Tujuan awal diatur MainActivity: m01_masuk kalau belum ada sesi,
+    m05_dashboard kalau sudah. Ganti SegeraFragment dengan fragment sungguhan per layar.
+-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_mitra"
-    app:startDestination="@id/m01_masuk_mitra">
+    app:startDestination="@id/m01_masuk">
 
     <fragment
-        android:id="@+id/m01_masuk_mitra"
+        android:id="@+id/m01_masuk"
+        android:name="id.lifeoffoods.ui.masuk.MasukFragment">
+        <argument
+            android:name="peran"
+            android:defaultValue="partner"
+            app:argType="string" />
+        <action
+            android:id="@+id/ke_verifikasi"
+            app:destination="@id/m02_verifikasi" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/m02_verifikasi"
+        android:name="id.lifeoffoods.ui.masuk.VerifikasiOtpFragment" />
+
+    <fragment
+        android:id="@+id/m05_dashboard"
         android:name="id.lifeoffoods.ui.SegeraFragment">
         <argument
             android:name="kode_layar"
-            android:defaultValue="M01"
+            android:defaultValue="M05"
             app:argType="string" />
         <argument
             android:name="judul"
-            android:defaultValue="Masuk mitra"
+            android:defaultValue="Dashboard mitra"
             app:argType="string" />
     </fragment>
 </navigation>

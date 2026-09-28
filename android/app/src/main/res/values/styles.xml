@@ -45,4 +45,17 @@
         <item name="android:layout_height">20dp</item>
         <item name="android:src">@drawable/ic_chevron_kanan</item>
     </style>
+
+    <!-- Satu kotak digit OTP di K03/M02 -->
+    <style name="KotakOtp">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginHorizontal">4dp</item>
+        <item name="android:background">@drawable/bg_kotak_otp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/teks_utama</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
