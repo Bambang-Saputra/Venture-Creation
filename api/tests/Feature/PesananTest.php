@@ -36,7 +36,7 @@ class PesananTest extends TestCase
     {
         $susu = DB::table('allergens')->where('code', 'susu')->value('id');
         DB::table('user_allergens')->insert(['user_id' => $this->pembeli->id, 'allergen_id' => $susu, 'severity' => 'severe']);
-        $croissant = $this->listing(['title' => 'Croissant mentega', 'price_rupiah' => 9000]);
+        $croissant = $this->listing(['title' => 'Croissant mentega', 'price_rupiah' => 9000, 'original_value_rupiah' => 28000]);
         DB::table('listing_allergens')->insert(['listing_id' => $croissant, 'allergen_id' => $susu]);
         $danish = $this->listing(['title' => 'Danish keju', 'price_rupiah' => 9000, 'pickup_start' => now()->setTime(18, 30)]);
 
@@ -45,6 +45,7 @@ class PesananTest extends TestCase
             ->assertJsonPath('data.subtotal_rupiah', 27000)
             ->assertJsonPath('data.total_rupiah', 27000)
             ->assertJsonPath('data.store.name', 'Kopi Kalyan')
+            ->assertJsonPath('data.items.0.original_value_rupiah', 28000)
             ->assertJsonPath('data.pickup_start', now()->setTime(18, 30)->toIso8601String())
             ->assertJsonPath('data.allergen_warnings.0.code', 'susu')
             ->assertJsonPath('data.allergen_warnings.0.severity', 'severe');

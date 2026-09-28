@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kartu kode K14: putih, sudut 24dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_kartu" />
+    <corners android:radius="24dp" />
+</shape>

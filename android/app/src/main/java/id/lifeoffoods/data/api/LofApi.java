@@ -12,6 +12,8 @@ import id.lifeoffoods.data.api.model.NotifikasiResponse;
 import id.lifeoffoods.data.api.model.OtpRequestBody;
 import id.lifeoffoods.data.api.model.OtpRequestResponse;
 import id.lifeoffoods.data.api.model.OtpVerifyBody;
+import id.lifeoffoods.data.api.model.PesananBody;
+import id.lifeoffoods.data.api.model.PesananDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import java.util.List;
@@ -83,6 +85,18 @@ public interface LofApi {
 
     @DELETE("favorites/{store}")
     Call<Void> hapusFavorit(@Path("store") long storeId);
+
+    /** K12, K13: hitung total dan peringatan alergi tanpa menyimpan apa pun. */
+    @POST("orders/preview")
+    Call<Terbungkus<PesananDto>> pratinjauPesanan(@Body PesananBody body);
+
+    /** Tombol "Buat pesanan": 201 berisi detail seperti GET /orders/{id}. */
+    @POST("orders")
+    Call<Terbungkus<PesananDto>> buatPesanan(@Body PesananBody body);
+
+    /** K14 Kode pickup. */
+    @GET("orders/{id}")
+    Call<Terbungkus<PesananDto>> detailPesanan(@Path("id") long id);
 
     /** Lencana lonceng K07; daftar lengkap di K17. */
     @GET("notifications")

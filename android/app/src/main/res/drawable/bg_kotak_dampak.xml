@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "Dampak" K14: hijau tua 45% di atas gradien, sudut 18dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#730A3A25" />
+    <corners android:radius="18dp" />
+</shape>

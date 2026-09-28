@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Titik 7dp di pil status K14; warnanya diatur lewat backgroundTint. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/merek_lime" />
+    <size
+        android:width="7dp"
+        android:height="7dp" />
+</shape>

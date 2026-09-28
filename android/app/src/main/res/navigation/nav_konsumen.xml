@@ -79,29 +79,26 @@
     <!-- Ringkasan pesanan; argumen id_jualan (long[]) dan jumlah (int[]) dari K10/K11. -->
     <fragment
         android:id="@+id/k12_ringkasan_tas"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
+        android:name="id.lifeoffoods.ui.pesanan.RingkasanFragment">
         <argument
-            android:name="kode_layar"
-            android:defaultValue="K12"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Ringkasan tas kejutan"
-            app:argType="string" />
+            android:name="menu"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
         android:id="@+id/k13_ringkasan_menu"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
+        android:name="id.lifeoffoods.ui.pesanan.RingkasanFragment">
         <argument
-            android:name="kode_layar"
-            android:defaultValue="K13"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Ringkasan menu satuan"
-            app:argType="string" />
+            android:name="menu"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </fragment>
+
+    <!-- Dibuka dengan popUpTo k07_beranda: kembali dari K14 langsung ke beranda. -->
+    <fragment
+        android:id="@+id/k14_kode_pickup"
+        android:name="id.lifeoffoods.ui.pesanan.KodePickupFragment" />
 
     <fragment
         android:id="@+id/k15_pesanan"

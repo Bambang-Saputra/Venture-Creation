@@ -178,6 +178,39 @@ public class TangkapanLayarTest {
         tangkap("K11");
     }
 
+    @Test
+    public void k12RingkasanTas() {
+        bukaRingkasan(R.id.k12_ringkasan_tas, new long[] {31}, new int[] {1});
+        tangkap("K12");
+    }
+
+    @Test
+    public void k13RingkasanMenu() {
+        bukaRingkasan(R.id.k13_ringkasan_menu, new long[] {41, 42}, new int[] {1, 1});
+        tangkap("K13");
+    }
+
+    @Test
+    public void k14KodePickup() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLong("order_id", 88);
+        navigasi(R.id.k14_kode_pickup, args);
+        tunggu();
+        tangkap("K14");
+    }
+
+    private void bukaRingkasan(int tujuan, long[] id, int[] qty) {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLongArray("id_jualan", id);
+        args.putIntArray("jumlah", qty);
+        navigasi(tujuan, args);
+        tunggu();
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -271,6 +304,13 @@ public class TangkapanLayarTest {
                                 + ","
                                 + alergen("tanpa_alkohol", "Tanpa alkohol", "diet")
                                 + "]}");
+            }
+            if (path.startsWith("/api/orders/preview")) {
+                boolean menu = r.getBody().readUtf8().contains("\"listing_id\":41");
+                return json("{\"data\":" + pesanan(menu, false) + "}");
+            }
+            if (path.startsWith("/api/orders/88")) {
+                return json("{\"data\":" + pesanan(true, true) + "}");
             }
             if (path.matches("/api/listings/\\d+.*")) {
                 return json("{\"data\":" + detail(path.contains("/41") ? 41 : 31) + "}");
@@ -374,6 +414,46 @@ public class TangkapanLayarTest {
                 return json("{\"data\":[],\"unread_count\":3,\"current_page\":1,\"last_page\":1}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /** Pratinjau K12 (tas 31) / K13 (menu 41+42), atau detail pesanan K14 (id 88). */
+        private static String pesanan(boolean menu, boolean detail) {
+            String item =
+                    menu
+                            ? "{\"listing_id\":41,\"title\":\"Croissant mentega\",\"qty\":1,"
+                                    + "\"unit_price_rupiah\":9000,\"original_value_rupiah\":28000,"
+                                    + "\"line_total_rupiah\":9000},"
+                                    + "{\"listing_id\":42,\"title\":\"Danish keju\",\"qty\":1,"
+                                    + "\"unit_price_rupiah\":9000,\"original_value_rupiah\":27000,"
+                                    + "\"line_total_rupiah\":9000}"
+                            : "{\"listing_id\":31,\"title\":\"Tas Pastry Sore\",\"qty\":1,"
+                                    + "\"unit_price_rupiah\":18000,\"line_total_rupiah\":18000}";
+            return "{"
+                    + (detail
+                            ? "\"id\":88,\"code\":\"LOF-7Q2K9A\",\"status\":\"pending_pickup\","
+                                    + "\"pickup_code\":\"LF7Q2K\",\"pickup_code_status\":\"active\","
+                                    + "\"payment_method\":\"cash\",\"payment_status\":\"unpaid\","
+                            : "")
+                    + "\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\","
+                    + "\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan\"},"
+                    + "\"items\":["
+                    + item
+                    + "],"
+                    // Jam ambil sudah lewat dari sekarang, jadi K14 tampil "Siap diambil".
+                    + "\"pickup_start\":\"2026-01-01T20:30:00+07:00\","
+                    + "\"pickup_end\":\"2026-01-01T21:00:00+07:00\","
+                    + "\"item_count\":"
+                    + (menu ? 2 : 1)
+                    + ","
+                    + "\"subtotal_rupiah\":18000,\"service_fee_rupiah\":0,\"discount_rupiah\":0,"
+                    + "\"total_rupiah\":18000,"
+                    + "\"allergen_warnings\":"
+                    + (detail
+                            ? "[]"
+                            : "[{\"listing_id\":31,\"code\":\"kacang_tanah\","
+                                    + "\"name\":\"Kacang tanah\",\"presence\":\"may_contain\","
+                                    + "\"severity\":\"avoid\"}]")
+                    + "}";
         }
 
         private static String alergenJson(String kode, String nama, String presence) {

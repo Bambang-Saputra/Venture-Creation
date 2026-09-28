@@ -71,6 +71,8 @@ class LayananPesanan
             'title' => $listing[$id]->title,
             'qty' => $jumlah,
             'unit_price_rupiah' => $listing[$id]->price_rupiah,
+            // Harga coret di K12/K13; hanya di pratinjau, tidak disalin ke order_items.
+            'original_value_rupiah' => $listing[$id]->original_value_rupiah,
             'line_total_rupiah' => $listing[$id]->price_rupiah * $jumlah,
         ])->values();
 

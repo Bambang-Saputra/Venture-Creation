@@ -147,4 +147,49 @@
     <string name="stepper_kurang">Kurangi jumlah</string>
     <string name="stepper_tambah">Tambah jumlah</string>
 
+    <!-- K12, K13 Ringkasan pesanan dan K14 Kode pickup -->
+    <string name="k12_judul_bar">Ringkasan pesanan</string>
+    <string name="k12_lokasi_ambil">Lokasi ambil</string>
+    <string name="k12_jam_ambil">Jam ambil</string>
+    <string name="k12_pesanan">Pesanan</string>
+    <string name="k13_judul_item">Item (%1$d)</string>
+    <string name="k12_isi_dipilih">Tas kejutan · isi dipilih mitra</string>
+    <string name="k12_kali">%1$d × %2$s</string>
+    <string name="k12_catatan">Catatan untuk mitra (opsional)</string>
+    <string name="k12_catatan_contoh">Alergi kacang, tolong dipisah ya</string>
+    <string name="k12_catatan_bantuan">Mitra melihat catatan ini saat menyiapkan pesanan.</string>
+    <string name="k12_cara_bayar">Cara bayar</string>
+    <string name="k12_tunai">Tunai di tempat</string>
+    <string name="k12_bayar_saat_ambil">Bayar saat ambil</string>
+    <string name="k12_qris">QRIS di kasir</string>
+    <string name="k12_scan_di_kasir">Scan saat ambil</string>
+    <string name="k12_rincian_biaya">Rincian biaya</string>
+    <string name="k12_subtotal">Subtotal</string>
+    <string name="k12_biaya_layanan">Biaya layanan</string>
+    <string name="k12_diskon">Diskon</string>
+    <string name="k12_total">Total</string>
+    <string name="k12_total_bayar">Total bayar</string>
+    <string name="k12_buat_pesanan">Buat pesanan</string>
+    <string name="k12_gagal_buat">Pesanan belum dibuat. Coba lagi.</string>
+    <string name="k14_pesanan_aktif">Pesanan aktif</string>
+    <string name="k14_tunjukkan">Tunjukkan ke kasir</string>
+    <string name="k14_kode_tidak_berlaku">Kode sudah tidak berlaku</string>
+    <string name="k14_kode_eja">Kode pickup %1$s</string>
+    <string name="k14_mitra">Mitra</string>
+    <string name="k14_jumlah">Jumlah</string>
+    <string name="k14_dibayar">Dibayar</string>
+    <string name="k14_bayar_di_tempat">Bayar di tempat</string>
+    <string name="k14_tunai">tunai</string>
+    <string name="k14_qris">QRIS</string>
+    <string name="k14_pesanan_saya">Pesanan saya</string>
+    <string name="k14_cari_lagi">Cari lagi</string>
+    <plurals name="k14_dampak">
+        <item quantity="one">Pesanan ini menyelamatkan %1$d porsi dari tempat sampah. Ambil sesuai jam supaya tidak terbuang.</item>
+        <item quantity="other">Pesanan ini menyelamatkan %1$d porsi dari tempat sampah. Ambil sesuai jam supaya tidak terbuang.</item>
+    </plurals>
+    <plurals name="k14_dampak_selesai">
+        <item quantity="one">Kamu sudah menyelamatkan %1$d porsi dari tempat sampah. Terima kasih.</item>
+        <item quantity="other">Kamu sudah menyelamatkan %1$d porsi dari tempat sampah. Terima kasih.</item>
+    </plurals>
+
 </resources>

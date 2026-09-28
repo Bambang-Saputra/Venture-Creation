@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lingkaran radio: hijau saat dipilih, garis putus-putus Figma (#C6D5C9) saat tidak. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/merek_utama" android:state_checked="true" />
+    <item android:color="@color/garis_putus" />
+</selector>

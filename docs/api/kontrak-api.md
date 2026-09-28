@@ -353,12 +353,14 @@ Tidak menyimpan apa pun.
 ```json
 { "data": {
   "store": { "id": 5, "name": "Kopi Kalyan", "address": "Jl. ..." },
-  "items": [ { "listing_id": 31, "title": "Tas Pastry Sore", "qty": 1, "unit_price_rupiah": 18000, "line_total_rupiah": 18000 } ],
+  "items": [ { "listing_id": 31, "title": "Tas Pastry Sore", "qty": 1, "unit_price_rupiah": 18000, "original_value_rupiah": 54000, "line_total_rupiah": 18000 } ],
   "pickup_start": "2026-09-18T19:00:00+07:00", "pickup_end": "2026-09-18T21:00:00+07:00",
   "subtotal_rupiah": 18000, "service_fee_rupiah": 0, "discount_rupiah": 0, "total_rupiah": 18000,
   "allergen_warnings": [ { "listing_id": 31, "code": "susu", "name": "Susu", "presence": "may_contain", "severity": "avoid" } ]
 } }
 ```
+
+`original_value_rupiah` (bisa `null`) hanya ada di pratinjau, untuk harga coret di K13. Nilai ini tidak disalin ke pesanan, jadi `GET /orders/{id}` tidak mengembalikannya.
 
 `allergen_warnings` tidak memblokir pesanan, tapi K12/K13 wajib menampilkannya sebelum tombol "Buat pesanan".
 

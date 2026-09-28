@@ -23,6 +23,7 @@ import id.lifeoffoods.databinding.ItemBarisMenuBinding;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.Pil;
 import id.lifeoffoods.ui.umum.SisiAman;
+import id.lifeoffoods.ui.umum.Stepper;
 
 /**
  * K11 Detail menu satuan: semua menu satuan toko dari jualan yang dibuka, dipilih dengan stepper,
