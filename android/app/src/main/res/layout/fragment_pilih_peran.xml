@@ -16,17 +16,13 @@
         android:paddingEnd="24dp"
         android:paddingBottom="20dp">
 
-        <TextView
+        <!-- Logo resmi (vektor), bukan teks + font, supaya tulisannya sama persis dengan Figma. -->
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:drawablePadding="10dp"
-            android:fontFamily="@font/figtree_medium"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:text="@string/app_name"
-            android:textColor="@color/teks_di_gelap"
-            android:textSize="25sp"
-            app:drawableStartCompat="@drawable/ic_logo" />
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/logo_lengkap_putih" />
 
         <Space
             android:layout_width="match_parent"

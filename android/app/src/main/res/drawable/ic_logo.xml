@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Logo lingkaran dengan daun lime, sesuai header K01. -->
+<!-- Tanda logo (lingkaran hijau + daun lime) dari SVG resmi "Warna Hijau",
+     tanpa tulisan. Dipakai di header terang seperti K07 Beranda. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="28dp"
     android:height="28dp"
-    android:viewportWidth="28"
-    android:viewportHeight="28">
+    android:viewportWidth="120"
+    android:viewportHeight="120">
     <path
-        android:fillColor="#00000000"
-        android:pathData="M19.5,6.5A9.5,9.5 0,1 1,8.5 6.5"
-        android:strokeWidth="3.2"
-        android:strokeColor="#FFFFFFFF"
+        android:pathData="M60,22C51.6349,22.0002 43.5037,24.7606 36.8674,29.8531C30.231,34.9456 25.4605,42.0856 23.2956,50.1656C21.1308,58.2457 21.6925,66.8143 24.8938,74.5426C28.0951,82.2708 33.7571,88.7268 41.0015,92.9092C48.2459,97.0917 56.6679,98.7668 64.9614,97.6749C73.2549,96.5829 80.9563,92.7849 86.8713,86.8699C92.7862,80.9548 96.5841,73.2534 97.6759,64.9599C98.7678,56.6664 97.0925,48.2444 92.91,41"
+        android:strokeWidth="14"
+        android:strokeColor="@color/merek_utama"
         android:strokeLineCap="round" />
     <path
-        android:fillColor="#FFA3D977"
-        android:pathData="M17,2.5C19.5,2.5 21.5,4.2 21.8,6.8C19.2,7 17.3,5.2 17,2.5Z" />
+        android:pathData="M82.693,9.62875C84.5317,16.0409 88.0259,21.8561 92.8243,26.4898C97.6228,31.1235 103.556,34.4124 110.029,36.026"
+        android:strokeWidth="14"
+        android:strokeColor="@color/merek_lime"
+        android:strokeLineCap="round" />
 </vector>
