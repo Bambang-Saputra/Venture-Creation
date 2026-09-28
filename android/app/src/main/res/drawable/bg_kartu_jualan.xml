@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kartu jualan (Kartu flash, Kartu tas): putih, garis halus 1dp, sudut 18dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_kartu" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/garis_halus" />
+    <corners android:radius="18dp" />
+</shape>

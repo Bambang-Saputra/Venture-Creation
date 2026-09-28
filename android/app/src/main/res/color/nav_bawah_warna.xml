@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Warna ikon dan label Nav bawah: tab aktif hijau merek, lainnya teks kuat. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/merek_utama" android:state_selected="true" />
+    <item android:color="@color/teks_kuat" />
+</selector>

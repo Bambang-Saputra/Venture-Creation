@@ -109,7 +109,8 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_info" />
+                    android:src="@drawable/ic_info"
+                    app:tint="@color/merek_utama" />
 
                 <TextView
                     style="@style/Teks.IsiKecil"

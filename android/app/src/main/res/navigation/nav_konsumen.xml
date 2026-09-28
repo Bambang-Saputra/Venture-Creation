@@ -39,14 +39,111 @@
 
     <fragment
         android:id="@+id/k07_beranda"
+        android:name="id.lifeoffoods.ui.beranda.BerandaFragment" />
+
+    <!-- Tujuan dari K07 yang layarnya belum dibuat. -->
+    <fragment
+        android:id="@+id/k08_peta"
         android:name="id.lifeoffoods.ui.SegeraFragment">
         <argument
             android:name="kode_layar"
-            android:defaultValue="K07"
+            android:defaultValue="K08"
             app:argType="string" />
         <argument
             android:name="judul"
-            android:defaultValue="Beranda"
+            android:defaultValue="Peta"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k09_filter"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K09"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Cari dan filter"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k10_detail_tas"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K10"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Detail tas kejutan"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k11_detail_menu"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K11"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Detail menu satuan"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k15_pesanan"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K15"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Pesanan saya"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k16_favorit"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K16"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Favorit"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/k17_notifikasi"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K17"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Notifikasi"
+            app:argType="string" />
+    </fragment>
+
+    <!-- Penanda K18 memuat tombol "Keluar dari akun", jadi alur masuk tetap bisa diulang. -->
+    <fragment
+        android:id="@+id/k18_profil"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="K18"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Profil"
             app:argType="string" />
     </fragment>
 </navigation>

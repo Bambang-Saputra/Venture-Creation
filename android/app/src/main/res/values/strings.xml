@@ -80,4 +80,33 @@
     <string name="lewati">Lewati</string>
     <string name="simpan">Simpan</string>
 
+    <!-- K07 Beranda -->
+    <string name="k07_lokasi_kamu">Lokasi kamu</string>
+    <string name="k07_atur_lokasi">Atur lokasi</string>
+    <string name="k07_notifikasi">Notifikasi</string>
+    <string name="k07_notifikasi_baru">Notifikasi, ada yang belum dibaca</string>
+    <string name="k07_profil">Profil</string>
+    <string name="k07_cari">Cari kafe, bakery, atau menu</string>
+    <string name="k07_peta">Buka peta</string>
+    <string name="k07_kategori">Kategori</string>
+    <string name="k07_segera_tutup">Tutup kurang dari satu jam</string>
+    <string name="k07_terdekat">Terdekat dari kamu</string>
+    <string name="k07_semua_jualan">Jualan hari ini</string>
+    <string name="k07_lihat_semua">Lihat semua</string>
+    <string name="k07_kosong_judul">Belum ada jualan di sekitarmu</string>
+    <string name="k07_kosong_isi">Mitra biasanya memasang tas menjelang tutup. Cek lagi sore nanti.</string>
+    <string name="k07_kosong_kategori">Belum ada jualan untuk kategori ini. Ketuk kategorinya lagi untuk melihat semua.</string>
+    <string name="k07_gagal_judul">Jualan belum termuat</string>
+    <string name="k07_gagal_isi">Periksa koneksi internet, lalu coba lagi.</string>
+    <string name="kategori_bakery">Bakery</string>
+    <string name="kategori_kafe">Kafe</string>
+    <string name="kategori_restoran">Restoran</string>
+    <string name="kategori_katering">Katering</string>
+    <string name="kategori_swalayan">Swalayan</string>
+    <string name="foto">Foto</string>
+    <string name="nav_beranda">Beranda</string>
+    <string name="nav_favorit">Favorit</string>
+    <string name="nav_pesanan">Pesanan</string>
+    <string name="nav_profil">Profil</string>
+
 </resources>

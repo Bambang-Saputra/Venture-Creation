@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tombol "Buka peta" K07: tinta gelap, sudut 14dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_gelap" />
+    <corners android:radius="14dp" />
+</shape>

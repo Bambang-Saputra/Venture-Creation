@@ -171,7 +171,8 @@
                 android:padding="14dp"
                 android:text="@string/k03_peringatan"
                 android:textColor="@color/teks_kuat"
-                app:drawableStartCompat="@drawable/ic_gembok" />
+                app:drawableStartCompat="@drawable/ic_gembok"
+                app:drawableTint="@color/teks_kuat" />
         </LinearLayout>
     </ScrollView>
 

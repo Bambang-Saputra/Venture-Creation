@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Slot foto (komponen "Slot foto"): latar lembut, sudut 14dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_lembut" />
+    <corners android:radius="14dp" />
+</shape>
