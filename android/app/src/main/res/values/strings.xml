@@ -53,4 +53,31 @@
     <string name="k03_mode_uji_judul">Mode uji coba</string>
     <string name="k03_mode_uji">Kode tidak dikirim lewat WhatsApp selama uji coba. Kodemu %1$s, ketuk untuk mengisi.</string>
 
+    <!-- K04 Lengkapi profil -->
+    <string name="k04_judul_bar">Lengkapi profil</string>
+    <string name="k04_langkah">Langkah 1 dari 2</string>
+    <string name="k04_nama">Nama lengkap</string>
+    <string name="k04_nama_contoh">Dara Renata</string>
+    <string name="k04_email">Email (opsional)</string>
+    <string name="k04_email_contoh">dara.renata@email.com</string>
+    <string name="k04_email_bantuan">Untuk struk pesanan dan pemulihan akun.</string>
+    <string name="k04_area">Area utama</string>
+    <string name="k04_area_contoh">SCBD, Jakarta Selatan</string>
+    <string name="k04_area_bantuan">Dipakai untuk menampilkan tas terdekat. Bisa diganti kapan saja.</string>
+    <string name="k04_galat_nama">Isi nama lengkap, minimal 2 huruf.</string>
+    <string name="k04_galat_email">Format email tidak valid.</string>
+    <string name="lanjut">Lanjut</string>
+
+    <!-- K05 Alergi dan pantangan -->
+    <string name="k05_judul_bar">Alergi dan pantangan</string>
+    <string name="k05_langkah">Langkah 2 dari 2 · bisa diubah di Profil</string>
+    <string name="k05_keterangan">Jualan yang mengandung bahan pilihanmu akan diberi tanda peringatan, dan bisa disembunyikan lewat filter.</string>
+    <string name="k05_alergi">Alergi</string>
+    <string name="k05_pola_makan">Pola makan</string>
+    <string name="k05_catatan">Label kandungan diisi oleh mitra. Kalau alergimu berat, tetap tanyakan langsung ke kasir sebelum makan.</string>
+    <string name="k05_gagal_muat">Daftar alergi belum termuat.</string>
+    <string name="coba_lagi">Coba lagi</string>
+    <string name="lewati">Lewati</string>
+    <string name="simpan">Simpan</string>
+
 </resources>

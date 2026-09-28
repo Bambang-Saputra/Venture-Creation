@@ -18,6 +18,7 @@ public class SesiPengguna {
     private static final String BERKAS = "sesi";
     private static final String KUNCI_TOKEN = "token";
     private static final String KUNCI_PERAN = "peran";
+    private static final String KUNCI_PERLU_PROFIL = "perlu_profil";
 
     private final SharedPreferences prefs;
 
@@ -25,9 +26,27 @@ public class SesiPengguna {
         prefs = context.getApplicationContext().getSharedPreferences(BERKAS, Context.MODE_PRIVATE);
     }
 
-    /** Dipanggil setelah POST /auth/otp/verify atau POST /auth/google berhasil. */
-    public void simpan(String token, String peran) {
-        prefs.edit().putString(KUNCI_TOKEN, token).putString(KUNCI_PERAN, peran).apply();
+    /**
+     * Dipanggil setelah POST /auth/otp/verify atau POST /auth/google berhasil.
+     *
+     * @param perluProfil true kalau K04 belum diisi; aplikasi yang dibuka ulang kembali ke K04,
+     *     bukan ke beranda.
+     */
+    public void simpan(String token, String peran, boolean perluProfil) {
+        prefs.edit()
+                .putString(KUNCI_TOKEN, token)
+                .putString(KUNCI_PERAN, peran)
+                .putBoolean(KUNCI_PERLU_PROFIL, perluProfil)
+                .apply();
+    }
+
+    /** Dipanggil setelah PATCH /me di K04 berhasil. */
+    public void profilLengkap() {
+        prefs.edit().putBoolean(KUNCI_PERLU_PROFIL, false).apply();
+    }
+
+    public boolean perluProfil() {
+        return prefs.getBoolean(KUNCI_PERLU_PROFIL, false);
     }
 
     /** Dipanggil saat logout, akun dihapus, atau server menjawab 401. */

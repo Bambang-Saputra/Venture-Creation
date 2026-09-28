@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ikon/info Figma: 18dp, garis 1.5. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="18dp"
+    android:height="18dp"
+    android:viewportWidth="18"
+    android:viewportHeight="18">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9,1.8a7.2,7.2 0,1 0,0.001 0z"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/merek_utama" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9,8.2v4.3"
+        android:strokeLineCap="round"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/merek_utama" />
+    <path
+        android:fillColor="@color/merek_utama"
+        android:pathData="M9,5.6m-0.9,0a0.9,0.9 0,1 1,1.8 0a0.9,0.9 0,1 1,-1.8 0" />
+</vector>

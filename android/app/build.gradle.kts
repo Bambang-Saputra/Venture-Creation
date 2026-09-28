@@ -57,6 +57,28 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests {
+            // Robolectric butuh resource dan manifest aplikasi untuk menggambar layar.
+            isIncludeAndroidResources = true
+            all {
+                // Tangkapan layar (docs/panduan/pola-layar-java.md) hanya dibuat dengan
+                // -Ptangkapan, supaya android-ci tetap ringan. Hasilnya di app/build/outputs/roborazzi/.
+                val tangkapan = project.hasProperty("tangkapan")
+                it.systemProperty("lof.tangkapan", tangkapan.toString())
+                it.systemProperty("roborazzi.test.record", tangkapan.toString())
+                // Nama berkas di tes relatif ke build/outputs/roborazzi, bukan ke folder kerja.
+                it.systemProperty("roborazzi.record.filePathStrategy", "relativePathFromRoborazziContextOutputDirectory")
+                it.maxHeapSize = "1g"
+                // Robolectric native graphics membaca FileDescriptor lewat internal JDK 17+.
+                it.jvmArgs(
+                    "--add-exports=java.base/jdk.internal.access=ALL-UNNAMED",
+                    "--add-opens=java.base/java.io=ALL-UNNAMED",
+                )
+            }
+        }
+    }
 }
 
 spotless {
@@ -86,4 +108,7 @@ dependencies {
     implementation(libs.googleid)
 
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.okhttp.mockwebserver)
 }

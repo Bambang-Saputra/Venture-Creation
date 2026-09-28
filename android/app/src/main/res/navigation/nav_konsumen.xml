@@ -27,16 +27,15 @@
 
     <fragment
         android:id="@+id/k04_lengkapi_profil"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="K04"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Lengkapi profil"
-            app:argType="string" />
+        android:name="id.lifeoffoods.ui.onboarding.LengkapiProfilFragment">
+        <action
+            android:id="@+id/ke_alergi"
+            app:destination="@id/k05_alergi" />
     </fragment>
+
+    <fragment
+        android:id="@+id/k05_alergi"
+        android:name="id.lifeoffoods.ui.onboarding.AlergiFragment" />
 
     <fragment
         android:id="@+id/k07_beranda"

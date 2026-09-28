@@ -163,8 +163,11 @@ public class VerifikasiOtpFragment extends Fragment {
     private void tampilkanKode(String kode) {
         for (int i = 0; i < kotak.length; i++) {
             kotak[i].setText(i < kode.length() ? String.valueOf(kode.charAt(i)) : "");
-            // Kotak yang sedang diisi diberi garis hijau, sisanya abu-abu seperti di Figma.
-            kotak[i].setSelected(i == Math.min(kode.length(), kotak.length - 1));
+            // Kotak yang sedang diisi diberi garis hijau; kotak sesudahnya abu-abu tanpa garis,
+            // seperti di Figma.
+            int aktif = Math.min(kode.length(), kotak.length - 1);
+            kotak[i].setSelected(i == aktif);
+            kotak[i].setEnabled(i <= aktif);
         }
     }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- K02 Masuk (Figma 55:898) dan M01 Masuk mitra (65:1658). Teks diisi MasukFragment sesuai peran. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/latar_kartu"
@@ -21,77 +20,96 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingStart="24dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="24dp">
 
             <TextView
                 android:id="@+id/label"
+                style="@style/Teks.Lencana"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/judul_utama"
+                style="@style/Teks.JudulBesar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:accessibilityHeading="true"
-                android:textColor="@color/teks_utama"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="18dp"
+                android:accessibilityHeading="true" />
 
             <TextView
                 android:id="@+id/keterangan"
+                style="@style/Teks.Isi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:lineSpacingExtra="4dp"
-                android:textColor="@color/teks_sekunder"
-                android:textSize="15sp" />
+                android:layout_marginTop="18dp" />
 
             <TextView
+                style="@style/Teks.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="18dp"
                 android:labelFor="@id/nomor"
-                android:text="@string/nomor_hp"
-                android:textColor="@color/teks_kuat"
-                android:textSize="14sp" />
+                android:text="@string/nomor_hp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/isian_nomor"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            <LinearLayout
+                android:id="@+id/kotak_nomor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="8dp"
-                app:boxCornerRadiusBottomEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxStrokeColor="@color/merek_utama"
-                app:prefixText="+62  "
-                app:prefixTextColor="@color/teks_utama">
+                android:addStatesFromChildren="true"
+                android:background="@drawable/bg_isian"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nomor"
-                    android:layout_width="match_parent"
+                <TextView
+                    style="@style/TeksIsian"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:text="+62" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/garis_tegas" />
+
+                <EditText
+                    android:id="@+id/nomor"
+                    style="@style/TeksIsian"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:autofillHints="phoneNational"
+                    android:background="@null"
                     android:hint="@string/nomor_contoh"
                     android:imeOptions="actionSend"
                     android:inputType="phone"
                     android:maxLength="16"
-                    android:textSize="17sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/bantuan_nomor"
+                style="@style/Teks.Bantuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityLiveRegion="polite" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tombol_kirim"
                 style="@style/Widget.LifeOfFoods.Tombol.Utama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 android:text="@string/kirim_kode" />
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -106,7 +124,7 @@
                 android:id="@+id/pemisah"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -114,20 +132,22 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1"
-                    android:background="@color/garis_tegas" />
+                    android:background="@color/garis_halus" />
 
                 <TextView
+                    style="@style/Teks.Label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
                     android:text="@string/atau"
-                    android:textColor="@color/teks_tersier" />
+                    android:textColor="@color/teks_sekunder" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1"
-                    android:background="@color/garis_tegas" />
+                    android:background="@color/garis_halus" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -135,7 +155,7 @@
                 style="@style/Widget.LifeOfFoods.Tombol.Garis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 android:text="@string/lanjut_google" />
 
             <Space
@@ -145,12 +165,11 @@
                 android:minHeight="32dp" />
 
             <TextView
+                style="@style/Teks.Bantuan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/persetujuan"
-                android:textColor="@color/teks_tersier"
-                android:textSize="13sp" />
+                android:text="@string/persetujuan" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

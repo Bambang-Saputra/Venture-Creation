@@ -1,5 +1,7 @@
 package id.lifeoffoods.data.api;
 
+import android.os.Handler;
+import android.os.Looper;
 import id.lifeoffoods.data.SesiPengguna;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
@@ -42,9 +44,14 @@ public final class ApiClient {
             http.addInterceptor(log);
         }
 
+        // Callback selalu di main thread. Retrofit sudah begitu di perangkat, tapi deteksinya
+        // memakai nama VM sehingga di JVM (Robolectric) callback jatuh ke thread OkHttp dan
+        // LiveData.setValue gagal. Dibuat eksplisit supaya sama di kedua tempat.
+        Handler utama = new Handler(Looper.getMainLooper());
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(http.build())
+                .callbackExecutor(utama::post)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(LofApi.class);

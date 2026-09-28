@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Latar chip pilihan K05: terpilih hijau lembut, tidak terpilih putih. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/latar_merek_lembut" android:state_checked="true" />
+    <item android:color="@color/latar_kartu" />
+</selector>

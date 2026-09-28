@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activated = kode salah (merah), selected = kotak yang sedang diisi (hijau). -->
+<!--
+    Kotak kolom isian buatan sendiri (dipakai bila TextInputLayout tidak cukup, misalnya awalan +62
+    dengan pemisah di K02). Pasang addStatesFromChildren di induknya supaya ikut fokus.
+    activated = galat.
+-->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_activated="true">
         <shape>
-            <solid android:color="@color/tanda_bahaya_latar" />
+            <solid android:color="@color/latar_kartu" />
             <stroke android:width="1.5dp" android:color="@color/tanda_bahaya_teks" />
             <corners android:radius="14dp" />
         </shape>
     </item>
-    <item android:state_selected="true">
+    <item android:state_focused="true">
         <shape>
             <solid android:color="@color/latar_kartu" />
-            <stroke android:width="2dp" android:color="@color/merek_utama" />
-            <corners android:radius="14dp" />
-        </shape>
-    </item>
-    <!-- enabled=false: kotak sesudah kotak aktif, belum terjangkau. -->
-    <item android:state_enabled="false">
-        <shape>
-            <solid android:color="@color/latar_isian" />
+            <stroke android:width="1.5dp" android:color="@color/merek_utama" />
             <corners android:radius="14dp" />
         </shape>
     </item>

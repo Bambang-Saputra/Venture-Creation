@@ -21,43 +21,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingStart="24dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="20dp">
 
             <TextView
+                style="@style/Teks.JudulBesar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:accessibilityHeading="true"
-                android:text="@string/k03_judul"
-                android:textColor="@color/teks_utama"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:text="@string/k03_judul" />
 
             <TextView
                 android:id="@+id/keterangan"
+                style="@style/Teks.Isi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:textColor="@color/teks_sekunder"
-                android:textSize="15sp" />
+                android:layout_marginTop="18dp" />
 
-            <TextView
+            <Button
                 android:id="@+id/tombol_ubah_nomor"
+                style="@style/Widget.LifeOfFoods.Tombol.Tautan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:minHeight="48dp"
-                android:text="@string/k03_ubah_nomor"
-                android:textColor="@color/teks_merek"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="10dp"
+                android:text="@string/k03_ubah_nomor" />
 
+            <!-- Tambahan di luar Figma: kode pilot tampil selama PILOT_MODE=true. -->
             <LinearLayout
                 android:id="@+id/spanduk_uji"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_spanduk_uji"
                 android:clickable="true"
                 android:focusable="true"
@@ -66,14 +62,16 @@
                 android:visibility="gone">
 
                 <TextView
+                    style="@style/Teks.Sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/figtree_bold"
                     android:text="@string/k03_mode_uji_judul"
-                    android:textColor="@color/tanda_proses_teks"
-                    android:textStyle="bold" />
+                    android:textColor="@color/tanda_proses_teks" />
 
                 <TextView
                     android:id="@+id/teks_uji"
+                    style="@style/Teks.IsiKecil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -83,7 +81,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="10dp">
 
                 <!-- Menerima ketikan. Transparan di atas kotak supaya tetap bisa disentuh dan dibaca TalkBack. -->
                 <EditText
@@ -118,6 +116,7 @@
 
             <TextView
                 android:id="@+id/galat_kode"
+                style="@style/Teks.Bantuan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -128,11 +127,12 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/Teks.IsiKecil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/k03_tidak_menerima"
@@ -140,11 +140,11 @@
 
                 <Button
                     android:id="@+id/tombol_kirim_ulang"
-                    style="@style/Widget.Material3.Button.TextButton"
+                    style="@style/Widget.LifeOfFoods.Tombol.Tautan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAllCaps="false"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="6dp"
+                    android:textColor="@color/tautan_kirim_ulang" />
             </LinearLayout>
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -162,29 +162,26 @@
                 android:minHeight="32dp" />
 
             <TextView
+                style="@style/Teks.Bantuan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_catatan"
-                android:drawablePadding="12dp"
+                android:background="@drawable/bg_catatan_isian"
+                android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:padding="16dp"
+                android:padding="14dp"
                 android:text="@string/k03_peringatan"
                 android:textColor="@color/teks_kuat"
-                android:textSize="14sp"
                 app:drawableStartCompat="@drawable/ic_gembok" />
         </LinearLayout>
     </ScrollView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/garis_halus" />
+    <LinearLayout style="@style/BilahAksi">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/tombol_verifikasi"
-        style="@style/Widget.LifeOfFoods.Tombol.Utama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@string/k03_verifikasi" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_verifikasi"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/k03_verifikasi" />
+    </LinearLayout>
 </LinearLayout>

@@ -1,36 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Komponen "App bar" Figma: tombol kembali berbingkai, judul, garis bawah. -->
+<!--
+    Komponen "App bar" Figma: tombol kembali 40x40 berbingkai, judul Gabarito 16, subjudul
+    opsional, garis bawah. Jarak atas Figma 58 termasuk status bar iOS 54, jadi di sini 4+.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/latar_kartu"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:minHeight="64dp"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="12dp">
+        android:paddingStart="20dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp">
 
+        <!-- Area sentuh 48dp, bingkai 40dp digambar oleh inset di bg_tombol_kembali. -->
         <ImageButton
             android:id="@+id/tombol_kembali"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginStart="-4dp"
             android:background="@drawable/bg_tombol_kembali"
             android:contentDescription="@string/kembali"
             android:src="@drawable/ic_panah_kiri" />
 
-        <TextView
-            android:id="@+id/judul"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:accessibilityHeading="true"
-            android:textColor="@color/teks_utama"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/judul"
+                style="@style/Teks.JudulBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true" />
+
+            <!-- Opsional, misalnya "Langkah 1 dari 2" di K04. Tampilkan dari fragment. -->
+            <TextView
+                android:id="@+id/subjudul"
+                style="@style/Teks.Keterangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
     <View

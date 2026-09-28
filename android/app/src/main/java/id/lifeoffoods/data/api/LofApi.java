@@ -1,16 +1,23 @@
 package id.lifeoffoods.data.api;
 
+import id.lifeoffoods.data.api.model.AlergenBody;
+import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
 import id.lifeoffoods.data.api.model.MeResponse;
 import id.lifeoffoods.data.api.model.OtpRequestBody;
 import id.lifeoffoods.data.api.model.OtpRequestResponse;
 import id.lifeoffoods.data.api.model.OtpVerifyBody;
+import id.lifeoffoods.data.api.model.ProfilBody;
+import id.lifeoffoods.data.api.model.Terbungkus;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 /**
  * Endpoint REST Life of Foods. Path relatif terhadap API_BASE_URL (sudah berakhiran /api/).
@@ -34,6 +41,18 @@ public interface LofApi {
     /** Pemeriksaan sesi saat aplikasi dibuka, K18. */
     @GET("me")
     Call<MeResponse> saya();
+
+    /** K04 Lengkapi profil; nanti juga K19 dan K20. Respons sama dengan GET /me. */
+    @PATCH("me")
+    Call<MeResponse> ubahProfil(@Body ProfilBody body);
+
+    /** Chip K05 dan filter K09. Tanpa token. */
+    @GET("allergens")
+    Call<Terbungkus<List<AlergenDto>>> daftarAlergen();
+
+    /** K05: mengganti seluruh pilihan alergi dan pola makan. */
+    @PUT("me/allergens")
+    Call<Terbungkus<List<MeResponse.Alergen>>> simpanAlergen(@Body AlergenBody body);
 
     /**
      * Token dikirim eksplisit karena sesi lokal langsung dihapus sesudah enqueue, sebelum
