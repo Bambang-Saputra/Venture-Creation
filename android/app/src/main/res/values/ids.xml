@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SisiAman: padding asli view sebelum inset sistem ditambahkan. -->
+    <item name="tag_padding_asli" type="id" />
+</resources>

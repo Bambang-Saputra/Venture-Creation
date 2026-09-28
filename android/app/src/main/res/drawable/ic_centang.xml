@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Centang chip terpilih (komponen "Centang" Figma), garis 2. -->
+<!-- Ikon Figma "Ikon/centang" (diekspor dari komponen, jangan digambar ulang). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="14dp"
-    android:height="14dp"
-    android:viewportWidth="14"
-    android:viewportHeight="14">
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
     <path
-        android:pathData="M2.5,7.3l3,3l6,-6.5"
-        android:strokeWidth="1.8"
-        android:strokeColor="#FFFFFFFF"
+        android:pathData="M20 6L9 17L4 12"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2.2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>

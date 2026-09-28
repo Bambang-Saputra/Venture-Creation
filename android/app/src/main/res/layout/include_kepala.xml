@@ -4,6 +4,7 @@
     opsional, garis bawah. Jarak atas Figma 58 termasuk status bar iOS 54, jadi di sini 4+.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/latar_kartu"
@@ -28,7 +29,8 @@
             android:layout_marginStart="-4dp"
             android:background="@drawable/bg_tombol_kembali"
             android:contentDescription="@string/kembali"
-            android:src="@drawable/ic_panah_kiri" />
+            android:src="@drawable/ic_panah_kiri"
+            app:tint="@color/teks_utama" />
 
         <LinearLayout
             android:layout_width="0dp"

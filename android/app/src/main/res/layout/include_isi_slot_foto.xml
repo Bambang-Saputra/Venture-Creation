@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Isi komponen "Slot foto": ikon gambar 24 dan label "Foto", ditaruh di tengah latar lembut. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:importantForAccessibility="noHideDescendants"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_gambar"
+        app:tint="@color/ikon_redup" />
+
+    <TextView
+        style="@style/Teks.Keterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/foto"
+        android:textColor="@color/ikon_redup" />
+</LinearLayout>

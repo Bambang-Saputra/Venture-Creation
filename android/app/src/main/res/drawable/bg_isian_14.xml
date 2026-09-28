@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Latar isian bulat 14dp: kolom cari K07 (Figma "Kolom cari", #F1F6F2). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_isian" />
+    <corners android:radius="14dp" />
+</shape>

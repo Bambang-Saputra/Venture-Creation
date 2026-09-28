@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Komponen "Ubin kategori": kotak 62dp berikon 21dp hijau, label di bawah. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="@android:color/transparent"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/kotak"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:background="@drawable/bg_ubin_kategori"
+        android:duplicateParentState="true">
+
+        <ImageView
+            android:id="@+id/ikon"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            app:tint="@color/merek_utama" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/Teks.Ubin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

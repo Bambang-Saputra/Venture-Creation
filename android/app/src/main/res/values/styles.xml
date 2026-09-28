@@ -125,6 +125,116 @@
         <item name="android:letterSpacing">0</item>
     </style>
 
+    <!-- ===== Beranda dan kartu jualan (K07, komponen Kartu flash / Kartu tas) ===== -->
+    <!-- Judul Kartu flash, 13.5/17 bold -->
+    <style name="Teks.JudulKartuKecil">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">13.5sp</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+
+    <!-- Judul Kartu tas, 14.5/18 bold -->
+    <style name="Teks.JudulKartu">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">14.5sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <!-- Nama toko di kartu, 11.5/16 medium -->
+    <style name="Teks.NamaToko">
+        <item name="android:fontFamily">@font/figtree_medium</item>
+        <item name="fontFamily">@font/figtree_medium</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="lineHeight">16sp</item>
+        <item name="android:textColor">@color/teks_sekunder</item>
+    </style>
+
+    <!-- Harga jual Kartu flash, Gabarito 15/18 hijau -->
+    <style name="Teks.Harga">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">18sp</item>
+        <item name="android:textColor">@color/teks_merek</item>
+    </style>
+
+    <!-- Harga jual Kartu tas, 16/19 -->
+    <style name="Teks.Harga.Besar">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">19sp</item>
+    </style>
+
+    <!-- Harga normal dicoret (garis coret dipasang di kode), 11/15 -->
+    <style name="Teks.HargaCoret">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">11sp</item>
+        <item name="lineHeight">15sp</item>
+        <item name="android:textColor">@color/teks_coret</item>
+    </style>
+
+    <!-- Pil kecil berikon ("48 menit", "20.30 sampai 21.00"), 10.5 bold, padding 10/6 -->
+    <style name="Teks.Pil">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">10.5sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+    </style>
+
+    <!-- Label ubin kategori, 11/15 semibold -->
+    <style name="Teks.Ubin">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">11sp</item>
+        <item name="lineHeight">15sp</item>
+        <item name="android:textColor">@color/teks_kuat</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <!-- Label Nav bawah, 10/13 bold; warnanya dari selector nav_bawah_warna -->
+    <style name="Teks.Nav">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/nav_bawah_warna</item>
+    </style>
+
+    <!-- Placeholder kolom cari K07, 13.5 semibold -->
+    <style name="Teks.Petunjuk">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">13.5sp</item>
+        <item name="android:textColor">@color/teks_sekunder</item>
+    </style>
+
+    <!-- Satu tab Nav bawah, 52dp; nama tanpa titik supaya tidak mewarisi gaya teks. -->
+    <style name="TabNav">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="TabNavIkon">
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:contentDescription">@null</item>
+    </style>
+
+
     <!-- ===== Kolom isian ===== -->
     <!-- Kotak 50dp, radius 14, garis 1dp E2EAE4; fokus berganti hijau. -->
     <style name="IsianBulat" parent="Widget.Material3.TextInputLayout.OutlinedBox">

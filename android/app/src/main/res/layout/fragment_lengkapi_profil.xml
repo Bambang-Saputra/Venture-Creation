@@ -137,7 +137,9 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <LinearLayout style="@style/BilahAksi">
+    <LinearLayout
+        android:id="@+id/bilah_aksi"
+        style="@style/BilahAksi">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tombol_lanjut"

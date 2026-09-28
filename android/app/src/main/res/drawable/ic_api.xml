@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ikon Figma "Ikon/api" (diekspor dari komponen, jangan digambar ulang). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M10.2678 13.7678C9.79893 14.2366 9.16304 14.5 8.5 14.5C7.83696 14.5 7.20107 14.2366 6.73223 13.7678C6.26339 13.2989 6 12.663 6 12C5.433 12.706 5 13.847 5 15C5 15.9193 5.18106 16.8295 5.53284 17.6788C5.88463 18.5281 6.40024 19.2997 7.05025 19.9497C7.70026 20.5998 8.47194 21.1154 9.32122 21.4672C10.1705 21.8189 11.0807 22 12 22C12.9193 22 13.8295 21.8189 14.6788 21.4672C15.5281 21.1154 16.2997 20.5998 16.9497 19.9497C17.5998 19.2997 18.1154 18.5281 18.4672 17.6788C18.8189 16.8295 19 15.9193 19 15C19 13 18 11.1 16 9.5C14 7.9 12.5 5.5 12 3C9.776 4.946 8.928 6.857 10 9C10.5 10 11 10.62 11 12C11 12.663 10.7366 13.2989 10.2678 13.7678Z"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

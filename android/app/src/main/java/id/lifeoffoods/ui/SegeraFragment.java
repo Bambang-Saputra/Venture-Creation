@@ -7,11 +7,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.databinding.FragmentSegeraBinding;
+import id.lifeoffoods.ui.umum.SisiAman;
 
 /**
  * Penanda layar yang belum dibuat. Ganti tujuan di graf navigasi dengan fragment sungguhan saat
@@ -36,12 +39,22 @@ public class SegeraFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = requireArguments();
+        SisiAman.atasBawah(binding.getRoot());
+        SisiAman.ikonGelap(requireActivity(), true);
         binding.kodeLayar.setText(args.getString(ARG_KODE, ""));
         binding.judulLayar.setText(args.getString(ARG_JUDUL, ""));
 
-        // Sesudah masuk, penanda ini berdiri di tempat beranda, jadi tombolnya dipakai untuk
-        // keluar.
+        // Penanda yang dibuka dari layar lain (misalnya K08 dari beranda) cukup kembali. Penanda
+        // yang berdiri di tempat beranda, dan K18 Profil, dipakai untuk keluar dari akun.
         LofApp app = (LofApp) requireActivity().getApplication();
+        NavController nav = NavHostFragment.findNavController(this);
+        boolean bisaKembali =
+                nav.getPreviousBackStackEntry() != null && !"K18".equals(args.getString(ARG_KODE));
+        if (bisaKembali) {
+            binding.tombolKembali.setText(R.string.kembali);
+            binding.tombolKembali.setOnClickListener(v -> nav.popBackStack());
+            return;
+        }
         boolean masuk = app.sesi().sudahMasuk();
         binding.tombolKembali.setText(masuk ? R.string.segera_keluar : R.string.segera_kembali);
         binding.tombolKembali.setOnClickListener(

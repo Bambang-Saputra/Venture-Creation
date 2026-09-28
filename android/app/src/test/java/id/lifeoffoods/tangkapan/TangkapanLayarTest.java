@@ -5,6 +5,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.os.Bundle;
 import android.os.Looper;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import com.github.takahirom.roborazzi.RoborazziKt;
 import com.github.takahirom.roborazzi.RoborazziOptions;
@@ -14,6 +15,8 @@ import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.masuk.VerifikasiOtpFragment;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -47,6 +50,7 @@ public class TangkapanLayarTest {
     @Before
     public void siapkan() throws IOException {
         assumeTrue(Boolean.getBoolean("lof.tangkapan"));
+        lepasPabrikViewModelLama();
         server = new MockWebServer();
         server.setDispatcher(new DataContoh());
         server.start();
@@ -123,6 +127,35 @@ public class TangkapanLayarTest {
         tangkap("K05");
     }
 
+    @Test
+    public void k07Beranda() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        tunggu();
+        tangkap("K07");
+    }
+
+    /**
+     * AndroidViewModelFactory menyimpan Application pertama di field statis, lalu memakainya untuk
+     * setiap AndroidViewModel. Robolectric membuat Application baru per tes, jadi tanpa reset ini
+     * ViewModel di tes berikutnya memanggil API lewat klien aplikasi lama, bukan MockWebServer tes
+     * ini. Di perangkat hanya ada satu Application, jadi masalah ini khusus tes.
+     */
+    private static void lepasPabrikViewModelLama() {
+        for (Field f : ViewModelProvider.AndroidViewModelFactory.class.getDeclaredFields()) {
+            if (Modifier.isStatic(f.getModifiers())
+                    && f.getType() == ViewModelProvider.AndroidViewModelFactory.class) {
+                try {
+                    f.setAccessible(true);
+                    f.set(null, null);
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException(
+                            "Tidak bisa mereset AndroidViewModelFactory", e);
+                }
+            }
+        }
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -138,11 +171,12 @@ public class TangkapanLayarTest {
     }
 
     /**
-     * Beri waktu respons MockWebServer sampai ke main looper. K05 memanggil dua endpoint berurutan,
-     * jadi batasnya dibuat longgar (3 detik).
+     * Beri waktu respons MockWebServer sampai ke main looper. K05 dan K07 memanggil beberapa
+     * endpoint berurutan, dan saat memori laptop sempit 3 detik pernah tidak cukup, jadi batasnya 5
+     * detik.
      */
     private static void tunggu() {
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 100; i++) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -180,7 +214,7 @@ public class TangkapanLayarTest {
                                 + "\"role\":\"consumer\",\"has_google\":false},"
                                 + "\"is_profile_complete\":false,"
                                 + "\"consumer_profile\":{\"area_label\":\"SCBD, Jakarta Selatan\","
-                                + "\"latitude\":null,\"longitude\":null,"
+                                + "\"latitude\":-6.225300,\"longitude\":106.808700,"
                                 + "\"notify_favorite_store\":true,\"notify_pickup_reminder\":true,"
                                 + "\"notify_promo\":false},"
                                 + "\"allergens\":[{\"code\":\"kacang_tanah\",\"name\":\"Kacang tanah\","
@@ -216,7 +250,104 @@ public class TangkapanLayarTest {
                                 + alergen("tanpa_alkohol", "Tanpa alkohol", "diet")
                                 + "]}");
             }
+            if (path.startsWith("/api/listings")) {
+                // Dua kartu flash untuk "Tutup kurang dari satu jam", dua kartu tas untuk
+                // "Terdekat dari kamu", sama dengan contoh Figma K07.
+                if (path.contains("ends_within_minutes")) {
+                    return json(
+                            "{\"data\":["
+                                    + listing(
+                                            31,
+                                            "surprise_bag",
+                                            "Tas Pastry Sore",
+                                            "Kopi Kalyan",
+                                            18000,
+                                            55000,
+                                            48,
+                                            null,
+                                            "20:00",
+                                            "21:00")
+                                    + ","
+                                    + listing(
+                                            32,
+                                            "menu_item",
+                                            "Roti Hari Ini",
+                                            "Bakerman Blok M",
+                                            25000,
+                                            78000,
+                                            72,
+                                            null,
+                                            "20:30",
+                                            "22:00")
+                                    + "],\"current_page\":1,\"last_page\":1}");
+                }
+                return json(
+                        "{\"data\":["
+                                + listing(
+                                        31,
+                                        "surprise_bag",
+                                        "Tas Pastry Sore",
+                                        "Kopi Kalyan",
+                                        18000,
+                                        55000,
+                                        48,
+                                        0.38,
+                                        "20:30",
+                                        "21:00")
+                                + ","
+                                + listing(
+                                        32,
+                                        "menu_item",
+                                        "Roti Hari Ini",
+                                        "Bakerman Blok M",
+                                        25000,
+                                        78000,
+                                        72,
+                                        1.24,
+                                        "20:30",
+                                        "22:00")
+                                + "],\"current_page\":1,\"last_page\":1}");
+            }
+            if (path.startsWith("/api/notifications")) {
+                return json("{\"data\":[],\"unread_count\":3,\"current_page\":1,\"last_page\":1}");
+            }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        private static String listing(
+                long id,
+                String tipe,
+                String judul,
+                String toko,
+                long harga,
+                long normal,
+                int sisaMenit,
+                Double km,
+                String mulai,
+                String akhir) {
+            return "{\"id\":"
+                    + id
+                    + ",\"type\":\""
+                    + tipe
+                    + "\",\"title\":\""
+                    + judul
+                    + "\",\"photo_url\":null,\"price_rupiah\":"
+                    + harga
+                    + ",\"original_value_rupiah\":"
+                    + normal
+                    + ",\"qty_remaining\":3,\"pickup_start\":\"2026-09-18T"
+                    + mulai
+                    + ":00+07:00\",\"pickup_end\":\"2026-09-18T"
+                    + akhir
+                    + ":00+07:00\",\"minutes_until_end\":"
+                    + sisaMenit
+                    + ",\"halal_label\":\"self_claim\",\"allergens\":[],\"distance_km\":"
+                    + km
+                    + ",\"store\":{\"id\":"
+                    + (id - 26)
+                    + ",\"name\":\""
+                    + toko
+                    + "\",\"category\":\"cafe\"}}";
         }
 
         private static String alergen(String kode, String nama, String tipe) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pil "Sisa waktu" di Kartu flash: lime penuh. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/merek_lime" />
+    <corners android:radius="999dp" />
+</shape>

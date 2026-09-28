@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Slot foto di atas Kartu flash: hanya sudut atas yang bulat, mengikuti kartu. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_lembut" />
+    <corners
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
+        android:topLeftRadius="17dp"
+        android:topRightRadius="17dp" />
+</shape>
