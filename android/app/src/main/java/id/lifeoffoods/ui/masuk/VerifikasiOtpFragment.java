@@ -20,6 +20,7 @@ import id.lifeoffoods.data.NomorHp;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.databinding.FragmentVerifikasiOtpBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.Locale;
 
 /**
@@ -49,6 +50,9 @@ public class VerifikasiOtpFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = requireArguments();
+        SisiAman.atas(binding.kepala.getRoot());
+        SisiAman.bawah(binding.bilahAksi);
+        SisiAman.ikonGelap(requireActivity(), true);
         String nomor = args.getString(ARG_NOMOR, "");
         vm = new ViewModelProvider(this).get(VerifikasiOtpViewModel.class);
         vm.mulai(

@@ -15,6 +15,7 @@ import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.databinding.FragmentAlergiBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
 
 /**
@@ -39,6 +40,9 @@ public class AlergiFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(AlergiViewModel.class);
+        SisiAman.atas(binding.kepala.getRoot());
+        SisiAman.bawah(binding.bilahAksi);
+        SisiAman.ikonGelap(requireActivity(), true);
 
         binding.kepala.judul.setText(R.string.k05_judul_bar);
         binding.kepala.subjudul.setText(R.string.k05_langkah);

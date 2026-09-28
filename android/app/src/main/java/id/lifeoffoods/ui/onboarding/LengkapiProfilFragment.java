@@ -17,6 +17,7 @@ import id.lifeoffoods.data.api.model.MeResponse;
 import id.lifeoffoods.databinding.FragmentLengkapiProfilBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BantuanIsian;
+import id.lifeoffoods.ui.umum.SisiAman;
 
 /**
  * K04 Lengkapi profil, langkah 1 dari 2 sesudah akun konsumen baru dibuat. Ini tujuan awal graf,
@@ -40,6 +41,9 @@ public class LengkapiProfilFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(LengkapiProfilViewModel.class);
+        SisiAman.atas(binding.kepala.getRoot());
+        SisiAman.bawah(binding.bilahAksi);
+        SisiAman.ikonGelap(requireActivity(), true);
         BantuanIsian bantuanNama = new BantuanIsian(binding.isianNama, binding.bantuanNama);
         BantuanIsian bantuanEmail = new BantuanIsian(binding.isianEmail, binding.bantuanEmail);
         BantuanIsian bantuanArea = new BantuanIsian(binding.isianArea, binding.bantuanArea);

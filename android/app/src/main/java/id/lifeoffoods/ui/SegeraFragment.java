@@ -14,6 +14,7 @@ import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.databinding.FragmentSegeraBinding;
+import id.lifeoffoods.ui.umum.SisiAman;
 
 /**
  * Penanda layar yang belum dibuat. Ganti tujuan di graf navigasi dengan fragment sungguhan saat
@@ -38,6 +39,8 @@ public class SegeraFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = requireArguments();
+        SisiAman.atasBawah(binding.getRoot());
+        SisiAman.ikonGelap(requireActivity(), true);
         binding.kodeLayar.setText(args.getString(ARG_KODE, ""));
         binding.judulLayar.setText(args.getString(ARG_JUDUL, ""));
 

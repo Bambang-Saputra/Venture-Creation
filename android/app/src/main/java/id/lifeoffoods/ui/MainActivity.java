@@ -1,6 +1,7 @@
 package id.lifeoffoods.ui;
 
 import android.os.Bundle;
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.IdRes;
 import androidx.annotation.NavigationRes;
 import androidx.annotation.Nullable;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Edge-to-edge di semua versi, sama dengan perilaku wajib Android 15+ (targetSdk 36).
+        // Jarak dari status bar, navbar, dan keyboard diatur tiap layar lewat SisiAman.
+        EdgeToEdge.enable(this);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

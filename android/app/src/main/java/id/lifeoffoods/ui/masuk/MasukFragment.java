@@ -30,6 +30,7 @@ import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.databinding.FragmentMasukBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.SisiAman;
 
 /**
  * K02 Masuk (konsumen) dan M01 Masuk mitra. Satu fragment, bedanya hanya argumen {@code peran} dan
@@ -55,6 +56,9 @@ public class MasukFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         peran = requireArguments().getString(ARG_PERAN, SesiPengguna.PERAN_KONSUMEN);
+        SisiAman.atas(binding.kepala.getRoot());
+        SisiAman.bawah(binding.getRoot());
+        SisiAman.ikonGelap(requireActivity(), true);
         vm = new ViewModelProvider(this).get(MasukViewModel.class);
         boolean mitra = SesiPengguna.PERAN_MITRA.equals(peran);
 

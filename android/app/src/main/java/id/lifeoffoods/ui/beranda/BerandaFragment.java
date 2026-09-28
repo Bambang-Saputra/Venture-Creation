@@ -22,6 +22,7 @@ import id.lifeoffoods.databinding.ItemKartuFlashBinding;
 import id.lifeoffoods.databinding.ItemKartuTasBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
+import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
 
 /**
@@ -47,6 +48,9 @@ public class BerandaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(BerandaViewModel.class);
+        SisiAman.atas(binding.header);
+        SisiAman.bawah(binding.nav.getRoot());
+        SisiAman.ikonGelap(requireActivity(), true);
 
         pasangKategori(
                 binding.kategoriBakery, "bakery", R.drawable.ic_roti, R.string.kategori_bakery);
