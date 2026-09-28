@@ -21,16 +21,32 @@
             android:contentDescription="@string/kembali"
             android:src="@drawable/ic_panah_kiri" />
 
-        <TextView
-            android:id="@+id/judul"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:accessibilityHeading="true"
-            android:textColor="@color/teks_utama"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/judul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:textColor="@color/teks_utama"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Opsional, misalnya "Langkah 1 dari 2" di K04. Tampilkan dari fragment. -->
+            <TextView
+                android:id="@+id/subjudul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/teks_sekunder"
+                android:textSize="13sp"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
     <View

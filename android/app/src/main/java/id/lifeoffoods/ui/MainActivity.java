@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
             pasangGraf(
                     savedInstanceState.getInt(KUNCI_GRAF), savedInstanceState.getInt(KUNCI_AWAL));
         } else if (sesi.sudahMasuk()) {
-            pasangGraf(grafUntuk(sesi.peran()), berandaUntuk(sesi.peran()));
+            String peran = sesi.peran();
+            pasangGraf(
+                    grafUntuk(peran),
+                    sesi.perluProfil() ? R.id.k04_lengkapi_profil : berandaUntuk(peran));
         } else {
             pasangGraf(R.navigation.nav_awal, R.id.k01_pilih_peran);
         }
@@ -73,11 +76,22 @@ public class MainActivity extends AppCompatActivity {
      */
     public void selesaiMasuk(AuthResponse hasil) {
         String peran = hasil.user.role;
-        sesi.simpan(hasil.token, peran);
         boolean perluProfil =
                 SesiPengguna.PERAN_KONSUMEN.equals(peran)
                         && (hasil.isNewUser || hasil.user.name == null);
+        sesi.simpan(hasil.token, peran, perluProfil);
         pasangGraf(grafUntuk(peran), perluProfil ? R.id.k04_lengkapi_profil : berandaUntuk(peran));
+    }
+
+    /** Dari K05 (Simpan atau Lewati): onboarding selesai, buka beranda tanpa riwayat K04/K05. */
+    public void selesaiOnboarding() {
+        pasangGraf(R.navigation.nav_konsumen, R.id.k07_beranda);
+    }
+
+    /** Token ditolak server (401): hapus sesi lokal lalu kembali ke K01. */
+    public void sesiBerakhir() {
+        sesi.hapus();
+        kembaliKeAwal();
     }
 
     /** Kembali ke K01, misalnya setelah logout atau token ditolak (401). */

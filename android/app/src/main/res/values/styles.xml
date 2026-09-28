@@ -58,4 +58,44 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!-- Chip pilihan alergi dan pola makan di K05 (dan nanti K09, K19) -->
+    <style name="Widget.LifeOfFoods.Chip.Pilihan" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_pilihan_latar</item>
+        <item name="chipStrokeColor">@color/chip_pilihan_garis</item>
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="chipCornerRadius">14dp</item>
+        <item name="chipMinHeight">44dp</item>
+        <item name="chipStartPadding">12dp</item>
+        <item name="chipEndPadding">12dp</item>
+        <item name="checkedIconTint">@color/merek_utama</item>
+        <item name="android:textColor">@color/chip_pilihan_teks</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Label di atas kolom isian (K02, K04) -->
+    <style name="LabelIsian">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/teks_kuat</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="IsianBulat" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxStrokeColor">@color/merek_utama</item>
+    </style>
+
+    <!-- Tombol sekunder abu-abu, misalnya "Lewati" di K05 -->
+    <style name="Widget.LifeOfFoods.Tombol.Lembut" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="backgroundTint">@color/latar_lembut</item>
+        <item name="android:textColor">@color/teks_sekunder</item>
+    </style>
 </resources>

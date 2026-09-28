@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    K04 Lengkapi profil (Figma 56:975). "Tambah foto (opsional)" belum dipasang: API belum punya
+    unggah foto (kontrak API bagian "Belum ada di API").
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_kartu"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                style="@style/LabelIsian"
+                android:labelFor="@id/nama"
+                android:text="@string/k04_nama" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/isian_nama"
+                style="@style/IsianBulat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="name"
+                    android:hint="@string/k04_nama_contoh"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="120"
+                    android:textSize="17sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/LabelIsian"
+                android:layout_marginTop="20dp"
+                android:labelFor="@id/email"
+                android:text="@string/k04_email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/isian_email"
+                style="@style/IsianBulat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:helperText="@string/k04_email_bantuan">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="emailAddress"
+                    android:hint="@string/k04_email_contoh"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="255"
+                    android:textSize="17sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/LabelIsian"
+                android:layout_marginTop="20dp"
+                android:labelFor="@id/area"
+                android:text="@string/k04_area" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/isian_area"
+                style="@style/IsianBulat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:helperText="@string/k04_area_bantuan">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="postalAddress"
+                    android:hint="@string/k04_area_contoh"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPostalAddress|textCapWords"
+                    android:maxLength="120"
+                    android:textSize="17sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/garis_halus" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tombol_lanjut"
+        style="@style/Widget.LifeOfFoods.Tombol.Utama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="@string/lanjut" />
+</LinearLayout>

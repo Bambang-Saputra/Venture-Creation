@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu chip pilihan di K05; teks dan status diisi AlergiFragment. -->
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
