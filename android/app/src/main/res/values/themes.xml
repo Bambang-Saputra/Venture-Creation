@@ -15,23 +15,18 @@
         <item name="colorOnSurface">@color/teks_utama</item>
         <item name="colorOnSurfaceVariant">@color/teks_sekunder</item>
         <item name="colorOutline">@color/garis_tegas</item>
-        <item name="android:statusBarColor">@color/latar_halaman</item>
+        <item name="android:statusBarColor">@color/latar_kartu</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/latar_kartu</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <!-- Figtree untuk semua teks yang tidak memakai gaya Teks.* sendiri. -->
+        <item name="android:fontFamily">@font/figtree_regular</item>
+        <item name="fontFamily">@font/figtree_regular</item>
+        <item name="android:textColorHint">@color/teks_tersier</item>
+        <item name="snackbarTextViewStyle">@style/TeksSnackbar</item>
     </style>
 
-    <style name="Widget.LifeOfFoods.Tombol.Utama" parent="Widget.Material3.Button">
-        <item name="android:minHeight">52dp</item>
-        <item name="cornerRadius">14dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="Widget.LifeOfFoods.Tombol.Garis" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:minHeight">52dp</item>
-        <item name="cornerRadius">14dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">16sp</item>
-        <item name="strokeColor">@color/garis_tegas</item>
-        <item name="android:textColor">@color/teks_utama</item>
+    <style name="TeksSnackbar" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
     </style>
 </resources>

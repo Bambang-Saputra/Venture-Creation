@@ -16,6 +16,7 @@ import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.model.MeResponse;
 import id.lifeoffoods.databinding.FragmentLengkapiProfilBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.BantuanIsian;
 
 /**
  * K04 Lengkapi profil, langkah 1 dari 2 sesudah akun konsumen baru dibuat. Ini tujuan awal graf,
@@ -39,6 +40,9 @@ public class LengkapiProfilFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(LengkapiProfilViewModel.class);
+        BantuanIsian bantuanNama = new BantuanIsian(binding.isianNama, binding.bantuanNama);
+        BantuanIsian bantuanEmail = new BantuanIsian(binding.isianEmail, binding.bantuanEmail);
+        BantuanIsian bantuanArea = new BantuanIsian(binding.isianArea, binding.bantuanArea);
 
         binding.kepala.judul.setText(R.string.k04_judul_bar);
         binding.kepala.subjudul.setText(R.string.k04_langkah);
@@ -75,9 +79,9 @@ public class LengkapiProfilFragment extends Fragment {
                     binding.tombolLanjut.setEnabled(!memuat);
                     binding.progres.setVisibility(memuat ? View.VISIBLE : View.GONE);
                 });
-        vm.galatNama.observe(getViewLifecycleOwner(), binding.isianNama::setError);
-        vm.galatEmail.observe(getViewLifecycleOwner(), binding.isianEmail::setError);
-        vm.galatArea.observe(getViewLifecycleOwner(), binding.isianArea::setError);
+        vm.galatNama.observe(getViewLifecycleOwner(), bantuanNama::galat);
+        vm.galatEmail.observe(getViewLifecycleOwner(), bantuanEmail::galat);
+        vm.galatArea.observe(getViewLifecycleOwner(), bantuanArea::galat);
         vm.galat.observe(
                 getViewLifecycleOwner(),
                 p -> {

@@ -75,8 +75,25 @@ public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
 
 - **Binding** dibuat di `onCreateView` dan di-null-kan di `onDestroyView`.
 - **Observe** selalu dengan `getViewLifecycleOwner()`, bukan `this`.
-- **Galat**: tampilkan `ApiError.pesan()` apa adanya (sudah berbahasa Indonesia). Untuk 422, pasang `pesanField("phone")` di `TextInputLayout.setError`. Kalau `perluMasukUlang()` (401), panggil `sesi().hapus()` lalu `MainActivity.kembaliKeAwal()`.
-- **Endpoint baru**: tambahkan method di `LofApi` dan DTO di `data.api.model` dengan `@SerializedName` persis seperti kontrak API. Respons yang dibungkus `data` memakai kelas pembungkus, auth dan `/me` tidak.
+- **Galat**: tampilkan `ApiError.pesan()` apa adanya (sudah berbahasa Indonesia). Untuk 422, tampilkan `pesanField("phone")` di bawah kolomnya lewat `BantuanIsian.galat(...)` (bukan `TextInputLayout.setError`, yang menjorok dan tidak sesuai Figma). Kalau `perluMasukUlang()` (401), panggil `MainActivity.sesiBerakhir()`.
+- **Endpoint baru**: tambahkan method di `LofApi` dan DTO di `data.api.model` dengan `@SerializedName` persis seperti kontrak API. Respons yang dibungkus `data` memakai `Terbungkus<T>`, auth dan `/me` tidak.
 - **Uang** diformat di layar dengan `NumberFormat.getCurrencyInstance(new Locale("id", "ID"))`, tidak dihitung ulang di aplikasi.
 - **Uji**: logika tanpa View (pemformat, pengurai, validasi) diuji di `app/src/test` dengan JUnit, jalan di `testDebugUnitTest`.
 - **Format kode**: `./gradlew spotlessApply` sebelum commit; CI menolak kode yang belum diformat.
+
+## Tampilan sesuai Figma
+
+- **Teks** memakai gaya `Teks.*` di `values/styles.xml` (Gabarito 800 untuk judul, Figtree untuk sisanya), bukan `textSize`/`textStyle` sendiri. Ukuran px di Figma = sp. Kalau butuh gaya baru, ambil ukuran, tebal, dan tinggi baris dari panel Inspect Figma.
+- **Warna** hanya dari `values/colors.xml`, yang disalin dari variabel Figma.
+- **Gaya bertitik mewarisi induknya**: `KartuPeran.Ikon` otomatis mewarisi padding dan `clickable` milik `KartuPeran`. Beri nama tanpa titik (`KartuPeranIkon`) untuk gaya yang tidak boleh mewarisi.
+
+## Tangkapan layar tanpa emulator
+
+`TangkapanLayarTest` menggambar tiap layar di JVM (Robolectric + Roborazzi) dengan data contoh Figma dari MockWebServer, pada ukuran frame Figma (402x874 dp, 2x):
+
+```powershell
+cd android
+./gradlew testDebugUnitTest -Ptangkapan --tests "*TangkapanLayarTest*"
+```
+
+Hasilnya `app/build/outputs/roborazzi/K04.png` dan seterusnya. Bandingkan dengan PNG Figma sebelum membuka PR, dan lampirkan di body PR untuk perubahan UI. Tanpa `-Ptangkapan` tes ini dilewati, jadi `android-ci` tidak ikut menggambar. Layar baru: tambahkan satu method `@Test` yang membuka layar lalu memanggil `tangkap("Kxx")`, dan tambahkan jawaban endpoint-nya di `DataContoh`.

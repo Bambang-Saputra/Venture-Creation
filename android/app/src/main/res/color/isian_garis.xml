@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Garis kolom isian: hijau saat fokus, E2EAE4 selain itu (komponen "Kolom isian" Figma). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/merek_utama" android:state_focused="true" />
+    <item android:color="@color/merek_utama" android:state_hovered="true" />
+    <item android:color="@color/garis_tegas" />
+</selector>

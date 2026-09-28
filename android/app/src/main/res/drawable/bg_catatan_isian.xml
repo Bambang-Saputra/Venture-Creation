@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak catatan abu-abu kehijauan (F1F6F2, radius 14), misalnya peringatan kode di K03. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_isian" />
+    <corners android:radius="14dp" />
+</shape>

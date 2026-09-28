@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- K01 Pilih peran (Figma node 17:2). Slot foto ilustrasi belum diisi. -->
+<!-- K01 Pilih peran (Figma 17:2). Foto ilustrasi masih slot kosong, sama seperti di Figma. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,48 +11,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp">
+        android:paddingStart="24dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:drawablePadding="10dp"
+            android:fontFamily="@font/figtree_medium"
             android:gravity="center_vertical"
+            android:includeFontPadding="false"
             android:text="@string/app_name"
             android:textColor="@color/teks_di_gelap"
-            android:textSize="24sp"
+            android:textSize="25sp"
             app:drawableStartCompat="@drawable/ic_logo" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:minHeight="48dp" />
+            android:minHeight="24dp" />
+
+        <FrameLayout
+            android:layout_width="196dp"
+            android:layout_height="196dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_foto_sambutan"
+            android:importantForAccessibility="no">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_gambar" />
+        </FrameLayout>
 
         <TextView
+            style="@style/Teks.Hero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:accessibilityHeading="true"
             android:gravity="center"
             android:text="@string/k01_judul"
-            android:textColor="@color/teks_di_gelap"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textColor="@color/teks_di_gelap" />
 
         <TextView
-            android:layout_width="match_parent"
+            style="@style/Teks.Isi"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:lineSpacingExtra="4dp"
             android:text="@string/k01_sub"
-            android:textColor="@color/teks_di_gelap"
-            android:textSize="15sp" />
+            android:textColor="@color/teks_di_gelap" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="40dp" />
 
         <LinearLayout
             android:id="@+id/kartu_konsumen"
@@ -60,27 +80,30 @@
             android:background="@drawable/bg_kartu_putih">
 
             <ImageView
-                style="@style/KartuPeran.Ikon"
+                style="@style/KartuPeranIkon"
                 android:background="@drawable/bg_ikon_mint"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_paket"
                 app:tint="@color/merek_utama" />
 
-            <LinearLayout style="@style/KartuPeran.Teks">
+            <LinearLayout style="@style/KartuPeranTeks">
 
                 <TextView
-                    style="@style/KartuPeran.Judul"
-                    android:text="@string/k01_konsumen_judul"
-                    android:textColor="@color/teks_utama" />
+                    style="@style/Teks.JudulBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k01_konsumen_judul" />
 
                 <TextView
-                    style="@style/KartuPeran.Sub"
-                    android:text="@string/k01_konsumen_sub"
-                    android:textColor="@color/teks_sekunder" />
+                    style="@style/Teks.Sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/k01_konsumen_sub" />
             </LinearLayout>
 
             <ImageView
-                style="@style/KartuPeran.Chevron"
+                style="@style/KartuPeranChevron"
                 android:importantForAccessibility="no"
                 app:tint="@color/teks_utama" />
         </LinearLayout>
@@ -92,27 +115,32 @@
             android:background="@drawable/bg_kartu_transparan">
 
             <ImageView
-                style="@style/KartuPeran.Ikon"
+                style="@style/KartuPeranIkon"
                 android:background="@drawable/bg_ikon_transparan"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_toko"
                 app:tint="@color/merek_lime" />
 
-            <LinearLayout style="@style/KartuPeran.Teks">
+            <LinearLayout style="@style/KartuPeranTeks">
 
                 <TextView
-                    style="@style/KartuPeran.Judul"
+                    style="@style/Teks.JudulBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/k01_mitra_judul"
                     android:textColor="@color/teks_di_gelap" />
 
                 <TextView
-                    style="@style/KartuPeran.Sub"
+                    style="@style/Teks.Sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
                     android:text="@string/k01_mitra_sub"
                     android:textColor="@color/teks_di_gelap" />
             </LinearLayout>
 
             <ImageView
-                style="@style/KartuPeran.Chevron"
+                style="@style/KartuPeranChevron"
                 android:importantForAccessibility="no"
                 app:tint="@color/teks_di_gelap" />
         </LinearLayout>
@@ -121,28 +149,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
+                style="@style/Teks.Sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/k01_belum_punya_akun"
-                android:textColor="@color/teks_di_gelap"
-                android:textSize="15sp" />
+                android:textColor="@color/teks_di_gelap" />
 
             <TextView
                 android:id="@+id/tautan_daftar"
+                style="@style/Teks.Sub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
-                android:minHeight="48dp"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="6dp"
+                android:minHeight="48dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:text="@string/k01_daftar"
-                android:textColor="@color/merek_lime"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textColor="@color/merek_lime" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -26,7 +26,9 @@
             android:padding="24dp">
 
             <TextView
-                style="@style/LabelIsian"
+                style="@style/Teks.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:labelFor="@id/nama"
                 android:text="@string/k04_nama" />
 
@@ -34,24 +36,33 @@
                 android:id="@+id/isian_nama"
                 style="@style/IsianBulat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nama"
+                    style="@style/IsianTeks"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:autofillHints="name"
                     android:hint="@string/k04_nama_contoh"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName|textCapWords"
-                    android:maxLength="120"
-                    android:textSize="17sp" />
+                    android:maxLength="120" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                style="@style/LabelIsian"
-                android:layout_marginTop="20dp"
+                android:id="@+id/bantuan_nama"
+                style="@style/Teks.Bantuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityLiveRegion="polite" />
+
+            <TextView
+                style="@style/Teks.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:labelFor="@id/email"
                 android:text="@string/k04_email" />
 
@@ -59,25 +70,34 @@
                 android:id="@+id/isian_email"
                 style="@style/IsianBulat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:helperText="@string/k04_email_bantuan">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email"
+                    style="@style/IsianTeks"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:autofillHints="emailAddress"
                     android:hint="@string/k04_email_contoh"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
-                    android:maxLength="255"
-                    android:textSize="17sp" />
+                    android:maxLength="255" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                style="@style/LabelIsian"
-                android:layout_marginTop="20dp"
+                android:id="@+id/bantuan_email"
+                style="@style/Teks.Bantuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityLiveRegion="polite"
+                android:text="@string/k04_email_bantuan" />
+
+            <TextView
+                style="@style/Teks.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
                 android:labelFor="@id/area"
                 android:text="@string/k04_area" />
 
@@ -85,28 +105,30 @@
                 android:id="@+id/isian_area"
                 style="@style/IsianBulat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:helperText="@string/k04_area_bantuan">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/area"
+                    style="@style/IsianTeks"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:autofillHints="postalAddress"
                     android:hint="@string/k04_area_contoh"
                     android:imeOptions="actionDone"
                     android:inputType="textPostalAddress|textCapWords"
-                    android:maxLength="120"
-                    android:textSize="17sp" />
+                    android:maxLength="120" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/bantuan_area"
+                style="@style/Teks.Bantuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityLiveRegion="polite"
+                android:text="@string/k04_area_bantuan" />
         </LinearLayout>
     </ScrollView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/garis_halus" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progres"
@@ -115,11 +137,13 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/tombol_lanjut"
-        style="@style/Widget.LifeOfFoods.Tombol.Utama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@string/lanjut" />
+    <LinearLayout style="@style/BilahAksi">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_lanjut"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lanjut" />
+    </LinearLayout>
 </LinearLayout>

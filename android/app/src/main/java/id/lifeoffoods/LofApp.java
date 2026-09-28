@@ -1,6 +1,7 @@
 package id.lifeoffoods;
 
 import android.app.Application;
+import androidx.annotation.VisibleForTesting;
 import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.data.api.ApiClient;
 import id.lifeoffoods.data.api.LofApi;
@@ -24,5 +25,11 @@ public class LofApp extends Application {
 
     public LofApi api() {
         return api;
+    }
+
+    /** Hanya untuk tes: arahkan API ke server tiruan (MockWebServer). */
+    @VisibleForTesting
+    public void arahkanApiKe(String baseUrl) {
+        api = ApiClient.buat(baseUrl, sesi, false);
     }
 }

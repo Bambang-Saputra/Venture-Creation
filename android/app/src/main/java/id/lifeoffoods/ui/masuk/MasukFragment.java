@@ -68,8 +68,8 @@ public class MasukFragment extends Fragment {
                         mitra ? R.color.teks_di_gelap : R.color.tanda_hemat_teks));
         binding.judulUtama.setText(mitra ? R.string.m01_judul : R.string.k02_judul);
         binding.keterangan.setText(mitra ? R.string.m01_keterangan : R.string.k02_keterangan);
-        binding.isianNomor.setHelperText(
-                getString(mitra ? R.string.m01_bantuan_nomor : R.string.k02_bantuan_nomor));
+        String bantuan = getString(mitra ? R.string.m01_bantuan_nomor : R.string.k02_bantuan_nomor);
+        binding.bantuanNomor.setText(bantuan);
 
         // Tombol kembali di layar pertama alur membawa ke K01, bukan menutup aplikasi.
         Runnable keAwal = () -> ((MainActivity) requireActivity()).kembaliKeAwal();
@@ -108,7 +108,17 @@ public class MasukFragment extends Fragment {
                     binding.tombolGoogle.setEnabled(!memuat);
                     binding.progres.setVisibility(memuat ? View.VISIBLE : View.GONE);
                 });
-        vm.galatNomor.observe(getViewLifecycleOwner(), binding.isianNomor::setError);
+        // Galat menggantikan teks bantuan di bawah kotak, dan garis kotak menjadi merah.
+        vm.galatNomor.observe(
+                getViewLifecycleOwner(),
+                g -> {
+                    binding.kotakNomor.setActivated(g != null);
+                    binding.bantuanNomor.setText(g != null ? g : bantuan);
+                    binding.bantuanNomor.setTextColor(
+                            ContextCompat.getColor(
+                                    requireContext(),
+                                    g != null ? R.color.tanda_bahaya_teks : R.color.teks_sekunder));
+                });
         vm.galat.observe(
                 getViewLifecycleOwner(),
                 p -> {
