@@ -28,6 +28,7 @@ class ListingController extends Controller
             'type' => ['sometimes', 'array'],
             'type.*' => [Rule::in(['surprise_bag', 'menu_item'])],
             'category' => ['sometimes', Rule::in(self::KATEGORI)],
+            'store_id' => ['sometimes', 'integer', 'min:1'],
             'q' => ['sometimes', 'string', 'max:80'],
             'lat' => ['required_with:lng,radius_km', 'numeric', 'between:-90,90'],
             'lng' => ['required_with:lat,radius_km', 'numeric', 'between:-180,180'],
@@ -62,6 +63,7 @@ class ListingController extends Controller
         $query
             ->when($f['type'] ?? null, fn (Builder $q, $tipe) => $q->whereIn('listings.type', $tipe))
             ->when($f['category'] ?? null, fn (Builder $q, $k) => $q->where('stores.category', $k))
+            ->when($f['store_id'] ?? null, fn (Builder $q, $toko) => $q->where('listings.store_id', $toko))
             ->when($f['q'] ?? null, fn (Builder $q, $kata) => $q->where(fn (Builder $q) => $q
                 ->where('listings.title', 'like', '%'.addcslashes($kata, '%_\\').'%')
                 ->orWhere('stores.name', 'like', '%'.addcslashes($kata, '%_\\').'%')))

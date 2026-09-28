@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Catatan surplus K10/K11: hijau lembut, sudut 18dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_merek_lembut" />
+    <corners android:radius="18dp" />
+</shape>

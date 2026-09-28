@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak ikon 12dp berlatar lembut (ikon baris menu K11). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_lembut" />
+    <corners android:radius="12dp" />
+</shape>

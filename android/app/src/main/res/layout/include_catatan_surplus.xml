@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Catatan surplus" K10/K11: daun 19 dan teks hijau tua. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="14dp"
+    android:background="@drawable/bg_catatan_18"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="19dp"
+        android:layout_height="19dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_daun"
+        app:tint="@color/teks_merek_gelap" />
+
+    <TextView
+        style="@style/Teks.Catatan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_weight="1"
+        android:text="@string/catatan_surplus"
+        android:textColor="@color/teks_merek_gelap" />
+</LinearLayout>

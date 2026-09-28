@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Komponen "Stepper jumlah": kurang 30x30 bergaris, angka, tambah 30x30 hijau. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/kurang"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_stepper_kurang"
+        android:contentDescription="@string/stepper_kurang"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_kurang"
+        app:tint="@color/teks_utama" />
+
+    <TextView
+        android:id="@+id/jumlah"
+        style="@style/Teks.Jumlah"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        tools:text="1" />
+
+    <ImageButton
+        android:id="@+id/tambah"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_stepper_tambah"
+        android:contentDescription="@string/stepper_tambah"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_tambah"
+        app:tint="@color/teks_di_gelap" />
+</LinearLayout>

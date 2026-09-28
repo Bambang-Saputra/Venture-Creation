@@ -96,6 +96,9 @@ class ListingTest extends TestCase
         $this->cari(['q' => '100%'])->assertJsonCount(0, 'data');
         $this->cari(['pickup_from' => '20:00', 'pickup_until' => '22:00'])->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $menu);
         $this->cari(['ends_within_minutes' => 60 * 3])->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $tas);
+        // K10 "Lihat menu satuan" dan K11: jualan satu toko saja.
+        $this->cari(['store_id' => $this->tokoJauh])->assertJsonCount(1, 'data')->assertJsonPath('data.0.id', $menu);
+        $this->cari(['store_id' => $this->tokoDekat, 'type' => ['menu_item']])->assertJsonCount(0, 'data');
     }
 
     public function test_detail_memuat_isi_toko_dan_ketersediaan(): void

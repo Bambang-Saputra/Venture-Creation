@@ -156,6 +156,28 @@ public class TangkapanLayarTest {
         }
     }
 
+    @Test
+    public void k10DetailTas() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLong("listing_id", 31);
+        navigasi(R.id.k10_detail_tas, args);
+        tunggu();
+        tangkap("K10");
+    }
+
+    @Test
+    public void k11MenuSatuan() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLong("listing_id", 41);
+        navigasi(R.id.k11_detail_menu, args);
+        tunggu();
+        tangkap("K11");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -250,6 +272,46 @@ public class TangkapanLayarTest {
                                 + alergen("tanpa_alkohol", "Tanpa alkohol", "diet")
                                 + "]}");
             }
+            if (path.matches("/api/listings/\\d+.*")) {
+                return json("{\"data\":" + detail(path.contains("/41") ? 41 : 31) + "}");
+            }
+            if (path.startsWith("/api/listings") && path.contains("store_id")) {
+                return json(
+                        "{\"data\":["
+                                + menu(
+                                        41,
+                                        "Croissant mentega",
+                                        12000,
+                                        28000,
+                                        3,
+                                        alergenJson("susu", "Susu", "contains")
+                                                + ","
+                                                + alergenJson("gluten", "Gluten", "contains"))
+                                + ","
+                                + menu(
+                                        42,
+                                        "Danish keju",
+                                        14000,
+                                        32000,
+                                        2,
+                                        alergenJson("susu", "Susu", "contains")
+                                                + ","
+                                                + alergenJson("telur", "Telur", "contains")
+                                                + ","
+                                                + alergenJson("gluten", "Gluten", "contains"))
+                                + ","
+                                + menu(
+                                        43,
+                                        "Cinnamon roll",
+                                        10000,
+                                        25000,
+                                        4,
+                                        alergenJson("kacang_tanah", "Kacang tanah", "may_contain"))
+                                + "],\"current_page\":1,\"last_page\":1}");
+            }
+            if (path.startsWith("/api/favorites")) {
+                return json("{\"data\":[]}");
+            }
             if (path.startsWith("/api/listings")) {
                 // Dua kartu flash untuk "Tutup kurang dari satu jam", dua kartu tas untuk
                 // "Terdekat dari kamu", sama dengan contoh Figma K07.
@@ -312,6 +374,77 @@ public class TangkapanLayarTest {
                 return json("{\"data\":[],\"unread_count\":3,\"current_page\":1,\"last_page\":1}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        private static String alergenJson(String kode, String nama, String presence) {
+            return "{\"code\":\""
+                    + kode
+                    + "\",\"name\":\""
+                    + nama
+                    + "\",\"presence\":\""
+                    + presence
+                    + "\"}";
+        }
+
+        private static String menu(
+                long id, String judul, long harga, long normal, int stok, String alergen) {
+            return "{\"id\":"
+                    + id
+                    + ",\"type\":\"menu_item\",\"title\":\""
+                    + judul
+                    + "\",\"photo_url\":null,\"price_rupiah\":"
+                    + harga
+                    + ",\"original_value_rupiah\":"
+                    + normal
+                    + ",\"qty_remaining\":"
+                    + stok
+                    + ",\"pickup_start\":\"2026-09-18T20:30:00+07:00\""
+                    + ",\"pickup_end\":\"2026-09-18T21:00:00+07:00\",\"minutes_until_end\":95"
+                    + ",\"halal_label\":\"self_claim\",\"allergens\":["
+                    + alergen
+                    + "],\"distance_km\":null"
+                    + ",\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\",\"category\":\"cafe\"}}";
+        }
+
+        /** Contoh Figma K10 (tas 31) dan K11 (menu 41), toko Kopi Kalyan kira-kira 380 m. */
+        private static String detail(long id) {
+            boolean tas = id == 31;
+            return "{\"id\":"
+                    + id
+                    + ",\"type\":\""
+                    + (tas ? "surprise_bag" : "menu_item")
+                    + "\",\"title\":\""
+                    + (tas ? "Tas Pastry Sore" : "Croissant mentega")
+                    + "\",\"photo_url\":null,\"price_rupiah\":"
+                    + (tas ? 18000 : 12000)
+                    + ",\"original_value_rupiah\":"
+                    + (tas ? 55000 : 28000)
+                    + ",\"qty_remaining\":"
+                    + (tas ? 2 : 3)
+                    + ",\"pickup_start\":\"2026-09-18T20:30:00+07:00\""
+                    + ",\"pickup_end\":\"2026-09-18T21:00:00+07:00\",\"minutes_until_end\":95"
+                    + ",\"halal_label\":\"certified\",\"allergens\":["
+                    + alergenJson("susu", "Susu", "contains")
+                    + ","
+                    + (tas ? alergenJson("telur", "Telur", "contains") + "," : "")
+                    + alergenJson("gluten", "Gluten", "contains")
+                    + (tas ? "," + alergenJson("kacang_tanah", "Kacang tanah", "may_contain") : "")
+                    + "],\"distance_km\":null"
+                    + ",\"description\":\"Empat sampai enam potong pastry. Isi pasti dipilih"
+                    + " barista dari stok sore itu, jadi bisa berbeda setiap hari.\""
+                    + ",\"content_hint\":\"4-6 pastry campur\",\"ingredients_text\":null"
+                    + ",\"halal_certificate_no\":\"ID00410000123450825\",\"status\":\"active\""
+                    + ",\"is_available\":true,\"items\":["
+                    + (tas
+                            ? "{\"label\":\"Croissant mentega\",\"qty\":null},"
+                                    + "{\"label\":\"Danish keju\",\"qty\":null},"
+                                    + "{\"label\":\"Cinnamon roll atau roti manis lain\",\"qty\":null}"
+                            : "")
+                    + "],\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\",\"category\":\"cafe\""
+                    + ",\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan\""
+                    + ",\"latitude\":-6.2263,\"longitude\":106.8120"
+                    + ",\"hours_today\":{\"open_time\":\"07:00:00\",\"close_time\":\"21:00:00\""
+                    + ",\"is_closed\":0}}}";
         }
 
         private static String listing(

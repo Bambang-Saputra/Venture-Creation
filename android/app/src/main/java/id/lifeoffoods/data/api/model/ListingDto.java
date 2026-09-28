@@ -48,6 +48,11 @@ public class ListingDto {
     @SerializedName("distance_km")
     public Double distanceKm;
 
+    /** certified, self_claim, atau not_stated. */
+    @Nullable
+    @SerializedName("halal_label")
+    public String halalLabel;
+
     @Nullable
     @SerializedName("allergens")
     public List<Alergen> allergens;
@@ -55,6 +60,7 @@ public class ListingDto {
     @SerializedName("store")
     public Toko store;
 
+    /** Ringkas di GET /listings; alamat, koordinat, dan jam hari ini hanya ada di detail. */
     public static class Toko {
         @SerializedName("id")
         public long id;
@@ -64,9 +70,42 @@ public class ListingDto {
 
         @SerializedName("category")
         public String category;
+
+        @Nullable
+        @SerializedName("address")
+        public String address;
+
+        @Nullable
+        @SerializedName("latitude")
+        public Double latitude;
+
+        @Nullable
+        @SerializedName("longitude")
+        public Double longitude;
+
+        @Nullable
+        @SerializedName("hours_today")
+        public JamHariIni hoursToday;
+    }
+
+    public static class JamHariIni {
+        /** "07:00:00". */
+        @Nullable
+        @SerializedName("open_time")
+        public String openTime;
+
+        @Nullable
+        @SerializedName("close_time")
+        public String closeTime;
+
+        /** Server mengirim 0/1. */
+        @SerializedName("is_closed")
+        public int isClosed;
     }
 
     public static class Alergen {
+        public static final String MUNGKIN = "may_contain";
+
         @SerializedName("code")
         public String code;
 

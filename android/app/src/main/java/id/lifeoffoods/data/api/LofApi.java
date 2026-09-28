@@ -3,7 +3,9 @@ package id.lifeoffoods.data.api;
 import id.lifeoffoods.data.api.model.AlergenBody;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.AuthResponse;
+import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
+import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.data.api.model.MeResponse;
 import id.lifeoffoods.data.api.model.NotifikasiResponse;
@@ -16,11 +18,13 @@ import java.util.List;
 import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -65,6 +69,20 @@ public interface LofApi {
      */
     @GET("listings")
     Call<Terbungkus<List<ListingDto>>> daftarListing(@QueryMap Map<String, String> query);
+
+    /** K10, K11. Tanpa token. Habis atau lewat tetap bisa dibuka dengan is_available = false. */
+    @GET("listings/{id}")
+    Call<Terbungkus<ListingDetailDto>> detailListing(@Path("id") long id);
+
+    /** Status hati di K10/K11; daftar lengkap di K16. */
+    @GET("favorites")
+    Call<Terbungkus<List<FavoritDto>>> favorit();
+
+    @POST("favorites")
+    Call<Void> tambahFavorit(@Body FavoritDto.Body body);
+
+    @DELETE("favorites/{store}")
+    Call<Void> hapusFavorit(@Path("store") long storeId);
 
     /** Lencana lonceng K07; daftar lengkap di K17. */
     @GET("notifications")
