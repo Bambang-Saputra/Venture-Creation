@@ -42,6 +42,23 @@ public class FormatTampilanTest {
     }
 
     @Test
+    public void jamTokoDanPersenHemat() {
+        assertEquals("21.00", FormatTampilan.jamToko("21:00:00"));
+        assertEquals("", FormatTampilan.jamToko(null));
+        assertEquals(67, FormatTampilan.persenHemat(18000, 55000L));
+        assertEquals(0, FormatTampilan.persenHemat(18000, null));
+        assertEquals(0, FormatTampilan.persenHemat(20000, 18000L));
+    }
+
+    @Test
+    public void jarakHaversineSekitarSatuKm() {
+        // SCBD ke Senayan kira-kira 1,6 km garis lurus.
+        Double km = FormatTampilan.jarakKm(-6.2253, 106.8087, -6.2272, 106.7947);
+        assertEquals(1.56, km, 0.05);
+        assertNull(FormatTampilan.jarakKm(null, 106.8, -6.2, 106.8));
+    }
+
+    @Test
     public void inisialDuaHurufPertama() {
         assertEquals("DR", FormatTampilan.inisial("Dara Renata"));
         assertEquals("DR", FormatTampilan.inisial("  dara   renata putri "));

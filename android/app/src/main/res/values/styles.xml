@@ -215,6 +215,107 @@
         <item name="android:textColor">@color/teks_sekunder</item>
     </style>
 
+    <!-- ===== Detail jualan (K10, K11) ===== -->
+    <!-- Judul jualan, Gabarito 22/26 -->
+    <style name="Teks.JudulDetail">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="lineHeight">26sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <!-- Nama toko di kartu Mitra K11, Gabarito 17/21 -->
+    <style name="Teks.JudulToko">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">17sp</item>
+        <item name="lineHeight">21sp</item>
+    </style>
+
+    <!-- Judul kotak ("Kandungan dan label", "Pilih menu"), Gabarito 14/17 -->
+    <style name="Teks.JudulKotak">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+
+    <!-- "Kopi Kalyan · 380 m · tutup 21.00", 12/17 semibold -->
+    <style name="Teks.Meta">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">17sp</item>
+        <item name="android:textColor">@color/teks_sekunder</item>
+    </style>
+
+    <!-- Harga per tas K10, Gabarito 22/26 hijau -->
+    <style name="Teks.Harga.Detail">
+        <item name="android:textSize">22sp</item>
+        <item name="lineHeight">26sp</item>
+    </style>
+
+    <!-- Total di bilah aksi, Gabarito 19/23 hijau -->
+    <style name="Teks.Harga.Total">
+        <item name="android:textSize">19sp</item>
+        <item name="lineHeight">23sp</item>
+    </style>
+
+    <!-- Harga di baris menu K11, Gabarito 13 hijau -->
+    <style name="Teks.Harga.Kecil">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">16sp</item>
+    </style>
+
+    <!-- Tautan "Mau pilih sendiri? ...", 12.5/17 semibold hijau -->
+    <style name="Teks.Tautan">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="lineHeight">17sp</item>
+        <item name="android:textColor">@color/teks_merek</item>
+    </style>
+
+    <!-- Isi kotak catatan dan peringatan, 12.5/19 -->
+    <style name="Teks.Catatan">
+        <item name="android:textSize">12.5sp</item>
+        <item name="lineHeight">19sp</item>
+    </style>
+
+    <!-- Paragraf "Perkiraan isi", 13/19 -->
+    <style name="Teks.Deskripsi">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">19sp</item>
+        <item name="android:textColor">@color/teks_kuat</item>
+    </style>
+
+    <!-- Butir daftar isi tas, 13.5/18 semibold -->
+    <style name="Teks.Butir">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">13.5sp</item>
+        <item name="lineHeight">18sp</item>
+    </style>
+
+    <!-- Angka stepper, 14.5 bold -->
+    <style name="Teks.Jumlah">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">14.5sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Kotak putih bergaris K10/K11 (Harga, Kandungan, Perkiraan isi, Mitra, Pilih menu). -->
+    <style name="KotakDetail">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:background">@drawable/bg_kartu_jualan</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <!-- Satu tab Nav bawah, 52dp; nama tanpa titik supaya tidak mewarisi gaya teks. -->
     <style name="TabNav">
         <item name="android:layout_width">0dp</item>

@@ -109,4 +109,42 @@
     <string name="nav_pesanan">Pesanan</string>
     <string name="nav_profil">Profil</string>
 
+    <!-- K10 dan K11 -->
+    <string name="k10_tas_kejutan">Tas kejutan</string>
+    <string name="k10_harga_per_tas">Harga per tas</string>
+    <string name="k10_nilai">Nilai %1$s</string>
+    <string name="k10_hemat">Hemat %1$d%%</string>
+    <string name="k10_lihat_menu">Mau pilih sendiri? Lihat menu satuan %1$s</string>
+    <string name="k10_kandungan">Kandungan dan label</string>
+    <string name="k10_perkiraan_isi">Perkiraan isi</string>
+    <string name="k10_bahan">Bahan: %1$s</string>
+    <string name="k10_tanpa_alergen">Mitra tidak mencatat alergen utama.</string>
+    <string name="k10_isi_belum_ditulis">Mitra belum menulis perkiraan isi. Isi pasti dipilih dari stok hari itu.</string>
+    <string name="k10_jumlah_tas">%1$d tas</string>
+    <string name="k10_pesan">Pesan</string>
+    <string name="k10_habis">Sudah habis</string>
+    <string name="k10_ambil">Ambil %1$s</string>
+    <string name="k10_sisa_tas">Sisa %1$d tas</string>
+    <string name="k10_tutup">tutup %1$s</string>
+    <string name="k10_tutup_hari_ini">tutup hari ini</string>
+    <string name="halal_bersertifikat">Halal</string>
+    <string name="halal_klaim">Halal (klaim mitra)</string>
+    <string name="alergen_mungkin">Mungkin %1$s</string>
+    <string name="k11_menu_satuan">Menu satuan</string>
+    <string name="k11_judul">Menu hari ini di %1$s</string>
+    <string name="k11_keterangan">Pilih item yang kamu mau. Harga sudah dipotong, stok mengikuti sisa hari ini. Kandungan tiap item tertulis di bawah namanya.</string>
+    <string name="k11_pilih_menu">Pilih menu</string>
+    <string name="k11_stok_hari_ini">Stok hari ini</string>
+    <string name="k11_sisa">sisa %1$d</string>
+    <string name="k11_habis">habis</string>
+    <string name="k11_tanpa_alergen">Tanpa alergen utama tercatat</string>
+    <string name="k11_jumlah_item">%1$d item</string>
+    <string name="k11_lanjut">Lanjut ke ringkasan</string>
+    <string name="catatan_surplus">Isi tas diambil dari stok yang masih layak jual hari itu, bukan sisa piring pelanggan. Bawa wadah sendiri bila memungkinkan.</string>
+    <string name="detail_gagal_judul">Jualan belum termuat</string>
+    <string name="favorit_tambah">Simpan toko ke favorit</string>
+    <string name="favorit_hapus">Hapus toko dari favorit</string>
+    <string name="stepper_kurang">Kurangi jumlah</string>
+    <string name="stepper_tambah">Tambah jumlah</string>
+
 </resources>

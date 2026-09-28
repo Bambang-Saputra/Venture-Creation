@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tombol 40x40 di atas foto (K10, K11): putih 92%, sudut 12dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#EBFFFFFF" />
+    <corners android:radius="12dp" />
+</shape>

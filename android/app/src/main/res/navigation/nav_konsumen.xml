@@ -70,27 +70,36 @@
 
     <fragment
         android:id="@+id/k10_detail_tas"
+        android:name="id.lifeoffoods.ui.jualan.DetailTasFragment" />
+
+    <fragment
+        android:id="@+id/k11_detail_menu"
+        android:name="id.lifeoffoods.ui.jualan.MenuSatuanFragment" />
+
+    <!-- Ringkasan pesanan; argumen id_jualan (long[]) dan jumlah (int[]) dari K10/K11. -->
+    <fragment
+        android:id="@+id/k12_ringkasan_tas"
         android:name="id.lifeoffoods.ui.SegeraFragment">
         <argument
             android:name="kode_layar"
-            android:defaultValue="K10"
+            android:defaultValue="K12"
             app:argType="string" />
         <argument
             android:name="judul"
-            android:defaultValue="Detail tas kejutan"
+            android:defaultValue="Ringkasan tas kejutan"
             app:argType="string" />
     </fragment>
 
     <fragment
-        android:id="@+id/k11_detail_menu"
+        android:id="@+id/k13_ringkasan_menu"
         android:name="id.lifeoffoods.ui.SegeraFragment">
         <argument
             android:name="kode_layar"
-            android:defaultValue="K11"
+            android:defaultValue="K13"
             app:argType="string" />
         <argument
             android:name="judul"
-            android:defaultValue="Detail menu satuan"
+            android:defaultValue="Ringkasan menu satuan"
             app:argType="string" />
     </fragment>
 

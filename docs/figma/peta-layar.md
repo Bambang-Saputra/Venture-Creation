@@ -32,8 +32,8 @@ Dokumen ini adalah rujukan tunggal saat menulis PRD, endpoint, dan layar Android
 | K07 | Beranda | F-03 | MUST | `GET /listings` | `listings`, `stores`, `listing_allergens` |
 | K08 | Peta | F-14 | SHOULD | `GET /listings?lat&lng&radius_km` | `listings`, `stores` |
 | K09 | Filter | F-04 | MUST | `GET /listings?exclude_allergens[]` | `listing_allergens`, `user_allergens` |
-| K10 | Detail tas kejutan | F-05 | MUST | `GET /listings/{id}` | `listings`, `listing_allergens`, `stores` |
-| K11 | Detail menu satuan | F-05 | MUST | `GET /listings/{id}` | `listings`, `listing_items`, `products` |
+| K10 | Detail tas kejutan | F-05 | MUST | `GET /listings/{id}`, `GET /listings?store_id=&type[]=menu_item`, `POST /favorites` | `listings`, `listing_allergens`, `stores` |
+| K11 | Detail menu satuan | F-05 | MUST | `GET /listings/{id}`, `GET /listings?store_id=&type[]=menu_item` | `listings`, `listing_items`, `products` |
 | K12 | Ringkasan tas kejutan | F-06 | MUST | `POST /orders/preview`, `POST /orders` | `orders`, `order_items`, `pickup_codes` |
 | K13 | Ringkasan menu satuan | F-06 | MUST | `POST /orders/preview`, `POST /orders` | `orders`, `order_items`, `pickup_codes` |
 | K14 | Kode pickup | F-07 | MUST | `GET /orders/{id}` | `orders`, `pickup_codes` |

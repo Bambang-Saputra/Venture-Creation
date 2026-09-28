@@ -268,6 +268,7 @@ Hanya jualan yang bisa dibeli sekarang: aktif, stok ada, jam ambil belum lewat, 
 |---|---|
 | `type[]` | `surprise_bag`, `menu_item` |
 | `category` | `cafe`, `bakery`, `resto`, `catering`, `grocery` |
+| `store_id` | jualan satu toko saja (K10 "Lihat menu satuan", K11) |
 | `q` | cari di judul jualan dan nama toko |
 | `lat`, `lng` | urut dari terdekat dan mengisi `distance_km` |
 | `radius_km` | butuh `lat`/`lng`, 0,1 sampai 50 |

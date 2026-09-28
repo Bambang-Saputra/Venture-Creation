@@ -78,6 +78,47 @@ public final class FormatTampilan {
         }
     }
 
+    /** Jam dari kolom TIME server, "21:00:00" menjadi "21.00". Kosong kalau tidak terbaca. */
+    public static String jamToko(@Nullable String waktu) {
+        if (waktu == null || waktu.length() < 5 || waktu.charAt(2) != ':') {
+            return "";
+        }
+        return waktu.substring(0, 2) + "." + waktu.substring(3, 5);
+    }
+
+    /** Persen hemat dibulatkan: harga 18.000 dari nilai 55.000 menjadi 67. 0 kalau tidak hemat. */
+    public static int persenHemat(long harga, @Nullable Long nilai) {
+        if (nilai == null || nilai <= 0 || harga >= nilai) {
+            return 0;
+        }
+        return (int) Math.round((1 - (double) harga / nilai) * 100);
+    }
+
+    /**
+     * Jarak garis lurus (haversine) dalam km. GET /listings/{id} tidak mengirim distance_km, jadi
+     * K10/K11 menghitungnya dari koordinat toko dan profil pembeli.
+     */
+    @Nullable
+    public static Double jarakKm(
+            @Nullable Double lat1,
+            @Nullable Double lng1,
+            @Nullable Double lat2,
+            @Nullable Double lng2) {
+        if (lat1 == null || lng1 == null || lat2 == null || lng2 == null) {
+            return null;
+        }
+        double r = 6371.0088;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        double a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                        + Math.cos(Math.toRadians(lat1))
+                                * Math.cos(Math.toRadians(lat2))
+                                * Math.sin(dLng / 2)
+                                * Math.sin(dLng / 2);
+        return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
     /** Inisial avatar: "Dara Renata" menjadi "DR", "Dara" menjadi "D". */
     public static String inisial(@Nullable String nama) {
         if (nama == null) {
