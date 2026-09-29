@@ -19,6 +19,8 @@ public class SesiPengguna {
     private static final String KUNCI_TOKEN = "token";
     private static final String KUNCI_PERAN = "peran";
     private static final String KUNCI_PERLU_PROFIL = "perlu_profil";
+    private static final String KUNCI_PESANAN = "pesanan_";
+    private static final String KUNCI_PESANAN_WAKTU = "pesanan_waktu_";
 
     private final SharedPreferences prefs;
 
@@ -67,5 +69,31 @@ public class SesiPengguna {
 
     public boolean sudahMasuk() {
         return token() != null && peran() != null;
+    }
+
+    /**
+     * K14: salinan terakhir GET /orders/{id} (JSON) supaya kode pickup tetap bisa ditunjukkan tanpa
+     * sinyal (PRD-07 kriteria 7). Ikut terhapus di {@link #hapus()} saat keluar atau sesi berakhir.
+     */
+    public void simpanPesanan(long id, String json, long waktuMs) {
+        prefs.edit()
+                .putString(KUNCI_PESANAN + id, json)
+                .putLong(KUNCI_PESANAN_WAKTU + id, waktuMs)
+                .apply();
+    }
+
+    @Nullable
+    public String pesananTersimpan(long id) {
+        return prefs.getString(KUNCI_PESANAN + id, null);
+    }
+
+    /** Waktu salinan K14 disimpan (epoch ms), 0 kalau tidak ada. */
+    public long waktuPesananTersimpan(long id) {
+        return prefs.getLong(KUNCI_PESANAN_WAKTU + id, 0);
+    }
+
+    /** Pesanan sudah selesai atau batal: kodenya tidak perlu disimpan lagi. */
+    public void lupakanPesanan(long id) {
+        prefs.edit().remove(KUNCI_PESANAN + id).remove(KUNCI_PESANAN_WAKTU + id).apply();
     }
 }

@@ -178,6 +178,43 @@ public class TangkapanLayarTest {
         tangkap("K11");
     }
 
+    @Test
+    public void k12RingkasanTas() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLongArray("id_jualan", new long[] {31});
+        args.putIntArray("jumlah", new int[] {1});
+        navigasi(R.id.k12_ringkasan_tas, args);
+        tunggu();
+        tangkap("K12");
+    }
+
+    @Test
+    public void k13RingkasanMenu() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLongArray("id_jualan", new long[] {41, 42});
+        args.putIntArray("jumlah", new int[] {1, 1});
+        args.putIntArray("stok", new int[] {3, 2});
+        args.putLongArray("harga_normal", new long[] {28000, 27000});
+        navigasi(R.id.k13_ringkasan_menu, args);
+        tunggu();
+        tangkap("K13");
+    }
+
+    @Test
+    public void k14KodePickup() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLong("id_pesanan", 88);
+        navigasi(R.id.k14_kode_pickup, args);
+        tunggu();
+        tangkap("K14");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -373,7 +410,60 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/notifications")) {
                 return json("{\"data\":[],\"unread_count\":3,\"current_page\":1,\"last_page\":1}");
             }
+            if (path.startsWith("/api/orders/preview")) {
+                return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
+            }
+            if (path.startsWith("/api/orders/88")) {
+                return json(
+                        "{\"data\":{\"id\":88,\"code\":\"LOF-7Q2K9A\",\"status\":\"pending_pickup\","
+                                + "\"pickup_code\":\"LF7Q2K\",\"pickup_code_status\":\"active\","
+                                + "\"pickup_start\":\"2026-09-18T20:30:00+07:00\","
+                                + "\"pickup_end\":\"2026-09-18T21:00:00+07:00\","
+                                + "\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\","
+                                + "\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta"
+                                + " Selatan\",\"latitude\":-6.2263,\"longitude\":106.8120},"
+                                + "\"items\":[{\"listing_id\":41,\"title\":\"Croissant mentega\","
+                                + "\"unit_price_rupiah\":9000,\"qty\":1,\"line_total_rupiah\":9000},"
+                                + "{\"listing_id\":42,\"title\":\"Danish keju\","
+                                + "\"unit_price_rupiah\":9000,\"qty\":1,\"line_total_rupiah\":9000}],"
+                                + "\"item_count\":2,\"subtotal_rupiah\":18000,\"service_fee_rupiah\":0,"
+                                + "\"discount_rupiah\":0,\"total_rupiah\":18000,"
+                                + "\"payment_method\":\"cash\",\"payment_status\":\"unpaid\","
+                                + "\"note\":null,\"placed_at\":\"2026-09-18T19:55:00+07:00\","
+                                + "\"completed_at\":null,\"cancelled_at\":null}}");
+            }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /** Contoh Figma K12 (tas 31) dan K13 (menu 41 + 42), dipilih dari body permintaan. */
+        private static String pratinjau(String body) {
+            boolean menu = body.contains("\"listing_id\":41");
+            String items =
+                    menu
+                            ? "{\"listing_id\":41,\"title\":\"Croissant mentega\",\"qty\":1,"
+                                    + "\"unit_price_rupiah\":9000,\"line_total_rupiah\":9000},"
+                                    + "{\"listing_id\":42,\"title\":\"Danish keju\",\"qty\":1,"
+                                    + "\"unit_price_rupiah\":9000,\"line_total_rupiah\":9000}"
+                            : "{\"listing_id\":31,\"title\":\"Tas Pastry Sore\",\"qty\":1,"
+                                    + "\"unit_price_rupiah\":18000,\"line_total_rupiah\":18000}";
+            long total = 18000;
+            return "{\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\","
+                    + "\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan\"},"
+                    + "\"items\":["
+                    + items
+                    + "],\"pickup_start\":\"2026-09-18T20:30:00+07:00\","
+                    + "\"pickup_end\":\"2026-09-18T21:00:00+07:00\","
+                    + "\"subtotal_rupiah\":"
+                    + total
+                    + ",\"service_fee_rupiah\":0,\"discount_rupiah\":0,\"total_rupiah\":"
+                    + total
+                    + ",\"allergen_warnings\":"
+                    + (menu
+                            ? "[]"
+                            : "[{\"listing_id\":31,\"code\":\"kacang_tanah\","
+                                    + "\"name\":\"Kacang tanah\",\"presence\":\"may_contain\","
+                                    + "\"severity\":\"avoid\"}]")
+                    + "}";
         }
 
         private static String alergenJson(String kode, String nama, String presence) {

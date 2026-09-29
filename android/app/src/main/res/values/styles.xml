@@ -493,6 +493,56 @@
         <item name="android:src">@drawable/ic_chevron_kanan</item>
     </style>
 
+    <!-- ===== Ringkasan pesanan (K12, K13) dan kode pickup (K14) ===== -->
+    <!-- Label kapital kecil ("LOKASI AMBIL", "TUNJUKKAN KE KASIR"), 10.5 bold, jarak 0.1 -->
+    <style name="Teks.Kapital">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">10.5sp</item>
+        <item name="lineHeight">14sp</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:textColor">@color/teks_sekunder</item>
+    </style>
+
+    <!-- Kode pickup K14, Gabarito 44 dengan jarak antarhuruf lega (PRD-07 kriteria 8) -->
+    <style name="Teks.KodePickup">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">44sp</item>
+        <item name="lineHeight">50sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Label tab "Ambil sendiri" / "Kurir" (ikon di sebelahnya), 13.5 semibold -->
+    <style name="Teks.Segmen">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">13.5sp</item>
+    </style>
+
+    <!-- Tombol putih di atas gradasi K14 ("Cari lagi") -->
+    <style name="Widget.LifeOfFoods.Tombol.Putih" parent="Widget.LifeOfFoods.Tombol.Utama">
+        <item name="backgroundTint">@color/latar_kartu</item>
+        <item name="android:textColor">@color/merek_utama</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Tombol bergaris putih di atas gradasi K14 ("Pesanan saya") -->
+    <style name="Widget.LifeOfFoods.Tombol.GarisPutih" parent="Widget.LifeOfFoods.Tombol.Garis">
+        <item name="strokeColor">#59FFFFFF</item>
+        <item name="android:textColor">@color/teks_di_gelap</item>
+    </style>
+
+    <!-- Tautan putih di atas gradasi K14 ("Buka di Google Maps", "Batalkan pesanan") -->
+    <style name="Widget.LifeOfFoods.Tombol.TautanPutih" parent="Widget.LifeOfFoods.Tombol.Tautan">
+        <item name="android:textColor">@color/teks_di_gelap</item>
+        <item name="android:minHeight">44dp</item>
+    </style>
+
     <!-- ===== K03 kotak digit OTP: 48x56, jarak 10, radius 14 ===== -->
     <style name="KotakOtp">
         <item name="android:layout_width">48dp</item>

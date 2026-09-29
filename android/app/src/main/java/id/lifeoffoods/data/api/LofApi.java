@@ -12,6 +12,9 @@ import id.lifeoffoods.data.api.model.NotifikasiResponse;
 import id.lifeoffoods.data.api.model.OtpRequestBody;
 import id.lifeoffoods.data.api.model.OtpRequestResponse;
 import id.lifeoffoods.data.api.model.OtpVerifyBody;
+import id.lifeoffoods.data.api.model.PesananBody;
+import id.lifeoffoods.data.api.model.PesananDto;
+import id.lifeoffoods.data.api.model.PratinjauPesananDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import java.util.List;
@@ -83,6 +86,24 @@ public interface LofApi {
 
     @DELETE("favorites/{store}")
     Call<Void> hapusFavorit(@Path("store") long storeId);
+
+    /** K12, K13 saat dibuka: harga, jam ambil, dan peringatan alergen. Tidak menyimpan apa pun. */
+    @POST("orders/preview")
+    Call<Terbungkus<PratinjauPesananDto>> pratinjauPesanan(@Body PesananBody body);
+
+    /** Tombol "Buat pesanan" di K12/K13. 201 berisi detail pesanan untuk K14. */
+    @POST("orders")
+    Call<Terbungkus<PesananDto>> buatPesanan(@Body PesananBody body);
+
+    /** K14 kode pickup. */
+    @GET("orders/{id}")
+    Call<Terbungkus<PesananDto>> detailPesanan(@Path("id") long id);
+
+    /**
+     * "Batalkan pesanan" di K14. 409 kalau statusnya bukan pending_pickup. Body alasan opsional.
+     */
+    @POST("orders/{id}/cancel")
+    Call<Terbungkus<PesananDto>> batalkanPesanan(@Path("id") long id);
 
     /** Lencana lonceng K07; daftar lengkap di K17. */
     @GET("notifications")

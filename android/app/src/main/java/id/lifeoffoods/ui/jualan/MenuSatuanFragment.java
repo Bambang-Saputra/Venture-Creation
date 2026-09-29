@@ -60,7 +60,11 @@ public class MenuSatuanFragment extends Fragment {
         binding.tombolLanjut.setOnClickListener(
                 v ->
                         BersamaDetail.lanjutKeRingkasan(
-                                this, R.id.k13_ringkasan_menu, vm.keranjang.terpilih()));
+                                this,
+                                R.id.k13_ringkasan_menu,
+                                vm.keranjang.terpilih(),
+                                vm.menuToko.getValue()));
+        BersamaDetail.muatUlangSetelahRingkasan(this, vm::muatUlang);
         Pil.ikon(binding.chipJenis, R.drawable.ic_tas, R.color.teks_kuat);
 
         vm.muat(BersamaDetail.idJualan(this), true);

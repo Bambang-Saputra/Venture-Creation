@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import id.lifeoffoods.databinding.IncludeStepperBinding;
 
 /** Mengisi komponen "Stepper jumlah". Tombol yang tidak bisa dipakai diredupkan dan dimatikan. */
-final class Stepper {
+public final class Stepper {
 
     private Stepper() {}
 
-    static void isi(
+    public static void isi(
             @NonNull IncludeStepperBinding s,
             int qty,
             boolean bisaKurang,

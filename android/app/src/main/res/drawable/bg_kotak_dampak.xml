@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "porsi terselamatkan" K14: lapisan tinta-20 di atas gradasi, sudut 16dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#330F2A1E" />
+    <corners android:radius="16dp" />
+</shape>

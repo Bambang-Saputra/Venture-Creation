@@ -147,4 +147,67 @@
     <string name="stepper_kurang">Kurangi jumlah</string>
     <string name="stepper_tambah">Tambah jumlah</string>
 
+    <!-- K12 dan K13 Ringkasan pesanan -->
+    <string name="k12_judul">Ringkasan pesanan</string>
+    <string name="k12_ambil_sendiri">Ambil sendiri</string>
+    <string name="k12_kurir">Kurir</string>
+    <string name="k12_kurir_belum">Kurir belum tersedia selama uji coba. Pesanan diambil sendiri di toko.</string>
+    <string name="k12_lokasi_ambil">LOKASI AMBIL</string>
+    <string name="k12_jam_ambil">Jam ambil</string>
+    <string name="k12_pesanan">Pesanan</string>
+    <string name="k12_item">Item (%1$d)</string>
+    <string name="k12_isi_tas">Tas kejutan · isi dipilih mitra</string>
+    <string name="k12_jumlah_harga">%1$d × %2$s</string>
+    <string name="k12_catatan">Catatan untuk mitra (opsional)</string>
+    <string name="k12_catatan_petunjuk">Contoh: alergi kacang, tolong dipisah ya</string>
+    <string name="k12_catatan_bantuan">Mitra melihat catatan ini saat menyiapkan pesanan.</string>
+    <string name="k12_peringatan_judul">Cek alergi sebelum memesan</string>
+    <string name="k12_peringatan_baris">%1$s: mengandung %2$s</string>
+    <string name="k12_peringatan_baris_mungkin">%1$s: mungkin mengandung %2$s</string>
+    <string name="k12_peringatan_berat">(alergi berat)</string>
+    <string name="k12_peringatan_catatan">Peringatan ini tidak menghalangi pesanan. Tulis catatan untuk mitra kalau perlu dipisah.</string>
+    <string name="k12_cara_bayar">Cara bayar</string>
+    <string name="k12_tunai">Tunai di tempat</string>
+    <string name="k12_tunai_ket">Bayar saat ambil</string>
+    <string name="k12_qris">QRIS toko</string>
+    <string name="k12_qris_ket">Pindai di kasir</string>
+    <string name="k12_total_bayar">Total bayar</string>
+    <string name="k12_buat_pesanan">Buat pesanan</string>
+    <string name="k12_membuat">Membuat pesanan…</string>
+    <string name="k12_gagal_judul">Ringkasan belum termuat</string>
+
+    <!-- K14 Kode pickup -->
+    <string name="k14_pesanan_aktif">PESANAN AKTIF</string>
+    <string name="k14_siap_diambil">Siap diambil</string>
+    <string name="k14_selesai">Selesai</string>
+    <string name="k14_dibatalkan">Dibatalkan</string>
+    <string name="k14_tidak_diambil">Tidak diambil</string>
+    <string name="k14_tunjukkan">TUNJUKKAN KE KASIR</string>
+    <string name="k14_kode_desk">Kode pickup %1$s</string>
+    <string name="k14_selesai_judul">Selesai, selamat menikmati</string>
+    <string name="k14_selesai_isi">Kasir sudah menukar kodemu. Terima kasih sudah menyelamatkan makanan.</string>
+    <string name="k14_batal_judul">Pesanan dibatalkan</string>
+    <string name="k14_batal_isi">Stoknya sudah dikembalikan supaya bisa dibeli orang lain.</string>
+    <string name="k14_lewat_judul">Pesanan tidak diambil</string>
+    <string name="k14_lewat_isi">Jam ambil sudah lewat lebih dari 30 menit, jadi kodenya tidak berlaku lagi.</string>
+    <string name="k14_mitra">Mitra</string>
+    <string name="k14_jam_ambil">Jam ambil</string>
+    <string name="k14_jumlah">Jumlah</string>
+    <string name="k14_jumlah_item">%1$d item</string>
+    <string name="k14_total_bayar">Bayar di tempat</string>
+    <string name="k14_total_nilai">%1$s · %2$s</string>
+    <string name="k14_tunai">tunai</string>
+    <string name="k14_qris">QRIS</string>
+    <string name="k14_dampak">Pesanan ini menyelamatkan %1$d porsi dari terbuang. Ambil tepat waktu supaya mitra tidak menunggu.</string>
+    <string name="k14_buka_maps">Buka di Google Maps</string>
+    <string name="k14_batalkan">Batalkan pesanan</string>
+    <string name="k14_batal_tanya_judul">Batalkan pesanan ini?</string>
+    <string name="k14_batal_tanya_isi">Kode pickup langsung tidak berlaku dan stoknya dikembalikan ke mitra.</string>
+    <string name="k14_batal_ya">Ya, batalkan</string>
+    <string name="k14_batal_tidak">Tidak jadi</string>
+    <string name="k14_luring">Offline. Terakhir diperbarui %1$s.</string>
+    <string name="k14_pesanan_saya">Pesanan saya</string>
+    <string name="k14_cari_lagi">Cari lagi</string>
+    <string name="k14_maps_tidak_ada">Tidak ada aplikasi peta di HP ini.</string>
+
 </resources>
