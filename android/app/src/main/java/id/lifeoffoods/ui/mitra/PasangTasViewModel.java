@@ -157,10 +157,11 @@ public class PasangTasViewModel extends PasangJualanViewModel {
             @Nullable String kandungan) {
         boolean campur = cetakan() == null;
         Set<String> pilihan = alergenTerpilih.getValue();
+        // "Dapur juga mengolah kacang" bukan pernyataan alergen isi tas; tetap wajib pilih alergen
+        // atau "Tidak mengandung alergen umum".
         boolean dinyatakan =
                 Boolean.TRUE.equals(tanpaAlergen.getValue())
-                        || (pilihan != null && !pilihan.isEmpty())
-                        || Boolean.TRUE.equals(dapurKacang.getValue());
+                        || (pilihan != null && !pilihan.isEmpty());
         JualanMitra.Periksa p =
                 JualanMitra.periksaTas(
                         campur,

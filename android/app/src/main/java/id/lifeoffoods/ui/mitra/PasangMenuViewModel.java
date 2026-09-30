@@ -139,7 +139,8 @@ public class PasangMenuViewModel extends PasangJualanViewModel {
                 continue;
             }
             dipilih++;
-            if (!sudahDinyatakan(p.id) && !Boolean.TRUE.equals(dapurKacang.getValue())) {
+            // Dapur kacang tidak menggantikan pernyataan alergen tiap item.
+            if (!sudahDinyatakan(p.id)) {
                 semuaDinyatakan = false;
             }
             if (harga(p.id) < HARGA_MIN_ITEM) {
