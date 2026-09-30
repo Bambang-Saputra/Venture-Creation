@@ -235,6 +235,38 @@ public class TangkapanLayarTest {
         tangkap("K15-riwayat");
     }
 
+    @Test
+    public void m11PesananMasuk() {
+        // Mitra dibuka langsung di M11 selama M05 belum ada.
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        tangkap("M11");
+    }
+
+    @Test
+    public void m12CocokkanKodeBerhasil() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m12_cocokkan, null);
+        // Huruf kecil diterima dan dikirim kapital; karakter keenam langsung menukar kode.
+        ((android.widget.EditText) a.findViewById(R.id.kode)).setText("lf7q2k");
+        tunggu();
+        tangkap("M12");
+    }
+
+    @Test
+    public void m12KodeSudahDipakai() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m12_cocokkan, null);
+        ((android.widget.EditText) a.findViewById(R.id.kode)).setText("M3K8PD");
+        tunggu();
+        tangkap("M12-galat");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -433,6 +465,40 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
             }
+            if (path.startsWith("/api/partner/stores?") || path.equals("/api/partner/stores")) {
+                return json(
+                        "{\"data\":[{\"id\":5,\"name\":\"Kopi Kalyan SCBD\",\"category\":\"cafe\","
+                                + "\"address\":\"Jl. Jend. Sudirman\",\"photo_path\":null,"
+                                + "\"is_temporarily_closed\":false,\"my_role\":\"owner\"}]}");
+            }
+            if (path.startsWith("/api/partner/stores/5/orders")) {
+                return json(pesananMitra(path.contains("status=history")));
+            }
+            if (path.startsWith("/api/pickup-codes/redeem")) {
+                String body = r.getBody().readUtf8();
+                if (body.contains("\"LF7Q2K\"")) {
+                    return json(
+                            "{\"data\":"
+                                    + barisMitra(
+                                            88,
+                                            "completed",
+                                            "Dara",
+                                            "Tas Pastry Sore",
+                                            1,
+                                            18000,
+                                            "cash",
+                                            "Alergi kacang, tolong dipisah ya",
+                                            "[{\"code\":\"kacang_tanah\",\"name\":\"Kacang tanah\",\"severity\":\"severe\"}]",
+                                            "20:30",
+                                            "21:00",
+                                            "20:41")
+                                    + "}");
+                }
+                return new MockResponse()
+                        .setResponseCode(409)
+                        .setHeader("Content-Type", "application/json")
+                        .setBody("{\"message\":\"Kode ini sudah dipakai pada 19.12.\"}");
+            }
             if (path.startsWith("/api/orders?")) {
                 return json(daftarPesanan(path.contains("status=history")));
             }
@@ -456,6 +522,142 @@ public class TangkapanLayarTest {
                                 + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /** Contoh Figma M11: tiga menunggu, satu diambil, satu tidak diambil. */
+        private static String pesananMitra(boolean riwayat) {
+            if (!riwayat) {
+                return "{\"data\":["
+                        + barisMitra(
+                                88,
+                                "pending_pickup",
+                                "Dara",
+                                "Tas Pastry Sore",
+                                1,
+                                18000,
+                                "cash",
+                                "Alergi kacang, tolong dipisah ya",
+                                "[{\"code\":\"kacang_tanah\",\"name\":\"Kacang tanah\","
+                                        + "\"severity\":\"severe\"}]",
+                                "20:30",
+                                "21:00",
+                                null)
+                        + ","
+                        + barisMitra(
+                                89,
+                                "pending_pickup",
+                                "Bima",
+                                "Croissant mentega",
+                                2,
+                                18000,
+                                "qris_static",
+                                null,
+                                "[{\"code\":\"susu\",\"name\":\"Susu\",\"severity\":\"avoid\"}]",
+                                "20:30",
+                                "21:00",
+                                null)
+                        + ","
+                        + barisMitra(
+                                90,
+                                "pending_pickup",
+                                "Sari",
+                                "Tas Roti Malam",
+                                1,
+                                15000,
+                                "cash",
+                                null,
+                                "[]",
+                                "21:00",
+                                "21:30",
+                                null)
+                        + "],\"current_page\":1,\"last_page\":1}";
+            }
+            return "{\"data\":["
+                    + barisMitra(
+                            80,
+                            "completed",
+                            "Nadia",
+                            "Tas Minuman Dingin",
+                            1,
+                            12000,
+                            "cash",
+                            null,
+                            "[]",
+                            "20:00",
+                            "21:00",
+                            "20:12")
+                    + ","
+                    + barisMitra(
+                            77,
+                            "no_show",
+                            "Rafi",
+                            "Tas Pastry Sore",
+                            1,
+                            18000,
+                            "cash",
+                            null,
+                            "[]",
+                            "19:30",
+                            "20:30",
+                            null)
+                    + "],\"current_page\":1,\"last_page\":1}";
+        }
+
+        private static String barisMitra(
+                long id,
+                String status,
+                String pembeli,
+                String judul,
+                int qty,
+                long total,
+                String bayar,
+                String catatan,
+                String alergi,
+                String mulai,
+                String akhir,
+                String selesai) {
+            String hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)).toString();
+            return "{\"id\":"
+                    + id
+                    + ",\"code\":\"LOF-"
+                    + id
+                    + "\",\"status\":\""
+                    + status
+                    + "\",\"buyer_name\":\""
+                    + pembeli
+                    + "\",\"items\":[{\"title\":\""
+                    + judul
+                    + "\",\"qty\":"
+                    + qty
+                    + ",\"line_total_rupiah\":"
+                    + total
+                    + "}],"
+                    + "\"item_count\":"
+                    + qty
+                    + ",\"total_rupiah\":"
+                    + total
+                    + ",\"payment_method\":\""
+                    + bayar
+                    + "\",\"payment_status\":\"unpaid\","
+                    + "\"note\":"
+                    + (catatan == null ? "null" : "\"" + catatan + "\"")
+                    + ",\"allergen_snapshot\":"
+                    + alergi
+                    + ",\"pickup_start\":\""
+                    + hari
+                    + "T"
+                    + mulai
+                    + ":00+07:00\""
+                    + ",\"pickup_end\":\""
+                    + hari
+                    + "T"
+                    + akhir
+                    + ":00+07:00\""
+                    + ",\"placed_at\":\""
+                    + hari
+                    + "T18:00:00+07:00\",\"completed_at\":"
+                    + (selesai == null ? "null" : "\"" + hari + "T" + selesai + ":00+07:00\"")
+                    + "}";
         }
 
         /**

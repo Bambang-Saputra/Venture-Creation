@@ -6,6 +6,7 @@ import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
 import id.lifeoffoods.data.api.model.HalamanPesanan;
+import id.lifeoffoods.data.api.model.HalamanPesananMitra;
 import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.data.api.model.MeResponse;
@@ -15,9 +16,12 @@ import id.lifeoffoods.data.api.model.OtpRequestResponse;
 import id.lifeoffoods.data.api.model.OtpVerifyBody;
 import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PesananDto;
+import id.lifeoffoods.data.api.model.PesananMitraDto;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
 import id.lifeoffoods.data.api.model.Terbungkus;
+import id.lifeoffoods.data.api.model.TokoMitraDto;
+import id.lifeoffoods.data.api.model.TukarKodeBody;
 import java.util.List;
 import java.util.Map;
 import retrofit2.Call;
@@ -113,6 +117,25 @@ public interface LofApi {
     /** Lencana lonceng K07; daftar lengkap di K17. */
     @GET("notifications")
     Call<NotifikasiResponse> notifikasi(@Query("unread") int belumDibaca);
+
+    /** Toko milik akun mitra (pemilik atau kasir); dipakai untuk mendapatkan store_id. */
+    @GET("partner/stores")
+    Call<Terbungkus<List<TokoMitraDto>>> tokoSaya();
+
+    /**
+     * M11 Pesanan masuk dan M21 Riwayat. {@code status} = {@code pending} (urut jam ambil) atau
+     * {@code history}; {@code date} (yyyy-MM-dd, opsional) menyaring tanggal ambil.
+     */
+    @GET("partner/stores/{store}/orders")
+    Call<HalamanPesananMitra> pesananMitra(
+            @Path("store") long storeId,
+            @Query("status") String status,
+            @Query("date") String tanggal,
+            @Query("page") int halaman);
+
+    /** M12 Cocokkan kode. 404 kode tidak ada di toko ini, 409 sudah dipakai, batal, atau lewat. */
+    @POST("pickup-codes/redeem")
+    Call<Terbungkus<PesananMitraDto>> tukarKode(@Body TukarKodeBody body);
 
     /**
      * Token dikirim eksplisit karena sesi lokal langsung dihapus sesudah enqueue, sebelum

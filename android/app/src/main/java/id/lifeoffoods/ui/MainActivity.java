@@ -113,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
     @IdRes
     private static int berandaUntuk(@Nullable String peran) {
-        return SesiPengguna.PERAN_MITRA.equals(peran) ? R.id.m05_dashboard : R.id.k07_beranda;
+        // Mitra dibuka di M11 Pesanan masuk selama M05 Dashboard belum dibuat, supaya alur demo
+        // minggu 5 (M11 -> M12) bisa dicoba. Kembalikan ke m05_dashboard setelah M05 selesai.
+        return SesiPengguna.PERAN_MITRA.equals(peran) ? R.id.m11_pesanan : R.id.k07_beranda;
     }
 
     @NavigationRes

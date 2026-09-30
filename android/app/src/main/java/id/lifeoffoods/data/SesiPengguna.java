@@ -21,6 +21,7 @@ public class SesiPengguna {
     private static final String KUNCI_PERLU_PROFIL = "perlu_profil";
     private static final String KUNCI_PESANAN = "pesanan_";
     private static final String KUNCI_PESANAN_WAKTU = "pesanan_waktu_";
+    private static final String KUNCI_TOKO = "toko";
 
     private final SharedPreferences prefs;
 
@@ -54,6 +55,19 @@ public class SesiPengguna {
     /** Dipanggil saat logout, akun dihapus, atau server menjawab 401. */
     public void hapus() {
         prefs.edit().clear().apply();
+    }
+
+    /**
+     * Toko mitra dari GET /partner/stores, disimpan supaya M11/M12 tidak memanggilnya tiap layar.
+     * Selama pilot satu akun mitra memegang satu toko. Ikut terhapus di {@link #hapus()}.
+     */
+    public void simpanToko(long id) {
+        prefs.edit().putLong(KUNCI_TOKO, id).apply();
+    }
+
+    /** 0 kalau belum diketahui. */
+    public long toko() {
+        return prefs.getLong(KUNCI_TOKO, 0);
     }
 
     @Nullable

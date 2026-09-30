@@ -36,4 +36,14 @@
             android:defaultValue="Dashboard mitra"
             app:argType="string" />
     </fragment>
+
+    <!-- M11 Pesanan masuk (PRD-10). Tujuan awal mitra selama M05 belum dibuat. -->
+    <fragment
+        android:id="@+id/m11_pesanan"
+        android:name="id.lifeoffoods.ui.mitra.PesananMasukFragment" />
+
+    <!-- M12 Cocokkan kode (PRD-11). -->
+    <fragment
+        android:id="@+id/m12_cocokkan"
+        android:name="id.lifeoffoods.ui.mitra.CocokkanKodeFragment" />
 </navigation>

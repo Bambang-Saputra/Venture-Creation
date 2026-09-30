@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kartu pesanan M11 (Figma "Pesanan LF7Q2K"). Beda dengan Figma, disengaja:
+    - Pil "Kode LF7Q2K" diganti cara bayar (Tunai / QRIS toko), karena API tidak mengirim kode
+      pickup ke mitra (PRD-10 kriteria 4) dan cara bayar dibutuhkan untuk rekonsiliasi.
+    - Nama pembeli hanya nama depan dari API ("Dara"), bukan "Dara R.".
+    - Total ditambahkan di bawah; alergi pembeli ditampilkan di kartu (PRD-10 kriteria 3).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_kartu_jualan"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pembeli"
+                style="@style/Teks.JudulKartu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:letterSpacing="-0.014"
+                android:maxLines="1"
+                tools:text="Dara" />
+
+            <TextView
+                android:id="@+id/item"
+                style="@style/Teks.IsiKecil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                tools:text="Tas Pastry Sore × 1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/status"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_pil_proses"
+            android:textColor="@color/tanda_proses_teks"
+            tools:text="Menunggu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/bayar"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pil_isian"
+            android:textColor="@color/teks_kuat"
+            tools:text="Tunai" />
+
+        <TextView
+            android:id="@+id/jam"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_pil_isian"
+            android:textColor="@color/teks_kuat"
+            tools:text="Ambil 20.30 sampai 21.00" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/total"
+            style="@style/Teks.JudulKotak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/teks_merek"
+            tools:text="Rp18.000" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/catatan"
+        layout="@layout/include_catatan_alergi" />
+</LinearLayout>

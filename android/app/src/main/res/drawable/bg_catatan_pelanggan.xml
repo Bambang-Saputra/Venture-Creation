@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "Catatan pelanggan" M11/M12: latar proses (kuning), sudut 12dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/tanda_proses_latar" />
+    <corners android:radius="12dp" />
+</shape>

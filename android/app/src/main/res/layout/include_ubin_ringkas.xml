@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ubin ringkasan M11: angka Gabarito 19 berwarna, label Label/11. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_ubin_ringkas"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/angka"
+        style="@style/Teks.Harga.Total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/Teks.Keterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        tools:text="Menunggu" />
+</LinearLayout>

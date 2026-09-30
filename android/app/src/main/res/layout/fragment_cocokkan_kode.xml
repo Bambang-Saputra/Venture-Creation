@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M12 Cocokkan kode pickup (Figma 73:2394, PRD-11). Segmen Pindai QR (M18, COULD, belum ada) /
+    Ketik kode, enam kotak kode, lalu kotak hasil setelah kode cocok.
+
+    Beda dengan Figma, disengaja:
+    - Satu tindakan: POST /pickup-codes/redeem langsung menyelesaikan pesanan, jadi tombolnya
+      "Cocokkan dan tandai diambil"; setelah cocok berubah jadi "Selesai" dan "Cocokkan kode lain".
+    - "Dibayar Rp5.000 · GoPay" menjadi total dan cara bayar yang diterima kasir (tunai / QRIS).
+    - Baris Voucher tidak ada (voucher WON'T selama pilot).
+    - Alergi pembeli ditampilkan sekali lagi di kotak hasil (PRD-11 kriteria 7).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_kartu"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="20dp">
+
+            <!-- Segmen Pindai QR / Ketik kode -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_segmen"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/tab_pindai"
+                    style="@style/Teks.Butir"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:alpha="0.55"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="@string/m12_pindai_qr"
+                    android:textColor="@color/teks_sekunder" />
+
+                <TextView
+                    style="@style/Teks.Butir"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_segmen_aktif"
+                    android:gravity="center"
+                    android:text="@string/m12_ketik_kode"
+                    android:textColor="@color/teks_merek" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/Teks.Deskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:labelFor="@id/kode"
+                android:text="@string/m12_petunjuk" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <!-- Menerima ketikan; transparan di atas kotak, sama seperti K03. -->
+                <EditText
+                    android:id="@+id/kode"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                    android:hint="@string/m12_hint_kode"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapCharacters|textNoSuggestions|textVisiblePassword"
+                    android:maxLength="6"
+                    android:textColor="@android:color/transparent"
+                    android:textColorHint="@android:color/transparent" />
+
+                <LinearLayout
+                    android:id="@+id/baris_kotak"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:importantForAccessibility="noHideDescendants"
+                    android:orientation="horizontal">
+
+                    <TextView android:id="@+id/kotak1" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak2" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak3" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak4" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak5" style="@style/KotakOtp" />
+                    <TextView android:id="@+id/kotak6" style="@style/KotakOtp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/galat_kode"
+                style="@style/Teks.Bantuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:accessibilityLiveRegion="assertive"
+                android:textColor="@color/tanda_bahaya_teks"
+                android:visibility="gone"
+                tools:text="Kode ini sudah dipakai pada 19.12."
+                tools:visibility="visible" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <!-- Hasil setelah kode cocok -->
+            <LinearLayout
+                android:id="@+id/hasil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:accessibilityLiveRegion="polite"
+                android:background="@drawable/bg_hasil_cocok"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/Teks.Pil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_pil_merek"
+                    android:text="@string/m12_kode_cocok"
+                    android:textColor="@color/tanda_hemat_teks" />
+
+                <include
+                    android:id="@+id/baris_pelanggan"
+                    layout="@layout/include_baris_info" />
+
+                <include
+                    android:id="@+id/baris_pesanan"
+                    layout="@layout/include_baris_info" />
+
+                <include
+                    android:id="@+id/baris_bayar"
+                    layout="@layout/include_baris_info" />
+
+                <include
+                    android:id="@+id/baris_jam"
+                    layout="@layout/include_baris_info" />
+
+                <include
+                    android:id="@+id/catatan"
+                    layout="@layout/include_catatan_alergi" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bilah_aksi"
+        style="@style/BilahAksi">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_lain"
+            style="@style/Widget.LifeOfFoods.Tombol.Garis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:text="@string/m12_kode_lain"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_utama"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/m12_tandai"
+            app:icon="@drawable/ic_centang"
+            app:iconGravity="textStart"
+            app:iconSize="17dp" />
+    </LinearLayout>
+</LinearLayout>
