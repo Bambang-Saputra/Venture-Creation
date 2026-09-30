@@ -5,6 +5,7 @@ import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
+import id.lifeoffoods.data.api.model.HalamanPesanan;
 import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.data.api.model.MeResponse;
@@ -98,6 +99,10 @@ public interface LofApi {
     /** K14 kode pickup. */
     @GET("orders/{id}")
     Call<Terbungkus<PesananDto>> detailPesanan(@Path("id") long id);
+
+    /** K15 Pesanan saya. {@code status} = {@code active} atau {@code history}; 20 per halaman. */
+    @GET("orders")
+    Call<HalamanPesanan> daftarPesanan(@Query("status") String status, @Query("page") int halaman);
 
     /**
      * "Batalkan pesanan" di K14. 409 kalau statusnya bukan pending_pickup. Body alasan opsional.

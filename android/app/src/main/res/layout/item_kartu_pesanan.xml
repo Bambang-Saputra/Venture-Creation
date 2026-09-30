@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Komponen "Kartu pesanan" K15: slot foto 60x60, judul + pil status, nama toko, lalu waktu ambil
+    dan total. Judul memakai nama toko karena GET /orders belum mengirim judul item; baris kedua
+    berisi jumlah item.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_kartu_jualan"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_slot_foto">
+
+        <include
+            layout="@layout/include_isi_slot_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/judul"
+                style="@style/Teks.JudulKartuKecil"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Kopi Kalyan" />
+
+            <TextView
+                android:id="@+id/status"
+                style="@style/Teks.Pil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_pil_merek"
+                android:textColor="@color/tanda_hemat_teks"
+                tools:text="Menunggu diambil" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/keterangan"
+            style="@style/Teks.NamaToko"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="2 item · LOF-7Q2K9A" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/waktu"
+                style="@style/Teks.Keterangan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/teks_kuat"
+                tools:text="Hari ini, ambil 20.30" />
+
+            <TextView
+                android:id="@+id/total"
+                style="@style/Teks.JudulKotak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/teks_merek"
+                tools:text="Rp18.000" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
