@@ -187,7 +187,31 @@ public class RingkasanPesananFragment extends Fragment {
         adapter.submitList(p.items == null ? null : new ArrayList<>(p.items));
         adapter.notifyItemRangeChanged(0, jumlahItem);
         isiPeringatan(p);
+        isiRincianBiaya(p);
         binding.total.setText(FormatTampilan.rupiah(p.totalRupiah));
+    }
+
+    /** Kotak "Rincian biaya" Figma. Layanan dan diskon disembunyikan kalau nilainya nol. */
+    private void isiRincianBiaya(PratinjauPesananDto p) {
+        binding.barisSubtotal.label.setText(R.string.k12_subtotal);
+        binding.barisSubtotal.nilai.setText(FormatTampilan.rupiah(p.subtotalRupiah));
+
+        binding.barisLayanan
+                .getRoot()
+                .setVisibility(p.serviceFeeRupiah > 0 ? View.VISIBLE : View.GONE);
+        binding.barisLayanan.label.setText(R.string.k12_biaya_layanan);
+        binding.barisLayanan.nilai.setText(FormatTampilan.rupiah(p.serviceFeeRupiah));
+
+        binding.barisDiskon
+                .getRoot()
+                .setVisibility(p.discountRupiah > 0 ? View.VISIBLE : View.GONE);
+        binding.barisDiskon.label.setText(R.string.k12_diskon);
+        binding.barisDiskon.nilai.setText(
+                getString(R.string.k12_potongan, FormatTampilan.rupiah(p.discountRupiah)));
+        binding.barisDiskon.nilai.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.teks_merek));
+
+        binding.totalRincian.setText(FormatTampilan.rupiah(p.totalRupiah));
     }
 
     private void isiBaris(

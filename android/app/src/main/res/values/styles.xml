@@ -508,10 +508,19 @@
     <style name="Teks.KodePickup">
         <item name="android:fontFamily">@font/gabarito_extrabold</item>
         <item name="fontFamily">@font/gabarito_extrabold</item>
-        <item name="android:textSize">44sp</item>
-        <item name="lineHeight">50sp</item>
-        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textSize">40sp</item>
+        <item name="lineHeight">44sp</item>
+        <item name="android:letterSpacing">0.075</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Style Figma "Kicker/11": Gabarito 11.5, spasi 1.6, huruf kapital di string. -->
+    <style name="Teks.Kicker">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="lineHeight">14sp</item>
+        <item name="android:letterSpacing">0.14</item>
     </style>
 
     <!-- Label tab "Ambil sendiri" / "Kurir" (ikon di sebelahnya), 13.5 semibold -->

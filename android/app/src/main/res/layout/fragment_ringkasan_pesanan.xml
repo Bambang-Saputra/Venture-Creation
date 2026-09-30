@@ -47,16 +47,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:background="@drawable/bg_kartu_jualan"
+                    android:background="@drawable/bg_segmen"
                     android:orientation="horizontal"
-                    android:padding="5dp">
+                    android:padding="4dp">
 
                     <LinearLayout
                         android:id="@+id/tab_ambil"
                         android:layout_width="0dp"
-                        android:layout_height="44dp"
+                        android:layout_height="42dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_kotak_merek_12"
+                        android:background="@drawable/bg_segmen_aktif"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -76,7 +76,8 @@
                     <LinearLayout
                         android:id="@+id/tab_kurir"
                         android:layout_width="0dp"
-                        android:layout_height="44dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:alpha="0.55"
                         android:background="?attr/selectableItemBackground"
@@ -101,17 +102,18 @@
                 <LinearLayout style="@style/KotakDetail">
 
                     <TextView
-                        style="@style/Teks.Kapital"
+                        style="@style/Teks.Keterangan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:letterSpacing="0.045"
                         android:text="@string/k12_lokasi_ambil" />
 
                     <TextView
                         android:id="@+id/alamat"
-                        style="@style/Teks.Isi"
+                        style="@style/Teks.Butir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="3dp"
                         android:textColor="@color/teks_utama"
                         tools:text="Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan" />
 
@@ -136,16 +138,17 @@
                             app:tint="@color/teks_kuat" />
 
                         <TextView
-                            style="@style/Teks.Isi"
+                            style="@style/Teks.Butir"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:text="@string/k12_jam_ambil" />
+                            android:text="@string/k12_jam_ambil"
+                            android:textColor="@color/teks_kuat" />
 
                         <TextView
                             android:id="@+id/jam_ambil"
-                            style="@style/Teks.Isi"
+                            style="@style/Teks.Butir"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/teks_utama"
@@ -283,7 +286,7 @@
 
                         <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/radio_tunai"
-                            style="@style/Teks.Isi"
+                            style="@style/Teks.Butir"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -295,7 +298,7 @@
                             app:buttonTint="@color/merek_utama" />
 
                         <TextView
-                            style="@style/Teks.Keterangan"
+                            style="@style/Teks.Bantuan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/k12_tunai_ket" />
@@ -311,7 +314,7 @@
 
                         <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/radio_qris"
-                            style="@style/Teks.Isi"
+                            style="@style/Teks.Butir"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -322,10 +325,62 @@
                             app:buttonTint="@color/merek_utama" />
 
                         <TextView
-                            style="@style/Teks.Keterangan"
+                            style="@style/Teks.Bantuan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/k12_qris_ket" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Rincian biaya. Baris layanan dan diskon hanya tampil kalau nilainya bukan nol;
+                     ongkos kurir tidak ada karena pesanan selalu diambil sendiri. -->
+                <LinearLayout style="@style/KotakDetail">
+
+                    <TextView
+                        style="@style/Teks.JudulKotak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/k12_rincian_biaya" />
+
+                    <include
+                        android:id="@+id/baris_subtotal"
+                        layout="@layout/include_baris_biaya" />
+
+                    <include
+                        android:id="@+id/baris_layanan"
+                        layout="@layout/include_baris_biaya" />
+
+                    <include
+                        android:id="@+id/baris_diskon"
+                        layout="@layout/include_baris_biaya" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/garis_halus" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:letterSpacing="-0.014"
+                            android:text="@string/k12_total" />
+
+                        <TextView
+                            android:id="@+id/total_rincian"
+                            style="@style/Teks.Harga.Total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Rp18.000" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

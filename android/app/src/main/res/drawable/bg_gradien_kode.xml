@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Latar K14 Kode pickup: hijau merek tua di atas ke hijau merek di bawah. -->
+<!-- Latar K14 Kode pickup, style Figma "Gradasi/Kode pickup": #146B47 -> #1B8A5A (52%) -> #23A066. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:angle="270"
-        android:endColor="@color/merek_utama"
-        android:startColor="@color/merek_utama_tekan" />
+        android:centerColor="@color/merek_utama"
+        android:centerY="0.52"
+        android:endColor="@color/gradasi_kode_bawah"
+        android:startColor="@color/gradasi_kode_atas" />
 </shape>

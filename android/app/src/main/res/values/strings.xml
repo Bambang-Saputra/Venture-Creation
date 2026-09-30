@@ -172,6 +172,12 @@
     <string name="k12_qris">QRIS toko</string>
     <string name="k12_qris_ket">Pindai di kasir</string>
     <string name="k12_total_bayar">Total bayar</string>
+    <string name="k12_rincian_biaya">Rincian biaya</string>
+    <string name="k12_subtotal">Subtotal</string>
+    <string name="k12_biaya_layanan">Biaya layanan</string>
+    <string name="k12_diskon">Diskon</string>
+    <string name="k12_potongan">-%1$s</string>
+    <string name="k12_total">Total</string>
     <string name="k12_buat_pesanan">Buat pesanan</string>
     <string name="k12_membuat">Membuat pesanan…</string>
     <string name="k12_gagal_judul">Ringkasan belum termuat</string>
