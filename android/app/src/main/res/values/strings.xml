@@ -241,4 +241,48 @@
     <string name="k15_ke_beranda">Ke Beranda</string>
     <string name="k15_buka_pesanan">Buka pesanan %1$s, %2$s</string>
 
+    <!-- Nav mitra -->
+    <string name="nav_catat">Catat</string>
+    <string name="nav_toko">Toko</string>
+
+    <!-- M11 Pesanan masuk (PRD-10) -->
+    <string name="m11_judul">Pesanan</string>
+    <string name="m11_cocokkan">Cocokkan kode</string>
+    <string name="m11_tab_hari_ini">Hari ini</string>
+    <string name="m11_tab_riwayat">Riwayat</string>
+    <string name="m11_menunggu">Menunggu</string>
+    <string name="m11_diambil">Diambil</string>
+    <string name="m11_tidak_diambil">Tidak diambil</string>
+    <string name="m11_dibatalkan">Dibatalkan</string>
+    <string name="m11_diambil_jam">Diambil %1$s</string>
+    <string name="m11_ambil_jam">Ambil %1$s</string>
+    <string name="m11_bayar_tunai">Tunai</string>
+    <string name="m11_bayar_qris">QRIS toko</string>
+    <string name="m11_catatan">Catatan: %1$s</string>
+    <string name="m11_alergi_berat">Alergi berat: %1$s</string>
+    <string name="m11_alergi">Hindari: %1$s</string>
+    <string name="m11_kosong_hari_ini">Belum ada pesanan hari ini.\nPesanan baru muncul di sini paling lambat 30 detik setelah dibuat.</string>
+    <string name="m11_kosong_riwayat">Belum ada pesanan yang selesai hari ini.</string>
+    <string name="m11_luring">Offline. Daftar terakhir diperbarui %1$s.</string>
+    <string name="m11_gagal_judul">Pesanan belum termuat</string>
+    <string name="m11_buka_kartu">Pesanan %1$s, %2$s. Ketuk untuk mencocokkan kode.</string>
+
+    <!-- M12 Cocokkan kode (PRD-11) -->
+    <string name="m12_judul">Cocokkan kode pickup</string>
+    <string name="m12_pindai_qr">Pindai QR</string>
+    <string name="m12_pindai_belum">Pindai QR belum tersedia. Ketik kode dari HP pembeli.</string>
+    <string name="m12_ketik_kode">Ketik kode</string>
+    <string name="m12_petunjuk">Minta pelanggan menunjukkan kode di aplikasinya, lalu ketik di sini.</string>
+    <string name="m12_hint_kode">Kode pickup 6 huruf dan angka</string>
+    <string name="m12_tandai">Cocokkan dan tandai diambil</string>
+    <string name="m12_menukar">Mencocokkan…</string>
+    <string name="m12_selesai">Selesai</string>
+    <string name="m12_kode_lain">Kode lain</string>
+    <string name="m12_kode_cocok">Kode cocok, sudah diambil</string>
+    <string name="m12_pelanggan">Pelanggan</string>
+    <string name="m12_pesanan">Pesanan</string>
+    <string name="m12_terima_bayar">Terima bayar</string>
+    <string name="m12_jam_ambil">Jam ambil</string>
+    <string name="m12_bayar_nilai">%1$s · %2$s</string>
+
 </resources>

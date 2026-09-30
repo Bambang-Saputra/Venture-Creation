@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Alergi dan catatan pembeli, dipakai di kartu M11 dan hasil M12. PRD-10 kriteria 3: tampil
+    langsung, bukan di detail. Alergi berat memakai kotak merah bergaris; alergi biasa dan catatan
+    memakai kotak kuning "Catatan pelanggan" dari Figma. Masing-masing disembunyikan kalau kosong.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/kotak_alergi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_alergi_berat"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/ikon_alergi"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="2dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_peringatan"
+            app:tint="@color/tanda_bahaya_teks" />
+
+        <TextView
+            android:id="@+id/teks_alergi"
+            style="@style/Teks.Catatan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/tanda_bahaya_teks"
+            tools:text="Alergi BERAT: Kacang tanah. Alergi: Susu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/kotak_catatan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_catatan_pelanggan"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="2dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_pesan"
+            app:tint="@color/tanda_proses_teks" />
+
+        <TextView
+            android:id="@+id/teks_catatan"
+            style="@style/Teks.Catatan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:textColor="@color/tanda_proses_teks"
+            tools:text="Catatan: Alergi kacang, tolong dipisah ya" />
+    </LinearLayout>
+</LinearLayout>
