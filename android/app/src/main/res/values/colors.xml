@@ -9,6 +9,12 @@
     <color name="merek_lime">#A3D977</color>
     <color name="merek_tinta">#0F2A1E</color>
 
+    <!-- Gradasi/Kode pickup (K14): atas ke bawah, tiga titik. -->
+    <color name="gradasi_kode_atas">#146B47</color>
+    <color name="gradasi_kode_bawah">#23A066</color>
+    <!-- Kotak "Dampak" K14: hutan tua 45% di atas gradasi. -->
+    <color name="latar_dampak">#730A3A25</color>
+
     <!-- Latar -->
     <color name="latar_halaman">#F5F9F5</color>
     <color name="latar_kanvas">#EFF4EF</color>

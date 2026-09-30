@@ -6,13 +6,17 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.SavedStateHandle;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.chip.ChipGroup;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.pesanan.RingkasanPesananFragment;
 import id.lifeoffoods.ui.umum.Pil;
+import java.util.List;
 import java.util.Map;
 
 /** Bagian yang sama di K10 dan K11: argumen, chip info, ikon kategori, tombol favorit, lanjut. */
@@ -83,20 +87,68 @@ final class BersamaDetail {
         return favorit ? R.color.tanda_bahaya_teks : R.color.merek_utama;
     }
 
-    /** Ke K12 (tas) atau K13 (menu satuan) dengan isi keranjang. */
-    static void lanjutKeRingkasan(Fragment f, int tujuan, Map<Long, Integer> terpilih) {
+    /**
+     * Ke K12 (tas) atau K13 (menu satuan) dengan isi keranjang. Stok dan harga normal dari {@code
+     * sumber} ikut dikirim supaya stepper dan harga coret di K13 sama dengan K11.
+     */
+    static void lanjutKeRingkasan(
+            Fragment f,
+            int tujuan,
+            Map<Long, Integer> terpilih,
+            @Nullable List<? extends ListingDto> sumber) {
         long[] id = new long[terpilih.size()];
         int[] qty = new int[terpilih.size()];
+        int[] stok = new int[terpilih.size()];
+        long[] normal = new long[terpilih.size()];
         int i = 0;
         for (Map.Entry<Long, Integer> e : terpilih.entrySet()) {
             id[i] = e.getKey();
             qty[i] = e.getValue();
+            ListingDto l = cari(sumber, e.getKey());
+            stok[i] = l == null ? 0 : l.qtyRemaining;
+            normal[i] = l == null || l.originalValueRupiah == null ? 0 : l.originalValueRupiah;
             i++;
         }
         Bundle args = new Bundle();
         args.putLongArray(ARG_ID_JUALAN, id);
         args.putIntArray(ARG_JUMLAH, qty);
+        args.putIntArray(RingkasanPesananFragment.ARG_STOK, stok);
+        args.putLongArray(RingkasanPesananFragment.ARG_HARGA_NORMAL, normal);
         NavHostFragment.findNavController(f).navigate(tujuan, args);
+    }
+
+    @Nullable
+    private static ListingDto cari(@Nullable List<? extends ListingDto> sumber, long id) {
+        if (sumber == null) {
+            return null;
+        }
+        for (ListingDto l : sumber) {
+            if (l != null && l.id == id) {
+                return l;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Ringkasan menolak karena stok berubah (PRD-06 "Kosong dan galat"): muat ulang detail begitu
+     * kembali ke K10/K11.
+     */
+    static void muatUlangSetelahRingkasan(Fragment f, Runnable muatUlang) {
+        NavBackStackEntry ini = NavHostFragment.findNavController(f).getCurrentBackStackEntry();
+        if (ini == null) {
+            return;
+        }
+        SavedStateHandle h = ini.getSavedStateHandle();
+        h.<Boolean>getLiveData(RingkasanPesananFragment.HASIL_MUAT_ULANG)
+                .observe(
+                        f.getViewLifecycleOwner(),
+                        perlu -> {
+                            if (Boolean.TRUE.equals(perlu)) {
+                                h.set(RingkasanPesananFragment.HASIL_MUAT_ULANG, false);
+                                muatUlang.run();
+                            }
+                        });
     }
 
     static void sesiBerakhir(Fragment f) {

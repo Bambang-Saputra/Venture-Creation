@@ -76,32 +76,32 @@
         android:id="@+id/k11_detail_menu"
         android:name="id.lifeoffoods.ui.jualan.MenuSatuanFragment" />
 
-    <!-- Ringkasan pesanan; argumen id_jualan (long[]) dan jumlah (int[]) dari K10/K11. -->
+    <!--
+        K12 dan K13 Ringkasan pesanan (PRD-06): satu fragment, argumen id_jualan (long[]) dan
+        jumlah (int[]) dari K10/K11, opsional stok (int[]) dan harga_normal (long[]).
+    -->
     <fragment
         android:id="@+id/k12_ringkasan_tas"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
+        android:name="id.lifeoffoods.ui.pesanan.RingkasanPesananFragment">
         <argument
-            android:name="kode_layar"
-            android:defaultValue="K12"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Ringkasan tas kejutan"
-            app:argType="string" />
+            android:name="menu_satuan"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
         android:id="@+id/k13_ringkasan_menu"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
+        android:name="id.lifeoffoods.ui.pesanan.RingkasanPesananFragment">
         <argument
-            android:name="kode_layar"
-            android:defaultValue="K13"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Ringkasan menu satuan"
-            app:argType="string" />
+            android:name="menu_satuan"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </fragment>
+
+    <!-- K14 Kode pickup (PRD-07), argumen id_pesanan (long). -->
+    <fragment
+        android:id="@+id/k14_kode_pickup"
+        android:name="id.lifeoffoods.ui.pesanan.KodePickupFragment" />
 
     <fragment
         android:id="@+id/k15_pesanan"

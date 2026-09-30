@@ -21,6 +21,7 @@ import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.databinding.FragmentDetailTasBinding;
 import id.lifeoffoods.ui.umum.Pil;
 import id.lifeoffoods.ui.umum.SisiAman;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +54,13 @@ public class DetailTasFragment extends Fragment {
         binding.tombolPesan.setOnClickListener(
                 v ->
                         BersamaDetail.lanjutKeRingkasan(
-                                this, R.id.k12_ringkasan_tas, vm.keranjang.terpilih()));
+                                this,
+                                R.id.k12_ringkasan_tas,
+                                vm.keranjang.terpilih(),
+                                vm.detail.getValue() == null
+                                        ? null
+                                        : Collections.singletonList(vm.detail.getValue())));
+        BersamaDetail.muatUlangSetelahRingkasan(this, vm::muatUlang);
 
         vm.muat(BersamaDetail.idJualan(this), false);
         vm.status.observe(getViewLifecycleOwner(), this::tampilkanStatus);

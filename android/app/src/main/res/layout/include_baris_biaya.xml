@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu baris "Rincian biaya" K12/K13: label Teks/13 kiri, nilai Label/13.5 kanan. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/Teks.Deskripsi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="Subtotal" />
+
+    <TextView
+        android:id="@+id/nilai"
+        style="@style/Teks.Butir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/teks_utama"
+        tools:text="Rp18.000" />
+</LinearLayout>

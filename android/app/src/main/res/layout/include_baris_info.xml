@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu baris label/nilai di kartu kode K14 ("Mitra  Kopi Kalyan"). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/Teks.IsiKecil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Mitra" />
+
+    <TextView
+        android:id="@+id/nilai"
+        style="@style/Teks.Sub"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:textColor="@color/teks_utama"
+        tools:text="Kopi Kalyan" />
+</LinearLayout>

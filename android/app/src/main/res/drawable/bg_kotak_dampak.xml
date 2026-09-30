@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "Dampak" K14: #0A3A25 45% di atas gradasi, sudut 18dp (Figma). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_dampak" />
+    <corners android:radius="18dp" />
+</shape>
