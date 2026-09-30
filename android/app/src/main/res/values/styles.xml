@@ -44,6 +44,15 @@
         <item name="android:letterSpacing">-0.012</item>
     </style>
 
+    <!-- Judul halaman bertab (K15 "Pesanan saya"), Figma Judul/21: 21/25 -->
+    <style name="Teks.JudulHalaman">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">21sp</item>
+        <item name="lineHeight">25sp</item>
+        <item name="android:letterSpacing">-0.019</item>
+    </style>
+
     <!-- Judul bagian ("Alergi", "Kategori"), 15/18 -->
     <style name="Teks.JudulSeksi">
         <item name="android:fontFamily">@font/gabarito_extrabold</item>

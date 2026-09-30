@@ -13,6 +13,8 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -64,8 +66,7 @@ public class KodePickupFragment extends Fragment {
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
         binding.tombolMaps.setOnClickListener(v -> bukaMaps());
         binding.tombolBatal.setOnClickListener(v -> tanyaBatal());
-        binding.tombolPesananSaya.setOnClickListener(
-                v -> NavHostFragment.findNavController(this).navigate(R.id.k15_pesanan));
+        binding.tombolPesananSaya.setOnClickListener(v -> kePesananSaya());
         binding.tombolCariLagi.setOnClickListener(v -> keBeranda());
 
         vm.status.observe(getViewLifecycleOwner(), s -> tampilkan());
@@ -244,6 +245,17 @@ public class KodePickupFragment extends Fragment {
                 .setNegativeButton(R.string.k14_batal_tidak, null)
                 .setPositiveButton(R.string.k14_batal_ya, (d, w) -> vm.batalkan())
                 .show();
+    }
+
+    /** Dibuka dari K15: kembali ke sana, supaya K15 tidak menumpuk di back stack. */
+    private void kePesananSaya() {
+        NavController nav = NavHostFragment.findNavController(this);
+        NavBackStackEntry sebelum = nav.getPreviousBackStackEntry();
+        if (sebelum != null && sebelum.getDestination().getId() == R.id.k15_pesanan) {
+            nav.popBackStack();
+        } else {
+            nav.navigate(R.id.k15_pesanan);
+        }
     }
 
     private void keBeranda() {

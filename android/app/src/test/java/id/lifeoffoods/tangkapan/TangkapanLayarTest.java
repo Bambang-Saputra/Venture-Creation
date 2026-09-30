@@ -215,6 +215,26 @@ public class TangkapanLayarTest {
         tangkap("K14");
     }
 
+    @Test
+    public void k15PesananSaya() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        navigasi(R.id.k15_pesanan, null);
+        tunggu();
+        tangkap("K15");
+    }
+
+    @Test
+    public void k15Riwayat() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        MainActivity a = buka();
+        navigasi(R.id.k15_pesanan, null);
+        tunggu();
+        a.findViewById(R.id.tab_riwayat).performClick();
+        tunggu();
+        tangkap("K15-riwayat");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -413,6 +433,9 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
             }
+            if (path.startsWith("/api/orders?")) {
+                return json(daftarPesanan(path.contains("status=history")));
+            }
             if (path.startsWith("/api/orders/88")) {
                 return json(
                         "{\"data\":{\"id\":88,\"code\":\"LOF-7Q2K9A\",\"status\":\"pending_pickup\","
@@ -433,6 +456,68 @@ public class TangkapanLayarTest {
                                 + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /**
+         * Contoh Figma K15. Tanggal dihitung dari hari ini (WIB) supaya label "Hari ini" dan
+         * "Kemarin" tampil seperti di Figma, kapan pun tes dijalankan.
+         */
+        private static String daftarPesanan(boolean riwayat) {
+            java.time.LocalDate hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7));
+            if (!riwayat) {
+                return "{\"data\":["
+                        + barisPesanan(88, "pending_pickup", "Kopi Kalyan", 2, 18000, hari, "20:30")
+                        + ","
+                        + barisPesanan(
+                                89, "pending_pickup", "Bakerman Blok M", 1, 25000, hari, "19:00")
+                        + "],\"current_page\":1,\"last_page\":1}";
+            }
+            return "{\"data\":["
+                    + barisPesanan(
+                            80,
+                            "completed",
+                            "Toko Kopi Ashta",
+                            1,
+                            15000,
+                            hari.minusDays(1),
+                            "20:10")
+                    + ","
+                    + barisPesanan(
+                            77, "no_show", "Dapur Senopati", 1, 20000, hari.minusDays(3), "21:05")
+                    + ","
+                    + barisPesanan(
+                            70, "cancelled", "Roti Kita", 2, 22000, hari.minusDays(9), "19:30")
+                    + "],\"current_page\":1,\"last_page\":1}";
+        }
+
+        private static String barisPesanan(
+                long id,
+                String status,
+                String toko,
+                int jumlah,
+                long total,
+                java.time.LocalDate hari,
+                String jam) {
+            String mulai = hari + "T" + jam + ":00+07:00";
+            return "{\"id\":"
+                    + id
+                    + ",\"code\":\"LOF-"
+                    + id
+                    + "Q2K9A\",\"status\":\""
+                    + status
+                    + "\",\"store_name\":\""
+                    + toko
+                    + "\",\"item_count\":"
+                    + jumlah
+                    + ",\"total_rupiah\":"
+                    + total
+                    + ",\"pickup_start\":\""
+                    + mulai
+                    + "\",\"pickup_end\":\""
+                    + mulai
+                    + "\",\"placed_at\":\""
+                    + mulai
+                    + "\"}";
         }
 
         /** Contoh Figma K12 (tas 31) dan K13 (menu 41 + 42), dipilih dari body permintaan. */

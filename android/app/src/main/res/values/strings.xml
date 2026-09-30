@@ -216,4 +216,29 @@
     <string name="k14_cari_lagi">Cari lagi</string>
     <string name="k14_maps_tidak_ada">Tidak ada aplikasi peta di HP ini.</string>
 
+    <!-- K15 Pesanan saya (PRD-08) -->
+    <string name="k15_judul">Pesanan saya</string>
+    <string name="k15_tab_aktif">Aktif</string>
+    <string name="k15_tab_riwayat">Riwayat</string>
+    <string name="k15_status_menunggu">Menunggu diambil</string>
+    <string name="k15_status_selesai">Selesai</string>
+    <string name="k15_status_dibatalkan">Dibatalkan</string>
+    <string name="k15_status_tidak_diambil">Tidak diambil</string>
+    <plurals name="k15_jumlah_item">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d item</item>
+    </plurals>
+    <string name="k15_hari_ini">Hari ini</string>
+    <string name="k15_kemarin">Kemarin</string>
+    <string name="k15_besok">Besok</string>
+    <string name="k15_hari_lalu">%1$d hari lalu</string>
+    <string name="k15_waktu_ambil">%1$s, ambil %2$s</string>
+    <string name="k15_waktu_riwayat">%1$s, %2$s</string>
+    <string name="k15_kosong_aktif_judul">Belum ada pesanan aktif</string>
+    <string name="k15_kosong_aktif_isi">Cari tas kejutan di sekitarmu dan selamatkan makanan hari ini.</string>
+    <string name="k15_kosong_riwayat_judul">Belum ada riwayat</string>
+    <string name="k15_kosong_riwayat_isi">Pesanan yang sudah selesai akan muncul di sini.</string>
+    <string name="k15_ke_beranda">Ke Beranda</string>
+    <string name="k15_buka_pesanan">Buka pesanan %1$s, %2$s</string>
+
 </resources>
