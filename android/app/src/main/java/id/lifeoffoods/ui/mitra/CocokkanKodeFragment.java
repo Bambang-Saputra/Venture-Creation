@@ -108,7 +108,6 @@ public class CocokkanKodeFragment extends Fragment {
                 getViewLifecycleOwner(),
                 jalan -> {
                     binding.progres.setVisibility(jalan ? View.VISIBLE : View.GONE);
-                    binding.kode.setEnabled(!jalan);
                     perbaruiTombol();
                 });
         vm.galatKode.observe(
@@ -163,6 +162,9 @@ public class CocokkanKodeFragment extends Fragment {
     private void perbaruiTombol() {
         boolean selesai = vm.hasil.getValue() != null;
         boolean jalan = Boolean.TRUE.equals(vm.menukar.getValue());
+        // Kode dikunci selama ditukar dan setelah cocok; "Kode lain" membukanya lagi.
+        binding.kode.setEnabled(!jalan && !selesai);
+        binding.barisKotak.setEnabled(!jalan && !selesai);
         binding.tombolLain.setVisibility(selesai ? View.VISIBLE : View.GONE);
         binding.tombolUtama.setEnabled(!jalan);
         binding.tombolUtama.setText(

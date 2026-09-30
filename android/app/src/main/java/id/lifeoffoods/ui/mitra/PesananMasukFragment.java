@@ -161,9 +161,10 @@ public class PesananMasukFragment extends Fragment {
         TampilanPesananMitra.isiCatatan(requireContext(), b.catatan, p);
 
         boolean menunggu = PesananDto.MENUNGGU_DIAMBIL.equals(p.status);
+        // setOnClickListener selalu membuat view clickable, jadi clickable diatur sesudahnya.
+        b.getRoot().setOnClickListener(menunggu ? v -> keCocokkan() : null);
         b.getRoot().setClickable(menunggu);
         b.getRoot().setFocusable(menunggu);
-        b.getRoot().setOnClickListener(menunggu ? v -> keCocokkan() : null);
         b.getRoot()
                 .setContentDescription(
                         menunggu
