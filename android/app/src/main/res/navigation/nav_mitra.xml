@@ -46,4 +46,24 @@
     <fragment
         android:id="@+id/m12_cocokkan"
         android:name="id.lifeoffoods.ui.mitra.CocokkanKodeFragment" />
+
+    <!-- M10 Kelola jualan dan M17 Kelola menu satuan (PRD-09); argumen tipe memilih segmen. -->
+    <fragment
+        android:id="@+id/m10_kelola"
+        android:name="id.lifeoffoods.ui.mitra.KelolaJualanFragment">
+        <argument
+            android:name="tipe"
+            android:defaultValue="surprise_bag"
+            app:argType="string" />
+    </fragment>
+
+    <!-- M09 Pasang tas (PRD-09). -->
+    <fragment
+        android:id="@+id/m09_pasang_tas"
+        android:name="id.lifeoffoods.ui.mitra.PasangTasFragment" />
+
+    <!-- M16 Pasang menu satuan (PRD-09). -->
+    <fragment
+        android:id="@+id/m16_pasang_menu"
+        android:name="id.lifeoffoods.ui.mitra.PasangMenuFragment" />
 </navigation>

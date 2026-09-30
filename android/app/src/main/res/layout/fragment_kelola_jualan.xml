@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M10 Kelola jualan dan M17 Kelola menu satuan (Figma 71:2065 dan 128:2763, PRD-09). Satu layar;
+    segmen memilih tas kejutan atau menu satuan. Kartu jualan hari ini, kotak tips, lalu tombol
+    "Pasang tas baru" (M09) atau "Tambah item baru" (M16).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp">
+
+            <include
+                android:id="@+id/segmen"
+                layout="@layout/include_segmen_jualan" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/daftar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_jualan_mitra" />
+
+                <include
+                    android:id="@+id/keadaan"
+                    layout="@layout/include_keadaan_muat" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/kosong"
+                style="@style/Teks.IsiKecil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:visibility="gone"
+                tools:text="Belum ada tas kejutan hari ini."
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_catatan_merek"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="2dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_lampu"
+                    app:tint="@color/tanda_hemat_teks" />
+
+                <TextView
+                    android:id="@+id/teks_tips"
+                    style="@style/Teks.Catatan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/tanda_hemat_teks"
+                    tools:text="@string/m10_tips_tas" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tombol_pasang"
+                style="@style/Widget.LifeOfFoods.Tombol.Utama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:icon="@drawable/ic_tambah"
+                app:iconGravity="textStart"
+                app:iconSize="17dp"
+                tools:text="@string/m10_pasang_tas" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

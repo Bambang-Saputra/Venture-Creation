@@ -5,6 +5,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import com.github.takahirom.roborazzi.RoborazziKt;
@@ -267,6 +268,69 @@ public class TangkapanLayarTest {
         tangkap("M12-galat");
     }
 
+    @Test
+    public void m10KelolaJualan() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m10_kelola, null);
+        tunggu();
+        tangkap("M10");
+    }
+
+    @Test
+    public void m17KelolaMenu() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        Bundle args = new Bundle();
+        args.putString("tipe", "menu_item");
+        navigasi(R.id.m10_kelola, args);
+        tunggu();
+        tangkap("M17");
+    }
+
+    @Test
+    public void m09PasangTas() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m09_pasang_tas, null);
+        tunggu();
+        tangkapPanjang("M09");
+    }
+
+    @Test
+    public void m09GalatAlergen() {
+        // Terbitkan tanpa menyatakan alergen: pesan kriteria 10 tampil di bawah chip.
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m09_pasang_tas, null);
+        tunggu();
+        a.findViewById(R.id.tombol_terbit).performClick();
+        idle();
+        tangkapPanjang("M09-galat");
+    }
+
+    @Test
+    public void m16PasangMenu() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m16_pasang_menu, null);
+        tunggu();
+        // Isi stok dan harga item pertama, seperti contoh Figma.
+        android.view.ViewGroup daftar = a.findViewById(R.id.daftar_produk);
+        View pertama = daftar.getChildAt(0);
+        for (int i = 0; i < 4; i++) {
+            pertama.findViewById(R.id.tambah).performClick();
+        }
+        ((android.widget.EditText) pertama.findViewById(R.id.harga)).setText("9000");
+        idle();
+        tangkapPanjang("M16");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -307,6 +371,17 @@ public class TangkapanLayarTest {
         // captureScreenRoboImage, bukan captureRoboImage: overload captureRoboImage ikut menyebut
         // kelas Compose yang tidak ada di proyek ini, jadi javac menolaknya.
         RoborazziKt.captureScreenRoboImage(nama + ".png", new RoborazziOptions());
+    }
+
+    /** Layar formulir yang panjang: bagian atas, lalu setelah digulir ke bawah ({nama}-bawah). */
+    private void tangkapPanjang(String nama) {
+        tangkap(nama);
+        View gulir = kontrol.get().findViewById(R.id.gulir);
+        if (gulir instanceof androidx.core.widget.NestedScrollView) {
+            ((androidx.core.widget.NestedScrollView) gulir).fullScroll(View.FOCUS_DOWN);
+            idle();
+            tangkap(nama + "-bawah");
+        }
     }
 
     private static LofApp app() {
@@ -465,6 +540,32 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
             }
+            if (path.startsWith("/api/partner/stores/5/listings")) {
+                return json(jualanMitra(path.contains("type=menu_item")));
+            }
+            if (path.startsWith("/api/partner/stores/5/templates")) {
+                return json(
+                        "{\"data\":[{\"id\":2,\"name\":\"Tas Pastry Sore\","
+                                + "\"content_hint\":\"empat sampai enam potong\","
+                                + "\"price_rupiah\":18000,\"original_value_rupiah\":55000,"
+                                + "\"default_qty\":4,\"pickup_start_time\":\"20:30:00\","
+                                + "\"pickup_end_time\":\"21:00:00\",\"halal_label\":\"self_claim\"},"
+                                + "{\"id\":3,\"name\":\"Tas Minuman Dingin\","
+                                + "\"content_hint\":\"tiga botol\",\"price_rupiah\":15000,"
+                                + "\"original_value_rupiah\":45000,\"default_qty\":3,"
+                                + "\"pickup_start_time\":\"20:00:00\","
+                                + "\"pickup_end_time\":\"21:00:00\",\"halal_label\":\"not_stated\"}]}");
+            }
+            if (path.startsWith("/api/partner/stores/5/products")) {
+                return json(
+                        "{\"data\":[{\"id\":7,\"name\":\"Croissant mentega\",\"unit\":\"pcs\","
+                                + "\"price_rupiah\":28000,\"ingredients_text\":\"Tepung terigu,"
+                                + " mentega, telur, susu\"},{\"id\":8,\"name\":\"Danish keju\","
+                                + "\"unit\":\"pcs\",\"price_rupiah\":27000,\"ingredients_text\":"
+                                + "\"Tepung terigu, keju, telur\"},{\"id\":9,\"name\":\"Cinnamon"
+                                + " roll\",\"unit\":\"pcs\",\"price_rupiah\":30000,"
+                                + "\"ingredients_text\":\"Tepung terigu, kayu manis, gula\"}]}");
+            }
             if (path.startsWith("/api/partner/stores?") || path.equals("/api/partner/stores")) {
                 return json(
                         "{\"data\":[{\"id\":5,\"name\":\"Kopi Kalyan SCBD\",\"category\":\"cafe\","
@@ -522,6 +623,144 @@ public class TangkapanLayarTest {
                                 + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /** Contoh Figma M10 (tas kejutan) dan M17 (menu satuan). */
+        private static String jualanMitra(boolean menu) {
+            if (!menu) {
+                return "{\"data\":["
+                        + barisJualan(
+                                31,
+                                "surprise_bag",
+                                "active",
+                                "Tas Pastry Sore",
+                                18000,
+                                6,
+                                2,
+                                2,
+                                "20:30",
+                                "21:00",
+                                "[]")
+                        + ","
+                        + barisJualan(
+                                32,
+                                "surprise_bag",
+                                "sold_out",
+                                "Tas Minuman Dingin",
+                                15000,
+                                4,
+                                1,
+                                3,
+                                "20:00",
+                                "21:00",
+                                "[]")
+                        + ","
+                        + barisJualan(
+                                33,
+                                "surprise_bag",
+                                "paused",
+                                "Tas campur",
+                                22000,
+                                3,
+                                0,
+                                0,
+                                "21:00",
+                                "21:30",
+                                "[]")
+                        + "]}";
+            }
+            return "{\"data\":["
+                    + barisJualan(
+                            41,
+                            "menu_item",
+                            "active",
+                            "Croissant mentega",
+                            9000,
+                            4,
+                            0,
+                            2,
+                            "20:30",
+                            "21:00",
+                            "[{\"code\":\"susu\",\"presence\":\"contains\"},"
+                                    + "{\"code\":\"gluten\",\"presence\":\"contains\"}]")
+                    + ","
+                    + barisJualan(
+                            43,
+                            "menu_item",
+                            "active",
+                            "Cinnamon roll",
+                            11000,
+                            2,
+                            0,
+                            0,
+                            "20:30",
+                            "21:00",
+                            "[{\"code\":\"kacang_tanah\",\"presence\":\"may_contain\"}]")
+                    + ","
+                    + barisJualan(
+                            44,
+                            "menu_item",
+                            "sold_out",
+                            "Kopi susu botol",
+                            12000,
+                            5,
+                            0,
+                            5,
+                            "20:00",
+                            "21:00",
+                            "[{\"code\":\"susu\",\"presence\":\"contains\"}]")
+                    + "]}";
+        }
+
+        private static String barisJualan(
+                long id,
+                String tipe,
+                String status,
+                String judul,
+                long harga,
+                int total,
+                int dipesan,
+                int terjual,
+                String mulai,
+                String akhir,
+                String alergen) {
+            String hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)).toString();
+            return "{\"id\":"
+                    + id
+                    + ",\"type\":\""
+                    + tipe
+                    + "\",\"status\":\""
+                    + status
+                    + "\",\"title\":\""
+                    + judul
+                    + "\",\"product_id\":null,\"template_id\":null,"
+                    + "\"price_rupiah\":"
+                    + harga
+                    + ",\"original_value_rupiah\":null,"
+                    + "\"qty_total\":"
+                    + total
+                    + ",\"qty_reserved\":"
+                    + dipesan
+                    + ",\"qty_sold\":"
+                    + terjual
+                    + ",\"qty_remaining\":"
+                    + Math.max(0, total - dipesan - terjual)
+                    + ",\"potential_income_rupiah\":"
+                    + harga * total
+                    + ",\"pickup_start\":\""
+                    + hari
+                    + "T"
+                    + mulai
+                    + ":00+07:00\""
+                    + ",\"pickup_end\":\""
+                    + hari
+                    + "T"
+                    + akhir
+                    + ":00+07:00\""
+                    + ",\"ingredients_text\":\"Tepung terigu\",\"halal_label\":\"self_claim\","
+                    + "\"published_at\":null,\"allergens\":"
+                    + alergen
+                    + "}";
         }
 
         /** Contoh Figma M11: tiga menunggu, satu diambil, satu tidak diambil. */

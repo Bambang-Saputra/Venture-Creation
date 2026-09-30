@@ -74,13 +74,14 @@ public class PesananMasukFragment extends Fragment {
                 new BaseListAdapter<>(ItemPesananMasukBinding::inflate, this::isiKartu, p -> p.id);
         binding.daftar.setAdapter(adapter);
 
-        // Pesanan (M11) adalah layar ini; tab lain menunggu layarnya dibuat (M05, M06, M14).
+        // Pesanan (M11) adalah layar ini. Toko membuka Kelola jualan (M10) selama M14 Profil toko
+        // belum ada; Catat (M06) menunggu layarnya dibuat.
         binding.nav.tabPesanan.setSelected(true);
         View.OnClickListener segera =
                 v -> Snackbar.make(view, R.string.segera_keterangan, Snackbar.LENGTH_SHORT).show();
         binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m05_dashboard));
         binding.nav.tabCatat.setOnClickListener(segera);
-        binding.nav.tabToko.setOnClickListener(segera);
+        binding.nav.tabToko.setOnClickListener(v -> buka(R.id.m10_kelola));
 
         vm.tab.observe(getViewLifecycleOwner(), t -> tampilkan());
         vm.menunggu.observe(getViewLifecycleOwner(), d -> tampilkan());
