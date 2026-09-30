@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kartu pilihan cetakan M09: garis hijau 1.5dp saat terpilih, garis halus saat tidak; sudut 16dp. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape>
+            <solid android:color="@color/latar_kartu" />
+            <stroke
+                android:width="1.5dp"
+                android:color="@color/merek_utama" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/latar_kartu" />
+            <stroke
+                android:width="1.5dp"
+                android:color="@color/garis_halus" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+</selector>

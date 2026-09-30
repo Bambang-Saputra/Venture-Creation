@@ -285,4 +285,86 @@
     <string name="m12_jam_ambil">Jam ambil</string>
     <string name="m12_bayar_nilai">%1$s · %2$s</string>
 
+    <!-- M10 Kelola jualan / M17 Kelola menu satuan (PRD-09) -->
+    <string name="m10_judul">Kelola jualan</string>
+    <string name="m10_tas_kejutan">Tas kejutan</string>
+    <string name="m10_menu_satuan">Menu satuan</string>
+    <string name="m10_harga_jam">%1$s · ambil %2$s</string>
+    <string name="m10_sisa">%1$d dari %2$d tersisa</string>
+    <string name="m10_terjual">Terjual %1$d dari %2$d</string>
+    <string name="m10_status_aktif">Aktif</string>
+    <string name="m10_status_dijeda">Dijeda</string>
+    <string name="m10_status_draf">Draf</string>
+    <string name="m10_status_habis">Habis terjual</string>
+    <string name="m10_status_lewat">Jam ambil lewat</string>
+    <string name="m10_alergen_mungkin">Mungkin %1$s</string>
+    <string name="m10_tips_tas">Jeda hanya menghentikan pesanan baru. Pesanan yang sudah masuk tetap berlaku dan harus dilayani.</string>
+    <string name="m10_tips_menu">Item berlabel kacang otomatis diberi peringatan untuk pembeli yang mencantumkan alergi kacang di profilnya.</string>
+    <string name="m10_pasang_tas">Pasang tas baru</string>
+    <string name="m10_tambah_item">Tambah item baru</string>
+    <string name="m10_kosong_tas">Belum ada tas kejutan hari ini.</string>
+    <string name="m10_kosong_menu">Belum ada menu satuan hari ini.</string>
+    <string name="m10_saklar">Terbitkan %1$s</string>
+
+    <!-- M09 Pasang tas / M16 Pasang menu satuan (PRD-09) -->
+    <string name="m09_judul_bar">Pasang tas</string>
+    <string name="m09_subjudul">Pilih cetakan, cek jumlah, lalu terbitkan</string>
+    <string name="m09_jenis">Jenis jualan</string>
+    <string name="m09_jenis_ket">Menu satuan butuh stok per item. Pakai bila pelanggan sering bertanya soal isi tas.</string>
+    <string name="m09_pilih_template">Pilih template tas</string>
+    <string name="m09_template_isi">template tersimpan, %1$s</string>
+    <string name="m09_template_tanpa_isi">template tersimpan</string>
+    <string name="m09_campur">Tas campur</string>
+    <string name="m09_campur_isi">isi dan harga ditentukan sekarang</string>
+    <string name="m09_judul">Nama tas</string>
+    <string name="m09_harga_campur">Harga jual</string>
+    <string name="m09_harga_normal">Harga normal (opsional)</string>
+    <string name="m09_perkiraan_isi">Perkiraan isi (opsional)</string>
+    <string name="m09_kandungan">Kandungan</string>
+    <string name="m09_kandungan_bantuan">Bahan utama, misalnya tepung terigu, mentega, telur.</string>
+    <string name="m09_jumlah">Jumlah tas</string>
+    <string name="m09_harga_per_tas">Harga per tas</string>
+    <string name="m09_alergen">Kandungan dan label</string>
+    <string name="m09_tanpa_alergen">Tidak mengandung alergen umum</string>
+    <string name="m09_halal">Halal</string>
+    <string name="m09_halal_ket">Tampil sebagai label di halaman konsumen</string>
+    <string name="m09_dapur_kacang">Dapur juga mengolah kacang</string>
+    <string name="m09_dapur_kacang_ket">Konsumen dengan alergi kacang melihat peringatan</string>
+    <string name="m09_jam_ambil">Jam ambil</string>
+    <string name="m09_sampai">sampai</string>
+    <string name="m09_jam_mulai">Jam ambil mulai</string>
+    <string name="m09_jam_akhir">Jam ambil selesai</string>
+    <string name="m09_cara_ambil">Cara ambil</string>
+    <string name="m09_ambil_di_tempat">Ambil di tempat saja</string>
+    <string name="m09_kurir_belum">Kurir belum aktif</string>
+    <string name="m09_potensi">Potensi pemasukan</string>
+    <string name="m09_terbitkan">Terbitkan tas</string>
+    <string name="m09_menerbitkan">Menerbitkan…</string>
+    <string name="m09_terbit">Jualan terbit. Pembeli sudah bisa memesan.</string>
+    <string name="m09_g_judul">Nama tas wajib diisi.</string>
+    <string name="m09_g_harga">Harga jual paling sedikit Rp1.000.</string>
+    <string name="m09_g_harga_normal">Harga normal tidak boleh di bawah harga jual.</string>
+    <string name="m09_g_kandungan">Kandungan wajib diisi supaya pembeli yang alergi bisa memeriksa.</string>
+    <string name="m09_g_jam">Jam selesai harus sesudah jam mulai.</string>
+    <string name="m09_g_alergen">Pilih alergen yang ada, atau pilih "Tidak mengandung alergen umum".</string>
+    <string name="m09_g_jumlah">Jumlah antara 1 dan 200.</string>
+    <string name="m09_g_periksa">Periksa lagi isian yang ditandai merah.</string>
+    <string name="m16_judul_bar">Pasang menu satuan</string>
+    <string name="m16_subjudul">Isi stok per item, sekitar satu menit</string>
+    <string name="m16_jenis_ket">Menu satuan menampilkan tiap item beserta kandungannya. Cocok untuk pelanggan yang menghindari bahan tertentu.</string>
+    <string name="m16_item_hari_ini">Item hari ini</string>
+    <string name="m16_stok">stok</string>
+    <string name="m16_alergen_item">Alergen</string>
+    <string name="m16_alergen_belum">Nyatakan alergen</string>
+    <string name="m16_catatan">Kandungan tiap item diambil dari menu toko. Selama pilot, menu toko didaftarkan tim Life of Foods.</string>
+    <string name="m16_kosong">Belum ada produk di menu toko. Selama pilot, produk didaftarkan tim Life of Foods; hubungi tim untuk menambahkannya.</string>
+    <string name="m16_halal_ket">Tampil sebagai label di semua item</string>
+    <string name="m16_terbitkan">Terbitkan menu</string>
+    <string name="m16_g_item">Isi stok paling tidak satu item.</string>
+    <string name="m16_g_alergen">Nyatakan alergen untuk setiap item yang dijual.</string>
+    <string name="m16_g_harga">Isi harga jual paling sedikit Rp500 untuk setiap item yang dijual.</string>
+    <string name="m16_dialog_alergen">Alergen %1$s</string>
+    <string name="m16_simpan">Simpan</string>
+    <string name="rp" translatable="false">Rp</string>
+
 </resources>

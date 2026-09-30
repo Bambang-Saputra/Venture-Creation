@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Jalur saklar Figma: hijau merek saat menyala, #D9E4DB (garis_redup) saat mati. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.5" android:color="@color/garis_redup" android:state_enabled="false" />
+    <item android:color="@color/merek_utama" android:state_checked="true" />
+    <item android:color="@color/garis_redup" />
+</selector>

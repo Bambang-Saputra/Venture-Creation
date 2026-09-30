@@ -7,6 +7,8 @@ import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
 import id.lifeoffoods.data.api.model.HalamanPesanan;
 import id.lifeoffoods.data.api.model.HalamanPesananMitra;
+import id.lifeoffoods.data.api.model.JualanBody;
+import id.lifeoffoods.data.api.model.JualanMitraDto;
 import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.data.api.model.MeResponse;
@@ -18,7 +20,9 @@ import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PesananDto;
 import id.lifeoffoods.data.api.model.PesananMitraDto;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
+import id.lifeoffoods.data.api.model.ProdukDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
+import id.lifeoffoods.data.api.model.TemplateTasDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.data.api.model.TokoMitraDto;
 import id.lifeoffoods.data.api.model.TukarKodeBody;
@@ -136,6 +140,34 @@ public interface LofApi {
     /** M12 Cocokkan kode. 404 kode tidak ada di toko ini, 409 sudah dipakai, batal, atau lewat. */
     @POST("pickup-codes/redeem")
     Call<Terbungkus<PesananMitraDto>> tukarKode(@Body TukarKodeBody body);
+
+    /** M09: cetakan tas kejutan. Hanya pemilik (kasir 403). */
+    @GET("partner/stores/{store}/templates")
+    Call<Terbungkus<List<TemplateTasDto>>> templateTas(@Path("store") long storeId);
+
+    /** M16: produk toko untuk menu satuan. Hanya pemilik. */
+    @GET("partner/stores/{store}/products")
+    Call<Terbungkus<List<ProdukDto>>> produkToko(@Path("store") long storeId);
+
+    /** M10, M17: jualan hari ini. {@code type} = surprise_bag atau menu_item. */
+    @GET("partner/stores/{store}/listings")
+    Call<Terbungkus<List<JualanMitraDto>>> jualanMitra(
+            @Path("store") long storeId, @Query("type") String tipe);
+
+    /** M09, M16. 201 berisi jualan yang dibuat; 422 kandungan kosong atau jam ambil lewat. */
+    @POST("partner/stores/{store}/listings")
+    Call<Terbungkus<List<JualanMitraDto>>> pasangJualan(
+            @Path("store") long storeId, @Body JualanBody body);
+
+    /** Saklar M10/M17: dari draft atau paused. 409 status lain, 422 jam ambil lewat. */
+    @POST("partner/stores/{store}/listings/{listing}/publish")
+    Call<Terbungkus<JualanMitraDto>> terbitkanJualan(
+            @Path("store") long storeId, @Path("listing") long id);
+
+    /** Saklar M10/M17: dari active. Pesanan yang sudah masuk tetap berlaku. */
+    @POST("partner/stores/{store}/listings/{listing}/pause")
+    Call<Terbungkus<JualanMitraDto>> jedaJualan(
+            @Path("store") long storeId, @Path("listing") long id);
 
     /**
      * Token dikirim eksplisit karena sesi lokal langsung dihapus sesudah enqueue, sebelum

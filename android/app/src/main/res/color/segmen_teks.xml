@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Teks segmen: hijau merek saat terpilih, teks sekunder saat tidak. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/teks_merek" android:state_selected="true" />
+    <item android:color="@color/teks_sekunder" />
+</selector>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M09 Pasang tas (Figma 41:43, PRD-09). Jenis jualan (segmen ke M16), pilihan cetakan atau tas
+    campur, jumlah dan harga, kandungan dan label, jam ambil, cara ambil, lalu potensi pemasukan
+    dan "Terbitkan tas".
+
+    Beda dengan Figma, disengaja:
+    - Kotak "Foto tas" tidak ada: unggah foto (F-20) belum punya endpoint.
+    - Chip alergen dibangun dari GET /allergens, ditambah "Tidak mengandung alergen umum" supaya
+      mitra wajib menyatakan alergen secara sadar (PRD-09 kriteria 10).
+    - Jam ambil memakai pemilih jam, bukan tiga chip jam tetap.
+    - Tas campur mendapat formulir judul, harga, harga normal, perkiraan isi, dan kandungan.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    style="@style/Teks.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/m09_jenis" />
+
+                <include
+                    android:id="@+id/segmen"
+                    layout="@layout/include_segmen_jualan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    style="@style/Teks.Bantuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/m09_jenis_ket" />
+
+                <!-- Cetakan -->
+                <TextView
+                    style="@style/Teks.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/m09_pilih_template" />
+
+                <LinearLayout
+                    android:id="@+id/daftar_template"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <!-- Tas campur -->
+                <LinearLayout
+                    android:id="@+id/form_campur"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_judul"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/m09_judul">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nama_tas"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences"
+                            android:maxLength="140" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/isian_harga"
+                            style="@style/IsianBulat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_weight="1"
+                            android:hint="@string/m09_harga_campur"
+                            app:prefixText="Rp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/harga"
+                                style="@style/IsianTeks"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="number"
+                                android:maxLength="7" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/isian_harga_normal"
+                            style="@style/IsianBulat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_weight="1"
+                            android:hint="@string/m09_harga_normal"
+                            app:prefixText="Rp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/harga_normal"
+                                style="@style/IsianTeks"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="no"
+                                android:inputType="number"
+                                android:maxLength="7" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_perkiraan"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/m09_perkiraan_isi">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/perkiraan"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:maxLength="500" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_kandungan"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/m09_kandungan"
+                        app:helperText="@string/m09_kandungan_bantuan">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/kandungan"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:maxLength="2000" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Jumlah dan harga -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Teks.Label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/m09_jumlah" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_isian_14"
+                            android:gravity="center"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp">
+
+                            <include
+                                android:id="@+id/stepper"
+                                layout="@layout/include_stepper" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/galat_jumlah"
+                            style="@style/Teks.Bantuan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:textColor="@color/tanda_bahaya_teks"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Teks.Label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/m09_harga_per_tas" />
+
+                        <TextView
+                            android:id="@+id/harga_tampil"
+                            style="@style/Teks.Harga.Besar"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_isian_14"
+                            android:gravity="center_vertical"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            tools:text="Rp18.000" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Kandungan dan label -->
+                <TextView
+                    style="@style/Teks.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/m09_alergen" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/grup_alergen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingVertical="8dp" />
+
+                <TextView
+                    android:id="@+id/galat_alergen"
+                    style="@style/Teks.Bantuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:textColor="@color/tanda_bahaya_teks"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/label_toko"
+                    layout="@layout/include_label_toko" />
+
+                <include
+                    android:id="@+id/jam"
+                    layout="@layout/include_pilih_jam" />
+
+                <!-- Cara ambil: selalu di tempat selama pilot -->
+                <TextView
+                    style="@style/Teks.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/m09_cara_ambil" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_isian_14"
+                    android:gravity="center_vertical"
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <TextView
+                        style="@style/Teks.Butir"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/m09_ambil_di_tempat" />
+
+                    <TextView
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/m09_kurir_belum" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <include
+        android:id="@+id/aksi"
+        layout="@layout/include_bilah_potensi" />
+</LinearLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Jam ambil M09/M16: dua tombol Mulai dan Selesai yang membuka pemilih jam. Figma memakai tiga
+    chip jam tetap; di sini mitra bebas memilih jam, karena jam tutup tiap toko berbeda.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/Teks.Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/m09_jam_ambil" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_mulai"
+            style="@style/Widget.LifeOfFoods.Tombol.Garis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="48dp"
+            app:icon="@drawable/ic_jam"
+            app:iconGravity="textStart"
+            app:iconSize="16dp"
+            app:iconTint="@color/teks_merek"
+            tools:text="19.00" />
+
+        <TextView
+            style="@style/Teks.IsiKecil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/m09_sampai" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_akhir"
+            style="@style/Widget.LifeOfFoods.Tombol.Garis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="48dp"
+            app:icon="@drawable/ic_jam"
+            app:iconGravity="textStart"
+            app:iconSize="16dp"
+            app:iconTint="@color/teks_merek"
+            tools:text="21.00" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/galat_jam"
+        style="@style/Teks.Bantuan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:accessibilityLiveRegion="polite"
+        android:textColor="@color/tanda_bahaya_teks"
+        android:visibility="gone" />
+</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bilah bawah M09/M16: "Potensi pemasukan" dan tombol terbit. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BilahAksi"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="97dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Teks.Keterangan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/m09_potensi" />
+
+        <TextView
+            android:id="@+id/potensi"
+            style="@style/Teks.Harga.Total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            tools:text="Rp72.000" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tombol_terbit"
+        style="@style/Widget.LifeOfFoods.Tombol.Utama"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        tools:text="Terbitkan tas" />
+</LinearLayout>

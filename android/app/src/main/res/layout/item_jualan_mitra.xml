@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kartu jualan M10/M17: slot foto 56, judul, "Rp18.000 · ambil 20.30 sampai 21.00", pil status
+    (plus alergen di menu satuan), saklar terbit/jeda, lalu "2 dari 6 tersisa".
+    Tautan "Ubah" Figma tidak ada: harga dan isi tidak bisa diubah setelah terbit (PRD-09 di luar
+    lingkup); pasang jualan baru kalau perlu.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_kartu_jualan"
+    android:orientation="vertical"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_kotak_lembut_12">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_gambar"
+                app:tint="@color/ikon_redup" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/judul"
+                style="@style/Teks.JudulKartu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="Tas Pastry Sore" />
+
+            <TextView
+                android:id="@+id/harga_jam"
+                style="@style/Teks.NamaToko"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="Rp18.000 · ambil 20.30 sampai 21.00" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:chipSpacingHorizontal="6dp"
+                app:chipSpacingVertical="6dp" />
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/saklar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:thumbTint="@color/latar_kartu"
+            app:trackDecorationTint="@android:color/transparent"
+            app:trackTint="@color/saklar_jalur" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/garis_halus" />
+
+    <TextView
+        android:id="@+id/sisa"
+        style="@style/Teks.Label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/teks_sekunder"
+        tools:text="2 dari 6 tersisa" />
+</LinearLayout>
