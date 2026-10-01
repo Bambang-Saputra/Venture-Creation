@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M06 Catat sisa (Figma 67:1867) dan M19 Catat sisa timbang (131:2920), PRD-12. Satu layar:
+    segmen memilih hitung per item atau timbang. Ringkasan gelap, daftar produk, item lain,
+    lalu "Simpan saja" dan "Simpan dan pasang tas". Nav mitra dengan tab Catat terpilih.
+
+    Beda dengan Figma, disengaja:
+    - Pil "Tutup 21.00" tidak ada: jam tutup ada di GET .../summary (M05), belum dipanggil di sini.
+    - M19 memakai daftar produk toko (API mencatat berat per produk), bukan "kelompok makanan".
+    - Tiap produk punya pilihan tujuan sisa (PRD-12 alur 3); hanya yang dibuang dihitung.
+    - Nilai rupiah mode timbang baru diketahui setelah disimpan, karena berat per satuan produk
+      hanya ada di server.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_garis_bawah"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            style="@style/Teks.JudulHalaman"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:accessibilityHeading="true"
+            android:text="@string/m06_judul" />
+
+        <TextView
+            android:id="@+id/tanggal"
+            style="@style/Teks.Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/teks_sekunder"
+            tools:text="Kamis, 17 September" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
+
+                <include
+                    android:id="@+id/segmen"
+                    layout="@layout/include_segmen_jualan" />
+
+                <TextView
+                    android:id="@+id/keterangan"
+                    style="@style/Teks.IsiKecil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:textColor="@color/teks_sekunder"
+                    tools:text="@string/m06_ket" />
+
+                <!-- Terkunci: baca saja -->
+                <TextView
+                    android:id="@+id/terkunci"
+                    style="@style/Teks.Catatan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_catatan_pelanggan"
+                    android:padding="12dp"
+                    android:text="@string/m06_terkunci"
+                    android:textColor="@color/tanda_proses_teks"
+                    android:visibility="gone" />
+
+                <!-- Ringkasan hari ini -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:background="@drawable/bg_ringkasan_gelap"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/label_ringkasan"
+                        style="@style/Teks.Keterangan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.82"
+                        android:letterSpacing="0.055"
+                        android:text="@string/m06_nilai_terbuang"
+                        android:textColor="@color/teks_di_gelap" />
+
+                    <TextView
+                        android:id="@+id/nilai_ringkasan"
+                        style="@style/Teks.KodePickup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="start"
+                        android:letterSpacing="-0.033"
+                        android:textColor="@color/merek_lime"
+                        android:textSize="36sp"
+                        app:lineHeight="40sp"
+                        tools:text="Rp527.000" />
+
+                    <TextView
+                        android:id="@+id/sub_ringkasan"
+                        style="@style/Teks.Catatan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:alpha="0.7"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="20 item · naik 12% dari Kamis lalu" />
+                </LinearLayout>
+
+                <!-- Daftar produk dan item lain -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_kartu_jualan"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="4dp">
+
+                    <LinearLayout
+                        android:id="@+id/daftar_produk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <LinearLayout
+                        android:id="@+id/daftar_lain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_tambah"
+                        style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="44dp"
+                        android:text="@string/m06_tambah_item"
+                        app:icon="@drawable/ic_tambah"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/teks_merek" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tips_timbang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_pil_isian_14"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="2dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_timbangan"
+                        app:tint="@color/teks_kuat" />
+
+                    <TextView
+                        style="@style/Teks.Catatan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/m19_tips"
+                        android:textColor="@color/teks_kuat" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/aksi"
+        style="@style/BilahAksi"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_simpan"
+            style="@style/Widget.LifeOfFoods.Tombol.Lembut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/m06_simpan" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_simpan_pasang"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="2"
+            android:text="@string/m06_simpan_pasang" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/nav"
+        layout="@layout/include_nav_mitra" />
+</LinearLayout>

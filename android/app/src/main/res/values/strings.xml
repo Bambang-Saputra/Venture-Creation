@@ -367,4 +367,52 @@
     <string name="m16_simpan">Simpan</string>
     <string name="rp" translatable="false">Rp</string>
 
+    <!-- M06 Catat sisa / M19 Catat sisa timbang (PRD-12) -->
+    <string name="m06_judul">Catat sisa hari ini</string>
+    <string name="m06_per_item">Hitung per item</string>
+    <string name="m06_timbang">Timbang (kg)</string>
+    <string name="m06_ket">Ketuk + untuk setiap item yang tidak laku. Rata-rata selesai dalam 30 detik.</string>
+    <string name="m19_ket">Timbang sisa tiap produk. Nilai rupiah dihitung dari berat per satuan produk saat disimpan.</string>
+    <string name="m06_terkunci">Catatan tanggal ini sudah dikunci dan hanya bisa dibaca. Hubungi pemilik toko bila perlu dikoreksi.</string>
+    <string name="m06_nilai_terbuang">NILAI SISA YANG TERBUANG</string>
+    <string name="m19_berat_terbuang">BERAT SISA YANG TERBUANG</string>
+    <plurals name="m06_item">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d item</item>
+    </plurals>
+    <string name="m06_naik">naik %1$d%% dari %2$s lalu</string>
+    <string name="m06_turun">turun %1$d%% dari %2$s lalu</string>
+    <string name="m06_sama">sama dengan %1$s lalu</string>
+    <string name="m06_belum_disimpan">belum disimpan</string>
+    <string name="m19_nilai_tersimpan">Nilai tersimpan %1$s</string>
+    <string name="m19_nilai_nanti">Nilai rupiah dihitung saat disimpan</string>
+    <string name="m06_nilai_satuan">Nilai %1$s per %2$s</string>
+    <string name="m06_satuan_bawaan">pcs</string>
+    <string name="m06_lain_ket">Item lain · %1$s per satuan</string>
+    <string name="m06_tambah_item">Tambah item lain</string>
+    <string name="m06_hapus_item">Hapus %1$s</string>
+    <string name="m06_tujuan_dibuang">Dibuang</string>
+    <string name="m06_tujuan_disumbangkan">Disumbangkan</string>
+    <string name="m06_tujuan_karyawan">Dimakan karyawan</string>
+    <string name="m06_tujuan_surplus">Terjual sebagai surplus</string>
+    <string name="m06_pilih_tujuan">Ke mana sisa %1$s?</string>
+    <string name="m06_tujuan_label">%1$s ▾</string>
+    <string name="m06_simpan">Simpan saja</string>
+    <string name="m06_simpan_pasang">Simpan dan pasang tas</string>
+    <string name="m06_menyimpan">Menyimpan…</string>
+    <string name="m06_tersimpan">Catatan sisa tersimpan.</string>
+    <string name="m06_dialog_judul">Tambah item lain</string>
+    <string name="m06_dialog_nama">Nama item</string>
+    <string name="m06_dialog_jumlah">Jumlah</string>
+    <string name="m06_dialog_berat">Berat (kg)</string>
+    <string name="m06_dialog_nilai">Nilai per satuan (Rp)</string>
+    <string name="m06_dialog_tambah">Tambah</string>
+    <string name="m06_dialog_galat">Isi nama dan jumlah atau berat lebih dari 0.</string>
+    <string name="m19_hint_berat">0</string>
+    <string name="m19_berat_galat">Tulis berat dalam kg, misalnya 1,2.</string>
+    <string name="m06_lain_hapus">%1$s  ✕</string>
+    <string name="m19_kg">kg</string>
+    <string name="m19_berat_label">Berat sisa %1$s dalam kilogram</string>
+    <string name="m19_tips">Pakai timbangan dapur. Kalau tidak ada timbangan, pindah ke mode Hitung per item.</string>
+
 </resources>

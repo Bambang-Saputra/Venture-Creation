@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "Ringkasan hari ini" M06/M19: tinta gelap, sudut 18dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/merek_tinta" />
+    <corners android:radius="18dp" />
+</shape>

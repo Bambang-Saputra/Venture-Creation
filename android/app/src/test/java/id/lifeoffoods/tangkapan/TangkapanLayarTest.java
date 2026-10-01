@@ -331,6 +331,28 @@ public class TangkapanLayarTest {
         tangkapPanjang("M16");
     }
 
+    @Test
+    public void m06CatatSisa() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m06_catat, null);
+        tunggu();
+        tangkapPanjang("M06");
+    }
+
+    @Test
+    public void m19CatatSisaTimbang() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m06_catat, null);
+        tunggu();
+        a.findViewById(R.id.tab_menu).performClick();
+        idle();
+        tangkap("M19");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -540,6 +562,29 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
             }
+            if (path.startsWith("/api/partner/stores/5/waste-logs")) {
+                String hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)).toString();
+                // Contoh Figma M06: 6 croissant, 4 danish, 2 cinnamon, 3 roti, 5 kopi; sudah
+                // dicatat.
+                return json(
+                        "{\"data\":{\"log_date\":\""
+                                + hari
+                                + "\",\"is_recorded\":true,"
+                                + "\"is_locked\":false,\"method\":\"per_item\",\"note\":null,"
+                                + "\"total_value_rupiah\":527000,\"total_weight_gram\":3100,"
+                                + "\"total_items\":20,\"change_vs_last_week_percent\":12,"
+                                + "\"products\":["
+                                + produkSisa(7, "Croissant mentega", 28000, 6, 1100, "discarded")
+                                + ","
+                                + produkSisa(8, "Danish keju", 27000, 4, 600, "discarded")
+                                + ","
+                                + produkSisa(9, "Cinnamon roll", 30000, 2, 400, "discarded")
+                                + ","
+                                + produkSisa(10, "Roti gandum", 22000, 3, 500, "discarded")
+                                + ","
+                                + produkSisa(11, "Kopi susu botol", 25000, 5, 500, "donated")
+                                + "],\"other_items\":[]}}");
+            }
             if (path.startsWith("/api/partner/stores/5/listings")) {
                 return json(jualanMitra(path.contains("type=menu_item")));
             }
@@ -623,6 +668,26 @@ public class TangkapanLayarTest {
                                 + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        private static String produkSisa(
+                long id, String nama, long harga, int qty, int gram, String tujuan) {
+            return "{\"product_id\":"
+                    + id
+                    + ",\"name\":\""
+                    + nama
+                    + "\",\"unit\":\"pcs\","
+                    + "\"price_rupiah\":"
+                    + harga
+                    + ",\"unit_value_rupiah\":"
+                    + harga
+                    + ",\"qty\":"
+                    + qty
+                    + ",\"weight_gram\":"
+                    + gram
+                    + ",\"disposition\":\""
+                    + tujuan
+                    + "\"}";
         }
 
         /** Contoh Figma M10 (tas kejutan) dan M17 (menu satuan). */
