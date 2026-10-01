@@ -25,6 +25,7 @@ import id.lifeoffoods.data.api.model.PesananMitraDto;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
 import id.lifeoffoods.data.api.model.ProdukDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
+import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.data.api.model.TemplateTasDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.data.api.model.TokoMitraDto;
@@ -181,6 +182,10 @@ public interface LofApi {
     @POST("partner/stores/{store}/waste-logs")
     Call<Terbungkus<CatatanSisaDto>> simpanSisa(
             @Path("store") long storeId, @Body CatatSisaBody body);
+
+    /** M05 (dan pil "Tutup 21.00" di M06). Kasir boleh. */
+    @GET("partner/stores/{store}/summary")
+    Call<Terbungkus<RingkasanTokoDto>> ringkasanToko(@Path("store") long storeId);
 
     /** M07. {@code weekStart} Senin yyyy-MM-dd. Hanya pemilik (kasir 403). */
     @GET("partner/stores/{store}/reports/weekly")

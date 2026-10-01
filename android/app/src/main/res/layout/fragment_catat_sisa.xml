@@ -5,9 +5,9 @@
     lalu "Simpan saja" dan "Simpan dan pasang tas". Nav mitra dengan tab Catat terpilih.
 
     Beda dengan Figma, disengaja:
-    - Pil "Tutup 21.00" tidak ada: jam tutup ada di GET .../summary (M05), belum dipanggil di sini.
     - M19 memakai daftar produk toko (API mencatat berat per produk), bukan "kelompok makanan".
-    - Tiap produk punya pilihan tujuan sisa (PRD-12 alur 3); hanya yang dibuang dihitung.
+    - Tujuan sisa per produk (PRD-12 alur 3) ada di balik "Atur tujuan"; semua produk awalnya
+      "dibuang", dan hanya yang dibuang dihitung.
     - Nilai rupiah mode timbang baru diketahui setelah disimpan, karena berat per satuan produk
       hanya ada di server.
 -->
@@ -24,27 +24,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_garis_bawah"
-        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="20dp"
         android:paddingTop="4dp"
         android:paddingEnd="20dp"
         android:paddingBottom="14dp">
 
-        <TextView
-            style="@style/Teks.JudulHalaman"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:accessibilityHeading="true"
-            android:text="@string/m06_judul" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <TextView
+                style="@style/Teks.JudulHalaman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:text="@string/m06_judul" />
+
+            <TextView
+                android:id="@+id/tanggal"
+                style="@style/Teks.Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/teks_sekunder"
+                tools:text="Kamis, 17 September" />
+        </LinearLayout>
+
+        <!-- Figma: Chip proses, ikon jam 11, Figtree 10.5 bold. Dari GET .../summary. -->
         <TextView
-            android:id="@+id/tanggal"
-            style="@style/Teks.Label"
-            android:layout_width="match_parent"
+            android:id="@+id/jam_tutup"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/teks_sekunder"
-            tools:text="Kamis, 17 September" />
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_pil_proses"
+            android:textColor="@color/tanda_proses_teks"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_jam_11"
+            app:drawableTint="@color/tanda_proses_teks"
+            tools:text="Tutup 21.00"
+            tools:visibility="visible" />
     </LinearLayout>
 
     <FrameLayout
@@ -162,16 +185,37 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/tombol_tambah"
-                        style="@style/Widget.LifeOfFoods.Tombol.Tautan"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="44dp"
-                        android:text="@string/m06_tambah_item"
-                        app:icon="@drawable/ic_tambah"
-                        app:iconSize="16dp"
-                        app:iconTint="@color/teks_merek" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tombol_tambah"
+                            style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="44dp"
+                            android:text="@string/m06_tambah_item"
+                            app:icon="@drawable/ic_tambah"
+                            app:iconSize="16dp"
+                            app:iconTint="@color/teks_merek" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <!-- PRD-12 alur 3: tujuan per produk, disembunyikan sampai diketuk. -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tombol_atur_tujuan"
+                            style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="44dp"
+                            android:text="@string/m06_atur_tujuan" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

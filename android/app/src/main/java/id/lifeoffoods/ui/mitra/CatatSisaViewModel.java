@@ -11,6 +11,7 @@ import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.data.api.model.CatatSisaBody;
 import id.lifeoffoods.data.api.model.CatatanSisaDto;
+import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.time.LocalDate;
@@ -66,6 +67,15 @@ public class CatatSisaViewModel extends AndroidViewModel {
 
     public final MutableLiveData<Peristiwa<Boolean>> sesiBerakhir = new MutableLiveData<>();
 
+    /** "21:00" dari /summary untuk pil di header; null = pil disembunyikan. */
+    public final MutableLiveData<String> jamTutup = new MutableLiveData<>();
+
+    /**
+     * Pilihan tujuan per produk disembunyikan sampai mitra mengetuk "Atur tujuan", supaya layar
+     * tetap ringkas seperti Figma. Selalu tampil kalau ada produk yang tujuannya bukan "dibuang".
+     */
+    public final MutableLiveData<Boolean> tampilTujuan = new MutableLiveData<>(false);
+
     private final Map<Long, Integer> jumlah = new HashMap<>();
     private final Map<Long, Integer> gram = new HashMap<>();
     private final Map<Long, String> tujuan = new HashMap<>();
@@ -89,6 +99,7 @@ public class CatatSisaViewModel extends AndroidViewModel {
                 new TokoAktif.Hasil() {
                     @Override
                     public void siap(long idToko) {
+                        muatJamTutup(app, idToko);
                         app.api()
                                 .catatanSisa(idToko, tanggal)
                                 .enqueue(
@@ -120,6 +131,42 @@ public class CatatSisaViewModel extends AndroidViewModel {
     public void muatUlang() {
         sudahMuat = false;
         muat();
+    }
+
+    /** Pil "Tutup 21.00" hanya pelengkap: kalau gagal, pil tidak tampil dan layar tetap jalan. */
+    private void muatJamTutup(LofApp app, long idToko) {
+        app.api()
+                .ringkasanToko(idToko)
+                .enqueue(
+                        new ApiCallback<>() {
+                            @Override
+                            public void sukses(Terbungkus<RingkasanTokoDto> data) {
+                                jamTutup.setValue(
+                                        data == null || data.data == null
+                                                ? null
+                                                : data.data.closesAt);
+                            }
+
+                            @Override
+                            public void gagal(ApiError e) {
+                                jamTutup.setValue(null);
+                            }
+                        });
+    }
+
+    public void aturTujuan(boolean tampil) {
+        tampilTujuan.setValue(tampil || adaTujuanLain());
+        berubah();
+    }
+
+    /** Ada produk yang disumbangkan, dimakan karyawan, atau terjual sebagai surplus. */
+    public boolean adaTujuanLain() {
+        for (String t : tujuan.values()) {
+            if (!CatatSisa.DIBUANG.equals(t)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void gagalMuat(ApiError e) {
@@ -157,6 +204,9 @@ public class CatatSisaViewModel extends AndroidViewModel {
         itemLain.setValue(lain);
         if (c.isRecorded && c.method != null) {
             mode.setValue(c.method);
+        }
+        if (adaTujuanLain()) {
+            tampilTujuan.setValue(true);
         }
         catatan.setValue(c);
         berubah();
