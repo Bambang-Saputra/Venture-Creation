@@ -49,8 +49,6 @@ public class DasborMitraFragment extends Fragment {
 
         SisiAman.atas(binding.header);
         SisiAman.bawah(binding.nav.getRoot());
-        // Header gelap: ikon status bar terang.
-        SisiAman.ikonGelap(requireActivity(), false);
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.segarkan());
 
         binding.pengingat.setOnClickListener(v -> buka(R.id.m06_catat));
@@ -76,6 +74,9 @@ public class DasborMitraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // Layar sebelumnya (misalnya M06) berheader terang dan memasang ikon status bar gelap.
+        SisiAman.ikonGelap(
+                requireActivity(), vm.status.getValue() != DasborMitraViewModel.Status.SIAP);
         // Kembali dari M06/M09/M12: angka dan pengingat ikut berubah.
         vm.segarkan();
     }
