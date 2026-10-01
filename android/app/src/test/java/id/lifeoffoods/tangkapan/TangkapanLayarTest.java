@@ -353,6 +353,29 @@ public class TangkapanLayarTest {
         tangkap("M19");
     }
 
+    @Test
+    public void m07LaporanMingguan() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m07_laporan, null);
+        tunggu();
+        tangkapPanjang("M07");
+    }
+
+    /** Minggu lalu: tiga hari tidak dicatat tampil sebagai celah, bukan nol (PRD-13 kriteria 5). */
+    @Test
+    public void m07LaporanMingguLaluBerCelah() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m07_laporan, null);
+        tunggu();
+        a.findViewById(R.id.tombol_sebelumnya).performClick();
+        tunggu();
+        tangkapPanjang("M07-celah");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -562,6 +585,13 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
             }
+            if (path.startsWith("/api/partner/stores/5/reports/weekly")) {
+                java.time.LocalDate senin =
+                        id.lifeoffoods.data.LaporanMingguan.senin(
+                                java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)));
+                boolean ini = path.contains("week_start=" + senin);
+                return json("{\"data\":" + laporan(ini ? senin : senin.minusWeeks(1), ini) + "}");
+            }
             if (path.startsWith("/api/partner/stores/5/waste-logs")) {
                 String hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)).toString();
                 // Contoh Figma M06: 6 croissant, 4 danish, 2 cinnamon, 3 roti, 5 kopi; sudah
@@ -668,6 +698,68 @@ public class TangkapanLayarTest {
                                 + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /**
+         * Laporan mingguan. Minggu ini mengikuti contoh Figma M07 (tujuh hari tercatat); minggu
+         * lalu empat hari tercatat dan tiga celah.
+         */
+        private static String laporan(java.time.LocalDate senin, boolean contohFigma) {
+            long[] ribu = {310, 280, 390, 420, 520, 610, 330};
+            boolean[] celah = {false, true, false, true, false, false, true};
+            StringBuilder harian = new StringBuilder();
+            for (int i = 0; i < 7; i++) {
+                boolean kosong = !contohFigma && celah[i];
+                harian.append(i == 0 ? "" : ",")
+                        .append("{\"date\":\"")
+                        .append(senin.plusDays(i))
+                        .append("\",\"wasted_value_rupiah\":")
+                        .append(kosong ? "null" : String.valueOf(ribu[i] * 1000))
+                        .append('}');
+            }
+            String teratas =
+                    contohFigma
+                            ? teratas(7, "Croissant mentega", 34, 952000)
+                                    + ","
+                                    + teratas(11, "Kopi susu botol", 21, 525000)
+                                    + ","
+                                    + teratas(8, "Danish keju", 18, 486000)
+                                    + ","
+                                    + teratas(10, "Roti gandum", 12, 264000)
+                            : teratas(7, "Croissant mentega", 20, 560000)
+                                    + ","
+                                    + teratas(9, "Cinnamon roll", 9, 270000);
+            return "{\"week_start\":\""
+                    + senin
+                    + "\",\"week_end\":\""
+                    + senin.plusDays(6)
+                    + "\","
+                    + (contohFigma
+                            ? "\"wasted_value_rupiah\":1620000,\"wasted_weight_gram\":11000,"
+                                    + "\"logged_days\":7,\"rescued_value_rupiah\":1240000,"
+                                    + "\"orders_count\":58,\"items_sold\":62,"
+                                    + "\"unsold_value_rupiah\":2860000,\"wasted_change_percent\":-18,"
+                            : "\"wasted_value_rupiah\":1830000,\"wasted_weight_gram\":0,"
+                                    + "\"logged_days\":4,\"rescued_value_rupiah\":980000,"
+                                    + "\"orders_count\":41,\"items_sold\":44,"
+                                    + "\"unsold_value_rupiah\":2810000,\"wasted_change_percent\":null,")
+                    + "\"top_wasted_products\":["
+                    + teratas
+                    + "],\"daily\":["
+                    + harian
+                    + "]}";
+        }
+
+        private static String teratas(long id, String nama, int qty, long nilai) {
+            return "{\"product_id\":"
+                    + id
+                    + ",\"label\":\""
+                    + nama
+                    + "\",\"qty\":"
+                    + qty
+                    + ",\"weight_gram\":null,\"value_rupiah\":"
+                    + nilai
+                    + "}";
         }
 
         private static String produkSisa(

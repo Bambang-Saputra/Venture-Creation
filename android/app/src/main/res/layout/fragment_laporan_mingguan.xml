@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M07 Laporan mingguan (Figma "M07 · Laporan mingguan"), PRD-13. App bar dengan rentang minggu,
+    tombol minggu sebelumnya/berikutnya, nilai tidak terjual, terselamatkan vs terbuang, produk
+    paling sering sisa, grafik sisa per hari, lalu tombol ke saran produksi (M08).
+
+    Beda dengan Figma, disengaja:
+    - Perpindahan minggu lewat tombol (PRD-13 alur 1 menyebut geser); tombol lebih mudah ditemukan
+      dan bisa dipakai pembaca layar.
+    - Tren di kotak gelap menyebut "sisa terbuang", karena persentase dari API membandingkan nilai
+      terbuang, bukan nilai tidak terjual.
+    - "N item terjual", bukan "N tas terjual": items_sold menghitung tas dan menu satuan.
+    - Hari tanpa catatan tampil sebagai celah bergaris putus (kriteria 5); kurang dari 3 hari
+      tercatat, grafik diganti ajakan mencatat (kriteria 6).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="24dp">
+
+                <!-- Pindah minggu -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_sebelumnya"
+                        style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/m07_minggu_sebelumnya"
+                        app:icon="@drawable/ic_panah_kiri"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/teks_merek" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_berikutnya"
+                        style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/m07_minggu_berikutnya"
+                        app:icon="@drawable/ic_chevron_kanan"
+                        app:iconGravity="end"
+                        app:iconSize="16dp"
+                        app:iconTint="@color/teks_merek" />
+                </LinearLayout>
+
+                <!-- Minggu tanpa catatan sama sekali -->
+                <LinearLayout
+                    android:id="@+id/kosong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_kartu_jualan"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_laporan"
+                        app:tint="@color/teks_merek" />
+
+                    <TextView
+                        android:id="@+id/kosong_isi"
+                        style="@style/Teks.IsiKecil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/m07_kosong" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_catat_kosong"
+                        style="@style/Widget.LifeOfFoods.Tombol.Utama"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/m07_catat_sekarang" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/konten"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="vertical">
+
+                    <!-- Nilai yang tidak terjual -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_ringkasan_gelap"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            style="@style/Teks.Keterangan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.82"
+                            android:letterSpacing="0.055"
+                            android:text="@string/m07_tidak_terjual"
+                            android:textAllCaps="true"
+                            android:textColor="@color/teks_di_gelap" />
+
+                        <TextView
+                            android:id="@+id/nilai_tidak_terjual"
+                            style="@style/Teks.KodePickup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="start"
+                            android:letterSpacing="-0.033"
+                            android:textColor="@color/teks_di_gelap"
+                            android:textSize="36sp"
+                            app:lineHeight="40sp"
+                            tools:text="Rp2.860.000" />
+
+                        <LinearLayout
+                            android:id="@+id/tren"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/ikon_tren"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_tren_turun"
+                                app:tint="@color/merek_lime" />
+
+                            <TextView
+                                android:id="@+id/teks_tren"
+                                style="@style/Teks.Label"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:textColor="@color/merek_lime"
+                                android:textSize="12.5sp"
+                                tools:text="Sisa terbuang turun 18% dari minggu lalu" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Terselamatkan vs terbuang -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_kartu_jualan"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/m07_terselamatkan" />
+
+                            <TextView
+                                android:id="@+id/nilai_terselamatkan"
+                                style="@style/Teks.JudulKartu"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:maxLines="1"
+                                android:textColor="@color/teks_merek"
+                                android:textSize="17sp"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeTextType="uniform"
+                                tools:text="Rp1.240.000" />
+
+                            <TextView
+                                android:id="@+id/sub_terselamatkan"
+                                style="@style/Teks.Catatan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:textColor="@color/teks_sekunder"
+                                tools:text="62 item terjual" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_kartu_jualan"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/m07_terbuang" />
+
+                            <TextView
+                                android:id="@+id/nilai_terbuang"
+                                style="@style/Teks.JudulKartu"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:maxLines="1"
+                                android:textColor="@color/tanda_bahaya_teks"
+                                android:textSize="17sp"
+                                app:autoSizeMinTextSize="12sp"
+                                app:autoSizeTextType="uniform"
+                                tools:text="Rp1.620.000" />
+
+                            <TextView
+                                android:id="@+id/sub_terbuang"
+                                style="@style/Teks.Catatan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:textColor="@color/teks_sekunder"
+                                tools:text="sekitar 11 kg" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- PRD-13 catatan: jangan sampai angka ini dikutip sebagai nilai makanan. -->
+                    <TextView
+                        style="@style/Teks.Catatan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/m07_ket_terselamatkan"
+                        android:textColor="@color/teks_sekunder" />
+
+                    <!-- Produk paling sering sisa -->
+                    <LinearLayout
+                        android:id="@+id/kartu_teratas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_kartu_jualan"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            style="@style/Teks.JudulKartuLaporan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
+                            android:text="@string/m07_teratas" />
+
+                        <LinearLayout
+                            android:id="@+id/daftar_teratas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+
+                    <!-- Nilai sisa per hari -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_kartu_jualan"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/Teks.JudulKartuLaporan"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:accessibilityHeading="true"
+                                android:text="@string/m07_per_hari" />
+
+                            <TextView
+                                android:id="@+id/satuan_grafik"
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/m07_ribu_rupiah" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/grafik"
+                            android:layout_width="match_parent"
+                            android:layout_height="138dp"
+                            android:layout_marginTop="14dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal" />
+
+                        <TextView
+                            android:id="@+id/ket_celah"
+                            style="@style/Teks.Catatan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/m07_ket_celah"
+                            android:textColor="@color/teks_sekunder"
+                            android:visibility="gone" />
+
+                        <!-- Kurang dari 3 hari tercatat: ajakan, bukan grafik hampir kosong. -->
+                        <LinearLayout
+                            android:id="@+id/ajakan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/ajakan_isi"
+                                style="@style/Teks.IsiKecil"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:text="Baru 2 hari tercatat minggu ini." />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/tombol_catat_ajakan"
+                                style="@style/Widget.LifeOfFoods.Tombol.Lembut"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:paddingStart="20dp"
+                                android:paddingEnd="20dp"
+                                android:text="@string/m07_catat_sekarang" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_saran"
+                        style="@style/Widget.LifeOfFoods.Tombol.Utama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="@string/m07_lihat_saran"
+                        app:icon="@drawable/ic_lampu"
+                        app:iconGravity="textStart"
+                        app:iconSize="17dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+</LinearLayout>

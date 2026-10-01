@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu kolom grafik "Nilai sisa per hari" M07: angka ribu, batang, nama hari. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:gravity="bottom|center_horizontal"
+    android:importantForAccessibility="yes"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/angka"
+        style="@style/Teks.Keterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:textColor="@color/teks_coret"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        tools:text="310" />
+
+    <View
+        android:id="@+id/batang"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/bg_batang_harian_pasif"
+        android:importantForAccessibility="no" />
+
+    <TextView
+        android:id="@+id/hari"
+        style="@style/Teks.Keterangan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:importantForAccessibility="no"
+        android:textColor="@color/teks_coret"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        tools:text="Sen" />
+</LinearLayout>

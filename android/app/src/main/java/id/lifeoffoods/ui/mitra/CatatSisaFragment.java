@@ -80,7 +80,8 @@ public class CatatSisaFragment extends Fragment {
         binding.tombolSimpanPasang.setOnClickListener(v -> simpan(true));
 
         binding.nav.tabCatat.setSelected(true);
-        binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m05_dashboard));
+        // Selama M05 belum dibuat, Beranda membuka M07 Laporan mingguan.
+        binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m07_laporan));
         binding.nav.tabPesanan.setOnClickListener(v -> buka(R.id.m11_pesanan));
         binding.nav.tabToko.setOnClickListener(v -> buka(R.id.m10_kelola));
 
