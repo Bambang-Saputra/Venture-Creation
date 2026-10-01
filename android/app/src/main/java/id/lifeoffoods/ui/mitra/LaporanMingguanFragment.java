@@ -17,30 +17,17 @@ import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.LaporanMingguan;
 import id.lifeoffoods.data.api.model.LaporanMingguanDto;
 import id.lifeoffoods.databinding.FragmentLaporanMingguanBinding;
-import id.lifeoffoods.databinding.ItemBatangHarianBinding;
 import id.lifeoffoods.databinding.ItemProdukTeratasBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /** M07 Laporan mingguan (PRD-13). Hanya pemilik; kasir melihat keterangan, bukan galat. */
 public class LaporanMingguanFragment extends Fragment {
 
-    private static final Locale ID = new Locale("id", "ID");
-    private static final DateTimeFormatter HARI_PANJANG = DateTimeFormatter.ofPattern("EEEE", ID);
-
-    /** Tinggi penuh batang dan tinggi minimum batang bernilai, dp (Figma: 100). */
+    /** Tinggi batang tertinggi, dp (Figma: 100). */
     private static final int BATANG_PENUH_DP = 100;
-
-    private static final int BATANG_MIN_DP = 4;
-    private static final int GARIS_NOL_DP = 2;
-    private static final int CELAH_DP = 24;
 
     private FragmentLaporanMingguanBinding binding;
     private LaporanMingguanViewModel vm;
@@ -217,80 +204,9 @@ public class LaporanMingguanFragment extends Fragment {
         }
         // Tujuh hari Senin..Minggu dari tanggal di respons; hari yang hilang dianggap tidak
         // dicatat.
-        LocalDate senin = vm.senin();
-        List<Long> nilai = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            nilai.add(nilaiHari(l.daily, senin.plusDays(i)));
-        }
-        long maks = LaporanMingguan.maks(nilai);
-        float dp = getResources().getDisplayMetrics().density;
-        boolean adaCelah = false;
-        for (int i = 0; i < 7; i++) {
-            LocalDate hari = senin.plusDays(i);
-            Long n = nilai.get(i);
-            boolean teratas = n != null && maks > 0 && n == maks;
-            ItemBatangHarianBinding b =
-                    ItemBatangHarianBinding.inflate(getLayoutInflater(), binding.grafik, false);
-            b.hari.setText(hari.getDayOfWeek().getDisplayName(TextStyle.SHORT, ID));
-            String panjang = kapital(hari.format(HARI_PANJANG));
-            ViewGroup.LayoutParams lp = b.batang.getLayoutParams();
-            if (n == null) {
-                adaCelah = true;
-                b.angka.setText("–");
-                b.batang.setBackgroundResource(R.drawable.bg_batang_kosong);
-                lp.height = Math.round(CELAH_DP * dp);
-                b.getRoot().setContentDescription(getString(R.string.m07_hari_kosong, panjang));
-            } else {
-                int t =
-                        LaporanMingguan.tinggi(
-                                n,
-                                maks,
-                                Math.round(BATANG_PENUH_DP * dp),
-                                Math.round(BATANG_MIN_DP * dp));
-                lp.height = t > 0 ? t : Math.round(GARIS_NOL_DP * dp);
-                b.angka.setText(LaporanMingguan.ribu(n));
-                b.batang.setBackgroundResource(
-                        teratas
-                                ? R.drawable.bg_batang_harian_aktif
-                                : R.drawable.bg_batang_harian_pasif);
-                if (teratas) {
-                    b.angka.setTextColor(
-                            ContextCompat.getColor(requireContext(), R.color.teks_merek));
-                }
-                b.getRoot()
-                        .setContentDescription(
-                                getString(
-                                        teratas
-                                                ? R.string.m07_hari_teratas
-                                                : R.string.m07_hari_nilai,
-                                        panjang,
-                                        FormatTampilan.rupiah(n)));
-            }
-            b.batang.setLayoutParams(lp);
-            binding.grafik.addView(b.getRoot());
-        }
+        boolean adaCelah =
+                GrafikHarian.isi(binding.grafik, vm.senin(), l.daily, BATANG_PENUH_DP, true);
         binding.ketCelah.setVisibility(adaCelah ? View.VISIBLE : View.GONE);
-    }
-
-    @Nullable
-    private static Long nilaiHari(@Nullable List<LaporanMingguanDto.Harian> daily, LocalDate hari) {
-        if (daily == null) {
-            return null;
-        }
-        for (LaporanMingguanDto.Harian h : daily) {
-            try {
-                if (h.date != null && LocalDate.parse(h.date).equals(hari)) {
-                    return h.wastedValueRupiah;
-                }
-            } catch (DateTimeParseException e) {
-                // Tanggal rusak dilewati; hari itu tampil sebagai tidak dicatat.
-            }
-        }
-        return null;
-    }
-
-    private static String kapital(String s) {
-        return s.isEmpty() ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
     private void buka(int tujuan) {

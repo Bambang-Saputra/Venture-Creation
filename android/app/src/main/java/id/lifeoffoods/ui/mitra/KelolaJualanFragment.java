@@ -147,7 +147,7 @@ public class KelolaJualanFragment extends Fragment {
                         : getString(R.string.m10_sisa, j.qtyRemaining, j.qtyTotal));
 
         b.label.removeAllViews();
-        b.label.addView(pilStatus(j.status));
+        b.label.addView(pilStatus(requireContext(), j.status));
         if (JualanMitraDto.TIPE_MENU.equals(j.type) && j.allergens != null) {
             Map<String, String> nama = vm.namaAlergen.getValue();
             for (JualanMitraDto.Alergen a : j.allergens) {
@@ -176,7 +176,8 @@ public class KelolaJualanFragment extends Fragment {
         b.saklar.setOnCheckedChangeListener((s, nyala) -> vm.ubahSaklar(j, nyala));
     }
 
-    private View pilStatus(String status) {
+    /** Pil status jualan; juga dipakai daftar "Tas aktif hari ini" di M05. */
+    static android.widget.TextView pilStatus(android.content.Context ctx, String status) {
         int teks;
         if (JualanMitraDto.AKTIF.equals(status)) {
             teks = R.string.m10_status_aktif;
@@ -191,8 +192,8 @@ public class KelolaJualanFragment extends Fragment {
         }
         JualanMitra.Nada n = JualanMitra.nada(status);
         return Pil.buat(
-                requireContext(),
-                getString(teks),
+                ctx,
+                ctx.getString(teks),
                 n == JualanMitra.Nada.HIJAU
                         ? R.drawable.bg_pil_merek
                         : n == JualanMitra.Nada.KUNING

@@ -24,20 +24,12 @@
         android:id="@+id/m02_verifikasi"
         android:name="id.lifeoffoods.ui.masuk.VerifikasiOtpFragment" />
 
+    <!-- M05 Dashboard mitra (PRD-24). Tujuan awal mitra yang sudah masuk; tab Beranda. -->
     <fragment
         android:id="@+id/m05_dashboard"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="M05"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Dashboard mitra"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.mitra.DasborMitraFragment" />
 
-    <!-- M11 Pesanan masuk (PRD-10). Tujuan awal mitra selama M05 belum dibuat. -->
+    <!-- M11 Pesanan masuk (PRD-10). -->
     <fragment
         android:id="@+id/m11_pesanan"
         android:name="id.lifeoffoods.ui.mitra.PesananMasukFragment" />
@@ -72,7 +64,7 @@
         android:id="@+id/m06_catat"
         android:name="id.lifeoffoods.ui.mitra.CatatSisaFragment" />
 
-    <!-- M07 Laporan mingguan (PRD-13). Dibuka dari tab Beranda selama M05 belum dibuat. -->
+    <!-- M07 Laporan mingguan (PRD-13). Dari "Lihat laporan" di M05. -->
     <fragment
         android:id="@+id/m07_laporan"
         android:name="id.lifeoffoods.ui.mitra.LaporanMingguanFragment" />
