@@ -3,6 +3,8 @@ package id.lifeoffoods.data.api;
 import id.lifeoffoods.data.api.model.AlergenBody;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.AuthResponse;
+import id.lifeoffoods.data.api.model.CatatSisaBody;
+import id.lifeoffoods.data.api.model.CatatanSisaDto;
 import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
 import id.lifeoffoods.data.api.model.HalamanPesanan;
@@ -168,6 +170,16 @@ public interface LofApi {
     @POST("partner/stores/{store}/listings/{listing}/pause")
     Call<Terbungkus<JualanMitraDto>> jedaJualan(
             @Path("store") long storeId, @Path("listing") long id);
+
+    /** M06, M19. {@code date} yyyy-MM-dd, bawaan hari ini. Kasir boleh. */
+    @GET("partner/stores/{store}/waste-logs")
+    Call<Terbungkus<CatatanSisaDto>> catatanSisa(
+            @Path("store") long storeId, @Query("date") String tanggal);
+
+    /** M06, M19. 409 terkunci (lewat akhir hari berikutnya), 422 tanggal mendatang. */
+    @POST("partner/stores/{store}/waste-logs")
+    Call<Terbungkus<CatatanSisaDto>> simpanSisa(
+            @Path("store") long storeId, @Body CatatSisaBody body);
 
     /**
      * Token dikirim eksplisit karena sesi lokal langsung dihapus sesudah enqueue, sebelum

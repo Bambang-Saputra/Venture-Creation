@@ -66,4 +66,9 @@
     <fragment
         android:id="@+id/m16_pasang_menu"
         android:name="id.lifeoffoods.ui.mitra.PasangMenuFragment" />
+
+    <!-- M06 Catat sisa dan M19 Catat sisa timbang (PRD-12); satu layar dengan segmen mode. -->
+    <fragment
+        android:id="@+id/m06_catat"
+        android:name="id.lifeoffoods.ui.mitra.CatatSisaFragment" />
 </navigation>

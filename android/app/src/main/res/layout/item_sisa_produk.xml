@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Satu produk di M06/M19: nama, nilai per satuan, tujuan sisa (Dibuang, Disumbangkan, ...), lalu
+    stepper jumlah (M06) atau kolom berat kg (M19). Diisi CatatSisaFragment.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_garis_bawah"
+    android:gravity="center_vertical"
+    android:minHeight="61dp"
+    android:orientation="horizontal"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nama"
+            style="@style/Teks.Butir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Croissant mentega" />
+
+        <TextView
+            android:id="@+id/nilai"
+            style="@style/Teks.Bantuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="Nilai Rp7.000 per pcs" />
+
+        <TextView
+            android:id="@+id/tujuan"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_pil_isian"
+            android:clickable="true"
+            android:focusable="true"
+            android:minHeight="32dp"
+            android:textColor="@color/teks_kuat"
+            tools:text="Dibuang ▾" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/stepper"
+        layout="@layout/include_stepper" />
+
+    <LinearLayout
+        android:id="@+id/kotak_berat"
+        android:layout_width="96dp"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_isian"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/berat"
+            style="@style/Teks.JudulBar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:digits="0123456789,."
+            android:gravity="end|center_vertical"
+            android:hint="@string/m19_hint_berat"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:textColor="@color/teks_utama"
+            android:textColorHint="@color/teks_tersier" />
+
+        <TextView
+            style="@style/Teks.Butir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:importantForAccessibility="no"
+            android:text="@string/m19_kg"
+            android:textColor="@color/teks_sekunder" />
+    </LinearLayout>
+</LinearLayout>

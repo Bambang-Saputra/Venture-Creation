@@ -18,7 +18,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.PesananMitra;
@@ -75,12 +74,10 @@ public class PesananMasukFragment extends Fragment {
         binding.daftar.setAdapter(adapter);
 
         // Pesanan (M11) adalah layar ini. Toko membuka Kelola jualan (M10) selama M14 Profil toko
-        // belum ada; Catat (M06) menunggu layarnya dibuat.
+        // belum ada.
         binding.nav.tabPesanan.setSelected(true);
-        View.OnClickListener segera =
-                v -> Snackbar.make(view, R.string.segera_keterangan, Snackbar.LENGTH_SHORT).show();
         binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m05_dashboard));
-        binding.nav.tabCatat.setOnClickListener(segera);
+        binding.nav.tabCatat.setOnClickListener(v -> buka(R.id.m06_catat));
         binding.nav.tabToko.setOnClickListener(v -> buka(R.id.m10_kelola));
 
         vm.tab.observe(getViewLifecycleOwner(), t -> tampilkan());
