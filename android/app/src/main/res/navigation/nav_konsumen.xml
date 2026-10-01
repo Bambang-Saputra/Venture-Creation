@@ -55,18 +55,10 @@
             app:argType="string" />
     </fragment>
 
+    <!-- K09 Filter: argumen dan hasilnya dibungkus FilterBundle. -->
     <fragment
         android:id="@+id/k09_filter"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="K09"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Cari dan filter"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.filter.FilterFragment" />
 
     <fragment
         android:id="@+id/k10_detail_tas"

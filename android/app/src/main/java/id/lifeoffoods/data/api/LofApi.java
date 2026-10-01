@@ -7,6 +7,7 @@ import id.lifeoffoods.data.api.model.CatatSisaBody;
 import id.lifeoffoods.data.api.model.CatatanSisaDto;
 import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
+import id.lifeoffoods.data.api.model.HalamanListing;
 import id.lifeoffoods.data.api.model.HalamanPesanan;
 import id.lifeoffoods.data.api.model.HalamanPesananMitra;
 import id.lifeoffoods.data.api.model.JualanBody;
@@ -85,6 +86,17 @@ public interface LofApi {
      */
     @GET("listings")
     Call<Terbungkus<List<ListingDto>>> daftarListing(@QueryMap Map<String, String> query);
+
+    /**
+     * K07 dan K09 dengan filter (PRD-04). Kunci array (type[], exclude_allergens[]) tidak bisa
+     * lewat QueryMap karena satu kunci punya banyak nilai; list null tidak dikirim. Jawabannya
+     * halaman Laravel, jadi {@code total} bisa dipakai untuk "Tampilkan 12 jualan".
+     */
+    @GET("listings")
+    Call<HalamanListing> daftarListingTersaring(
+            @QueryMap Map<String, String> query,
+            @Query("type[]") List<String> tipe,
+            @Query("exclude_allergens[]") List<String> alergen);
 
     /** K10, K11. Tanpa token. Habis atau lewat tetap bisa dibuka dengan is_available = false. */
     @GET("listings/{id}")

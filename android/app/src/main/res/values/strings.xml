@@ -101,6 +101,42 @@
     <string name="k07_kosong_kategori">Belum ada jualan untuk kategori ini. Ketuk kategorinya lagi untuk melihat semua.</string>
     <string name="k07_gagal_judul">Jualan belum termuat</string>
     <string name="k07_gagal_isi">Periksa koneksi internet, lalu coba lagi.</string>
+    <!-- K07 penanda filter (PRD-04 kriteria 5) -->
+    <string name="k07_filter_alergi">Filter alergi aktif: tanpa %1$s</string>
+    <string name="k07_filter_lain">%1$d filter aktif</string>
+    <string name="k07_filter_alergi_lain">Filter alergi aktif: tanpa %1$s, dan %2$d filter lain</string>
+    <string name="k07_filter_ubah">Ubah</string>
+    <string name="k07_kosong_filter_judul">Tidak ada jualan yang cocok</string>
+    <string name="k07_kosong_filter_alergi">Tidak ada jualan tanpa %1$s di sekitarmu saat ini.</string>
+    <string name="k07_kosong_filter_isi">Coba longgarkan filternya.</string>
+    <string name="k07_perluas_jarak">Perluas jarak</string>
+    <string name="k07_atur_filter">Atur filter</string>
+
+    <!-- K09 Filter -->
+    <string name="k09_judul">Filter</string>
+    <string name="k09_tutup">Tutup filter</string>
+    <string name="k09_atur_ulang">Atur ulang</string>
+    <string name="k09_jenis">Jenis jualan</string>
+    <string name="k09_tas">Tas kejutan</string>
+    <string name="k09_menu">Menu satuan</string>
+    <string name="k09_jenis_minimal">Pilih minimal satu jenis jualan</string>
+    <string name="k09_alergi">Alergi yang dihindari</string>
+    <string name="k09_alergi_ket">Otomatis diisi dari profilmu</string>
+    <string name="k09_alergen_gagal">Daftar alergi belum termuat.</string>
+    <string name="k09_pola_makan">Pola makan</string>
+    <string name="k09_halal">Halal</string>
+    <string name="k09_jarak">Jarak</string>
+    <string name="k09_jarak_km">Sampai %1$d km</string>
+    <string name="k09_jam">Jam ambil</string>
+    <string name="k09_jam_sampai_20">Sekarang sampai 20.00</string>
+    <string name="k09_jam_20_22">20.00 sampai 22.00</string>
+    <string name="k09_sembunyikan">Sembunyikan yang bertanda alergi</string>
+    <string name="k09_sembunyikan_nyala">Jualan dengan peringatan %1$s tidak ditampilkan</string>
+    <string name="k09_sembunyikan_kosong">Pilih alergi di atas untuk menyembunyikan jualannya</string>
+    <string name="k09_sembunyikan_mati">Semua jualan tampil, termasuk yang mengandung alergenmu</string>
+    <string name="k09_tampilkan">Tampilkan %1$d jualan</string>
+    <string name="k09_tampilkan_kosong">Belum ada jualan yang cocok</string>
+    <string name="k09_tampilkan_memuat">Tampilkan jualan</string>
     <string name="kategori_bakery">Bakery</string>
     <string name="kategori_kafe">Kafe</string>
     <string name="kategori_restoran">Restoran</string>
