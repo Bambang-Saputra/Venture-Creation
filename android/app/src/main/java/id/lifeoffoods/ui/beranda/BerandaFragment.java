@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import id.lifeoffoods.R;
+import id.lifeoffoods.data.FilterJualan;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.databinding.FragmentBerandaBinding;
@@ -21,13 +22,14 @@ import id.lifeoffoods.databinding.IncludeUbinKategoriBinding;
 import id.lifeoffoods.databinding.ItemKartuFlashBinding;
 import id.lifeoffoods.databinding.ItemKartuTasBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.filter.FilterBundle;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
 
 /**
- * K07 Beranda konsumen. Tujuan ketukan (K08 peta, K09 cari, K10/K11 detail, K16-K18) masih penanda
- * di nav_konsumen sampai layarnya dibuat.
+ * K07 Beranda konsumen. Kolom cari membuka K09 Filter; hasilnya kembali lewat setFragmentResult.
+ * Tujuan lain (K08 peta, K16-K18) masih penanda di nav_konsumen sampai layarnya dibuat.
  */
 public class BerandaFragment extends Fragment {
 
@@ -35,6 +37,25 @@ public class BerandaFragment extends Fragment {
 
     private FragmentBerandaBinding binding;
     private BerandaViewModel vm;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Hasil K09. Didaftarkan di onCreate supaya tetap diterima walau view K07 sudah dibuang
+        // selama K09 tampil; dikirim saat K07 kembali STARTED.
+        getParentFragmentManager()
+                .setFragmentResultListener(
+                        FilterBundle.HASIL,
+                        this,
+                        (kunci, hasil) -> {
+                            FilterJualan f = FilterBundle.dari(hasil);
+                            if (f != null) {
+                                new ViewModelProvider(this)
+                                        .get(BerandaViewModel.class)
+                                        .pakaiFilter(f);
+                            }
+                        });
+    }
 
     @Override
     public View onCreateView(
@@ -79,7 +100,17 @@ public class BerandaFragment extends Fragment {
                 new BaseListAdapter<>(ItemKartuTasBinding::inflate, this::isiKartuTas, l -> l.id);
         binding.daftarTerdekat.setAdapter(adapterTerdekat);
 
-        binding.kolomCari.setOnClickListener(v -> buka(R.id.k09_filter, null));
+        binding.kolomCari.setOnClickListener(v -> bukaFilter());
+        binding.penandaFilter.setOnClickListener(v -> bukaFilter());
+        binding.tombolUbahFilter.setOnClickListener(
+                v -> {
+                    FilterJualan f = vm.filter.getValue();
+                    if (f != null && f.radiusKm != null) {
+                        vm.perluasJarak();
+                    } else {
+                        bukaFilter();
+                    }
+                });
         binding.tombolPeta.setOnClickListener(v -> buka(R.id.k08_peta, null));
         binding.lihatSemua.setOnClickListener(v -> buka(R.id.k08_peta, null));
         binding.tombolNotifikasi.setOnClickListener(v -> buka(R.id.k17_notifikasi, null));
@@ -125,6 +156,12 @@ public class BerandaFragment extends Fragment {
         vm.status.observe(getViewLifecycleOwner(), s -> tampilkanKeadaan());
         vm.terdekat.observe(getViewLifecycleOwner(), d -> tampilkanKeadaan());
         vm.kategori.observe(getViewLifecycleOwner(), this::tandaiKategori);
+        vm.filter.observe(
+                getViewLifecycleOwner(),
+                f -> {
+                    tampilkanPenanda(f);
+                    tampilkanKeadaan();
+                });
         vm.sesiBerakhir.observe(
                 getViewLifecycleOwner(),
                 p -> {
@@ -171,9 +208,25 @@ public class BerandaFragment extends Fragment {
         boolean tampilKeadaan = gagal || (s == BerandaViewModel.Status.SIAP && kosong);
         binding.keadaan.setVisibility(tampilKeadaan ? View.VISIBLE : View.GONE);
         binding.tombolCobaLagi.setVisibility(gagal ? View.VISIBLE : View.GONE);
+        FilterJualan f = vm.filter.getValue();
+        boolean kosongKarenaFilter =
+                !gagal
+                        && tampilKeadaan
+                        && f != null
+                        && (f.alergiAktif() || f.jumlahTambahan(vm.bawaanProfil()) > 0);
+        binding.tombolUbahFilter.setVisibility(kosongKarenaFilter ? View.VISIBLE : View.GONE);
         if (gagal) {
             binding.keadaanJudul.setText(R.string.k07_gagal_judul);
             binding.keadaanIsi.setText(R.string.k07_gagal_isi);
+        } else if (kosongKarenaFilter) {
+            // PRD-04: "Tidak ada jualan tanpa kacang tanah di sekitar Anda saat ini".
+            binding.keadaanJudul.setText(R.string.k07_kosong_filter_judul);
+            binding.keadaanIsi.setText(
+                    f.alergiAktif()
+                            ? getString(R.string.k07_kosong_filter_alergi, f.daftarNamaAlergen())
+                            : getString(R.string.k07_kosong_filter_isi));
+            binding.tombolUbahFilter.setText(
+                    f.radiusKm != null ? R.string.k07_perluas_jarak : R.string.k07_atur_filter);
         } else if (tampilKeadaan) {
             binding.keadaanJudul.setText(R.string.k07_kosong_judul);
             binding.keadaanIsi.setText(
@@ -181,6 +234,43 @@ public class BerandaFragment extends Fragment {
                             ? R.string.k07_kosong_isi
                             : R.string.k07_kosong_kategori);
         }
+    }
+
+    /**
+     * Penanda di atas kategori selama ada filter yang menyembunyikan jualan (PRD-04 kriteria 5).
+     * Ketuk untuk membuka K09.
+     */
+    private void tampilkanPenanda(@Nullable FilterJualan f) {
+        if (f == null) {
+            binding.penandaFilter.setVisibility(View.GONE);
+            return;
+        }
+        // Alergen dihitung terpisah, jadi tambahan di sini hanya filter selain alergen.
+        FilterJualan tanpaAlergen = f.salin();
+        tanpaAlergen.alergen.clear();
+        tanpaAlergen.sembunyikanAlergi = true;
+        int lain = tanpaAlergen.jumlahTambahan(null);
+        String teks;
+        if (f.alergiAktif() && lain > 0) {
+            teks = getString(R.string.k07_filter_alergi_lain, f.daftarNamaAlergen(), lain);
+        } else if (f.alergiAktif()) {
+            teks = getString(R.string.k07_filter_alergi, f.daftarNamaAlergen());
+        } else if (lain > 0) {
+            teks = getString(R.string.k07_filter_lain, lain);
+        } else {
+            teks = null;
+        }
+        binding.penandaFilter.setVisibility(teks == null ? View.GONE : View.VISIBLE);
+        if (teks != null) {
+            binding.teksPenandaFilter.setText(teks);
+            binding.penandaFilter.setContentDescription(
+                    teks + ". " + getString(R.string.k07_filter_ubah));
+        }
+    }
+
+    private void bukaFilter() {
+        FilterJualan f = vm.filter.getValue();
+        buka(R.id.k09_filter, FilterBundle.ke(f == null ? new FilterJualan() : f));
     }
 
     private void isiKartuFlash(ItemKartuFlashBinding b, ListingDto l) {

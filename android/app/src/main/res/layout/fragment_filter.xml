@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    K09 Filter (Figma 58:1137, PRD-04). Chip alergen dibangun dari GET /allergens (kriteria 4).
+    "Vegetarian" di Figma tidak ada karena jualan belum punya penanda diet (kontrak API bagian 12).
+    Bagian Jarak disembunyikan kalau profil tidak punya koordinat.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_kartu"
+    android:orientation="vertical">
+
+    <!-- ===== App bar: tutup, judul, Atur ulang ===== -->
+    <LinearLayout
+        android:id="@+id/kepala"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/latar_kartu"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="64dp"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="14dp">
+
+            <ImageButton
+                android:id="@+id/tombol_tutup"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="-4dp"
+                android:background="@drawable/bg_tombol_kembali"
+                android:contentDescription="@string/k09_tutup"
+                android:src="@drawable/ic_tutup"
+                app:tint="@color/teks_utama" />
+
+            <TextView
+                style="@style/Teks.JudulBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:accessibilityHeading="true"
+                android:text="@string/k09_judul" />
+
+            <Button
+                android:id="@+id/tombol_atur_ulang"
+                style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/k09_atur_ulang"
+                android:textSize="13.5sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/garis_halus" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/gulir"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="22dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- Jenis jualan -->
+            <TextView
+                style="@style/Teks.JudulSeksi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:text="@string/k09_jenis" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/grup_jenis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_tas"
+                    style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k09_tas" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_menu"
+                    style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k09_menu" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Alergi yang dihindari -->
+            <TextView
+                style="@style/Teks.JudulSeksi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:accessibilityHeading="true"
+                android:text="@string/k09_alergi" />
+
+            <TextView
+                style="@style/Teks.Keterangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/k09_alergi_ket" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progres_alergen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorSize="24dp" />
+
+            <LinearLayout
+                android:id="@+id/gagal_alergen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Teks.IsiKecil"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/k09_alergen_gagal" />
+
+                <Button
+                    android:id="@+id/tombol_coba_lagi"
+                    style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/coba_lagi" />
+            </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/grup_alergi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp" />
+
+            <!-- Pola makan: hanya Halal (halal=1) -->
+            <TextView
+                style="@style/Teks.JudulSeksi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:accessibilityHeading="true"
+                android:text="@string/k09_pola_makan" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_halal"
+                    style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k09_halal" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Jarak: butuh koordinat profil -->
+            <LinearLayout
+                android:id="@+id/bagian_jarak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/Teks.JudulSeksi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:accessibilityHeading="true"
+                    android:text="@string/k09_jarak" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/grup_jarak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingVertical="8dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_jarak_1"
+                        style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_jarak_3"
+                        style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_jarak_5"
+                        style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+
+            <!-- Jam ambil -->
+            <TextView
+                style="@style/Teks.JudulSeksi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:accessibilityHeading="true"
+                android:text="@string/k09_jam" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="8dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_jam_sampai_20"
+                    style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k09_jam_sampai_20" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_jam_20_22"
+                    style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/k09_jam_20_22" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Saklar: matikan filter alergi untuk sementara tanpa mengubah profil -->
+            <LinearLayout
+                android:id="@+id/baris_sembunyikan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/bg_kotak_lembut_16"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Teks.Butir"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/saklar_sembunyikan"
+                        android:text="@string/k09_sembunyikan" />
+
+                    <TextView
+                        android:id="@+id/ket_sembunyikan"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/saklar_sembunyikan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:contentDescription="@string/k09_sembunyikan"
+                    app:thumbTint="@color/latar_kartu"
+                    app:trackDecorationTint="@android:color/transparent"
+                    app:trackTint="@color/saklar_jalur" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/bilah_aksi"
+        style="@style/BilahAksi">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_tampilkan"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/k09_tampilkan_memuat" />
+    </LinearLayout>
+</LinearLayout>

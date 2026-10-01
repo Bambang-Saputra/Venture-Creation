@@ -198,6 +198,52 @@
             android:paddingTop="16dp"
             android:paddingBottom="18dp">
 
+            <!-- Penanda filter (PRD-04 kriteria 5): ada jualan yang disembunyikan. -->
+            <LinearLayout
+                android:id="@+id/penanda_filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_catatan_merek"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:orientation="horizontal"
+                android:paddingStart="14dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_filter"
+                    app:tint="@color/merek_utama" />
+
+                <TextView
+                    android:id="@+id/teks_penanda_filter"
+                    style="@style/Teks.IsiKecil"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/teks_merek_gelap" />
+
+                <TextView
+                    style="@style/Teks.Tautan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:importantForAccessibility="no"
+                    android:text="@string/k07_filter_ubah" />
+            </LinearLayout>
+
             <TextView
                 style="@style/Teks.JudulSeksi"
                 android:layout_width="wrap_content"
@@ -367,6 +413,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="@string/coba_lagi" />
+
+                    <!-- Kosong karena filter: perluas jarak atau buka K09. -->
+                    <Button
+                        android:id="@+id/tombol_ubah_filter"
+                        style="@style/Widget.LifeOfFoods.Tombol.Lembut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/k07_atur_filter"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

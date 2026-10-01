@@ -12,8 +12,10 @@ import com.github.takahirom.roborazzi.RoborazziKt;
 import com.github.takahirom.roborazzi.RoborazziOptions;
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
+import id.lifeoffoods.data.FilterJualan;
 import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.filter.FilterBundle;
 import id.lifeoffoods.ui.masuk.VerifikasiOtpFragment;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -134,6 +136,22 @@ public class TangkapanLayarTest {
         buka();
         tunggu();
         tangkap("K07");
+    }
+
+    /** K09 dengan pilihan yang sama dengan Figma 58:1137. */
+    @Test
+    public void k09Filter() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        tunggu();
+        FilterJualan f = new FilterJualan();
+        f.alergen.put("kacang_tanah", "Kacang tanah");
+        f.halal = true;
+        f.radiusKm = 1;
+        f.jam = FilterJualan.JAM_20_22;
+        navigasi(R.id.k09_filter, FilterBundle.ke(f));
+        tunggu();
+        tangkapPanjang("K09");
     }
 
     /**
@@ -545,6 +563,10 @@ public class TangkapanLayarTest {
                 return json("{\"data\":[]}");
             }
             if (path.startsWith("/api/listings")) {
+                // K09 menghitung jumlah dengan per_page=1; Figma menampilkan "Tampilkan 12 jualan".
+                if (path.contains("per_page=1&") || path.endsWith("per_page=1")) {
+                    return json("{\"data\":[],\"total\":12}");
+                }
                 // Dua kartu flash untuk "Tutup kurang dari satu jam", dua kartu tas untuk
                 // "Terdekat dari kamu", sama dengan contoh Figma K07.
                 if (path.contains("ends_within_minutes")) {
