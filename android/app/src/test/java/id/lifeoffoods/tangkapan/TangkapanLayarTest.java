@@ -341,6 +341,19 @@ public class TangkapanLayarTest {
         tangkapPanjang("M06");
     }
 
+    /** "Atur tujuan" diketuk: pil tujuan muncul di tiap produk (PRD-12 alur 3). */
+    @Test
+    public void m06AturTujuan() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m06_catat, null);
+        tunggu();
+        a.findViewById(R.id.tombol_atur_tujuan).performClick();
+        idle();
+        tangkapPanjang("M06-tujuan");
+    }
+
     @Test
     public void m19CatatSisaTimbang() {
         app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
@@ -612,8 +625,13 @@ public class TangkapanLayarTest {
                                 + ","
                                 + produkSisa(10, "Roti gandum", 22000, 3, 500, "discarded")
                                 + ","
-                                + produkSisa(11, "Kopi susu botol", 25000, 5, 500, "donated")
+                                + produkSisa(11, "Kopi susu botol", 25000, 5, 500, "discarded")
                                 + "],\"other_items\":[]}}");
+            }
+            if (path.startsWith("/api/partner/stores/5/summary")) {
+                return json(
+                        "{\"data\":{\"is_open\":true,\"closes_at\":\"21:00\","
+                                + "\"is_today_logged\":true}}");
             }
             if (path.startsWith("/api/partner/stores/5/listings")) {
                 return json(jualanMitra(path.contains("type=menu_item")));

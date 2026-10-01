@@ -386,7 +386,12 @@
     <string name="m06_belum_disimpan">belum disimpan</string>
     <string name="m19_nilai_tersimpan">Nilai tersimpan %1$s</string>
     <string name="m19_nilai_nanti">Nilai rupiah dihitung saat disimpan</string>
-    <string name="m06_nilai_satuan">Nilai %1$s per %2$s</string>
+    <!-- Nilai sisa memakai HPP; harga jual hanya kalau HPP belum diisi (CatatSisaController). -->
+    <string name="m06_modal_satuan">Modal %1$s per %2$s</string>
+    <string name="m06_harga_satuan">Harga jual %1$s per %2$s</string>
+    <string name="m06_jam_tutup">Tutup %1$s</string>
+    <string name="m06_atur_tujuan">Atur tujuan</string>
+    <string name="m06_sembunyikan_tujuan">Sembunyikan tujuan</string>
     <string name="m06_satuan_bawaan">pcs</string>
     <string name="m06_lain_ket">Item lain · %1$s per satuan</string>
     <string name="m06_tambah_item">Tambah item lain</string>

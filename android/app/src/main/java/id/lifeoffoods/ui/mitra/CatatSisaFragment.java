@@ -76,6 +76,8 @@ public class CatatSisaFragment extends Fragment {
         binding.segmen.tabTas.setOnClickListener(v -> vm.pilihMode(CatatanSisaDto.PER_ITEM));
         binding.segmen.tabMenu.setOnClickListener(v -> vm.pilihMode(CatatanSisaDto.TIMBANG));
         binding.tombolTambah.setOnClickListener(v -> tambahItemLain());
+        binding.tombolAturTujuan.setOnClickListener(
+                v -> vm.aturTujuan(!Boolean.TRUE.equals(vm.tampilTujuan.getValue())));
         binding.tombolSimpan.setOnClickListener(v -> simpan(false));
         binding.tombolSimpanPasang.setOnClickListener(v -> simpan(true));
 
@@ -90,6 +92,17 @@ public class CatatSisaFragment extends Fragment {
         vm.itemLain.observe(getViewLifecycleOwner(), l -> bangunItemLain());
         vm.mode.observe(getViewLifecycleOwner(), m -> tampilkanMode());
         vm.versi.observe(getViewLifecycleOwner(), v -> perbarui());
+        vm.tampilTujuan.observe(getViewLifecycleOwner(), t -> perbarui());
+        vm.jamTutup.observe(
+                getViewLifecycleOwner(),
+                jam -> {
+                    boolean ada = jam != null && !jam.isEmpty();
+                    binding.jamTutup.setVisibility(ada ? View.VISIBLE : View.GONE);
+                    if (ada) {
+                        binding.jamTutup.setText(
+                                getString(R.string.m06_jam_tutup, jam.replace(':', '.')));
+                    }
+                });
         vm.menyimpan.observe(getViewLifecycleOwner(), j -> perbaruiTombol());
         vm.galat.observe(
                 getViewLifecycleOwner(),
@@ -160,7 +173,11 @@ public class CatatSisaFragment extends Fragment {
                                 : p.unit.trim();
                 b.nilai.setText(
                         getString(
-                                R.string.m06_nilai_satuan,
+                                // API memberi HPP sebagai unit_value; sama dengan harga jual
+                                // berarti HPP belum diisi.
+                                p.unitValueRupiah == p.priceRupiah
+                                        ? R.string.m06_harga_satuan
+                                        : R.string.m06_modal_satuan,
                                 FormatTampilan.rupiah(p.unitValueRupiah),
                                 satuan));
                 b.berat.setText(CatatSisa.isianKg(vm.gram(p.productId)));
@@ -233,6 +250,7 @@ public class CatatSisaFragment extends Fragment {
         }
         boolean timbang = vm.timbang();
         boolean kunci = vm.terkunci();
+        boolean tampilTujuan = Boolean.TRUE.equals(vm.tampilTujuan.getValue());
         CatatanSisaDto c = vm.catatan.getValue();
         if (c != null && c.products != null) {
             for (CatatanSisaDto.Produk p : c.products) {
@@ -253,6 +271,7 @@ public class CatatSisaFragment extends Fragment {
                         () -> vm.ubahJumlah(id, true));
                 b.berat.setEnabled(!kunci);
                 b.tujuan.setEnabled(!kunci);
+                b.tujuan.setVisibility(tampilTujuan ? View.VISIBLE : View.GONE);
                 b.tujuan.setText(
                         getString(R.string.m06_tujuan_label, getString(teksTujuan(vm.tujuan(id)))));
             }
@@ -273,6 +292,13 @@ public class CatatSisaFragment extends Fragment {
             binding.subRingkasan.setText(banding == null ? sub : sub + " · " + banding);
         }
         binding.tombolTambah.setVisibility(kunci ? View.GONE : View.VISIBLE);
+        // Tujuan selain "dibuang" tidak boleh tersembunyi, karena mengubah total.
+        binding.tombolAturTujuan.setVisibility(
+                (tampilTujuan && vm.adaTujuanLain()) || (kunci && !tampilTujuan)
+                        ? View.GONE
+                        : View.VISIBLE);
+        binding.tombolAturTujuan.setText(
+                tampilTujuan ? R.string.m06_sembunyikan_tujuan : R.string.m06_atur_tujuan);
         perbaruiTombol();
     }
 
