@@ -56,6 +56,11 @@ public class MenuSatuanFragment extends Fragment {
         binding.tombolKembali.setOnClickListener(
                 v -> NavHostFragment.findNavController(this).popBackStack());
         binding.tombolFavorit.setOnClickListener(v -> vm.ubahFavorit());
+        binding.tombolMaps.setOnClickListener(
+                v -> {
+                    ListingDetailDto d = vm.detail.getValue();
+                    BersamaDetail.bukaMaps(this, d == null ? null : d.store);
+                });
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
         binding.tombolLanjut.setOnClickListener(
                 v ->
@@ -72,6 +77,10 @@ public class MenuSatuanFragment extends Fragment {
         vm.detail.observe(getViewLifecycleOwner(), this::isiToko);
         vm.jarakKm.observe(getViewLifecycleOwner(), km -> isiInfo());
         vm.menuToko.observe(getViewLifecycleOwner(), adapter::submitList);
+        // Profil bisa termuat setelah daftar menu; baris digambar ulang supaya tanda alergi muncul.
+        vm.alergiProfil.observe(
+                getViewLifecycleOwner(),
+                p -> adapter.notifyItemRangeChanged(0, adapter.getItemCount()));
         vm.keranjangBerubah.observe(
                 getViewLifecycleOwner(),
                 n -> {
@@ -127,6 +136,8 @@ public class MenuSatuanFragment extends Fragment {
         binding.alamat.setVisibility(
                 alamat == null || alamat.trim().isEmpty() ? View.GONE : View.VISIBLE);
         binding.alamat.setText(alamat);
+        binding.tombolMaps.setVisibility(
+                BersamaDetail.adaLokasi(d.store) ? View.VISIBLE : View.GONE);
         binding.ikonKategori.setImageResource(BersamaDetail.ikonKategori(d.store.category));
         binding.judul.setText(getString(R.string.k11_judul, d.store.name));
         isiInfo();
@@ -162,6 +173,11 @@ public class MenuSatuanFragment extends Fragment {
                         Kandungan.hanyaMungkin(l.allergens)
                                 ? R.color.tanda_proses_teks
                                 : R.color.teks_sekunder));
+        String cocok = Kandungan.cocokProfil(l.allergens, vm.alergiProfil.getValue());
+        b.peringatan.setVisibility(cocok == null ? View.GONE : View.VISIBLE);
+        b.peringatan.setText(cocok);
+        // Daftar /listings tidak membawa nomor sertifikat; teksnya tetap tidak pernah "halal" saja.
+        b.halal.setText(Kandungan.labelHalal(l.halalLabel, null));
         b.harga.setText(FormatTampilan.rupiah(l.priceRupiah));
         Long asli = l.originalValueRupiah;
         boolean coret = asli != null && asli > l.priceRupiah;

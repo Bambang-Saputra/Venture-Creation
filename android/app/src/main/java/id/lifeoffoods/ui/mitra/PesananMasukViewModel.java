@@ -12,7 +12,9 @@ import id.lifeoffoods.data.PesananMitra;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.data.api.model.HalamanPesananMitra;
+import id.lifeoffoods.data.api.model.JualanMitraDto;
 import id.lifeoffoods.data.api.model.PesananMitraDto;
+import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -56,6 +58,12 @@ public class PesananMasukViewModel extends AndroidViewModel {
 
     public final MutableLiveData<String> galatAwal = new MutableLiveData<>();
     public final MutableLiveData<Peristiwa<Boolean>> sesiBerakhir = new MutableLiveData<>();
+
+    /**
+     * Jumlah jualan aktif hari ini untuk keadaan kosong PRD-10 ("Jualan yang aktif: {jumlah}");
+     * null kalau belum termuat atau gagal, dan keadaan kosong tetap tampil tanpa angka.
+     */
+    public final MutableLiveData<Integer> jualanAktif = new MutableLiveData<>(null);
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable pantau = this::muat;
@@ -113,8 +121,40 @@ public class PesananMasukViewModel extends AndroidViewModel {
                 });
     }
 
+    private void muatJualanAktif(LofApp app, long idToko, int gen) {
+        app.api()
+                .jualanMitra(idToko, null)
+                .enqueue(
+                        new ApiCallback<>() {
+                            @Override
+                            public void sukses(Terbungkus<List<JualanMitraDto>> data) {
+                                if (gen != generasi) {
+                                    return;
+                                }
+                                int n = 0;
+                                if (data != null && data.data != null) {
+                                    for (JualanMitraDto j : data.data) {
+                                        if (JualanMitraDto.AKTIF.equals(j.status)) {
+                                            n++;
+                                        }
+                                    }
+                                }
+                                jualanAktif.setValue(n);
+                            }
+
+                            @Override
+                            public void gagal(ApiError e) {
+                                // Hanya pelengkap keadaan kosong; galat utamanya dari daftar.
+                                if (gen == generasi) {
+                                    jualanAktif.setValue(null);
+                                }
+                            }
+                        });
+    }
+
     private void muatDaftar(LofApp app, long idToko, int gen) {
         String hariIni = LocalDate.now(WIB).toString();
+        muatJualanAktif(app, idToko, gen);
         app.api()
                 .pesananMitra(idToko, "pending", hariIni, 1)
                 .enqueue(

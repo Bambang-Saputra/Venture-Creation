@@ -180,6 +180,26 @@
                         android:layout_marginTop="12dp"
                         android:gravity="center"
                         tools:text="Belum ada pesanan hari ini." />
+
+                    <!-- PRD-10: jumlah jualan aktif dan tombol ke M10 (tab Hari ini saja). -->
+                    <TextView
+                        android:id="@+id/kosong_jualan"
+                        style="@style/Teks.Keterangan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        tools:text="Jualan yang aktif: 2" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_kelola"
+                        style="@style/Widget.LifeOfFoods.Tombol.Lembut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/m11_kelola_jualan"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

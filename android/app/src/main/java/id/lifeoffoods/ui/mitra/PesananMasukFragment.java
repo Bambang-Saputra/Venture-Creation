@@ -64,6 +64,7 @@ public class PesananMasukFragment extends Fragment {
         binding.tabHariIni.setOnClickListener(v -> vm.pilihTab(PesananMasukViewModel.Tab.HARI_INI));
         binding.tabRiwayat.setOnClickListener(v -> vm.pilihTab(PesananMasukViewModel.Tab.RIWAYAT));
         binding.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
+        binding.tombolKelola.setOnClickListener(v -> NavMitra.bukaKelola(this));
 
         ubin(binding.ubinMenunggu, R.string.m11_menunggu, R.color.tanda_proses_teks);
         ubin(binding.ubinDiambil, R.string.m11_diambil, R.color.teks_merek);
@@ -80,6 +81,7 @@ public class PesananMasukFragment extends Fragment {
         vm.menunggu.observe(getViewLifecycleOwner(), d -> tampilkan());
         vm.riwayat.observe(getViewLifecycleOwner(), d -> tampilkan());
         vm.status.observe(getViewLifecycleOwner(), s -> tampilkan());
+        vm.jualanAktif.observe(getViewLifecycleOwner(), n -> tampilkan());
         vm.hitungan.observe(
                 getViewLifecycleOwner(),
                 h -> {
@@ -140,6 +142,14 @@ public class PesananMasukFragment extends Fragment {
         binding.kosong.setVisibility(siap && kosong ? View.VISIBLE : View.GONE);
         binding.kosongTeks.setText(
                 hariIni ? R.string.m11_kosong_hari_ini : R.string.m11_kosong_riwayat);
+        Integer aktif = vm.jualanAktif.getValue();
+        boolean tampilJualan = siap && kosong && hariIni;
+        binding.kosongJualan.setVisibility(
+                tampilJualan && aktif != null ? View.VISIBLE : View.GONE);
+        if (aktif != null) {
+            binding.kosongJualan.setText(getString(R.string.m11_jualan_aktif, aktif));
+        }
+        binding.tombolKelola.setVisibility(tampilJualan ? View.VISIBLE : View.GONE);
     }
 
     private void isiKartu(ItemPesananMasukBinding b, PesananMitraDto p) {

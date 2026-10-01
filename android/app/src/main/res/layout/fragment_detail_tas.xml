@@ -77,6 +77,21 @@
                         android:layout_marginTop="6dp"
                         tools:text="Kopi Kalyan · 380 m · tutup 21.00" />
 
+                    <!-- PRD-05 kriteria 8: intent geo: dengan koordinat toko, tanpa API key. -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_maps"
+                        style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/k10_buka_maps"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_pin_lokasi"
+                        app:iconPadding="6dp"
+                        app:iconSize="15dp"
+                        app:iconTint="@color/teks_merek"
+                        tools:visibility="visible" />
+
                     <!-- Harga -->
                     <LinearLayout
                         style="@style/KotakDetail"

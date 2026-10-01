@@ -48,6 +48,28 @@
             android:layout_marginTop="3dp"
             tools:text="Mengandung susu dan gluten" />
 
+        <!-- PRD-05 kriteria 6: alergen yang ada di profil pembeli. -->
+        <TextView
+            android:id="@+id/peringatan"
+            style="@style/Teks.Keterangan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/figtree_semibold"
+            android:textColor="@color/tanda_bahaya_teks"
+            android:visibility="gone"
+            tools:text="Cocok dengan alergimu: susu"
+            tools:visibility="visible" />
+
+        <!-- PRD-05 kriteria 5: label halal persis, tidak pernah "halal" saja. -->
+        <TextView
+            android:id="@+id/halal"
+            style="@style/Teks.Keterangan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            tools:text="Klaim mitra, belum bersertifikat" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

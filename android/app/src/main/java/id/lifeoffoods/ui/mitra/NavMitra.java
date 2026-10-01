@@ -30,6 +30,11 @@ final class NavMitra {
         nav.tabToko.setOnClickListener(v -> buka(f, R.id.m10_kelola, aktif));
     }
 
+    /** Tombol "Kelola jualan" di keadaan kosong M11; sama dengan tab Toko. */
+    static void bukaKelola(Fragment f) {
+        buka(f, R.id.m10_kelola, R.id.m11_pesanan);
+    }
+
     private static void buka(Fragment f, @IdRes int tujuan, @IdRes int aktif) {
         if (tujuan == aktif) {
             return;
