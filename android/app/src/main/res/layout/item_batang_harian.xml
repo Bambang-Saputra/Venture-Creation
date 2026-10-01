@@ -27,7 +27,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="4dp"
-        android:background="@color/grafik_batang_pasif"
+        android:background="@drawable/bg_batang_harian_pasif"
         android:importantForAccessibility="no" />
 
     <TextView

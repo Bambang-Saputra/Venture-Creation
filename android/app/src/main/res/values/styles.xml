@@ -151,6 +151,15 @@
         <item name="lineHeight">18sp</item>
     </style>
 
+    <!-- Judul kartu laporan mitra (M07), Figma Gabarito 800 14/17 -->
+    <style name="Teks.JudulKartuLaporan">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">17sp</item>
+        <item name="android:letterSpacing">-0.007</item>
+    </style>
+
     <!-- Nama toko di kartu, 11.5/16 medium -->
     <style name="Teks.NamaToko">
         <item name="android:fontFamily">@font/figtree_medium</item>

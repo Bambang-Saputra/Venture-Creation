@@ -250,7 +250,9 @@ public class LaporanMingguanFragment extends Fragment {
                 lp.height = t > 0 ? t : Math.round(GARIS_NOL_DP * dp);
                 b.angka.setText(LaporanMingguan.ribu(n));
                 b.batang.setBackgroundResource(
-                        teratas ? R.color.grafik_batang_aktif : R.color.grafik_batang_pasif);
+                        teratas
+                                ? R.drawable.bg_batang_harian_aktif
+                                : R.drawable.bg_batang_harian_pasif);
                 if (teratas) {
                     b.angka.setTextColor(
                             ContextCompat.getColor(requireContext(), R.color.teks_merek));
