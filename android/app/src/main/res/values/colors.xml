@@ -54,4 +54,6 @@
     <!-- Grafik -->
     <color name="grafik_batang_aktif">#1B8A5A</color>
     <color name="grafik_batang_pasif">#D8ECDD</color>
+    <!-- Tren sisa naik di kotak gelap M07; kontras 7:1 terhadap merek_tinta. -->
+    <color name="tren_naik_di_gelap">#F5A196</color>
 </resources>

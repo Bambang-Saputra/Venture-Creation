@@ -11,6 +11,7 @@ import id.lifeoffoods.data.api.model.HalamanPesanan;
 import id.lifeoffoods.data.api.model.HalamanPesananMitra;
 import id.lifeoffoods.data.api.model.JualanBody;
 import id.lifeoffoods.data.api.model.JualanMitraDto;
+import id.lifeoffoods.data.api.model.LaporanMingguanDto;
 import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.data.api.model.MeResponse;
@@ -180,6 +181,11 @@ public interface LofApi {
     @POST("partner/stores/{store}/waste-logs")
     Call<Terbungkus<CatatanSisaDto>> simpanSisa(
             @Path("store") long storeId, @Body CatatSisaBody body);
+
+    /** M07. {@code weekStart} Senin yyyy-MM-dd. Hanya pemilik (kasir 403). */
+    @GET("partner/stores/{store}/reports/weekly")
+    Call<Terbungkus<LaporanMingguanDto>> laporanMingguan(
+            @Path("store") long storeId, @Query("week_start") String weekStart);
 
     /**
      * Token dikirim eksplisit karena sesi lokal langsung dihapus sesudah enqueue, sebelum

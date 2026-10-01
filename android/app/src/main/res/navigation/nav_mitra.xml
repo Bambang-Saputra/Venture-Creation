@@ -71,4 +71,22 @@
     <fragment
         android:id="@+id/m06_catat"
         android:name="id.lifeoffoods.ui.mitra.CatatSisaFragment" />
+
+    <!-- M07 Laporan mingguan (PRD-13). Dibuka dari tab Beranda selama M05 belum dibuat. -->
+    <fragment
+        android:id="@+id/m07_laporan"
+        android:name="id.lifeoffoods.ui.mitra.LaporanMingguanFragment" />
+
+    <fragment
+        android:id="@+id/m08_saran"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="M08"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Saran produksi"
+            app:argType="string" />
+    </fragment>
 </navigation>

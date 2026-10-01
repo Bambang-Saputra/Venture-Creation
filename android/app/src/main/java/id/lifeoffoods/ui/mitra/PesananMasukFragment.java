@@ -76,7 +76,8 @@ public class PesananMasukFragment extends Fragment {
         // Pesanan (M11) adalah layar ini. Toko membuka Kelola jualan (M10) selama M14 Profil toko
         // belum ada.
         binding.nav.tabPesanan.setSelected(true);
-        binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m05_dashboard));
+        // Selama M05 belum dibuat, Beranda membuka M07 Laporan mingguan.
+        binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m07_laporan));
         binding.nav.tabCatat.setOnClickListener(v -> buka(R.id.m06_catat));
         binding.nav.tabToko.setOnClickListener(v -> buka(R.id.m10_kelola));
 

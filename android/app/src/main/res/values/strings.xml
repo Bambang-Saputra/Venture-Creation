@@ -415,4 +415,44 @@
     <string name="m19_berat_label">Berat sisa %1$s dalam kilogram</string>
     <string name="m19_tips">Pakai timbangan dapur. Kalau tidak ada timbangan, pindah ke mode Hitung per item.</string>
 
+    <!-- M07 Laporan mingguan (PRD-13) -->
+    <string name="m07_judul_ini">Laporan minggu ini</string>
+    <string name="m07_judul_lalu">Laporan mingguan</string>
+    <string name="m07_minggu_sebelumnya">Minggu sebelumnya</string>
+    <string name="m07_minggu_berikutnya">Minggu berikutnya</string>
+    <string name="m07_tidak_terjual">Nilai yang tidak terjual</string>
+    <string name="m07_tren_naik">Sisa terbuang naik %1$d%% dari minggu lalu</string>
+    <string name="m07_tren_turun">Sisa terbuang turun %1$d%% dari minggu lalu</string>
+    <string name="m07_tren_sama">Sisa terbuang sama dengan minggu lalu</string>
+    <string name="m07_terselamatkan">Terselamatkan lewat tas</string>
+    <string name="m07_terbuang">Masih terbuang</string>
+    <plurals name="m07_terjual">
+        <item quantity="one">%1$d item terjual</item>
+        <item quantity="other">%1$d item terjual</item>
+    </plurals>
+    <string name="m07_sekitar_berat">sekitar %1$s</string>
+    <plurals name="m07_hari_tercatat">
+        <item quantity="one">dari %1$d hari tercatat</item>
+        <item quantity="other">dari %1$d hari tercatat</item>
+    </plurals>
+    <string name="m07_ket_terselamatkan">Terselamatkan adalah uang dari pesanan yang sudah diambil, bukan nilai asli makanannya.</string>
+    <string name="m07_teratas">Produk paling sering sisa</string>
+    <string name="m07_jumlah_nilai">%1$s · %2$s</string>
+    <string name="m07_produk_lain">Item lain</string>
+    <string name="m07_per_hari">Nilai sisa per hari</string>
+    <string name="m07_ribu_rupiah">ribu rupiah</string>
+    <string name="m07_ket_celah">Kotak bergaris putus berarti hari itu tidak dicatat, bukan tanpa sisa.</string>
+    <string name="m07_hari_nilai">%1$s, sisa terbuang %2$s</string>
+    <string name="m07_hari_kosong">%1$s, tidak dicatat</string>
+    <string name="m07_hari_teratas">%1$s, sisa terbuang %2$s, paling banyak minggu ini</string>
+    <plurals name="m07_ajakan">
+        <item quantity="one">Baru %1$d hari tercatat. Catat minimal 3 hari supaya grafik harian bisa dibaca.</item>
+        <item quantity="other">Baru %1$d hari tercatat. Catat minimal 3 hari supaya grafik harian bisa dibaca.</item>
+    </plurals>
+    <string name="m07_kosong">Belum ada catatan minggu ini. Catat sisa hari ini untuk memulai.</string>
+    <string name="m07_kosong_lalu">Tidak ada catatan sisa di minggu ini.</string>
+    <string name="m07_catat_sekarang">Catat sisa hari ini</string>
+    <string name="m07_lihat_saran">Lihat saran produksi</string>
+    <string name="m07_bukan_pemilik">Laporan mingguan hanya bisa dibuka pemilik toko.</string>
+
 </resources>
