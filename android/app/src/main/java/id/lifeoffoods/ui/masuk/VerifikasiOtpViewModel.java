@@ -32,6 +32,17 @@ public class VerifikasiOtpViewModel extends AndroidViewModel {
     public final MutableLiveData<Peristiwa<String>> galat = new MutableLiveData<>();
     public final MutableLiveData<Peristiwa<AuthResponse>> masuk = new MutableLiveData<>();
 
+    /** Kode salah (422): isian kode dikosongkan sekali, bukan setiap rotasi. */
+    public final MutableLiveData<Peristiwa<Boolean>> kosongkanKode = new MutableLiveData<>();
+
+    /** Nomor terdaftar dengan peran lain (403): pesan server, lalu tawarkan halaman yang benar. */
+    public final MutableLiveData<Peristiwa<String>> salahHalaman = new MutableLiveData<>();
+
+    /** Peran halaman ini ("consumer" atau "partner"); tujuan tombol pindah adalah peran lainnya. */
+    public String peran() {
+        return peran;
+    }
+
     private String nomor;
     private String peran;
     private boolean siap;
@@ -91,11 +102,17 @@ public class VerifikasiOtpViewModel extends AndroidViewModel {
                             public void gagal(ApiError e) {
                                 memuat.setValue(false);
                                 // 422 kode salah/kedaluwarsa dan 429 percobaan habis tampil di
-                                // bawah
-                                // kotak kode; peran salah (403) dan jaringan lewat Snackbar.
+                                // bawah kotak kode. Kode salah juga mengosongkan isian (PRD-01).
+                                // Peran salah (403) menawarkan halaman yang benar (kriteria 8).
                                 if (e.kode() == 422 || e.kode() == 429) {
                                     String field = e.pesanField("code");
                                     galatKode.setValue(field != null ? field : e.pesan());
+                                    if (e.kode() == 422) {
+                                        kodeTerakhir = null;
+                                        kosongkanKode.setValue(new Peristiwa<>(true));
+                                    }
+                                } else if (e.salahHalaman()) {
+                                    salahHalaman.setValue(new Peristiwa<>(e.pesan()));
                                 } else {
                                     galat.setValue(new Peristiwa<>(e.pesan()));
                                 }

@@ -63,4 +63,29 @@ public class KandunganTest {
         assertFalse(Kandungan.hanyaMungkin(Arrays.asList(SUSU, KACANG)));
         assertFalse(Kandungan.hanyaMungkin(null));
     }
+
+    /** PRD-05 kriteria 5: kata "halal" tidak pernah tampil tanpa keterangan. */
+    @Test
+    public void labelHalalPersisPrd() {
+        assertEquals(
+                "Bersertifikat halal · No. ID00110012345",
+                Kandungan.labelHalal("certified", " ID00110012345 "));
+        assertEquals("Bersertifikat halal", Kandungan.labelHalal("certified", null));
+        assertEquals(
+                "Klaim mitra, belum bersertifikat", Kandungan.labelHalal("self_claim", "ID001"));
+        assertEquals("Status halal tidak disebutkan", Kandungan.labelHalal("not_stated", null));
+        assertEquals("Status halal tidak disebutkan", Kandungan.labelHalal(null, null));
+    }
+
+    /** PRD-05 kriteria 6: baris K11 ditandai kalau alergennya ada di profil. */
+    @Test
+    public void cocokProfilTermasukMungkin() {
+        Set<String> profil = Set.of("kacang_tanah", "susu");
+        assertEquals(
+                "Cocok dengan alergimu: susu dan kacang tanah",
+                Kandungan.cocokProfil(Arrays.asList(SUSU, GLUTEN, KACANG), profil));
+        assertNull(Kandungan.cocokProfil(List.of(GLUTEN), profil));
+        assertNull(Kandungan.cocokProfil(List.of(SUSU), Collections.emptySet()));
+        assertNull(Kandungan.cocokProfil(null, profil));
+    }
 }

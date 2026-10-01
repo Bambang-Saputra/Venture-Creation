@@ -14,9 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.NomorHp;
+import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.databinding.FragmentVerifikasiOtpBinding;
 import id.lifeoffoods.ui.MainActivity;
@@ -149,6 +151,22 @@ public class VerifikasiOtpFragment extends Fragment {
                         Snackbar.make(view, pesan, Snackbar.LENGTH_LONG).show();
                     }
                 });
+        vm.kosongkanKode.observe(
+                getViewLifecycleOwner(),
+                p -> {
+                    if (p.ambil() != null) {
+                        binding.kode.setText("");
+                        fokusKeKode();
+                    }
+                });
+        vm.salahHalaman.observe(
+                getViewLifecycleOwner(),
+                p -> {
+                    String pesan = p.ambil();
+                    if (pesan != null) {
+                        tawarkanHalamanLain(pesan);
+                    }
+                });
         vm.masuk.observe(
                 getViewLifecycleOwner(),
                 p -> {
@@ -162,6 +180,28 @@ public class VerifikasiOtpFragment extends Fragment {
         if (savedInstanceState == null) {
             fokusKeKode();
         }
+    }
+
+    /**
+     * PRD-01 kriteria 8: nomor mitra di halaman pembeli (atau sebaliknya) diarahkan ke halaman yang
+     * benar. Kode OTP berlaku per peran, jadi di halaman tujuan kode diminta ulang.
+     */
+    private void tawarkanHalamanLain(String pesan) {
+        boolean keMitra = !SesiPengguna.PERAN_MITRA.equals(vm.peran());
+        new MaterialAlertDialogBuilder(requireContext())
+                .setMessage(pesan)
+                .setPositiveButton(
+                        keMitra ? R.string.k03_ke_halaman_mitra : R.string.k03_ke_halaman_pembeli,
+                        (d, w) -> {
+                            sembunyikanKeyboard();
+                            ((MainActivity) requireActivity())
+                                    .bukaAlur(
+                                            keMitra
+                                                    ? SesiPengguna.PERAN_MITRA
+                                                    : SesiPengguna.PERAN_KONSUMEN);
+                        })
+                .setNegativeButton(R.string.tutup, null)
+                .show();
     }
 
     private void tampilkanKode(String kode) {

@@ -14,7 +14,46 @@ import java.util.Set;
  */
 public final class Kandungan {
 
+    public static final String HALAL_SERTIFIKAT = "certified";
+    public static final String HALAL_KLAIM = "self_claim";
+
     private Kandungan() {}
+
+    /**
+     * Label halal persis PRD-05 kriteria 5. Kata "halal" tidak pernah tampil tanpa keterangan:
+     * certified = "Bersertifikat halal · No. {nomor}", self_claim = "Klaim mitra, belum
+     * bersertifikat", selain itu (not_stated, kosong, nilai tak dikenal) = "Status halal tidak
+     * disebutkan". Daftar K11 tidak membawa nomor sertifikat, jadi nomornya hanya tampil kalau ada.
+     */
+    public static String labelHalal(@Nullable String label, @Nullable String nomorSertifikat) {
+        if (HALAL_SERTIFIKAT.equals(label)) {
+            String no = nomorSertifikat == null ? "" : nomorSertifikat.trim();
+            return no.isEmpty() ? "Bersertifikat halal" : "Bersertifikat halal · No. " + no;
+        }
+        if (HALAL_KLAIM.equals(label)) {
+            return "Klaim mitra, belum bersertifikat";
+        }
+        return "Status halal tidak disebutkan";
+    }
+
+    /**
+     * Baris K11 (PRD-05 kriteria 6): nama alergen jualan yang ada di profil pembeli, termasuk
+     * may_contain. Null kalau tidak ada yang cocok.
+     */
+    @Nullable
+    public static String cocokProfil(
+            @Nullable List<ListingDto.Alergen> alergen, @Nullable Set<String> profil) {
+        if (alergen == null || profil == null || profil.isEmpty()) {
+            return null;
+        }
+        List<String> nama = new ArrayList<>();
+        for (ListingDto.Alergen a : alergen) {
+            if (profil.contains(a.code)) {
+                nama.add(a.name == null ? a.code : a.name.toLowerCase(Locale.ROOT));
+            }
+        }
+        return nama.isEmpty() ? null : "Cocok dengan alergimu: " + gabung(nama);
+    }
 
     /**
      * Baris di bawah nama menu K11, seperti Figma: "Mengandung susu, gluten", atau "Mungkin

@@ -68,9 +68,28 @@ public final class ApiError {
         return daftar == null || daftar.isEmpty() ? null : daftar.get(0);
     }
 
-    /** 401: token tidak berlaku lagi. Hapus sesi lalu kembali ke K01. */
+    /**
+     * 401, atau 403 "Akun ini dinonaktifkan" (middleware PastikanAkunAktif): token tidak berlaku
+     * lagi. Hapus sesi lalu kembali ke K01 (PRD-01 kriteria 10).
+     */
     public boolean perluMasukUlang() {
-        return kode == 401;
+        return kode == 401 || akunNonaktif();
+    }
+
+    /**
+     * Server tidak punya kode galat khusus untuk akun nonaktif, jadi dikenali dari pesannya. 403
+     * lain (kasir membuka laporan, alergi untuk mitra) tetap 403 biasa.
+     */
+    public boolean akunNonaktif() {
+        return kode == 403 && pesan != null && pesan.contains("dinonaktifkan");
+    }
+
+    /**
+     * 403 dari verifikasi OTP atau Google: nomor terdaftar dengan peran lain ("Masuk lewat halaman
+     * mitra"). Dikenali dari pesannya, sama seperti {@link #akunNonaktif()}.
+     */
+    public boolean salahHalaman() {
+        return kode == 403 && pesan != null && pesan.contains("Masuk lewat halaman");
     }
 
     private static final class Isi {

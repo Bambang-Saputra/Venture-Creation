@@ -50,6 +50,11 @@ public class DetailTasFragment extends Fragment {
         binding.tombolKembali.setOnClickListener(
                 v -> NavHostFragment.findNavController(this).popBackStack());
         binding.tombolFavorit.setOnClickListener(v -> vm.ubahFavorit());
+        binding.tombolMaps.setOnClickListener(
+                v -> {
+                    ListingDetailDto d = vm.detail.getValue();
+                    BersamaDetail.bukaMaps(this, d == null ? null : d.store);
+                });
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
         binding.tombolPesan.setOnClickListener(
                 v ->
@@ -114,6 +119,8 @@ public class DetailTasFragment extends Fragment {
                 app().sesi().sudahMasuk() && d.store != null ? View.VISIBLE : View.GONE);
         binding.judul.setText(d.title);
         isiMeta();
+        binding.tombolMaps.setVisibility(
+                BersamaDetail.adaLokasi(d.store) ? View.VISIBLE : View.GONE);
 
         binding.harga.setText(FormatTampilan.rupiah(d.priceRupiah));
         boolean adaNilai = d.originalValueRupiah != null && d.originalValueRupiah > d.priceRupiah;
@@ -169,17 +176,14 @@ public class DetailTasFragment extends Fragment {
 
     private void isiKandungan(ListingDetailDto d) {
         binding.label.removeAllViews();
-        if ("certified".equals(d.halalLabel) || "self_claim".equals(d.halalLabel)) {
-            BersamaDetail.chip(
-                    binding.label,
-                    getString(
-                            "certified".equals(d.halalLabel)
-                                    ? R.string.halal_bersertifikat
-                                    : R.string.halal_klaim),
-                    R.drawable.bg_pil_merek,
-                    R.color.teks_merek_gelap,
-                    R.drawable.ic_perisai);
-        }
+        // Selalu tampil, termasuk not_stated (PRD-05 kriteria 5).
+        boolean sertifikat = Kandungan.HALAL_SERTIFIKAT.equals(d.halalLabel);
+        BersamaDetail.chip(
+                binding.label,
+                Kandungan.labelHalal(d.halalLabel, d.halalCertificateNo),
+                sertifikat ? R.drawable.bg_pil_merek : R.drawable.bg_pil_isian,
+                sertifikat ? R.color.teks_merek_gelap : R.color.teks_kuat,
+                R.drawable.ic_perisai);
         if (d.allergens != null) {
             for (ListingDto.Alergen a : d.allergens) {
                 boolean mungkin = ListingDto.Alergen.MUNGKIN.equals(a.presence);
@@ -193,8 +197,8 @@ public class DetailTasFragment extends Fragment {
         }
         String bahan = d.ingredientsText;
         boolean adaBahan = bahan != null && !bahan.trim().isEmpty();
-        binding.bahan.setVisibility(
-                adaBahan || binding.label.getChildCount() == 0 ? View.VISIBLE : View.GONE);
+        boolean adaAlergen = d.allergens != null && !d.allergens.isEmpty();
+        binding.bahan.setVisibility(adaBahan || !adaAlergen ? View.VISIBLE : View.GONE);
         binding.bahan.setText(
                 adaBahan
                         ? getString(R.string.k10_bahan, bahan.trim())

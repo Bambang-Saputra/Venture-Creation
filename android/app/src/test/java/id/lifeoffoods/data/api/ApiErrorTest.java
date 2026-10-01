@@ -52,6 +52,30 @@ public class ApiErrorTest {
                 ApiError.dariRespons(401, "{\"message\":\"Unauthenticated.\"}").perluMasukUlang());
     }
 
+    /** Pesan persis dari PastikanAkunAktif dan OtpController (PRD-01 kriteria 8 dan 10). */
+    @Test
+    public void status403DibedakanDariPesannya() {
+        ApiError nonaktif =
+                ApiError.dariRespons(
+                        403,
+                        "{\"message\":\"Akun ini dinonaktifkan. Hubungi tim Life of Foods.\"}");
+        assertTrue(nonaktif.perluMasukUlang());
+        assertFalse(nonaktif.salahHalaman());
+
+        ApiError salah =
+                ApiError.dariRespons(
+                        403,
+                        "{\"message\":\"Nomor ini terdaftar sebagai mitra. Masuk lewat halaman"
+                                + " mitra.\"}");
+        assertTrue(salah.salahHalaman());
+        assertFalse(salah.perluMasukUlang());
+
+        // 403 biasa, misalnya kasir membuka laporan mingguan: bukan alasan keluar.
+        ApiError kasir = ApiError.dariRespons(403, "{\"message\":\"Hanya pemilik toko.\"}");
+        assertFalse(kasir.perluMasukUlang());
+        assertFalse(kasir.salahHalaman());
+    }
+
     @Test
     public void galatJaringanBerkode0() {
         ApiError galat = ApiError.jaringan();
