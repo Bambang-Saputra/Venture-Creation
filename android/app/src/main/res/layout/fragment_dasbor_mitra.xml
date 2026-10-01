@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M05 Dashboard mitra (Figma 31:2), PRD-24. Header gelap (nama toko, status buka, kerugian
+    tertahan minggu ini), pengingat catat sisa, aksi cepat, dua ubin angka, grafik sisa per hari,
+    dan tas hari ini. Data dari GET .../summary dan GET .../listings?type=surprise_bag.
+
+    Beda dengan Figma, disengaja:
+    - Ada baris "3 pesanan menunggu hari ini" (PRD-24 alur 1); Figma tidak menggambarnya.
+    - Kartu "Saran produksi" belum ada: M08 belum dibuat dan /suggestions hanya untuk pemilik.
+    - "62 item terjual", bukan "tas": angka dari API ikut menghitung menu satuan (sama dengan M07).
+    - "Habis terjual" tanpa jam: API tidak mengirim waktu habisnya.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Header mitra -->
+                <LinearLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/latar_gelap"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_ikon_toko_gelap">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_toko"
+                                app:tint="@color/merek_lime" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:letterSpacing="0.064"
+                                android:text="@string/m05_akun_mitra"
+                                android:textAllCaps="true"
+                                android:textColor="@color/merek_lime" />
+
+                            <TextView
+                                android:id="@+id/nama_toko"
+                                style="@style/Teks.JudulKotak"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:accessibilityHeading="true"
+                                android:ellipsize="end"
+                                android:letterSpacing="-0.0125"
+                                android:maxLines="1"
+                                android:textColor="@color/teks_di_gelap"
+                                android:textSize="16sp"
+                                app:lineHeight="19sp"
+                                tools:text="Kopi Kalyan SCBD" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/pil_buka"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_pil_status_gelap"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="12dp"
+                            android:paddingBottom="8dp">
+
+                            <View
+                                android:id="@+id/titik_buka"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:background="@drawable/bg_titik_status"
+                                android:backgroundTint="@color/merek_lime" />
+
+                            <TextView
+                                android:id="@+id/teks_buka"
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:textColor="@color/merek_lime"
+                                tools:text="Buka" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/Teks.Keterangan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:alpha="0.82"
+                        android:letterSpacing="0.055"
+                        android:text="@string/m05_kerugian_tertahan"
+                        android:textAllCaps="true"
+                        android:textColor="@color/teks_di_gelap" />
+
+                    <TextView
+                        android:id="@+id/nilai_tertahan"
+                        style="@style/Teks.KodePickup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="start"
+                        android:letterSpacing="-0.033"
+                        android:textColor="@color/merek_lime"
+                        android:textSize="36sp"
+                        app:lineHeight="40sp"
+                        tools:text="Rp1.240.000" />
+
+                    <TextView
+                        android:id="@+id/ket_tertahan"
+                        style="@style/Teks.Catatan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:alpha="0.7"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Dari 62 item terjual. Nilai itu sebelumnya berakhir sebagai limbah." />
+                </LinearLayout>
+
+                <!-- Isi -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="24dp">
+
+                    <!-- Pengingat catat sisa -> M06 -->
+                    <LinearLayout
+                        android:id="@+id/pengingat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/bg_kotak_proses_14"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_jam"
+                            app:tint="@color/tanda_proses_teks" />
+
+                        <TextView
+                            android:id="@+id/teks_pengingat"
+                            style="@style/Teks.Catatan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:textColor="@color/tanda_proses_teks"
+                            tools:text="Belum mencatat sisa hari ini. Toko tutup 2 jam lagi." />
+
+                        <TextView
+                            style="@style/Teks.Tautan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:importantForAccessibility="no"
+                            android:text="@string/m05_catat"
+                            android:textColor="@color/tanda_proses_teks" />
+                    </LinearLayout>
+
+                    <!-- Aksi cepat -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tombol_catat"
+                            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:text="@string/m05_catat_sisa"
+                            android:textSize="15sp"
+                            app:cornerRadius="14dp"
+                            app:icon="@drawable/ic_catat"
+                            app:iconGravity="textStart"
+                            app:iconSize="17dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/tombol_pasang"
+                            style="@style/Widget.LifeOfFoods.Tombol.Garis"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="@string/m05_pasang_tas"
+                            android:textSize="14sp"
+                            app:cornerRadius="14dp"
+                            app:icon="@drawable/ic_tambah"
+                            app:iconGravity="textStart"
+                            app:iconSize="17dp" />
+                    </LinearLayout>
+
+                    <!-- Pesanan menunggu hari ini -> M11 (PRD-24 alur 1) -->
+                    <LinearLayout
+                        android:id="@+id/baris_pesanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_catatan_merek"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal"
+                        android:padding="14dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_paket"
+                            app:tint="@color/teks_merek" />
+
+                        <TextView
+                            android:id="@+id/teks_pesanan"
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:textColor="@color/teks_utama"
+                            android:textSize="13.5sp"
+                            tools:text="3 pesanan menunggu diambil hari ini" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="12dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_chevron_kanan"
+                            app:tint="@color/teks_merek" />
+                    </LinearLayout>
+
+                    <!-- Dua ubin angka -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/ubin_sisa"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_kartu_jualan"
+                            android:importantForAccessibility="yes"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_tren_naik"
+                                app:tint="@color/merek_utama" />
+
+                            <TextView
+                                android:id="@+id/nilai_sisa"
+                                style="@style/Teks.JudulKotak"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:importantForAccessibility="no"
+                                android:letterSpacing="-0.016"
+                                android:textColor="@color/teks_utama"
+                                android:textSize="19sp"
+                                app:lineHeight="23sp"
+                                tools:text="4,2 kg" />
+
+                            <TextView
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:importantForAccessibility="no"
+                                android:text="@string/m05_sisa_rata" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ubin_tas"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_kartu_jualan"
+                            android:importantForAccessibility="yes"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_paket"
+                                app:tint="@color/tanda_api" />
+
+                            <TextView
+                                android:id="@+id/nilai_tas"
+                                style="@style/Teks.JudulKotak"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:importantForAccessibility="no"
+                                android:letterSpacing="-0.016"
+                                android:textColor="@color/teks_utama"
+                                android:textSize="19sp"
+                                app:lineHeight="23sp"
+                                tools:text="8 tas" />
+
+                            <TextView
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:importantForAccessibility="no"
+                                android:text="@string/m05_tas_belum_terjual" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Sisa per hari -> M07 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/Teks.JudulKartuLaporan"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:accessibilityHeading="true"
+                                android:text="@string/m05_sisa_per_hari"
+                                android:textColor="@color/teks_utama" />
+
+                            <TextView
+                                android:id="@+id/tautan_laporan"
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center"
+                                android:minWidth="48dp"
+                                android:minHeight="48dp"
+                                android:text="@string/m05_lihat_laporan"
+                                android:textColor="@color/teks_merek" />
+                        </LinearLayout>
+
+                        <!-- 124 batang + 6 + 6 jarak + 13 nama hari, plus ruang batang M07. -->
+                        <LinearLayout
+                            android:id="@+id/grafik"
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal" />
+
+                        <TextView
+                            android:id="@+id/ket_grafik"
+                            style="@style/Teks.Label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="@color/teks_tersier"
+                            tools:text="Sabtu sisanya paling banyak. Pasang tas lebih awal di hari itu." />
+                    </LinearLayout>
+
+                    <!-- Tas aktif hari ini -> M10 -->
+                    <LinearLayout
+                        android:id="@+id/kartu_tas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:paddingStart="18dp"
+                        android:paddingTop="18dp"
+                        android:paddingEnd="18dp"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/Teks.JudulKartuLaporan"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:accessibilityHeading="true"
+                                android:text="@string/m05_tas_hari_ini"
+                                android:textColor="@color/teks_utama" />
+
+                            <TextView
+                                android:id="@+id/tautan_kelola"
+                                style="@style/Teks.Keterangan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center"
+                                android:minWidth="48dp"
+                                android:minHeight="48dp"
+                                android:text="@string/m05_kelola"
+                                android:textColor="@color/teks_merek" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tas_kosong"
+                            style="@style/Teks.IsiKecil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="14dp"
+                            android:text="@string/m05_tas_kosong"
+                            android:textColor="@color/teks_sekunder"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/daftar_tas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <include
+        android:id="@+id/nav"
+        layout="@layout/include_nav_mitra" />
+</LinearLayout>

@@ -73,13 +73,8 @@ public class PesananMasukFragment extends Fragment {
                 new BaseListAdapter<>(ItemPesananMasukBinding::inflate, this::isiKartu, p -> p.id);
         binding.daftar.setAdapter(adapter);
 
-        // Pesanan (M11) adalah layar ini. Toko membuka Kelola jualan (M10) selama M14 Profil toko
-        // belum ada.
-        binding.nav.tabPesanan.setSelected(true);
-        // Selama M05 belum dibuat, Beranda membuka M07 Laporan mingguan.
-        binding.nav.tabBeranda.setOnClickListener(v -> buka(R.id.m07_laporan));
-        binding.nav.tabCatat.setOnClickListener(v -> buka(R.id.m06_catat));
-        binding.nav.tabToko.setOnClickListener(v -> buka(R.id.m10_kelola));
+        // Toko membuka Kelola jualan (M10) selama M14 Profil toko belum ada.
+        NavMitra.pasang(this, binding.nav, R.id.m11_pesanan);
 
         vm.tab.observe(getViewLifecycleOwner(), t -> tampilkan());
         vm.menunggu.observe(getViewLifecycleOwner(), d -> tampilkan());

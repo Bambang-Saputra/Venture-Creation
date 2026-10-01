@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pil "Buka" / "Tutup" di header gelap M05: lime 16%, sudut penuh. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#29A3D977" />
+    <corners android:radius="999dp" />
+</shape>

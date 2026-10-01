@@ -238,11 +238,21 @@ public class TangkapanLayarTest {
 
     @Test
     public void m11PesananMasuk() {
-        // Mitra dibuka langsung di M11 selama M05 belum ada.
         app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
         buka();
         tunggu();
+        navigasi(R.id.m11_pesanan, null);
+        tunggu();
         tangkap("M11");
+    }
+
+    /** Mitra yang sudah masuk dibuka di M05. Contoh Figma: belum mencatat, tutup 2 jam lagi. */
+    @Test
+    public void m05DashboardMitra() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        tangkapPanjang("M05");
     }
 
     @Test
@@ -629,9 +639,30 @@ public class TangkapanLayarTest {
                                 + "],\"other_items\":[]}}");
             }
             if (path.startsWith("/api/partner/stores/5/summary")) {
+                // Contoh Figma M05: Senin sampai Minggu pekan ini, Sabtu tertinggi.
+                java.time.LocalDate senin =
+                        id.lifeoffoods.data.LaporanMingguan.senin(
+                                java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)));
+                long[] nilai = {60, 50, 74, 78, 101, 124, 79};
+                StringBuilder harian = new StringBuilder();
+                for (int i = 0; i < 7; i++) {
+                    harian.append(i == 0 ? "" : ",")
+                            .append("{\"date\":\"")
+                            .append(senin.plusDays(i))
+                            .append("\",\"wasted_value_rupiah\":")
+                            .append(nilai[i] * 1000)
+                            .append("}");
+                }
                 return json(
-                        "{\"data\":{\"is_open\":true,\"closes_at\":\"21:00\","
-                                + "\"is_today_logged\":true}}");
+                        "{\"data\":{\"store\":{\"id\":5,\"name\":\"Kopi Kalyan SCBD\"},"
+                                + "\"is_open\":true,\"closes_at\":\"21:00\","
+                                + "\"minutes_until_close\":125,\"is_today_logged\":false,"
+                                + "\"rescued_value_this_week_rupiah\":1240000,"
+                                + "\"items_sold_this_week\":62,\"avg_daily_waste_gram\":4200,"
+                                + "\"unsold_bags_last_7_days\":8,\"pending_orders_today\":3,"
+                                + "\"daily\":["
+                                + harian
+                                + "],\"peak_day\":\"Sabtu\"}}");
             }
             if (path.startsWith("/api/partner/stores/5/listings")) {
                 return json(jualanMitra(path.contains("type=menu_item")));

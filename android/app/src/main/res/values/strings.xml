@@ -368,6 +368,51 @@
     <string name="rp" translatable="false">Rp</string>
 
     <!-- M06 Catat sisa / M19 Catat sisa timbang (PRD-12) -->
+    <!-- M05 Dashboard mitra (PRD-24) -->
+    <string name="m05_akun_mitra">Akun mitra</string>
+    <string name="m05_buka">Buka</string>
+    <string name="m05_tutup">Tutup</string>
+    <string name="m05_kerugian_tertahan">Kerugian yang tertahan minggu ini</string>
+    <plurals name="m05_ket_tertahan">
+        <item quantity="one">Dari %1$d item terjual. Nilai itu sebelumnya berakhir sebagai limbah.</item>
+        <item quantity="other">Dari %1$d item terjual. Nilai itu sebelumnya berakhir sebagai limbah.</item>
+    </plurals>
+    <string name="m05_ket_tertahan_kosong">Belum ada pesanan yang diambil minggu ini.</string>
+    <string name="m05_belum_catat">Belum mencatat sisa hari ini.</string>
+    <plurals name="m05_tutup_jam">
+        <item quantity="one">Belum mencatat sisa hari ini. Toko tutup %1$d jam lagi.</item>
+        <item quantity="other">Belum mencatat sisa hari ini. Toko tutup %1$d jam lagi.</item>
+    </plurals>
+    <plurals name="m05_tutup_menit">
+        <item quantity="one">Belum mencatat sisa hari ini. Toko tutup %1$d menit lagi.</item>
+        <item quantity="other">Belum mencatat sisa hari ini. Toko tutup %1$d menit lagi.</item>
+    </plurals>
+    <string name="m05_catat">Catat</string>
+    <string name="m05_catat_sisa">Catat sisa</string>
+    <string name="m05_pasang_tas">Pasang tas</string>
+    <plurals name="m05_pesanan_menunggu">
+        <item quantity="one">%1$d pesanan menunggu diambil hari ini</item>
+        <item quantity="other">%1$d pesanan menunggu diambil hari ini</item>
+    </plurals>
+    <string name="m05_sisa_rata">Sisa harian rata-rata, 7 hari terakhir</string>
+    <string name="m05_sisa_kosong">Belum ada</string>
+    <plurals name="m05_tas">
+        <item quantity="one">%1$d tas</item>
+        <item quantity="other">%1$d tas</item>
+    </plurals>
+    <string name="m05_tas_belum_terjual">Belum terjual, 7 hari terakhir</string>
+    <string name="m05_ubin_sisa">Sisa harian rata-rata 7 hari terakhir: %1$s</string>
+    <string name="m05_ubin_tas">%1$s belum terjual dalam 7 hari terakhir</string>
+    <string name="m05_sisa_per_hari">Sisa per hari</string>
+    <string name="m05_lihat_laporan">Lihat laporan</string>
+    <string name="m05_puncak">%1$s sisanya paling banyak. Pasang tas lebih awal di hari itu.</string>
+    <string name="m05_grafik_kosong">Belum ada sisa yang dicatat minggu ini. Catat setiap tutup toko supaya polanya terlihat.</string>
+    <string name="m05_tas_hari_ini">Tas aktif hari ini</string>
+    <string name="m05_kelola">Kelola</string>
+    <string name="m05_tas_kosong">Belum ada tas yang dipasang hari ini.</string>
+    <string name="m05_tas_ket">%1$s, ambil %2$s</string>
+    <string name="m05_tas_habis">Semua %1$d tas terjual</string>
+    <string name="m05_tas_lewat">%1$d dari %2$d tidak terjual</string>
     <string name="m06_judul">Catat sisa hari ini</string>
     <string name="m06_per_item">Hitung per item</string>
     <string name="m06_timbang">Timbang (kg)</string>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak ikon toko di header gelap M05: lime 18%, sudut 12dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#2EA3D977" />
+    <corners android:radius="12dp" />
+</shape>
