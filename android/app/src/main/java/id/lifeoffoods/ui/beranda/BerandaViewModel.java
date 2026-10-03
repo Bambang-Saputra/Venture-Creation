@@ -40,6 +40,11 @@ public class BerandaViewModel extends AndroidViewModel {
     public final MutableLiveData<Boolean> adaNotifikasi = new MutableLiveData<>(false);
     public final MutableLiveData<List<ListingDto>> segeraTutup =
             new MutableLiveData<>(Collections.emptyList());
+
+    /** Populer hari ini: dari jumlah pesanan, bukan iklan. */
+    public final MutableLiveData<List<ListingDto>> populer =
+            new MutableLiveData<>(Collections.emptyList());
+
     public final MutableLiveData<List<ListingDto>> terdekat =
             new MutableLiveData<>(Collections.emptyList());
     public final MutableLiveData<Status> status = new MutableLiveData<>(Status.MEMUAT);
@@ -62,6 +67,7 @@ public class BerandaViewModel extends AndroidViewModel {
     private boolean filterDariPengguna;
     private boolean sudahMuat;
     private int urutanSegera;
+    private int urutanPopuler;
     private int urutanTerdekat;
 
     public BerandaViewModel(@NonNull Application app) {
@@ -113,6 +119,7 @@ public class BerandaViewModel extends AndroidViewModel {
             return;
         }
         filter.setValue(baru);
+        muatPopuler();
         muatSegeraTutup();
         muatTerdekat();
     }
@@ -153,9 +160,40 @@ public class BerandaViewModel extends AndroidViewModel {
     }
 
     private void muatDaftar() {
+        muatPopuler();
         muatSegeraTutup();
         muatTerdekat();
         muatLencana();
+    }
+
+    /**
+     * Filter alergi dan filter K09 tetap berlaku: jualan yang populer tapi mengandung alergen
+     * pembeli tidak ikut tampil.
+     */
+    private void muatPopuler() {
+        FilterJualan f = filterSekarang();
+        Map<String, String> q = f.query(lat, lng);
+        q.put("sort", "popular");
+        q.put("per_page", "10");
+        int urutan = ++urutanPopuler;
+        app().api()
+                .daftarListingTersaring(q, f.tipe(), f.alergenDikirim())
+                .enqueue(
+                        new ApiCallback<>() {
+                            @Override
+                            public void sukses(HalamanListing data) {
+                                if (urutan == urutanPopuler) {
+                                    populer.setValue(isi(data));
+                                }
+                            }
+
+                            @Override
+                            public void gagal(ApiError e) {
+                                if (urutan == urutanPopuler) {
+                                    populer.setValue(Collections.emptyList());
+                                }
+                            }
+                        });
     }
 
     private void muatSegeraTutup() {

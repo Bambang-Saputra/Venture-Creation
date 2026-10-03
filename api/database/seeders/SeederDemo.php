@@ -294,7 +294,7 @@ class SeederDemo extends Seeder
         $sekarang = now();
         $hasil = [];
 
-        foreach ($toko as $t) {
+        foreach ($toko as $urut => $t) {
             $nilaiAsli = (int) array_sum(array_column($t['produk'], 'harga'));
             $hargaTas = (int) (round($nilaiAsli * 0.35 / 1000) * 1000);
 
@@ -320,7 +320,9 @@ class SeederDemo extends Seeder
                 $mulai = $tanggal->copy()->setTime(self::AMBIL_MULAI, 0);
                 $selesai = $tanggal->copy()->setTime(self::AMBIL_SELESAI, 0);
                 $status = $geser < 0 ? 'sold_out' : 'active';
-                $terjual = $geser < 0 ? 5 : ($geser === 0 ? 2 : 0);
+                // Jumlah terjual hari ini dibuat beragam per toko supaya urutan
+                // "Populer hari ini" di K07 kelihatan, tidak seri semua.
+                $terjual = $geser < 0 ? 5 : ($geser === 0 ? 1 + ($urut % 4) : 0);
 
                 $hasil[] = $this->simpanListing([
                     'store_id' => $t['id'],
@@ -341,7 +343,7 @@ class SeederDemo extends Seeder
                     'photo_path' => $t['foto'],
                 ], $geser);
 
-                foreach (array_slice($t['produk'], 0, 2) as $p) {
+                foreach (array_slice($t['produk'], 0, 2) as $ke => $p) {
                     $hasil[] = $this->simpanListing([
                         'store_id' => $t['id'],
                         'type' => 'menu_item',
@@ -351,7 +353,7 @@ class SeederDemo extends Seeder
                         'price_rupiah' => (int) (round($p['harga'] * 0.5 / 500) * 500),
                         'original_value_rupiah' => $p['harga'],
                         'qty_total' => 4,
-                        'qty_sold' => $geser < 0 ? 4 : 0,
+                        'qty_sold' => $geser < 0 ? 4 : ($geser === 0 ? ($urut + $ke) % 3 : 0),
                         'pickup_date' => $tanggal->toDateString(),
                         'pickup_start' => $mulai,
                         'pickup_end' => $selesai,

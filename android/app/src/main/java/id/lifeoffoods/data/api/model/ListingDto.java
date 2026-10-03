@@ -34,6 +34,10 @@ public class ListingDto {
     @SerializedName("qty_remaining")
     public int qtyRemaining;
 
+    /** Dipegang + terjual. Dipakai label "N dipesan hari ini" di Populer hari ini. */
+    @SerializedName("qty_ordered")
+    public int qtyOrdered;
+
     /** ISO 8601 dengan offset +07:00. */
     @SerializedName("pickup_start")
     public String pickupStart;

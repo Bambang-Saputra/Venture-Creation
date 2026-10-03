@@ -93,6 +93,10 @@ public class BerandaFragment extends Fragment {
                 R.drawable.ic_toko,
                 R.string.kategori_swalayan);
 
+        BaseListAdapter<ListingDto, ItemKartuFlashBinding> adapterPopuler =
+                new BaseListAdapter<>(
+                        ItemKartuFlashBinding::inflate, this::isiKartuPopuler, l -> l.id);
+        binding.daftarPopuler.setAdapter(adapterPopuler);
         BaseListAdapter<ListingDto, ItemKartuFlashBinding> adapterSegera =
                 new BaseListAdapter<>(
                         ItemKartuFlashBinding::inflate, this::isiKartuFlash, l -> l.id);
@@ -146,6 +150,13 @@ public class BerandaFragment extends Fragment {
                     binding.tombolNotifikasi.setContentDescription(
                             getString(
                                     ada ? R.string.k07_notifikasi_baru : R.string.k07_notifikasi));
+                });
+        vm.populer.observe(
+                getViewLifecycleOwner(),
+                daftar -> {
+                    adapterPopuler.submitList(daftar);
+                    binding.bagianPopuler.setVisibility(
+                            daftar.isEmpty() ? View.GONE : View.VISIBLE);
                 });
         vm.segeraTutup.observe(
                 getViewLifecycleOwner(),
@@ -284,6 +295,13 @@ public class BerandaFragment extends Fragment {
         b.getRoot().setOnClickListener(v -> bukaDetail(l));
     }
 
+    /** Kartu yang sama dengan "Tutup kurang dari satu jam", tapi pilnya jumlah yang dipesan. */
+    private void isiKartuPopuler(ItemKartuFlashBinding b, ListingDto l) {
+        isiKartuFlash(b, l);
+        b.sisaWaktu.setText(getString(R.string.k07_dipesan, l.qtyOrdered));
+        b.sisaWaktu.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+    }
+
     private void isiKartuTas(ItemKartuTasBinding b, ListingDto l) {
         // Sudut 14dp mengikuti bg_slot_foto.
         FotoJualan.muat(b.fotoJualan, l.photoUrl, 14);
@@ -324,6 +342,7 @@ public class BerandaFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding.daftarPopuler.setAdapter(null);
         binding.daftarSegera.setAdapter(null);
         binding.daftarTerdekat.setAdapter(null);
         binding = null;

@@ -567,6 +567,41 @@ public class TangkapanLayarTest {
                 if (path.contains("per_page=1&") || path.endsWith("per_page=1")) {
                     return json("{\"data\":[],\"total\":12}");
                 }
+                // "Populer hari ini": urut dari jumlah dipesan, bukan iklan.
+                if (path.contains("sort=popular")) {
+                    return json(
+                            "{\"data\":["
+                                    + listing(
+                                                    33,
+                                                    "surprise_bag",
+                                                    "Tas Kejutan Rotiku",
+                                                    "Rotiku Palmerah",
+                                                    15000,
+                                                    45000,
+                                                    180,
+                                                    null,
+                                                    "18:00",
+                                                    "23:00")
+                                            .replace(
+                                                    "\"qty_remaining\":3",
+                                                    "\"qty_remaining\":1,\"qty_ordered\":4")
+                                    + ","
+                                    + listing(
+                                                    34,
+                                                    "menu_item",
+                                                    "Nasi Goreng Spesial",
+                                                    "Nasi Goreng Pak Syahdan",
+                                                    12000,
+                                                    24000,
+                                                    180,
+                                                    null,
+                                                    "18:00",
+                                                    "23:00")
+                                            .replace(
+                                                    "\"qty_remaining\":3",
+                                                    "\"qty_remaining\":2,\"qty_ordered\":2")
+                                    + "],\"current_page\":1,\"last_page\":1}");
+                }
                 // Dua kartu flash untuk "Tutup kurang dari satu jam", dua kartu tas untuk
                 // "Terdekat dari kamu", sama dengan contoh Figma K07.
                 if (path.contains("ends_within_minutes")) {

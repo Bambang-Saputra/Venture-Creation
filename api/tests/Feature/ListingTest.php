@@ -101,6 +101,23 @@ class ListingTest extends TestCase
         $this->cari(['store_id' => $this->tokoDekat, 'type' => ['menu_item']])->assertJsonCount(0, 'data');
     }
 
+    public function test_populer_hari_ini_urut_dari_yang_paling_banyak_dipesan(): void
+    {
+        $sedikit = $this->listing($this->tokoDekat, ['qty_sold' => 1]);
+        $banyak = $this->listing($this->tokoJauh, ['qty_reserved' => 2, 'qty_sold' => 2]);
+        // Belum dipesan sama sekali dan jualan besok: bukan "populer hari ini".
+        $this->listing($this->tokoDekat);
+        $this->listing($this->tokoDekat, ['qty_sold' => 3, 'pickup_date' => now()->addDay()->toDateString(),
+            'pickup_start' => now()->addDay()->setTime(18, 0), 'pickup_end' => now()->addDay()->setTime(19, 0)]);
+
+        // Urutan populer menang atas urutan jarak.
+        $data = $this->cari(['sort' => 'popular', 'lat' => self::LAT, 'lng' => self::LNG])->assertOk()->json('data');
+        $this->assertSame([$banyak, $sedikit], array_column($data, 'id'));
+        $this->assertSame([4, 1], array_column($data, 'qty_ordered'));
+
+        $this->cari(['sort' => 'rating'])->assertUnprocessable()->assertJsonValidationErrors('sort');
+    }
+
     public function test_detail_memuat_isi_toko_dan_ketersediaan(): void
     {
         $id = $this->listing($this->tokoDekat, ['type' => 'menu_item', 'content_hint' => '2 roti manis'], ['susu' => 'contains']);
