@@ -280,6 +280,64 @@
                     layout="@layout/include_ubin_kategori" />
             </LinearLayout>
 
+            <!--
+                Populer hari ini: urut dari jumlah yang sudah dipesan (GET /listings?sort=popular).
+                Bukan iklan. Disembunyikan kalau belum ada jualan hari ini yang dipesan.
+            -->
+            <LinearLayout
+                android:id="@+id/bagian_populer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <ImageView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_tren_naik"
+                        app:tint="@color/merek_utama" />
+
+                    <TextView
+                        style="@style/Teks.JudulSeksi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/k07_populer" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Teks.Keterangan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/k07_populer_ket" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/daftar_populer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_kartu_flash" />
+            </LinearLayout>
+
             <!-- Disembunyikan kalau tidak ada jualan yang jam ambilnya berakhir < 60 menit. -->
             <LinearLayout
                 android:id="@+id/bagian_segera"

@@ -276,6 +276,7 @@ Hanya jualan yang bisa dibeli sekarang: aktif, stok ada, jam ambil belum lewat, 
 | `halal=1` | label `certified` atau `self_claim` |
 | `pickup_from`, `pickup_until` | `HH:mm`, rentang jam ambil beririsan |
 | `ends_within_minutes` | untuk "Tutup kurang dari satu jam" |
+| `sort=popular` | "Populer hari ini" di K07: hanya jualan dengan tanggal ambil hari ini yang sudah dipesan, urut dari `qty_ordered` terbanyak. Murni dari pesanan, bukan iklan. Iklan berbayar nanti tampil di tempat lain dengan label sendiri |
 | `per_page` | 1 sampai 50 |
 
 Satu item:
@@ -283,7 +284,7 @@ Satu item:
 ```json
 {
   "id": 31, "type": "surprise_bag", "title": "Tas Pastry Sore", "photo_url": null,
-  "price_rupiah": 18000, "original_value_rupiah": 55000, "qty_remaining": 3,
+  "price_rupiah": 18000, "original_value_rupiah": 55000, "qty_remaining": 3, "qty_ordered": 2,
   "pickup_start": "2026-09-18T19:00:00+07:00", "pickup_end": "2026-09-18T21:00:00+07:00",
   "minutes_until_end": 95, "halal_label": "self_claim",
   "allergens": [ { "code": "gluten", "name": "Gluten", "presence": "contains" } ],

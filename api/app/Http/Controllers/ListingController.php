@@ -40,6 +40,9 @@ class ListingController extends Controller
             'pickup_until' => ['sometimes', 'date_format:H:i'],
             'ends_within_minutes' => ['sometimes', 'integer', 'min:1', 'max:1440'],
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:50'],
+            // popular: bagian "Populer hari ini" di K07. Bukan iklan; urutannya
+            // murni dari jumlah yang sudah dipesan.
+            'sort' => ['sometimes', Rule::in(['popular'])],
         ]);
 
         $query = $this->yangTampil();
@@ -79,6 +82,15 @@ class ListingController extends Controller
             ->when($f['pickup_from'] ?? null, fn (Builder $q, $jam) => $q->whereTime('listings.pickup_end', '>', $jam))
             ->when($f['pickup_until'] ?? null, fn (Builder $q, $jam) => $q->whereTime('listings.pickup_start', '<', $jam))
             ->when($f['ends_within_minutes'] ?? null, fn (Builder $q, $menit) => $q->where('listings.pickup_end', '<=', now()->addMinutes((int) $menit)));
+
+        if (($f['sort'] ?? null) === 'popular') {
+            // Satu listing berlaku untuk satu tanggal ambil, jadi jumlah yang sudah
+            // dipesan (dipegang + terjual) sama dengan "dipesan untuk hari itu".
+            // Yang belum pernah dipesan tidak dianggap populer.
+            $query->whereRaw('listings.qty_reserved + listings.qty_sold > 0')
+                ->whereDate('listings.pickup_date', today())
+                ->orderByRaw('listings.qty_reserved + listings.qty_sold DESC');
+        }
 
         $adaLokasi ? $query->orderBy('distance_km') : $query->orderBy('listings.pickup_end');
         $halaman = $query->orderBy('listings.id')->paginate($f['per_page'] ?? 20)->withQueryString();
@@ -176,6 +188,8 @@ class ListingController extends Controller
             'price_rupiah' => $l->price_rupiah,
             'original_value_rupiah' => $l->original_value_rupiah,
             'qty_remaining' => max(0, $l->qty_total - $l->qty_reserved - $l->qty_sold),
+            // Label "5 dipesan" di bagian Populer hari ini.
+            'qty_ordered' => $l->qty_reserved + $l->qty_sold,
             'pickup_start' => Carbon::parse($l->pickup_start)->toIso8601String(),
             'pickup_end' => $akhir->toIso8601String(),
             // Label "48 menit" di kartu K07. 0 kalau sudah lewat.

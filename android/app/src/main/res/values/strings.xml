@@ -96,6 +96,9 @@
     <string name="k07_peta">Buka peta</string>
     <string name="k07_kategori">Kategori</string>
     <string name="k07_segera_tutup">Tutup kurang dari satu jam</string>
+    <string name="k07_populer">Populer hari ini</string>
+    <string name="k07_populer_ket">Paling banyak dipesan pembeli lain hari ini</string>
+    <string name="k07_dipesan">%d dipesan</string>
     <string name="k07_terdekat">Terdekat dari kamu</string>
     <string name="k07_semua_jualan">Jualan hari ini</string>
     <string name="k07_lihat_semua">Lihat semua</string>
