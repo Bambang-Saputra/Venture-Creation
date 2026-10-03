@@ -106,6 +106,8 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play)
     implementation(libs.googleid)
+    // Gambar jualan dari /storage API (ADR-0002).
+    implementation(libs.glide)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

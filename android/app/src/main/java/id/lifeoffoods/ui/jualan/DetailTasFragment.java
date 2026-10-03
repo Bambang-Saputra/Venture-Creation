@@ -19,6 +19,7 @@ import id.lifeoffoods.data.Kandungan;
 import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.databinding.FragmentDetailTasBinding;
+import id.lifeoffoods.ui.umum.FotoJualan;
 import id.lifeoffoods.ui.umum.Pil;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.Collections;
@@ -118,6 +119,7 @@ public class DetailTasFragment extends Fragment {
         binding.tombolFavorit.setVisibility(
                 app().sesi().sudahMasuk() && d.store != null ? View.VISIBLE : View.GONE);
         binding.judul.setText(d.title);
+        FotoJualan.muat(binding.fotoJualan, d.photoUrl, 0);
         isiMeta();
         binding.tombolMaps.setVisibility(
                 BersamaDetail.adaLokasi(d.store) ? View.VISIBLE : View.GONE);

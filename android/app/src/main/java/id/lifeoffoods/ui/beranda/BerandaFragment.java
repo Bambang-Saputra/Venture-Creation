@@ -24,6 +24,7 @@ import id.lifeoffoods.databinding.ItemKartuTasBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.filter.FilterBundle;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
+import id.lifeoffoods.ui.umum.FotoJualan;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
 
@@ -274,6 +275,8 @@ public class BerandaFragment extends Fragment {
     }
 
     private void isiKartuFlash(ItemKartuFlashBinding b, ListingDto l) {
+        // Sudut atas 17dp mengikuti bg_slot_foto_atas.
+        FotoJualan.muat(b.fotoJualan, l.photoUrl, 17, 0);
         b.judul.setText(l.title);
         b.toko.setText(l.store == null ? "" : l.store.name);
         b.sisaWaktu.setText(FormatTampilan.sisaWaktu(l.minutesUntilEnd));
@@ -282,6 +285,8 @@ public class BerandaFragment extends Fragment {
     }
 
     private void isiKartuTas(ItemKartuTasBinding b, ListingDto l) {
+        // Sudut 14dp mengikuti bg_slot_foto.
+        FotoJualan.muat(b.fotoJualan, l.photoUrl, 14);
         String jarak = FormatTampilan.jarak(l.distanceKm);
         b.jarak.setText(jarak);
         b.jarak.setVisibility(jarak == null ? View.GONE : View.VISIBLE);

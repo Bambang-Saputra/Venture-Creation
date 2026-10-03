@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -13,8 +14,10 @@ use Illuminate\Support\Str;
  * Semua nama toko di sini karangan. Data mitra sungguhan tidak pernah
  * masuk berkas ini, tempatnya di SeederPilot yang membaca CSV lokal.
  *
- * Isi: 5 toko, jualan tiga hari berturut, 20 pesanan dengan berbagai status,
- * dan catatan sisa harian supaya laporan mingguan punya angka.
+ * Isi: 8 toko (3 di sekitar BINUS Kemanggisan untuk uji responden), jualan tiga hari
+ * berturut dengan foto contoh, 20 pesanan dengan berbagai status, dan catatan sisa harian
+ * supaya laporan mingguan punya angka. Jualan hari ini dan besok berlaku sampai 23.00, jadi
+ * jalankan ulang seeder kalau uji coba lewat dari besok.
  *
  * Nomor HP memakai awalan 62811000 yang tidak dipakai operator mana pun,
  * supaya OTP demo tidak pernah terkirim ke nomor orang sungguhan.
@@ -26,6 +29,7 @@ class SeederDemo extends Seeder
     public function run(): void
     {
         $this->hariIni = Carbon::today();
+        $this->salinFoto();
 
         $konsumen = $this->buatKonsumen();
         $toko = $this->buatToko();
@@ -34,6 +38,35 @@ class SeederDemo extends Seeder
         $this->buatCatatanSisa($toko);
 
         $this->command?->info('SeederDemo selesai: '.count($toko).' toko, '.count($listing).' listing.');
+    }
+
+    /**
+     * Foto contoh ikut repo di database/seeders/foto-demo (sumber dan lisensi di SUMBER.md).
+     * Disalin ke disk public supaya dilayani lewat /storage; butuh `php artisan storage:link`.
+     */
+    private function salinFoto(): void
+    {
+        $asal = __DIR__.'/foto-demo';
+        foreach (glob($asal.'/*.jpg') ?: [] as $berkas) {
+            Storage::disk('public')->put(self::FOLDER_FOTO.'/'.basename($berkas), (string) file_get_contents($berkas));
+        }
+    }
+
+    private const FOLDER_FOTO = 'demo';
+
+    /**
+     * Jam ambil demo 18.00-23.00 dan toko tutup 23.30, supaya responden yang mencoba malam
+     * hari masih menemukan jualan. Jualan hanya tampil selama jam ambilnya belum lewat.
+     */
+    private const JAM_TUTUP = '23:30:00';
+
+    private const AMBIL_MULAI = 18;
+
+    private const AMBIL_SELESAI = 23;
+
+    private function foto(?string $nama): ?string
+    {
+        return $nama === null ? null : self::FOLDER_FOTO.'/'.$nama;
     }
 
     /**
@@ -90,38 +123,64 @@ class SeederDemo extends Seeder
     }
 
     /**
-     * Lima toko karangan di Jakarta Selatan, masing-masing dengan pemilik,
+     * Delapan toko karangan (lima di Jakarta Selatan, tiga di sekitar BINUS Kemanggisan), masing-masing dengan pemilik,
      * jam buka, produk, satu cetakan tas kejutan, dan baris saldo kosong.
      *
      * @return list<array<string,mixed>>
      */
     private function buatToko(): array
     {
+        // Kolom terakhir tiap produk dan tiap toko adalah nama berkas di foto-demo (null = tanpa foto).
+        // Tiga toko terakhir sengaja di sekitar BINUS Kemanggisan, tempat responden uji coba
+        // berada; satu di antaranya berbahan kacang tanah supaya tugas filter alergi teruji.
         $daftar = [
             [
                 'Roti Sari Bakery', 'bakery', 'Jl. Tebet Raya No. 12, Jakarta Selatan', -6.2297, 106.8583,
                 'self_claim', 'Tepung terigu, gula, telur, susu sapi, mentega, ragi',
-                [['Roti manis cokelat', 'pcs', 8000, 4500, 80], ['Donat gula', 'pcs', 6000, 3000, 60], ['Roti tawar gandum', 'pack', 18000, 9000, 400]],
+                [['Roti manis cokelat', 'pcs', 8000, 4500, 80, 'roti-manis-cokelat.jpg'], ['Donat gula', 'pcs', 6000, 3000, 60, 'donat-gula.jpg'], ['Roti tawar gandum', 'pack', 18000, 9000, 400, null]],
+                'roti-sari-tas.jpg',
             ],
             [
                 'Kopi Lembur', 'cafe', 'Jl. Kemang Selatan No. 4, Jakarta Selatan', -6.2607, 106.8133,
                 'not_stated', 'Biji kopi arabika, susu sapi, gula aren, air',
-                [['Croissant mentega', 'pcs', 15000, 7000, 70], ['Kopi susu gula aren', 'botol', 22000, 9000, 250], ['Cookies oatmeal', 'pcs', 9000, 4000, 45]],
+                [['Croissant mentega', 'pcs', 15000, 7000, 70, 'croissant.jpg'], ['Kopi susu gula aren', 'botol', 22000, 9000, 250, null], ['Cookies oatmeal', 'pcs', 9000, 4000, 45, null]],
+                'kopi-lembur-tas.jpg',
             ],
             [
                 'Warung Bu Tuti', 'resto', 'Jl. Manggarai Utara No. 8, Jakarta Selatan', -6.2105, 106.8501,
                 'certified', 'Nasi putih, ayam, cabai, bawang merah, bawang putih, santan',
-                [['Nasi ayam bakar', 'porsi', 25000, 13000, 350], ['Nasi telur balado', 'porsi', 18000, 8000, 300], ['Sayur lodeh', 'porsi', 10000, 4500, 200]],
+                [['Nasi ayam bakar', 'porsi', 25000, 13000, 350, 'nasi-ayam-bakar.jpg'], ['Nasi telur balado', 'porsi', 18000, 8000, 300, 'nasi-telur-balado.jpg'], ['Sayur lodeh', 'porsi', 10000, 4500, 200, null]],
+                'nasi-ayam-bakar.jpg',
             ],
             [
                 'Dapur Katering Amanah', 'catering', 'Jl. Pasar Minggu Raya No. 21, Jakarta Selatan', -6.2843, 106.8446,
                 'certified', 'Nasi putih, ayam, tempe, tahu, sayur, bumbu rempah',
-                [['Nasi kotak komplit', 'pack', 30000, 16000, 450], ['Snack box isi 4', 'pack', 20000, 10000, 250]],
+                [['Nasi kotak komplit', 'pack', 30000, 16000, 450, 'nasi-ayam-telur.jpg'], ['Snack box isi 4', 'pack', 20000, 10000, 250, null]],
+                'nasi-ayam-telur.jpg',
             ],
             [
                 'Segar Mart', 'grocery', 'Jl. Setiabudi Tengah No. 3, Jakarta Selatan', -6.2183, 106.8283,
                 'not_stated', 'Aneka buah dan sayur segar, tanpa bahan tambahan',
-                [['Paket buah potong', 'pack', 25000, 12000, 500], ['Sayur bayam ikat', 'pcs', 5000, 2500, 200], ['Pisang cavendish', 'kg', 20000, 11000, 1000]],
+                [['Paket buah potong', 'pack', 25000, 12000, 500, 'buah-segar.jpg'], ['Sayur bayam ikat', 'pcs', 5000, 2500, 200, 'sayur-segar.jpg'], ['Pisang cavendish', 'kg', 20000, 11000, 1000, null]],
+                'buah-segar.jpg',
+            ],
+            [
+                'Nasi Goreng Pak Syahdan', 'resto', 'Jl. Syahdan No. 15, Palmerah, Jakarta Barat', -6.2002, 106.7858,
+                'self_claim', 'Nasi putih, telur, ayam, kecap manis, bawang merah, cabai',
+                [['Nasi goreng telur', 'porsi', 20000, 9000, 350, 'nasi-goreng.jpg'], ['Nasi goreng pattaya', 'porsi', 24000, 11000, 380, 'nasi-goreng-pattaya.jpg']],
+                'nasi-goreng.jpg',
+            ],
+            [
+                'Gado-Gado Bu Anggrek', 'resto', 'Jl. Anggrek Cakra No. 7, Kemanggisan, Jakarta Barat', -6.2036, 106.7835,
+                'certified', 'Sayur rebus, tahu, tempe, telur, lontong, saus kacang tanah, kerupuk',
+                [['Gado-gado lontong', 'porsi', 22000, 10000, 400, 'gado-gado.jpg'], ['Ketoprak', 'porsi', 20000, 9000, 380, null]],
+                'gado-gado.jpg',
+            ],
+            [
+                'Rotiku Palmerah', 'bakery', 'Jl. Kemanggisan Raya No. 30, Jakarta Barat', -6.1985, 106.7802,
+                'not_stated', 'Tepung terigu, gula, mentega, kayu manis, ragi',
+                [['Roti sobek kayu manis', 'pcs', 16000, 7000, 150, 'roti-sobek.jpg'], ['Roti tawar susu', 'pack', 17000, 8000, 400, null]],
+                'roti-sobek.jpg',
             ],
         ];
 
@@ -129,7 +188,7 @@ class SeederDemo extends Seeder
         $hasil = [];
         $nomor = 201;
 
-        foreach ($daftar as [$nama, $kategori, $alamat, $lat, $lng, $halal, $kandungan, $produk]) {
+        foreach ($daftar as [$nama, $kategori, $alamat, $lat, $lng, $halal, $kandungan, $produk, $fotoTas]) {
             $uid = DB::table('users')->insertGetId([
                 'phone' => '62811000'.$nomor,
                 'name' => 'Pemilik '.$nama,
@@ -152,6 +211,7 @@ class SeederDemo extends Seeder
                 'halal_label' => $halal,
                 'halal_certificate_no' => $halal === 'certified' ? 'ID'.random_int(10000000, 99999999) : null,
                 'default_ingredients_text' => $kandungan,
+                'photo_path' => $this->foto($fotoTas),
                 'pilot_consent_at' => null,
                 'created_at' => $sekarang,
                 'updated_at' => $sekarang,
@@ -177,7 +237,8 @@ class SeederDemo extends Seeder
                     'store_id' => $sid,
                     'day_of_week' => $hari,
                     'open_time' => '08:00:00',
-                    'close_time' => $hari === 0 ? '17:00:00' : '21:00:00',
+                    // Tutup larut supaya uji coba malam hari masih menemukan jualan aktif.
+                    'close_time' => self::JAM_TUTUP,
                     'is_closed' => false,
                     'created_at' => $sekarang,
                     'updated_at' => $sekarang,
@@ -185,7 +246,7 @@ class SeederDemo extends Seeder
             }
 
             $idProduk = [];
-            foreach ($produk as [$namaProduk, $satuan, $harga, $hpp, $berat]) {
+            foreach ($produk as [$namaProduk, $satuan, $harga, $hpp, $berat, $foto]) {
                 $idProduk[] = [
                     'id' => DB::table('products')->insertGetId([
                         'store_id' => $sid,
@@ -202,6 +263,7 @@ class SeederDemo extends Seeder
                     'harga' => $harga,
                     'hpp' => $hpp,
                     'berat' => $berat,
+                    'foto' => $this->foto($foto),
                 ];
             }
 
@@ -211,6 +273,7 @@ class SeederDemo extends Seeder
                 'nama' => $nama,
                 'halal' => $halal,
                 'kandungan' => $kandungan,
+                'foto' => $this->foto($fotoTas),
                 'produk' => $idProduk,
             ];
         }
@@ -243,18 +306,19 @@ class SeederDemo extends Seeder
                 'price_rupiah' => $hargaTas,
                 'original_value_rupiah' => $nilaiAsli,
                 'default_qty' => 5,
-                'pickup_start_time' => '18:00:00',
-                'pickup_end_time' => '20:30:00',
+                'pickup_start_time' => sprintf('%02d:00:00', self::AMBIL_MULAI),
+                'pickup_end_time' => sprintf('%02d:00:00', self::AMBIL_SELESAI),
                 'ingredients_text' => $t['kandungan'],
                 'halal_label' => $t['halal'],
+                'photo_path' => $t['foto'],
                 'created_at' => $sekarang,
                 'updated_at' => $sekarang,
             ]);
 
             foreach ([-1, 0, 1] as $geser) {
                 $tanggal = $this->hariIni->copy()->addDays($geser);
-                $mulai = $tanggal->copy()->setTime(18, 0);
-                $selesai = $tanggal->copy()->setTime(20, 30);
+                $mulai = $tanggal->copy()->setTime(self::AMBIL_MULAI, 0);
+                $selesai = $tanggal->copy()->setTime(self::AMBIL_SELESAI, 0);
                 $status = $geser < 0 ? 'sold_out' : 'active';
                 $terjual = $geser < 0 ? 5 : ($geser === 0 ? 2 : 0);
 
@@ -274,6 +338,7 @@ class SeederDemo extends Seeder
                     'status' => $status,
                     'ingredients_text' => $t['kandungan'],
                     'halal_label' => $t['halal'],
+                    'photo_path' => $t['foto'],
                 ], $geser);
 
                 foreach (array_slice($t['produk'], 0, 2) as $p) {
@@ -293,6 +358,7 @@ class SeederDemo extends Seeder
                         'status' => $geser < 0 ? 'sold_out' : 'active',
                         'ingredients_text' => $t['kandungan'],
                         'halal_label' => $t['halal'],
+                        'photo_path' => $p['foto'],
                     ], $geser);
                 }
             }

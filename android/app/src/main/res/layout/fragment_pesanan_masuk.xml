@@ -19,7 +19,7 @@
         android:background="@drawable/bg_garis_bawah"
         android:orientation="vertical"
         android:paddingStart="20dp"
-        android:paddingTop="4dp"
+        android:paddingTop="16dp"
         android:paddingEnd="20dp">
 
         <LinearLayout

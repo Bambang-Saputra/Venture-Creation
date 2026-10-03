@@ -21,6 +21,7 @@ import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.databinding.FragmentDasborMitraBinding;
 import id.lifeoffoods.databinding.ItemTasDasborBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.KeluarAkun;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
 import java.util.List;
@@ -57,6 +58,7 @@ public class DasborMitraFragment extends Fragment {
         binding.barisPesanan.setOnClickListener(v -> buka(R.id.m11_pesanan));
         binding.tautanLaporan.setOnClickListener(v -> buka(R.id.m07_laporan));
         binding.tautanKelola.setOnClickListener(v -> buka(R.id.m10_kelola));
+        binding.tombolKeluar.setOnClickListener(v -> KeluarAkun.tanya(this));
         NavMitra.pasang(this, binding.nav, R.id.m05_dashboard);
 
         vm.status.observe(getViewLifecycleOwner(), s -> tampilkanStatus());

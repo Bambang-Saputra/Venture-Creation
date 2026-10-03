@@ -13,9 +13,12 @@
     <string name="k01_daftar">Daftar sekarang</string>
 
     <!-- Penanda layar yang belum dibuat -->
-    <string name="segera_keterangan">Layar ini belum dibuat. Lihat docs/figma/peta-layar.md untuk desain dan endpoint-nya.</string>
+    <string name="segera_keterangan">Fitur ini sedang kami siapkan dan segera hadir.</string>
     <string name="segera_kembali">Kembali ke pilih peran</string>
     <string name="segera_keluar">Keluar dari akun</string>
+    <string name="keluar_judul">Keluar dari akun?</string>
+    <string name="keluar_isi">Kamu perlu masuk lagi dengan nomor HP untuk memakai aplikasi.</string>
+    <string name="batal">Batal</string>
 
     <!-- Umum -->
     <string name="kembali">Kembali</string>
@@ -272,6 +275,7 @@
     <string name="k15_hari_lalu">%1$d hari lalu</string>
     <string name="k15_waktu_ambil">%1$s, ambil %2$s</string>
     <string name="k15_waktu_riwayat">%1$s, %2$s</string>
+    <string name="k15_dipesan">Dipesan %1$s</string>
     <string name="k15_kosong_aktif_judul">Belum ada pesanan aktif</string>
     <string name="k15_kosong_aktif_isi">Cari tas kejutan di sekitarmu dan selamatkan makanan hari ini.</string>
     <string name="k15_kosong_riwayat_judul">Belum ada riwayat</string>
