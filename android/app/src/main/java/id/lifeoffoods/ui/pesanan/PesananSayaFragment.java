@@ -45,6 +45,8 @@ public class PesananSayaFragment extends Fragment {
 
     private static final DateTimeFormatter TANGGAL =
             DateTimeFormatter.ofPattern("d MMM", new Locale("id", "ID"));
+    private static final DateTimeFormatter TANGGAL_LENGKAP =
+            DateTimeFormatter.ofPattern("d MMM yyyy", new Locale("id", "ID"));
 
     private FragmentPesananSayaBinding binding;
     private PesananSayaViewModel vm;
@@ -208,10 +210,16 @@ public class PesananSayaFragment extends Fragment {
 
         String hari = hari(p.pickupStart);
         String jam = FormatTampilan.jam(p.pickupStart);
-        b.waktu.setText(
+        String waktuAmbil =
                 jenis == DaftarPesanan.Jenis.MENUNGGU
                         ? getString(R.string.k15_waktu_ambil, hari, jam)
-                        : getString(R.string.k15_waktu_riwayat, hari, jam));
+                        : getString(R.string.k15_waktu_riwayat, hari, jam);
+        // Tanggal dan jam pesanan dibuat, supaya riwayat bisa ditelusuri per tanggal.
+        String dipesan = tanggalPesan(p.placedAt);
+        b.waktu.setText(
+                dipesan == null
+                        ? waktuAmbil
+                        : waktuAmbil + "\n" + getString(R.string.k15_dipesan, dipesan));
 
         b.getRoot()
                 .setContentDescription(
@@ -247,6 +255,20 @@ public class PesananSayaFragment extends Fragment {
             return OffsetDateTime.parse(iso).format(TANGGAL);
         } catch (DateTimeParseException e) {
             return "";
+        }
+    }
+
+    /** "3 Okt 2026, 19.42" dari placed_at, di zona waktu server. */
+    @Nullable
+    private static String tanggalPesan(@Nullable String iso) {
+        if (iso == null) {
+            return null;
+        }
+        try {
+            OffsetDateTime t = OffsetDateTime.parse(iso);
+            return t.format(TANGGAL_LENGKAP) + ", " + FormatTampilan.jam(iso);
+        } catch (DateTimeParseException e) {
+            return null;
         }
     }
 

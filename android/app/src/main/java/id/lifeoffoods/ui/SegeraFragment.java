@@ -11,9 +11,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
-import id.lifeoffoods.data.api.ApiCallback;
-import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.databinding.FragmentSegeraBinding;
+import id.lifeoffoods.ui.umum.KeluarAkun;
 import id.lifeoffoods.ui.umum.SisiAman;
 
 /**
@@ -41,7 +40,9 @@ public class SegeraFragment extends Fragment {
         Bundle args = requireArguments();
         SisiAman.atasBawah(binding.getRoot());
         SisiAman.ikonGelap(requireActivity(), true);
-        binding.kodeLayar.setText(args.getString(ARG_KODE, ""));
+        // Kode layar (K16, M08, ...) hanya berguna untuk developer; responden tidak perlu
+        // melihatnya.
+        binding.kodeLayar.setVisibility(View.GONE);
         binding.judulLayar.setText(args.getString(ARG_JUDUL, ""));
 
         // Penanda yang dibuka dari layar lain (misalnya K08 dari beranda) cukup kembali. Penanda
@@ -60,21 +61,10 @@ public class SegeraFragment extends Fragment {
         binding.tombolKembali.setOnClickListener(
                 v -> {
                     if (masuk) {
-                        // Token di server dicabut kalau jaringan ada; sesi lokal dihapus apa pun
-                        // hasilnya.
-                        app.api()
-                                .keluar("Bearer " + app.sesi().token())
-                                .enqueue(
-                                        new ApiCallback<>() {
-                                            @Override
-                                            public void sukses(Void data) {}
-
-                                            @Override
-                                            public void gagal(ApiError galat) {}
-                                        });
-                        app.sesi().hapus();
+                        KeluarAkun.tanya(this);
+                    } else {
+                        KeluarAkun.jalankan(this);
                     }
-                    ((MainActivity) requireActivity()).kembaliKeAwal();
                 });
     }
 
