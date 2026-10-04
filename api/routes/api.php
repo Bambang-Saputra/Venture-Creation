@@ -16,6 +16,7 @@ use App\Http\Controllers\Partner\PesananMitraController;
 use App\Http\Controllers\Partner\TokoController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\UlasanController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/otp/request', [OtpController::class, 'minta'])->middleware('throttle:5,1');
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::get('/orders', [PesananController::class, 'daftar']);
     Route::get('/orders/{order}', [PesananController::class, 'detail'])->whereNumber('order');
     Route::post('/orders/{order}/cancel', [PesananController::class, 'batalkan'])->whereNumber('order');
+    Route::post('/orders/{order}/review', [UlasanController::class, 'simpan'])->whereNumber('order')->middleware('throttle:20,1');
 
     Route::get('/partner/stores', [TokoController::class, 'daftar']);
     Route::prefix('/partner/stores/{store}')->whereNumber(['store', 'listing'])->group(function () {
@@ -54,6 +56,7 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
         Route::match(['put', 'patch'], '/', [TokoController::class, 'ubah'])->middleware('throttle:30,1');
         Route::get('/balance', [TokoController::class, 'saldo']);
         Route::get('/balance/transactions', [TokoController::class, 'transaksi']);
+        Route::get('/reviews', [UlasanController::class, 'daftarToko']);
         Route::get('/members', [AnggotaTokoController::class, 'daftar']);
         Route::post('/members', [AnggotaTokoController::class, 'undang'])->middleware('throttle:10,1');
         Route::delete('/members/{member}', [AnggotaTokoController::class, 'cabut'])->whereNumber('member');
