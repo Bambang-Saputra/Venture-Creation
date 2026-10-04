@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/teks_sekunder"
+        android:textSize="13sp"
         tools:text="Senin sampai Jumat" />
 
     <TextView
@@ -23,5 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:textColor="@color/teks_utama"
+        android:textSize="13.5sp"
         tools:text="07.00 sampai 21.00" />
 </LinearLayout>

@@ -99,7 +99,8 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="1"
                             android:text="@string/m15_info_kasir"
-                            android:textColor="@color/teks_sekunder" />
+                            android:textColor="@color/teks_sekunder"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

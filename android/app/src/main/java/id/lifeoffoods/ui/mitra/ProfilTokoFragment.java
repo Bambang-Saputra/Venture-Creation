@@ -142,7 +142,7 @@ public class ProfilTokoFragment extends Fragment {
         String rating = ProfilToko.rating(t.ratingAverage, t.ratingCount);
         binding.rating.setVisibility(rating == null ? View.GONE : View.VISIBLE);
         if (rating != null) {
-            binding.rating.setText(rating);
+            binding.teksRating.setText(rating);
             binding.rating.setContentDescription(getString(R.string.m14_rating, rating));
         }
 
@@ -192,7 +192,7 @@ public class ProfilTokoFragment extends Fragment {
         }
         binding.halal.setVisibility(halal == 0 ? View.GONE : View.VISIBLE);
         if (halal != 0) {
-            binding.halal.setText(halal);
+            binding.teksHalal.setText(halal);
         }
         String kandungan = t.defaultIngredientsText == null ? "" : t.defaultIngredientsText.trim();
         binding.kandungan.setText(

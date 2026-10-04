@@ -42,7 +42,7 @@
                 <FrameLayout
                     android:id="@+id/hero"
                     android:layout_width="match_parent"
-                    android:layout_height="194dp"
+                    android:layout_height="130dp"
                     android:background="@color/latar_lembut">
 
                     <LinearLayout
@@ -137,31 +137,50 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
                                     android:textColor="@color/teks_sekunder"
+                                    android:textSize="13sp"
                                     tools:text="Kafe · Jl. Jend. Sudirman Kav 52" />
                             </LinearLayout>
                         </LinearLayout>
 
-                        <TextView
+                        <!-- Ikon 12dp: compound drawable memakai ukuran asli vektor (24dp). -->
+                        <LinearLayout
                             android:id="@+id/rating"
-                            style="@style/Teks.Pil"
                             android:layout_width="wrap_content"
-                            android:layout_height="28dp"
+                            android:layout_height="24dp"
                             android:layout_marginTop="12dp"
                             android:background="@drawable/bg_pil_proses"
-                            android:paddingEnd="12dp"
-                            android:textColor="@color/tanda_proses_teks"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
                             android:visibility="gone"
-                            app:drawableStartCompat="@drawable/ic_bintang"
-                            app:drawableTint="@color/tanda_bintang"
-                            tools:text="4,8 (180)"
-                            tools:visibility="visible" />
+                            tools:visibility="visible">
+
+                            <ImageView
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_bintang"
+                                app:tint="@color/tanda_bintang" />
+
+                            <TextView
+                                android:id="@+id/teks_rating"
+                                style="@style/Teks.Pil"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="0dp"
+                                android:textColor="@color/tanda_proses_teks"
+                                tools:text="4,8 (180)" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <!-- Jam operasional -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/bg_kartu_20"
                         android:orientation="vertical"
                         android:padding="16dp">
@@ -237,7 +256,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/bg_kartu_20"
                         android:orientation="vertical"
                         android:padding="16dp">
@@ -250,20 +269,37 @@
                             android:text="@string/m14_label_default"
                             android:textColor="@color/teks_utama" />
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/halal"
-                            style="@style/Teks.Pil"
                             android:layout_width="wrap_content"
-                            android:layout_height="28dp"
+                            android:layout_height="24dp"
                             android:layout_marginTop="12dp"
                             android:background="@drawable/bg_pil_merek"
-                            android:paddingEnd="12dp"
-                            android:textColor="@color/teks_merek_gelap"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
                             android:visibility="gone"
-                            app:drawableStartCompat="@drawable/ic_perisai"
-                            app:drawableTint="@color/teks_merek"
-                            tools:text="Halal"
-                            tools:visibility="visible" />
+                            tools:visibility="visible">
+
+                            <ImageView
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_perisai"
+                                app:tint="@color/teks_merek" />
+
+                            <TextView
+                                android:id="@+id/teks_halal"
+                                style="@style/Teks.Pil"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="0dp"
+                                android:textColor="@color/teks_merek_gelap"
+                                tools:text="Halal" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/kandungan"
@@ -271,6 +307,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:textSize="13sp"
                             tools:text="Kandungan bawaan: tepung terigu, gula, telur, susu" />
 
                         <TextView
@@ -286,7 +323,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/bg_kartu_20"
                         android:orientation="vertical"
                         android:paddingTop="6dp"
