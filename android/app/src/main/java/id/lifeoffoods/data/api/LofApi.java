@@ -2,6 +2,7 @@ package id.lifeoffoods.data.api;
 
 import id.lifeoffoods.data.api.model.AlergenBody;
 import id.lifeoffoods.data.api.model.AlergenDto;
+import id.lifeoffoods.data.api.model.AnggotaTokoDto;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.data.api.model.CatatSisaBody;
 import id.lifeoffoods.data.api.model.CatatanSisaDto;
@@ -29,6 +30,7 @@ import id.lifeoffoods.data.api.model.ProfilBody;
 import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.data.api.model.TemplateTasDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
+import id.lifeoffoods.data.api.model.TokoDetailDto;
 import id.lifeoffoods.data.api.model.TokoMitraDto;
 import id.lifeoffoods.data.api.model.TukarKodeBody;
 import java.util.List;
@@ -210,4 +212,25 @@ public interface LofApi {
      */
     @POST("auth/logout")
     Call<Void> keluar(@Header("Authorization") String bearer);
+
+    /** M14. Kasir boleh membuka; saldo bernilai null untuk kasir. */
+    @GET("partner/stores/{store}")
+    Call<Terbungkus<TokoDetailDto>> detailToko(@Path("store") long storeId);
+
+    /** M14 sakelar "Tutup sementara". Hanya pemilik (kasir 403). */
+    @PATCH("partner/stores/{store}")
+    Call<Terbungkus<TokoDetailDto>> ubahToko(
+            @Path("store") long storeId, @Body TokoDetailDto.Ubah body);
+
+    /** M15. Hanya pemilik. */
+    @GET("partner/stores/{store}/members")
+    Call<Terbungkus<List<AnggotaTokoDto>>> anggotaToko(@Path("store") long storeId);
+
+    /** M15 "Undang kasir". 409 untuk nomor konsumen, anggota yang sudah ada, atau pemilik. */
+    @POST("partner/stores/{store}/members")
+    Call<Terbungkus<AnggotaTokoDto>> undangKasir(
+            @Path("store") long storeId, @Body AnggotaTokoDto.Undang body);
+
+    @DELETE("partner/stores/{store}/members/{member}")
+    Call<Void> cabutKasir(@Path("store") long storeId, @Path("member") long memberId);
 }

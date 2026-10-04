@@ -20,7 +20,7 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 
 ## 3. Layar SHOULD
 
-- [ ] M14 Profil toko dan M15 Pengaturan toko. Tombol keluar dipindah ke sini dari M05.
+- [x] M14 Profil toko dan M15 Pengaturan toko. Tombol keluar dipindah ke sini dari M05.
 - [ ] M21 Riwayat pesanan mitra (pakai ulang M11)
 - [ ] M08 Saran produksi (endpoint sudah ada, khusus pemilik)
 - [ ] M13 Saldo

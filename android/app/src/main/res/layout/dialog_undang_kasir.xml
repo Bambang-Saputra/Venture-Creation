@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog "Undang kasir" M15: nama dan nomor HP kasir. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="24dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/isian_nama"
+        style="@style/IsianBulat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/m15_undang_nama">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nama"
+            style="@style/IsianTeks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName|textCapWords"
+            android:maxLength="120" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/isian_hp"
+        style="@style/IsianBulat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/m15_undang_hp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/hp"
+            style="@style/IsianTeks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

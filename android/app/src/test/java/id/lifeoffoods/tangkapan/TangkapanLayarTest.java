@@ -417,6 +417,27 @@ public class TangkapanLayarTest {
         tangkapPanjang("M07-celah");
     }
 
+    /** M14 dari tab Toko; contoh Figma. */
+    @Test
+    public void m14ProfilToko() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m14_toko, null);
+        tunggu();
+        tangkapPanjang("M14");
+    }
+
+    @Test
+    public void m15PengaturanToko() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m15_pengaturan, null);
+        tunggu();
+        tangkap("M15");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -747,6 +768,17 @@ public class TangkapanLayarTest {
                                 + " roll\",\"unit\":\"pcs\",\"price_rupiah\":30000,"
                                 + "\"ingredients_text\":\"Tepung terigu, kayu manis, gula\"}]}");
             }
+            if (path.equals("/api/partner/stores/5")) {
+                return json(tokoDetail());
+            }
+            if (path.startsWith("/api/partner/stores/5/members")) {
+                return json(
+                        "{\"data\":[{\"id\":null,\"user_id\":3,\"name\":\"Kalyan Pratama\","
+                                + "\"phone\":\"6281299887766\",\"role\":\"owner\","
+                                + "\"is_store_owner\":true},{\"id\":7,\"user_id\":9,"
+                                + "\"name\":\"Rina\",\"phone\":\"6281322445566\","
+                                + "\"role\":\"cashier\",\"is_store_owner\":false}]}");
+            }
             if (path.startsWith("/api/partner/stores?") || path.equals("/api/partner/stores")) {
                 return json(
                         "{\"data\":[{\"id\":5,\"name\":\"Kopi Kalyan SCBD\",\"category\":\"cafe\","
@@ -804,6 +836,29 @@ public class TangkapanLayarTest {
                                 + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /** Profil toko contoh Figma M14: Senin sampai Jumat 07-21, Sabtu dan Minggu 08-22. */
+        private static String tokoDetail() {
+            StringBuilder jam = new StringBuilder();
+            for (int hari = 0; hari <= 6; hari++) {
+                boolean akhirPekan = hari == 0 || hari == 6;
+                if (hari > 0) {
+                    jam.append(',');
+                }
+                jam.append("{\"day_of_week\":").append(hari);
+                jam.append(",\"is_closed\":false,\"open_time\":\"");
+                jam.append(akhirPekan ? "08:00" : "07:00").append("\",\"close_time\":\"");
+                jam.append(akhirPekan ? "22:00" : "21:00").append("\"}");
+            }
+            return "{\"data\":{\"id\":5,\"name\":\"Kopi Kalyan SCBD\",\"category\":\"cafe\","
+                    + "\"address\":\"Jl. Jend. Sudirman Kav 52\",\"photo_url\":null,"
+                    + "\"halal_label\":\"certified\",\"default_ingredients_text\":"
+                    + "\"Susu, telur, gluten. Dapur juga mengolah kacang.\","
+                    + "\"is_temporarily_closed\":false,\"hours\":["
+                    + jam
+                    + "],\"my_role\":\"owner\",\"available_balance_rupiah\":1186000,"
+                    + "\"rating_average\":4.8,\"rating_count\":180}}";
         }
 
         /**

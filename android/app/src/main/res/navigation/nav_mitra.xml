@@ -69,6 +69,29 @@
         android:id="@+id/m07_laporan"
         android:name="id.lifeoffoods.ui.mitra.LaporanMingguanFragment" />
 
+    <!-- M14 Profil toko (PRD-14). Tab Toko di nav mitra. -->
+    <fragment
+        android:id="@+id/m14_toko"
+        android:name="id.lifeoffoods.ui.mitra.ProfilTokoFragment" />
+
+    <!-- M15 Pengaturan toko dan kasir (PRD-15). Dari M14, hanya pemilik. -->
+    <fragment
+        android:id="@+id/m15_pengaturan"
+        android:name="id.lifeoffoods.ui.mitra.PengaturanTokoFragment" />
+
+    <fragment
+        android:id="@+id/m13_saldo"
+        android:name="id.lifeoffoods.ui.SegeraFragment">
+        <argument
+            android:name="kode_layar"
+            android:defaultValue="M13"
+            app:argType="string" />
+        <argument
+            android:name="judul"
+            android:defaultValue="Saldo dan pencairan"
+            app:argType="string" />
+    </fragment>
+
     <fragment
         android:id="@+id/m08_saran"
         android:name="id.lifeoffoods.ui.SegeraFragment">
