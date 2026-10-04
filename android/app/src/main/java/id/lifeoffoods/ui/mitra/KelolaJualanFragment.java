@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,6 +21,8 @@ import id.lifeoffoods.databinding.FragmentKelolaJualanBinding;
 import id.lifeoffoods.databinding.ItemJualanMitraBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
+import id.lifeoffoods.ui.umum.FotoJualan;
+import id.lifeoffoods.ui.umum.FotoUnggah;
 import id.lifeoffoods.ui.umum.Pil;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
@@ -34,6 +39,34 @@ public class KelolaJualanFragment extends Fragment {
     public static final String ARG_TIPE = "tipe";
 
     private FragmentKelolaJualanBinding binding;
+
+    /** Jualan yang slot fotonya diketuk, sampai pemilih foto kembali. */
+    @Nullable private JualanMitraDto jualanFoto;
+
+    private final ActivityResultLauncher<PickVisualMediaRequest> pilihFoto =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+                        JualanMitraDto j = jualanFoto;
+                        jualanFoto = null;
+                        if (uri == null || j == null || binding == null) {
+                            return;
+                        }
+                        FotoUnggah.baca(
+                                this,
+                                uri,
+                                jpeg -> {
+                                    if (jpeg == null) {
+                                        Snackbar.make(
+                                                        binding.getRoot(),
+                                                        R.string.foto_gagal_dibaca,
+                                                        Snackbar.LENGTH_LONG)
+                                                .show();
+                                    } else {
+                                        this.vm.unggahFoto(j, jpeg);
+                                    }
+                                });
+                    });
     private KelolaJualanViewModel vm;
     private BaseListAdapter<JualanMitraDto, ItemJualanMitraBinding> adapter;
 
@@ -174,6 +207,23 @@ public class KelolaJualanFragment extends Fragment {
         b.saklar.setEnabled(!diproses && JualanMitra.saklarBisaDiubah(j.status));
         b.saklar.setContentDescription(getString(R.string.m10_saklar, j.title));
         b.saklar.setOnCheckedChangeListener((s, nyala) -> vm.ubahSaklar(j, nyala));
+
+        FotoJualan.muat(b.fotoJualan, j.photoUrl, 12);
+        b.progresFoto.setVisibility(diproses ? View.VISIBLE : View.GONE);
+        b.slotFoto.setContentDescription(getString(R.string.m10_ganti_foto, j.title));
+        b.slotFoto.setOnClickListener(
+                v -> {
+                    if (diproses) {
+                        return;
+                    }
+                    jualanFoto = j;
+                    pilihFoto.launch(
+                            new PickVisualMediaRequest.Builder()
+                                    .setMediaType(
+                                            ActivityResultContracts.PickVisualMedia.ImageOnly
+                                                    .INSTANCE)
+                                    .build());
+                });
     }
 
     /** Pil status jualan; juga dipakai daftar "Tas aktif hari ini" di M05. */

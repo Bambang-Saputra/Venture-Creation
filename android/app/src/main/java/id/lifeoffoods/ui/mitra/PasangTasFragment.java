@@ -6,6 +6,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,6 +28,8 @@ import id.lifeoffoods.databinding.FragmentPasangTasBinding;
 import id.lifeoffoods.databinding.ItemPilihanTemplateBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.jualan.Stepper;
+import id.lifeoffoods.ui.umum.FotoJualan;
+import id.lifeoffoods.ui.umum.FotoUnggah;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,6 +40,53 @@ import java.util.Set;
 public class PasangTasFragment extends Fragment {
 
     private FragmentPasangTasBinding binding;
+
+    private final ActivityResultLauncher<PickVisualMediaRequest> pilihFoto =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+                        if (uri == null || binding == null) {
+                            return;
+                        }
+                        FotoUnggah.baca(
+                                this,
+                                uri,
+                                jpeg -> {
+                                    if (jpeg == null) {
+                                        Snackbar.make(
+                                                        binding.getRoot(),
+                                                        R.string.foto_gagal_dibaca,
+                                                        Snackbar.LENGTH_LONG)
+                                                .show();
+                                    } else {
+                                        this.vm.fotoBaru.setValue(jpeg);
+                                    }
+                                });
+                    });
+
+    /** Foto baru menang; tanpa itu foto template terpilih; tanpa itu kotak kosong Figma. */
+    private void tampilkanFoto() {
+        if (binding == null) {
+            return;
+        }
+        byte[] baru = vm.fotoBaru.getValue();
+        if (baru != null) {
+            binding.fotoTas.setVisibility(View.VISIBLE);
+            com.bumptech.glide.Glide.with(binding.fotoTas)
+                    .load(baru)
+                    .transform(
+                            new com.bumptech.glide.load.resource.bitmap.CenterCrop(),
+                            new com.bumptech.glide.load.resource.bitmap.RoundedCorners(
+                                    Math.round(16 * getResources().getDisplayMetrics().density)))
+                    .into(binding.fotoTas);
+        } else {
+            TemplateTasDto t = vm.cetakan();
+            FotoJualan.muat(binding.fotoTas, t == null ? null : t.photoUrl, 16);
+        }
+        binding.fotoGanti.setVisibility(
+                binding.fotoTas.getVisibility() == View.VISIBLE ? View.VISIBLE : View.GONE);
+    }
+
     private PasangTasViewModel vm;
     private Chip chipTanpa;
 
@@ -79,6 +131,18 @@ public class PasangTasFragment extends Fragment {
         TampilanPasang.pasangJam(this, binding.jam, vm);
         TampilanPasang.pasangLabel(this, binding.labelToko, vm);
         binding.aksi.tombolTerbit.setOnClickListener(v -> terbitkan());
+
+        binding.kotakFoto.setOnClickListener(
+                v ->
+                        pilihFoto.launch(
+                                new PickVisualMediaRequest.Builder()
+                                        .setMediaType(
+                                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                                                        .INSTANCE)
+                                        .build()));
+        vm.fotoBaru.observe(getViewLifecycleOwner(), f -> tampilkanFoto());
+        vm.template.observe(getViewLifecycleOwner(), t -> tampilkanFoto());
+        vm.terpilih.observe(getViewLifecycleOwner(), t -> tampilkanFoto());
 
         vm.status.observe(getViewLifecycleOwner(), s -> tampilkanStatus());
         vm.template.observe(getViewLifecycleOwner(), t -> bangunTemplate());

@@ -201,7 +201,7 @@ public class EditProfilFragment extends Fragment {
         android.content.ContentResolver cr = requireContext().getContentResolver();
         new Thread(
                         () -> {
-                            byte[] jpeg = FotoProfil.siapkan(cr, uri);
+                            byte[] jpeg = id.lifeoffoods.ui.umum.FotoUnggah.siapkan(cr, uri);
                             if (!isAdded()) {
                                 return;
                             }

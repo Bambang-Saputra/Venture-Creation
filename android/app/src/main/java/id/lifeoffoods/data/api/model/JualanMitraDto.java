@@ -22,6 +22,11 @@ public class JualanMitraDto {
     @SerializedName("id")
     public long id;
 
+    /** Foto jualan ini (dari template saat dipasang, atau diunggah di M10), atau null. */
+    @androidx.annotation.Nullable
+    @SerializedName("photo_url")
+    public String photoUrl;
+
     @SerializedName("type")
     public String type;
 

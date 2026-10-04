@@ -21,10 +21,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
+import id.lifeoffoods.data.PesananMitra;
 import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PesananDto;
 import id.lifeoffoods.databinding.FragmentKodePickupBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.KodeQr;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -127,6 +129,13 @@ public class KodePickupFragment extends Fragment {
         binding.blokKode.setVisibility(aktif ? View.VISIBLE : View.GONE);
         binding.blokAkhir.setVisibility(aktif ? View.GONE : View.VISIBLE);
         binding.kode.setText(aktif ? p.pickupCode : "");
+        binding.qr.setImageBitmap(
+                aktif && p.pickupCode != null
+                        ? KodeQr.gambar(
+                                PesananMitra.isiQr(p.pickupCode),
+                                Math.round(132 * getResources().getDisplayMetrics().density),
+                                ContextCompat.getColor(requireContext(), R.color.teks_utama))
+                        : null);
         if (aktif) {
             binding.kode.setContentDescription(
                     getString(R.string.k14_kode_desk, ejaan(p.pickupCode)));

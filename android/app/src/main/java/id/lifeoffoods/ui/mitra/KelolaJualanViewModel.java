@@ -7,9 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
+import id.lifeoffoods.data.api.model.AkunDto;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.JualanMitraDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
+import id.lifeoffoods.ui.umum.FotoUnggah;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -202,6 +204,59 @@ public class KelolaJualanViewModel extends AndroidViewModel {
                         gagalSaklar(e);
                     }
                 });
+    }
+
+    /** Ketuk slot foto di kartu M10: unggah foto untuk jualan itu saja. */
+    public void unggahFoto(JualanMitraDto j, byte[] jpeg) {
+        Set<Long> s =
+                new HashSet<>(sibuk.getValue() == null ? Collections.emptySet() : sibuk.getValue());
+        if (!s.add(j.id)) {
+            return;
+        }
+        sibuk.setValue(s);
+        LofApp app = getApplication();
+        TokoAktif.ambil(
+                app,
+                new TokoAktif.Hasil() {
+                    @Override
+                    public void siap(long idToko) {
+                        app.api()
+                                .unggahFotoJualan(
+                                        idToko, j.id, FotoUnggah.bagian(jpeg, "jualan.jpg"))
+                                .enqueue(
+                                        new ApiCallback<>() {
+                                            @Override
+                                            public void sukses(AkunDto.Foto data) {
+                                                selesai(j.id);
+                                                if (data != null) {
+                                                    j.photoUrl = data.photoUrl;
+                                                    ganti(j);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void gagal(ApiError e) {
+                                                selesai(j.id);
+                                                gagalFoto(e);
+                                            }
+                                        });
+                    }
+
+                    @Override
+                    public void gagal(ApiError e) {
+                        selesai(j.id);
+                        gagalFoto(e);
+                    }
+                });
+    }
+
+    private void gagalFoto(ApiError e) {
+        if (e.perluMasukUlang()) {
+            sesiBerakhir.setValue(new Peristiwa<>(true));
+            return;
+        }
+        String g = e.pesanField("photo");
+        galat.setValue(new Peristiwa<>(g != null ? g : e.pesan()));
     }
 
     private void gagalSaklar(ApiError e) {

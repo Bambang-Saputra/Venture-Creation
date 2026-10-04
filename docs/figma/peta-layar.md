@@ -93,7 +93,7 @@ Catatan layar mitra:
 - **M06 dan M19** adalah satu fitur dengan dua mode: hitung per item dan timbang per kilogram. Nilai rupiah dihitung saat mengetik lalu **disimpan**, bukan dihitung ulang dari HPP yang bisa berubah.
 - **M11** wajib menampilkan catatan konsumen dan alergi langsung di kartu daftar, bukan disembunyikan di detail. Menyimpan alergi tanpa menampilkannya sama saja tidak punya fitur alergi.
 - **M12** adalah momen demo berlangsung. Kode sudah dipakai menghasilkan `409` beserta jam pemakaian, kode milik toko lain menghasilkan `403`, dan setiap penukaran masuk `audit_logs` lengkap dengan identitas kasir.
-- **M18** memakai endpoint yang sama dengan M12, tapi butuh CameraX dan pemindai kode. Mode ketik kode sudah cukup untuk BIFEST, jadi ini COULD.
+- **M18** memakai endpoint yang sama dengan M12. K14 menampilkan QR berisi `LOF:<kode>`, dan tab "Pindai QR" di M12 membuka pemindai kamera layar penuh (zxing-android-embedded). Hasil pindaian mengisi kotak kode, jadi alur penukarannya sama dengan mengetik. QR tanpa awalan `LOF:` ditolak.
 - **M13 dan M20**: tombol cairkan tampil tapi nonaktif dengan teks "tersedia setelah masa uji coba". Tim tidak memegang uang mitra selama pilot.
 - **M15** menegakkan batas peran: kasir boleh mencatat sisa dan mencocokkan kode, tapi ditolak di saldo, tulis listing, dan kelola anggota. Penolakan ditampilkan sopan, bukan crash.
 

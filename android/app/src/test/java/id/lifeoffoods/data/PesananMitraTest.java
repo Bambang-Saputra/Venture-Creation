@@ -2,6 +2,7 @@ package id.lifeoffoods.data;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import id.lifeoffoods.data.api.model.PesananMitraDto;
@@ -87,5 +88,22 @@ public class PesananMitraTest {
         PesananMitraDto p = new PesananMitraDto();
         p.status = status;
         return p;
+    }
+
+    @Test
+    public void qrK14BisaDibacaLagiOlehM12() {
+        assertEquals("LOF:LF7Q2K", PesananMitra.isiQr("lf7q2k"));
+        assertEquals("LF7Q2K", PesananMitra.kodeDariQr(PesananMitra.isiQr("LF7Q2K")));
+        assertEquals("LF7Q2K", PesananMitra.kodeDariQr("  lof:lf7q2k "));
+    }
+
+    @Test
+    public void qrLainDitolak() {
+        assertNull(PesananMitra.kodeDariQr(null));
+        assertNull(PesananMitra.kodeDariQr("LF7Q2K"));
+        assertNull(PesananMitra.kodeDariQr("https://contoh.id/bayar"));
+        assertNull(PesananMitra.kodeDariQr("LOF:LF7Q"));
+        assertNull(PesananMitra.kodeDariQr("LOF:LF7Q2K9"));
+        assertNull(PesananMitra.kodeDariQr("LOF:LF-7Q2K"));
     }
 }

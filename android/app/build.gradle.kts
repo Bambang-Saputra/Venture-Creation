@@ -110,6 +110,9 @@ dependencies {
     implementation(libs.glide)
     // Peta K08 dari OpenStreetMap, tanpa API key (ADR-0005, revisi Oktober 2026).
     implementation(libs.osmdroid)
+    // QR kode pickup: dibuat di K14 (core), dipindai kasir di M12/M18 (embedded).
+    implementation(libs.zxing.android) { isTransitive = false }
+    implementation(libs.zxing.core)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

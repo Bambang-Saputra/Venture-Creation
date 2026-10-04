@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -16,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.PesananMitra;
@@ -33,6 +36,42 @@ public class CocokkanKodeFragment extends Fragment {
     private FragmentCocokkanKodeBinding binding;
     private CocokkanKodeViewModel vm;
     private TextView[] kotak;
+
+    /**
+     * M18 Pindai QR. Pemindai layar penuh ZXing meminta izin kamera sendiri; hasilnya diisikan ke
+     * kotak kode sehingga alur penukarannya sama persis dengan mengetik.
+     */
+    private final ActivityResultLauncher<ScanOptions> pemindai =
+            registerForActivityResult(
+                    new ScanContract(),
+                    hasil -> {
+                        if (binding == null || hasil.getContents() == null) {
+                            return;
+                        }
+                        String kode = PesananMitra.kodeDariQr(hasil.getContents());
+                        if (kode == null) {
+                            Snackbar.make(
+                                            binding.getRoot(),
+                                            R.string.m12_qr_bukan_kode,
+                                            Snackbar.LENGTH_LONG)
+                                    .show();
+                            return;
+                        }
+                        binding.kode.setText(kode);
+                    });
+
+    private void pindai() {
+        if (this.vm.hasil.getValue() != null) {
+            this.vm.ulang();
+            binding.kode.setText("");
+        }
+        ScanOptions o = new ScanOptions();
+        o.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+        o.setPrompt(getString(R.string.m12_arahkan_kamera));
+        o.setBeepEnabled(false);
+        o.setOrientationLocked(false);
+        pemindai.launch(o);
+    }
 
     @Override
     public View onCreateView(
@@ -52,8 +91,7 @@ public class CocokkanKodeFragment extends Fragment {
         SisiAman.ikonGelap(requireActivity(), true);
         binding.kepala.judul.setText(R.string.m12_judul);
         binding.kepala.tombolKembali.setOnClickListener(v -> kembali());
-        binding.tabPindai.setOnClickListener(
-                v -> Snackbar.make(view, R.string.m12_pindai_belum, Snackbar.LENGTH_LONG).show());
+        binding.tabPindai.setOnClickListener(v -> pindai());
 
         binding.barisPelanggan.label.setText(R.string.m12_pelanggan);
         binding.barisPesanan.label.setText(R.string.m12_pesanan);

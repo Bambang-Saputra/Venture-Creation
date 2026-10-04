@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +24,7 @@ import id.lifeoffoods.databinding.FragmentProfilTokoBinding;
 import id.lifeoffoods.databinding.ItemBarisTokoBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.FotoJualan;
+import id.lifeoffoods.ui.umum.FotoUnggah;
 import id.lifeoffoods.ui.umum.KeluarAkun;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
@@ -29,6 +33,29 @@ import java.util.List;
 public class ProfilTokoFragment extends Fragment {
 
     private FragmentProfilTokoBinding binding;
+
+    private final ActivityResultLauncher<PickVisualMediaRequest> pilihFoto =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+                        if (uri == null || binding == null) {
+                            return;
+                        }
+                        FotoUnggah.baca(
+                                this,
+                                uri,
+                                jpeg -> {
+                                    if (jpeg == null) {
+                                        Snackbar.make(
+                                                        binding.getRoot(),
+                                                        R.string.foto_gagal_dibaca,
+                                                        Snackbar.LENGTH_LONG)
+                                                .show();
+                                    } else {
+                                        this.vm.unggahFoto(jpeg);
+                                    }
+                                });
+                    });
     private ProfilTokoViewModel vm;
 
     /** Sakelar diubah dari kode (isi data), bukan oleh pengguna: jangan kirim PATCH. */
@@ -70,6 +97,19 @@ public class ProfilTokoFragment extends Fragment {
                 R.string.m14_pengaturan,
                 R.id.m15_pengaturan);
         binding.tombolKeluar.setOnClickListener(v -> KeluarAkun.tanya(this));
+        View.OnClickListener ganti =
+                v -> {
+                    TokoDetailDto t = vm.toko.getValue();
+                    if (t != null && t.pemilik()) {
+                        pilihFoto.launch(
+                                new PickVisualMediaRequest.Builder()
+                                        .setMediaType(
+                                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                                                        .INSTANCE)
+                                        .build());
+                    }
+                };
+        binding.tombolGantiFoto.setOnClickListener(ganti);
 
         binding.sakelarTutup.setOnCheckedChangeListener(
                 (b, tutup) -> {
@@ -134,6 +174,7 @@ public class ProfilTokoFragment extends Fragment {
             return;
         }
         FotoJualan.muat(binding.foto, t.photoUrl, 0);
+        binding.tombolGantiFoto.setVisibility(t.pemilik() ? View.VISIBLE : View.GONE);
         binding.ikonToko.setImageResource(ikonKategori(t.category));
         binding.namaToko.setText(t.name);
         binding.subToko.setText(
@@ -208,7 +249,7 @@ public class ProfilTokoFragment extends Fragment {
     }
 
     @DrawableRes
-    static int ikonKategori(@Nullable String kategori) {
+    public static int ikonKategori(@Nullable String kategori) {
         if (kategori == null) {
             return R.drawable.ic_toko;
         }
@@ -227,7 +268,7 @@ public class ProfilTokoFragment extends Fragment {
     }
 
     @StringRes
-    static int namaKategori(@Nullable String kategori) {
+    public static int namaKategori(@Nullable String kategori) {
         if (kategori == null) {
             return R.string.kategori_swalayan;
         }

@@ -9,10 +9,12 @@ import id.lifeoffoods.LofApp;
 import id.lifeoffoods.data.JualanMitra;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
+import id.lifeoffoods.data.api.model.AkunDto;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.JualanBody;
 import id.lifeoffoods.data.api.model.JualanMitraDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
+import id.lifeoffoods.ui.umum.FotoUnggah;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import retrofit2.Call;
 
 /**
  * Bagian bersama M09 Pasang tas dan M16 Pasang menu satuan: jam ambil, saklar halal dan dapur
@@ -197,8 +200,18 @@ public abstract class PasangJualanViewModel extends AndroidViewModel {
                                             @Override
                                             public void sukses(
                                                     Terbungkus<List<JualanMitraDto>> data) {
-                                                mengirim.setValue(false);
-                                                terbit.setValue(new Peristiwa<>(true));
+                                                byte[] foto = fotoBaru.getValue();
+                                                if (foto == null
+                                                        || data == null
+                                                        || data.data == null) {
+                                                    selesaiTerbit();
+                                                    return;
+                                                }
+                                                List<Long> idBaru = new java.util.ArrayList<>();
+                                                for (JualanMitraDto j : data.data) {
+                                                    idBaru.add(j.id);
+                                                }
+                                                unggahBerantai(idToko, foto, idBaru, 0);
                                             }
 
                                             @Override
@@ -217,6 +230,56 @@ public abstract class PasangJualanViewModel extends AndroidViewModel {
 
     /** Field yang mungkin disebut galat 422 server; pesannya ditaruh di bawah field itu. */
     protected abstract String[] fieldGalatServer();
+
+    /** Foto baru dari kotak "Foto tas" (sudah diperkecil), atau null kalau tidak diganti. */
+    public final MutableLiveData<byte[]> fotoBaru = new MutableLiveData<>();
+
+    /** Template yang ikut diberi foto baru supaya dipakai lagi besok; 0 kalau tidak ada. */
+    protected long idTemplateUntukFoto() {
+        return 0;
+    }
+
+    private void selesaiTerbit() {
+        mengirim.setValue(false);
+        terbit.setValue(new Peristiwa<>(true));
+    }
+
+    /**
+     * Foto diunggah satu per satu ke jualan yang baru dipasang, lalu ke template. Jualan sudah
+     * terbit, jadi gagal unggah foto tidak membatalkan apa pun: mitra bisa menggantinya di M10.
+     */
+    private void unggahBerantai(long idToko, byte[] foto, List<Long> idJualan, int ke) {
+        LofApp app = getApplication();
+        Call<AkunDto.Foto> panggil;
+        if (ke < idJualan.size()) {
+            panggil =
+                    app.api()
+                            .unggahFotoJualan(
+                                    idToko, idJualan.get(ke), FotoUnggah.bagian(foto, "tas.jpg"));
+        } else if (ke == idJualan.size() && idTemplateUntukFoto() > 0) {
+            panggil =
+                    app.api()
+                            .unggahFotoTemplate(
+                                    idToko,
+                                    idTemplateUntukFoto(),
+                                    FotoUnggah.bagian(foto, "template.jpg"));
+        } else {
+            selesaiTerbit();
+            return;
+        }
+        panggil.enqueue(
+                new ApiCallback<>() {
+                    @Override
+                    public void sukses(AkunDto.Foto data) {
+                        unggahBerantai(idToko, foto, idJualan, ke + 1);
+                    }
+
+                    @Override
+                    public void gagal(ApiError e) {
+                        unggahBerantai(idToko, foto, idJualan, ke + 1);
+                    }
+                });
+    }
 
     private void gagalKirim(ApiError e) {
         mengirim.setValue(false);

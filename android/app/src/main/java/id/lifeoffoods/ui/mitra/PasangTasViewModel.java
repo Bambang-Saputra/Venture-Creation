@@ -101,6 +101,12 @@ public class PasangTasViewModel extends PasangJualanViewModel {
         return null;
     }
 
+    @Override
+    protected long idTemplateUntukFoto() {
+        TemplateTasDto t = cetakan();
+        return t == null ? 0 : t.id;
+    }
+
     public void ubahJumlah(boolean tambah) {
         int j = jumlah.getValue() == null ? 1 : jumlah.getValue();
         jumlah.setValue(Math.max(1, Math.min(JualanMitra.JUMLAH_MAKS, j + (tambah ? 1 : -1))));
