@@ -67,6 +67,17 @@ Daftar berhalaman memakai paginator Laravel. Android cukup membaca `data`, `curr
 
 Data milik orang lain (pesanan, toko, notifikasi) sengaja dijawab 404, bukan 403, supaya id tidak bisa ditebak.
 
+#### Kode galat tetap (`code`)
+
+Galat yang perlu ditangani Android dengan cara khusus membawa `code`. Android memakai `code`, bukan isi `message`, karena teks pesan boleh diubah kapan saja. Galat lain tidak punya `code`.
+
+| `code` | Status | Di mana | Yang dilakukan Android |
+|---|---|---|---|
+| `account_inactive` | 403 | semua rute ber-token, verifikasi OTP, login Google | Hapus sesi, kembali ke K01 |
+| `wrong_role` | 403 | verifikasi OTP, login Google. Ada juga `registered_role` (`consumer` atau `partner`) | Arahkan ke halaman masuk peran yang benar |
+| `partner_not_registered` | 403 | minta dan verifikasi OTP dengan `role=partner` | Tampilkan pesan, jangan buat akun |
+| `active_order_limit` | 422 | `POST /orders`. `errors.items` tetap ada | Arahkan ke K15 Pesanan saya |
+
 ### Peran
 
 - `consumer`: aplikasi konsumen (K01 sampai K23).

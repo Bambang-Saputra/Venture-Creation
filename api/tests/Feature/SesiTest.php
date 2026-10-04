@@ -69,7 +69,7 @@ class SesiTest extends TestCase
         $token = $this->token($user);
         $user->forceFill(['is_active' => false])->save();
 
-        $this->withToken($token)->getJson('/api/me')->assertForbidden();
+        $this->withToken($token)->getJson('/api/me')->assertForbidden()->assertJsonPath('code', 'account_inactive');
     }
 
     private function user(array $atribut = []): User

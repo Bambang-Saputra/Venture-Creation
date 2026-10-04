@@ -40,7 +40,7 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 
 - [ ] Hosting API dan MySQL di server sendiri (VPS atau Railway), supaya laptop tidak harus nyala terus.
 - [ ] OTP lewat SMS atau WhatsApp, lalu matikan `PILOT_MODE`.
-- [ ] Kode galat khusus dari server untuk akun nonaktif, peran salah, dan batas 3 pesanan. Sekarang Android masih mendeteksinya dari teks pesan.
+- [x] Kode galat khusus dari server untuk akun nonaktif, peran salah, dan batas 3 pesanan.
 - [ ] M11 memuat lebih dari 30 pesanan (paginasi).
 - [ ] APK rilis yang ditandatangani, lalu Play Store (internal testing).
 - [ ] Pembayaran online (ditunda, lihat ADR-0004).
