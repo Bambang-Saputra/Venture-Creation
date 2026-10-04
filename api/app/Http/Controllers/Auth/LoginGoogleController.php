@@ -42,11 +42,13 @@ class LoginGoogleController extends Controller
             throw new LoginGoogleDitolak(
                 'Akun Google ini terdaftar sebagai '.self::NAMA_PERAN[$user->role].'. Masuk lewat halaman '.self::NAMA_PERAN[$user->role].'.',
                 403,
+                'wrong_role',
+                ['registered_role' => $user->role],
             );
         }
 
         if (! $user->is_active) {
-            throw new LoginGoogleDitolak('Akun ini dinonaktifkan. Hubungi tim Life of Foods.', 403);
+            throw new LoginGoogleDitolak('Akun ini dinonaktifkan. Hubungi tim Life of Foods.', 403, 'account_inactive');
         }
 
         return response()->json([

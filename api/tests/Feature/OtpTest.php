@@ -134,7 +134,13 @@ class OtpTest extends TestCase
         User::forceCreate(['phone' => self::NOMOR, 'role' => 'partner']);
         $kode = $this->minta()->json('pilot_code');
 
-        $this->verifikasi($kode)->assertForbidden();
+        $this->verifikasi($kode)->assertForbidden()
+            ->assertJsonPath('code', 'wrong_role')->assertJsonPath('registered_role', 'partner');
+    }
+
+    public function test_nomor_belum_terdaftar_ditolak_di_halaman_mitra(): void
+    {
+        $this->minta(self::NOMOR, 'partner')->assertForbidden()->assertJsonPath('code', 'partner_not_registered');
     }
 
     public function test_akun_nonaktif_ditolak(): void
@@ -142,7 +148,7 @@ class OtpTest extends TestCase
         User::forceCreate(['phone' => self::NOMOR, 'role' => 'consumer', 'is_active' => false]);
         $kode = $this->minta()->json('pilot_code');
 
-        $this->verifikasi($kode)->assertForbidden();
+        $this->verifikasi($kode)->assertForbidden()->assertJsonPath('code', 'account_inactive');
         $this->assertDatabaseCount('personal_access_tokens', 0);
     }
 

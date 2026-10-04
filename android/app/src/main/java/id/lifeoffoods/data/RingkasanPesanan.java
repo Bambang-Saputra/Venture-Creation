@@ -65,12 +65,17 @@ public final class RingkasanPesanan {
     }
 
     /**
-     * 422 karena pembeli masih punya 3 pesanan yang belum diambil. Server tidak memberi kode galat
-     * khusus (LayananPesanan::buat), jadi dikenali dari pesannya; K12/K13 lalu mengarahkan ke K15.
+     * 422 karena pembeli masih punya 3 pesanan yang belum diambil ({@code active_order_limit});
+     * K12/K13 lalu mengarahkan ke K15. Pencocokan teks hanya cadangan untuk server lama.
      */
     public static boolean batasPesananAktif(ApiError e) {
-        String p = pesanItems(e);
-        return e.kode() == 422 && p.contains("belum diambil");
+        if (e.kode() != 422) {
+            return false;
+        }
+        if (e.kodeGalat() != null) {
+            return ApiError.BATAS_PESANAN_AKTIF.equals(e.kodeGalat());
+        }
+        return pesanItems(e).contains("belum diambil");
     }
 
     /** Pesan 422 dari {@code errors.items}, atau pesan umum kalau tidak ada. */

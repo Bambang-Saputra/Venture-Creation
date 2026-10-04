@@ -133,7 +133,8 @@ class PesananTest extends TestCase
             $this->kirim('/api/orders', ['items' => [['listing_id' => $id, 'qty' => 1]]])->assertCreated();
         }
 
-        $this->kirim('/api/orders', ['items' => [['listing_id' => $id, 'qty' => 1]]])->assertUnprocessable();
+        $this->kirim('/api/orders', ['items' => [['listing_id' => $id, 'qty' => 1]]])->assertUnprocessable()
+            ->assertJsonPath('code', 'active_order_limit')->assertJsonValidationErrors('items');
     }
 
     public function test_daftar_dan_detail_hanya_milik_sendiri(): void

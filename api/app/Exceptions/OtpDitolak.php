@@ -11,13 +11,21 @@ use RuntimeException;
  */
 class OtpDitolak extends RuntimeException
 {
-    public function __construct(string $pesan, private readonly int $status = 422)
-    {
+    /**
+     * @param  string|null  $kode  kode galat tetap untuk Android (kontrak API, bagian galat)
+     * @param  array<string, mixed>  $tambahan  field lain di respons, misalnya registered_role
+     */
+    public function __construct(
+        string $pesan,
+        private readonly int $status = 422,
+        private readonly ?string $kode = null,
+        private readonly array $tambahan = [],
+    ) {
         parent::__construct($pesan);
     }
 
     public function render(): JsonResponse
     {
-        return response()->json(['message' => $this->getMessage()], $this->status);
+        return response()->json(array_filter(['message' => $this->getMessage(), 'code' => $this->kode]) + $this->tambahan, $this->status);
     }
 }

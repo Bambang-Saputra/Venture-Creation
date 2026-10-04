@@ -77,6 +77,35 @@ public class ApiErrorTest {
     }
 
     @Test
+    public void kodeGalatServerDiutamakanDaripadaTeks() {
+        ApiError nonaktif =
+                ApiError.dariRespons(
+                        403, "{\"message\":\"Teks bebas.\",\"code\":\"account_inactive\"}");
+        assertEquals(ApiError.AKUN_NONAKTIF, nonaktif.kodeGalat());
+        assertTrue(nonaktif.perluMasukUlang());
+        assertFalse(nonaktif.salahHalaman());
+
+        ApiError salah =
+                ApiError.dariRespons(
+                        403,
+                        "{\"message\":\"Teks bebas.\",\"code\":\"wrong_role\","
+                                + "\"registered_role\":\"partner\"}");
+        assertTrue(salah.salahHalaman());
+        assertFalse(salah.perluMasukUlang());
+
+        // Ada code lain: teks "dinonaktifkan" tidak lagi dianggap akun nonaktif.
+        ApiError lain =
+                ApiError.dariRespons(
+                        403,
+                        "{\"message\":\"Akun dengan nomor ini sedang dinonaktifkan.\","
+                                + "\"code\":\"partner_not_registered\"}");
+        assertFalse(lain.perluMasukUlang());
+        assertEquals(ApiError.MITRA_BELUM_TERDAFTAR, lain.kodeGalat());
+
+        assertNull(ApiError.jaringan().kodeGalat());
+    }
+
+    @Test
     public void galatJaringanBerkode0() {
         ApiError galat = ApiError.jaringan();
 

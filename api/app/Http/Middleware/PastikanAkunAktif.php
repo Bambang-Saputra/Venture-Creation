@@ -15,7 +15,7 @@ class PastikanAkunAktif
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() !== null && ! $request->user()->is_active) {
-            return response()->json(['message' => 'Akun ini dinonaktifkan. Hubungi tim Life of Foods.'], 403);
+            return response()->json(['message' => 'Akun ini dinonaktifkan. Hubungi tim Life of Foods.', 'code' => 'account_inactive'], 403);
         }
 
         return $next($request);
