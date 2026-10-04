@@ -31,7 +31,7 @@ normalisasi, ini keputusan.
 
 ## Yang ditegakkan database, bukan hanya aplikasi
 
-Empat `CHECK` constraint dipasang di migrasi. Semuanya sudah diuji menolak
+Lima `CHECK` constraint dipasang di migrasi. Semuanya sudah diuji menolak
 data yang salah, dan menerima data yang benar.
 
 | Constraint | Isi | Kenapa di database |
@@ -40,6 +40,7 @@ data yang salah, dan menerima data yang benar.
 | `chk_listings_kuota` | `qty_reserved + qty_sold <= qty_total` | Batas terakhir kalau ada bug pada pengurangan stok bersamaan |
 | `chk_listings_jam_ambil` | `pickup_end > pickup_start` | Jam ambil terbalik membuat listing tidak pernah muncul dan sulit dilacak |
 | `chk_orders_total` | `total = subtotal + service_fee - discount` | Selisih rupiah pada struk adalah hal pertama yang dilihat mitra |
+| `chk_reviews_rating` | `rating BETWEEN 1 AND 5` | Satu bintang 0 atau 50 yang lolos dari jalur lain merusak rata-rata toko |
 
 ## Daur hidup status
 

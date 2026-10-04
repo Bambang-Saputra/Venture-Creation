@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\LayananPesanan;
 use App\Services\Notifikasi;
+use App\Services\RatingToko;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -62,7 +63,9 @@ class PesananController extends Controller
             ->when(($f['status'] ?? null) === 'history', fn ($q) => $q->where('orders.status', '!=', 'pending_pickup'))
             ->orderByDesc('orders.placed_at')->orderByDesc('orders.id')
             ->select('orders.id', 'orders.code', 'orders.status', 'orders.total_rupiah', 'orders.pickup_start',
-                'orders.pickup_end', 'orders.placed_at', 'stores.name as store_name')
+                'orders.pickup_end', 'orders.placed_at', 'orders.completed_at', 'stores.name as store_name',
+                'reviews.rating as review_rating')
+            ->leftJoin('reviews', 'reviews.order_id', '=', 'orders.id')
             ->selectSub(fn ($q) => $q->from('order_items')->whereColumn('order_id', 'orders.id')->selectRaw('COALESCE(SUM(qty), 0)'), 'item_count')
             ->paginate(20);
 
@@ -76,6 +79,9 @@ class PesananController extends Controller
             'pickup_start' => Carbon::parse($o->pickup_start)->toIso8601String(),
             'pickup_end' => Carbon::parse($o->pickup_end)->toIso8601String(),
             'placed_at' => Carbon::parse($o->placed_at)->toIso8601String(),
+            // Kartu riwayat K15: bintang yang sudah diberi, atau tombol "Beri nilai".
+            'review_rating' => $o->review_rating === null ? null : (int) $o->review_rating,
+            'can_review' => RatingToko::masihBisaDiulas($o->status, $o->completed_at),
         ]);
 
         return response()->json($halaman);
@@ -129,6 +135,7 @@ class PesananController extends Controller
 
         $item = DB::table('order_items')->where('order_id', $o->id)->orderBy('id')
             ->get(['listing_id', 'title_snapshot as title', 'unit_price_rupiah', 'qty', 'line_total_rupiah']);
+        $ulasan = DB::table('reviews')->where('order_id', $o->id)->first(['rating', 'comment', 'created_at']);
 
         return [
             'id' => $o->id,
@@ -156,6 +163,13 @@ class PesananController extends Controller
             'placed_at' => Carbon::parse($o->placed_at)->toIso8601String(),
             'completed_at' => $o->completed_at === null ? null : Carbon::parse($o->completed_at)->toIso8601String(),
             'cancelled_at' => $o->cancelled_at === null ? null : Carbon::parse($o->cancelled_at)->toIso8601String(),
+            'review' => $ulasan === null ? null : [
+                'rating' => (int) $ulasan->rating,
+                'comment' => $ulasan->comment,
+                'created_at' => Carbon::parse($ulasan->created_at)->toIso8601String(),
+            ],
+            // Tombol "Beri nilai" atau "Ubah nilai": sampai 7 hari setelah diambil.
+            'can_review' => RatingToko::masihBisaDiulas($o->status, $o->completed_at),
         ];
     }
 }

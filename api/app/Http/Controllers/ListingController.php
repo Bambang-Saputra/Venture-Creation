@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\RatingToko;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -86,10 +87,12 @@ class ListingController extends Controller
         if (($f['sort'] ?? null) === 'popular') {
             // Satu listing berlaku untuk satu tanggal ambil, jadi jumlah yang sudah
             // dipesan (dipegang + terjual) sama dengan "dipesan untuk hari itu".
-            // Yang belum pernah dipesan tidak dianggap populer.
+            // Yang belum pernah dipesan tidak dianggap populer. Kalau jumlahnya
+            // sama, toko dengan rating lebih tinggi didahulukan.
             $query->whereRaw('listings.qty_reserved + listings.qty_sold > 0')
                 ->whereDate('listings.pickup_date', today())
-                ->orderByRaw('listings.qty_reserved + listings.qty_sold DESC');
+                ->orderByRaw('listings.qty_reserved + listings.qty_sold DESC')
+                ->orderByRaw('COALESCE(rating.rating_avg, 0) DESC');
         }
 
         $adaLokasi ? $query->orderBy('distance_km') : $query->orderBy('listings.pickup_end');
@@ -106,12 +109,14 @@ class ListingController extends Controller
     {
         $l = DB::table('listings')
             ->join('stores', 'stores.id', '=', 'listings.store_id')
+            ->leftJoinSub(RatingToko::subquery(), 'rating', 'rating.store_id', '=', 'stores.id')
             ->where('listings.id', $id)
             ->where('listings.status', '!=', 'draft')
             ->where('stores.is_active', true)
             ->select('listings.*', 'stores.name as store_name', 'stores.category as store_category',
                 'stores.address as store_address', 'stores.latitude as store_latitude',
-                'stores.longitude as store_longitude', 'stores.is_temporarily_closed')
+                'stores.longitude as store_longitude', 'stores.is_temporarily_closed',
+                'rating.rating_avg', 'rating.rating_count')
             ->first();
 
         abort_if($l === null, 404, 'Jualan tidak ditemukan.');
@@ -141,6 +146,7 @@ class ListingController extends Controller
                 'latitude' => $l->store_latitude === null ? null : (float) $l->store_latitude,
                 'longitude' => $l->store_longitude === null ? null : (float) $l->store_longitude,
                 'hours_today' => $jamHariIni,
+                ...RatingToko::format($l->rating_avg, $l->rating_count),
             ],
         ]]);
     }
@@ -153,7 +159,9 @@ class ListingController extends Controller
     {
         return DB::table('listings')
             ->join('stores', 'stores.id', '=', 'listings.store_id')
-            ->select('listings.*', 'stores.name as store_name', 'stores.category as store_category')
+            ->leftJoinSub(RatingToko::subquery(), 'rating', 'rating.store_id', '=', 'stores.id')
+            ->select('listings.*', 'stores.name as store_name', 'stores.category as store_category',
+                'rating.rating_avg', 'rating.rating_count')
             ->where('listings.status', 'active')
             ->where('listings.pickup_end', '>', now())
             ->whereRaw('listings.qty_total > listings.qty_reserved + listings.qty_sold')
@@ -197,7 +205,12 @@ class ListingController extends Controller
             'halal_label' => $l->halal_label,
             'allergens' => $alergen,
             'distance_km' => isset($l->distance_km) ? round((float) $l->distance_km, 2) : null,
-            'store' => ['id' => $l->store_id, 'name' => $l->store_name, 'category' => $l->store_category],
+            'store' => [
+                'id' => $l->store_id,
+                'name' => $l->store_name,
+                'category' => $l->store_category,
+                ...RatingToko::format($l->rating_avg, $l->rating_count),
+            ],
         ];
     }
 }
