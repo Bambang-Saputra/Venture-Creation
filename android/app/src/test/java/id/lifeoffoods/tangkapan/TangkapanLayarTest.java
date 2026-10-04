@@ -452,6 +452,35 @@ public class TangkapanLayarTest {
     }
 
     @Test
+    public void k06Onboarding() {
+        bukaKonsumen(R.id.k06_onboarding);
+        tangkap("K06");
+    }
+
+    @Test
+    public void k08Peta() {
+        bukaKonsumen(R.id.k08_peta);
+        tangkap("K08");
+    }
+
+    @Test
+    public void k06HalamanTerakhir() {
+        MainActivity a = bukaKonsumen(R.id.k06_onboarding);
+        ((androidx.viewpager2.widget.ViewPager2) a.findViewById(R.id.halaman))
+                .setCurrentItem(2, false);
+        tunggu();
+        tangkap("K06-akhir");
+    }
+
+    @Test
+    public void k08Daftar() {
+        MainActivity a = bukaKonsumen(R.id.k08_peta);
+        a.findViewById(R.id.tab_daftar).performClick();
+        tunggu();
+        tangkap("K08-daftar");
+    }
+
+    @Test
     public void k17Notifikasi() {
         bukaKonsumen(R.id.k17_notifikasi);
         tangkap("K17");
@@ -475,12 +504,13 @@ public class TangkapanLayarTest {
         tangkap("K20");
     }
 
-    private void bukaKonsumen(int tujuan) {
+    private MainActivity bukaKonsumen(int tujuan) {
         app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
-        buka();
+        MainActivity a = buka();
         tunggu();
         navigasi(tujuan, null);
         tunggu();
+        return a;
     }
 
     @Test
@@ -1698,7 +1728,13 @@ public class TangkapanLayarTest {
                     + (id - 26)
                     + ",\"name\":\""
                     + toko
-                    + "\",\"category\":\"cafe\"}}";
+                    + "\",\"category\":\"cafe\""
+                    // Sebar toko di sekitar SCBD supaya penanda K08 tidak bertumpuk.
+                    + ",\"latitude\":"
+                    + (-6.2250 + ((id % 3) - 1) * 0.0035)
+                    + ",\"longitude\":"
+                    + (106.8090 + ((id % 4) - 1.5) * 0.0030)
+                    + "}}";
         }
 
         private static String alergen(String kode, String nama, String tipe) {

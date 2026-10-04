@@ -87,9 +87,12 @@ public class MainActivity extends AppCompatActivity {
         pasangGraf(grafUntuk(peran), perluProfil ? R.id.k04_lengkapi_profil : berandaUntuk(peran));
     }
 
-    /** Dari K05 (Simpan atau Lewati): onboarding selesai, buka beranda tanpa riwayat K04/K05. */
+    /**
+     * Dari K05 (Simpan atau Lewati): onboarding selesai, buka K06 lalu beranda tanpa riwayat
+     * K04/K05.
+     */
     public void selesaiOnboarding() {
-        pasangGraf(R.navigation.nav_konsumen, R.id.k07_beranda);
+        pasangGraf(R.navigation.nav_konsumen, R.id.k06_onboarding);
     }
 
     /** Token ditolak server (401): hapus sesi lokal lalu kembali ke K01. */

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Titik indikator halaman K06 yang belum aktif (6x6). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/garis_tegas" />
+    <corners android:radius="3dp" />
+</shape>

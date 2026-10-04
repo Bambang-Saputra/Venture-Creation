@@ -108,6 +108,8 @@ dependencies {
     implementation(libs.googleid)
     // Gambar jualan dari /storage API (ADR-0002).
     implementation(libs.glide)
+    // Peta K08 dari OpenStreetMap, tanpa API key (ADR-0005, revisi Oktober 2026).
+    implementation(libs.osmdroid)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

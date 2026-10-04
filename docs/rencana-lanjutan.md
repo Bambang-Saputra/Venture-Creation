@@ -26,8 +26,8 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 - [x] M13 Saldo
 - [x] K17 Notifikasi
 - [x] K18-K20 Profil, Edit profil, Pengaturan pembeli
-- [ ] K06 Onboarding
-- [ ] K08 Peta (versi daftar ditambah `geo:`, lihat ADR-0005)
+- [x] K06 Onboarding (halaman terakhir meminta izin lokasi)
+- [x] K08 Peta (osmdroid dan OpenStreetMap, ditambah tab Daftar dengan `geo:`, lihat ADR-0005)
 - [ ] Login Google K02/M01 (ADR-0006, butuh setup Google Cloud Console)
 
 ## 4. Layar COULD

@@ -96,7 +96,10 @@ class UlasanTest extends TestCase
         $this->getJson("/api/listings/{$this->listing}")->assertOk()
             ->assertJsonPath('data.store.rating_average', 4.7)->assertJsonPath('data.store.rating_count', 3);
         $this->getJson('/api/listings')->assertOk()
-            ->assertJsonPath('data.0.store.rating_average', 4.7)->assertJsonPath('data.0.store.rating_count', 3);
+            ->assertJsonPath('data.0.store.rating_average', 4.7)->assertJsonPath('data.0.store.rating_count', 3)
+            // K08: alamat dan koordinat toko untuk tombol rute.
+            ->assertJsonPath('data.0.store.address', 'Jl. Jend. Sudirman Kav 52')
+            ->assertJsonPath('data.0.store.latitude', null);
         $this->sebagai($this->pemilik)->getJson("/api/partner/stores/{$this->toko}")->assertOk()
             ->assertJsonPath('data.rating_average', 4.7)->assertJsonPath('data.rating_count', 3);
     }

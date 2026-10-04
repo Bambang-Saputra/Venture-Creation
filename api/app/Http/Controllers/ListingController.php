@@ -162,6 +162,8 @@ class ListingController extends Controller
             ->join('stores', 'stores.id', '=', 'listings.store_id')
             ->leftJoinSub(RatingToko::subquery(), 'rating', 'rating.store_id', '=', 'stores.id')
             ->select('listings.*', 'stores.name as store_name', 'stores.category as store_category',
+                'stores.address as store_address', 'stores.latitude as store_latitude',
+                'stores.longitude as store_longitude',
                 'rating.rating_avg', 'rating.rating_count')
             ->where('listings.status', 'active')
             ->where('listings.pickup_end', '>', now())
@@ -210,6 +212,10 @@ class ListingController extends Controller
                 'id' => $l->store_id,
                 'name' => $l->store_name,
                 'category' => $l->store_category,
+                // K08 Daftar: tombol rute membuka Google Maps lewat geo: (ADR-0005).
+                'address' => $l->store_address ?? null,
+                'latitude' => isset($l->store_latitude) ? (float) $l->store_latitude : null,
+                'longitude' => isset($l->store_longitude) ? (float) $l->store_longitude : null,
                 ...RatingToko::format($l->rating_avg, $l->rating_count),
             ],
         ];

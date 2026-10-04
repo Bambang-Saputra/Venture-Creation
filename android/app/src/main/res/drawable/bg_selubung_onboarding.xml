@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Selubung foto K06: terang di atas, makin gelap ke bawah supaya teks putih terbaca. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:centerColor="#99314A3C"
+        android:centerY="0.55"
+        android:endColor="@color/merek_tinta"
+        android:startColor="@color/latar_lembut"
+        android:type="linear" />
+</shape>
