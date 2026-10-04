@@ -1,9 +1,7 @@
 package id.lifeoffoods.data.api.model;
 
 import androidx.annotation.Nullable;
-
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /** GET /partner/stores/{store} (M14 Profil toko). Pemilik dan kasir. */

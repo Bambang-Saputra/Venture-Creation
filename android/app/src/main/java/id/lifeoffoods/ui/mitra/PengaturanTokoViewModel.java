@@ -1,11 +1,9 @@
 package id.lifeoffoods.ui.mitra;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.ApiCallback;
@@ -13,7 +11,6 @@ import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.data.api.model.AnggotaTokoDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.ui.umum.Peristiwa;
-
 import java.util.List;
 
 /** M15 Pengaturan toko dan kasir: daftar, undang, dan cabut kasir. Hanya pemilik. */

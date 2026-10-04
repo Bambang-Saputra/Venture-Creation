@@ -5,11 +5,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import id.lifeoffoods.data.api.model.TokoDetailDto;
-
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
 
 public class ProfilTokoTest {
 

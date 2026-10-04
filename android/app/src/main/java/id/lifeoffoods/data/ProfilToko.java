@@ -1,9 +1,7 @@
 package id.lifeoffoods.data;
 
 import androidx.annotation.Nullable;
-
 import id.lifeoffoods.data.api.model.TokoDetailDto;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

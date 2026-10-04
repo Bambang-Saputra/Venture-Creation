@@ -33,7 +33,8 @@ import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.data.api.model.TokoDetailDto;
 import id.lifeoffoods.data.api.model.TokoMitraDto;
 import id.lifeoffoods.data.api.model.TukarKodeBody;
-
+import java.util.List;
+import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -45,9 +46,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Endpoint REST Life of Foods. Path relatif terhadap API_BASE_URL (sudah berakhiran /api/).

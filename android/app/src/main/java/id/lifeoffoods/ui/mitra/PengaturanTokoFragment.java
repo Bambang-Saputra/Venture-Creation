@@ -6,17 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.NomorHp;
@@ -27,7 +24,6 @@ import id.lifeoffoods.databinding.FragmentPengaturanTokoBinding;
 import id.lifeoffoods.databinding.ItemAnggotaTokoBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.SisiAman;
-
 import java.util.List;
 
 /** M15 Pengaturan toko dan kasir (PRD-15). Dari baris "Pengaturan toko dan kasir" di M14. */

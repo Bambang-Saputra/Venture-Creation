@@ -1,11 +1,9 @@
 package id.lifeoffoods.ui.mitra;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.ApiCallback;

@@ -6,13 +6,10 @@ import static org.robolectric.Shadows.shadowOf;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.github.takahirom.roborazzi.RoborazziKt;
 import com.github.takahirom.roborazzi.RoborazziOptions;
-
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FilterJualan;
@@ -20,12 +17,13 @@ import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.filter.FilterBundle;
 import id.lifeoffoods.ui.masuk.VerifikasiOtpFragment;
-
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,10 +33,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.GraphicsMode;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 /**
  * Tangkapan layar tiap layar untuk dibandingkan dengan PNG Figma (frame 402x874, dirender 2x).
@@ -828,7 +822,7 @@ public class TangkapanLayarTest {
                                             "cash",
                                             "Alergi kacang, tolong dipisah ya",
                                             "[{\"code\":\"kacang_tanah\",\"name\":\"Kacang"
-                                                + " tanah\",\"severity\":\"severe\"}]",
+                                                    + " tanah\",\"severity\":\"severe\"}]",
                                             "20:30",
                                             "21:00",
                                             "20:41")
@@ -1374,8 +1368,8 @@ public class TangkapanLayarTest {
                     + ",\"is_available\":true,\"items\":["
                     + (tas
                             ? "{\"label\":\"Croissant mentega\",\"qty\":null},{\"label\":\"Danish"
-                                  + " keju\",\"qty\":null},{\"label\":\"Cinnamon roll atau roti"
-                                  + " manis lain\",\"qty\":null}"
+                                    + " keju\",\"qty\":null},{\"label\":\"Cinnamon roll atau roti"
+                                    + " manis lain\",\"qty\":null}"
                             : "")
                     + "],\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\",\"category\":\"cafe\""
                     + ",\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan\""

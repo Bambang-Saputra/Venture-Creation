@@ -1,7 +1,6 @@
 package id.lifeoffoods.data.api.model;
 
 import androidx.annotation.Nullable;
-
 import com.google.gson.annotations.SerializedName;
 
 /** Satu baris GET /partner/stores/{store}/members (M15). Baris pertama selalu pemilik. */

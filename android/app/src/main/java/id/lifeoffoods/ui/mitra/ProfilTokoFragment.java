@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,9 +12,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.ProfilToko;
@@ -26,7 +23,6 @@ import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.FotoJualan;
 import id.lifeoffoods.ui.umum.KeluarAkun;
 import id.lifeoffoods.ui.umum.SisiAman;
-
 import java.util.List;
 
 /** M14 Profil toko (PRD-14): tab Toko di nav mitra. Pemilik dan kasir. */
