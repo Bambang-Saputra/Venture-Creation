@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
+use App\Services\FotoUnggahan;
 use App\Services\Notifikasi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -33,7 +34,8 @@ class ListingMitraController extends Controller
         return response()->json(['data' => DB::table('surprise_bag_templates')
             ->where('store_id', $store)->where('is_active', true)->orderBy('name')
             ->get(['id', 'name', 'content_hint', 'price_rupiah', 'original_value_rupiah', 'default_qty',
-                'pickup_start_time', 'pickup_end_time', 'halal_label'])]);
+                'pickup_start_time', 'pickup_end_time', 'halal_label', 'photo_path'])
+            ->map(fn (object $t) => [...(array) $t, 'photo_url' => FotoUnggahan::url($t->photo_path)])]);
     }
 
     /** GET /api/partner/stores/{store}/products ("Tambah item dari menu toko" di M16) */
@@ -299,6 +301,7 @@ class ListingMitraController extends Controller
             'title' => $l->title,
             'product_id' => $l->product_id,
             'template_id' => $l->template_id,
+            'photo_url' => FotoUnggahan::url($l->photo_path),
             'price_rupiah' => $l->price_rupiah,
             'original_value_rupiah' => $l->original_value_rupiah,
             'qty_total' => $l->qty_total,

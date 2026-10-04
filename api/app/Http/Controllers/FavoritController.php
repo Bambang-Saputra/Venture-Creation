@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FotoUnggahan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -56,6 +57,7 @@ class FavoritController extends Controller
                 'name' => $t->name,
                 'category' => $t->category,
                 'photo_path' => $t->photo_path,
+                'photo_url' => FotoUnggahan::url($t->photo_path),
                 'distance_km' => isset($t->distance_km) ? round((float) $t->distance_km, 2) : null,
                 'closes_at' => $tutupHariIni || $t->close_time === null ? null : substr($t->close_time, 0, 5),
                 'is_temporarily_closed' => (bool) $t->is_temporarily_closed,

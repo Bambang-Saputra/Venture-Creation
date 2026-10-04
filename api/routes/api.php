@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\KeluarController;
 use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\FavoritController;
+use App\Http\Controllers\FotoController;
 use App\Http\Controllers\HapusAkunController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\NotifikasiController;
@@ -33,6 +34,8 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::patch('/me', [ProfilController::class, 'ubah']);
     Route::put('/me/allergens', [AlergenController::class, 'gantiMilikSaya']);
     Route::delete('/me', HapusAkunController::class)->middleware('throttle:3,1');
+    Route::post('/me/photo', [FotoController::class, 'profil'])->middleware('throttle:10,1');
+    Route::delete('/me/photo', [FotoController::class, 'hapusProfil']);
 
     Route::get('/notifications', [NotifikasiController::class, 'daftar']);
     Route::post('/notifications/read-all', [NotifikasiController::class, 'bacaSemua']);
@@ -52,6 +55,9 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::prefix('/partner/stores/{store}')->whereNumber(['store', 'listing'])->group(function () {
         Route::get('/', [TokoController::class, 'tampil']);
         Route::match(['put', 'patch'], '/', [TokoController::class, 'ubah'])->middleware('throttle:30,1');
+        Route::post('/photo', [FotoController::class, 'toko'])->middleware('throttle:10,1');
+        Route::post('/templates/{template}/photo', [FotoController::class, 'template'])->whereNumber('template')->middleware('throttle:10,1');
+        Route::post('/listings/{listing}/photo', [FotoController::class, 'listing'])->middleware('throttle:10,1');
         Route::get('/balance', [TokoController::class, 'saldo']);
         Route::get('/balance/transactions', [TokoController::class, 'transaksi']);
         Route::get('/members', [AnggotaTokoController::class, 'daftar']);

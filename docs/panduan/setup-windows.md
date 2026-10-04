@@ -103,6 +103,7 @@ URL yang muncul dipakai sebagai `API_BASE_URL` di aplikasi Android (lihat bagian
 ```bash
 cd /d/Proyek/life-of-foods/api
 php artisan migrate
+php artisan storage:link   # sekali saja, supaya foto di /storage/... bisa dibuka
 php artisan test
 ```
 
