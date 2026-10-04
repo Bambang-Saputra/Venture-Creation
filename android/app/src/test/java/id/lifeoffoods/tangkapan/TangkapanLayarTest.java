@@ -417,27 +417,6 @@ public class TangkapanLayarTest {
         tangkapPanjang("M07-celah");
     }
 
-    /** M14 dari tab Toko; contoh Figma. */
-    @Test
-    public void m14ProfilToko() {
-        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
-        buka();
-        tunggu();
-        navigasi(R.id.m14_toko, null);
-        tunggu();
-        tangkapPanjang("M14");
-    }
-
-    @Test
-    public void m15PengaturanToko() {
-        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
-        buka();
-        tunggu();
-        navigasi(R.id.m15_pengaturan, null);
-        tunggu();
-        tangkap("M15");
-    }
-
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -503,13 +482,15 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/me") && "GET".equals(r.getMethod())) {
                 return json(
                         "{\"user\":{\"id\":12,\"name\":\"Dara Renata\","
-                            + "\"email\":\"dara.renata@email.com\",\"phone\":\"6281234567890\","
-                            + "\"role\":\"consumer\",\"has_google\":false},"
-                            + "\"is_profile_complete\":false,\"consumer_profile\":{\"area_label\":\"SCBD,"
-                            + " Jakarta Selatan\",\"latitude\":-6.225300,\"longitude\":106.808700,"
-                            + "\"notify_favorite_store\":true,\"notify_pickup_reminder\":true,"
-                            + "\"notify_promo\":false},\"allergens\":[{\"code\":\"kacang_tanah\",\"name\":\"Kacang"
-                            + " tanah\",\"type\":\"allergen\",\"severity\":\"avoid\"}]}");
+                                + "\"email\":\"dara.renata@email.com\",\"phone\":\"6281234567890\","
+                                + "\"role\":\"consumer\",\"has_google\":false},"
+                                + "\"is_profile_complete\":false,"
+                                + "\"consumer_profile\":{\"area_label\":\"SCBD, Jakarta Selatan\","
+                                + "\"latitude\":-6.225300,\"longitude\":106.808700,"
+                                + "\"notify_favorite_store\":true,\"notify_pickup_reminder\":true,"
+                                + "\"notify_promo\":false},"
+                                + "\"allergens\":[{\"code\":\"kacang_tanah\",\"name\":\"Kacang tanah\","
+                                + "\"type\":\"allergen\",\"severity\":\"avoid\"}]}");
             }
             if (path.startsWith("/api/allergens")) {
                 return json(
@@ -745,16 +726,16 @@ public class TangkapanLayarTest {
             }
             if (path.startsWith("/api/partner/stores/5/templates")) {
                 return json(
-                        "{\"data\":[{\"id\":2,\"name\":\"Tas Pastry Sore\",\"content_hint\":\"empat"
-                            + " sampai enam potong\","
-                            + "\"price_rupiah\":18000,\"original_value_rupiah\":55000,"
-                            + "\"default_qty\":4,\"pickup_start_time\":\"20:30:00\","
-                            + "\"pickup_end_time\":\"21:00:00\",\"halal_label\":\"self_claim\"},{\"id\":3,\"name\":\"Tas"
-                            + " Minuman Dingin\",\"content_hint\":\"tiga"
-                            + " botol\",\"price_rupiah\":15000,"
-                            + "\"original_value_rupiah\":45000,\"default_qty\":3,"
-                            + "\"pickup_start_time\":\"20:00:00\","
-                            + "\"pickup_end_time\":\"21:00:00\",\"halal_label\":\"not_stated\"}]}");
+                        "{\"data\":[{\"id\":2,\"name\":\"Tas Pastry Sore\","
+                                + "\"content_hint\":\"empat sampai enam potong\","
+                                + "\"price_rupiah\":18000,\"original_value_rupiah\":55000,"
+                                + "\"default_qty\":4,\"pickup_start_time\":\"20:30:00\","
+                                + "\"pickup_end_time\":\"21:00:00\",\"halal_label\":\"self_claim\"},"
+                                + "{\"id\":3,\"name\":\"Tas Minuman Dingin\","
+                                + "\"content_hint\":\"tiga botol\",\"price_rupiah\":15000,"
+                                + "\"original_value_rupiah\":45000,\"default_qty\":3,"
+                                + "\"pickup_start_time\":\"20:00:00\","
+                                + "\"pickup_end_time\":\"21:00:00\",\"halal_label\":\"not_stated\"}]}");
             }
             if (path.startsWith("/api/partner/stores/5/products")) {
                 return json(
@@ -765,38 +746,6 @@ public class TangkapanLayarTest {
                                 + "\"Tepung terigu, keju, telur\"},{\"id\":9,\"name\":\"Cinnamon"
                                 + " roll\",\"unit\":\"pcs\",\"price_rupiah\":30000,"
                                 + "\"ingredients_text\":\"Tepung terigu, kayu manis, gula\"}]}");
-            }
-            if (path.equals("/api/partner/stores/5")) {
-                // Contoh Figma M14.
-                StringBuilder jam = new StringBuilder();
-                for (int hari = 0; hari <= 6; hari++) {
-                    boolean akhirPekan = hari == 0 || hari == 6;
-                    jam.append(hari == 0 ? "" : ",")
-                            .append("{\"day_of_week\":")
-                            .append(hari)
-                            .append(",\"is_closed\":false,\"open_time\":\"")
-                            .append(akhirPekan ? "08:00" : "07:00")
-                            .append("\",\"close_time\":\"")
-                            .append(akhirPekan ? "22:00" : "21:00")
-                            .append("\"}");
-                }
-                return json(
-                        "{\"data\":{\"id\":5,\"name\":\"Kopi Kalyan SCBD\",\"category\":\"cafe\","
-                                + "\"address\":\"Jl. Jend. Sudirman Kav 52\",\"photo_url\":null,"
-                                + "\"halal_label\":\"certified\",\"default_ingredients_text\":"
-                                + "\"Susu, telur, gluten. Dapur juga mengolah kacang.\","
-                                + "\"is_temporarily_closed\":false,\"hours\":["
-                                + jam
-                                + "],\"my_role\":\"owner\",\"available_balance_rupiah\":1186000,"
-                                + "\"rating_average\":4.8,\"rating_count\":180}}");
-            }
-            if (path.startsWith("/api/partner/stores/5/members")) {
-                return json(
-                        "{\"data\":[{\"id\":null,\"user_id\":3,\"name\":\"Kalyan Pratama\","
-                                + "\"phone\":\"6281299887766\",\"role\":\"owner\","
-                                + "\"is_store_owner\":true},{\"id\":7,\"user_id\":9,"
-                                + "\"name\":\"Rina\",\"phone\":\"6281322445566\","
-                                + "\"role\":\"cashier\",\"is_store_owner\":false}]}");
             }
             if (path.startsWith("/api/partner/stores?") || path.equals("/api/partner/stores")) {
                 return json(
@@ -821,8 +770,7 @@ public class TangkapanLayarTest {
                                             18000,
                                             "cash",
                                             "Alergi kacang, tolong dipisah ya",
-                                            "[{\"code\":\"kacang_tanah\",\"name\":\"Kacang"
-                                                    + " tanah\",\"severity\":\"severe\"}]",
+                                            "[{\"code\":\"kacang_tanah\",\"name\":\"Kacang tanah\",\"severity\":\"severe\"}]",
                                             "20:30",
                                             "21:00",
                                             "20:41")
@@ -839,23 +787,46 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/orders/88")) {
                 return json(
                         "{\"data\":{\"id\":88,\"code\":\"LOF-7Q2K9A\",\"status\":\"pending_pickup\","
-                            + "\"pickup_code\":\"LF7Q2K\",\"pickup_code_status\":\"active\","
-                            + "\"pickup_start\":\"2026-09-18T20:30:00+07:00\","
-                            + "\"pickup_end\":\"2026-09-18T21:00:00+07:00\",\"store\":{\"id\":5,\"name\":\"Kopi"
-                            + " Kalyan\",\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama,"
-                            + " Jakarta"
-                            + " Selatan\",\"latitude\":-6.2263,\"longitude\":106.8120},\"items\":[{\"listing_id\":41,\"title\":\"Croissant"
-                            + " mentega\","
-                            + "\"unit_price_rupiah\":9000,\"qty\":1,\"line_total_rupiah\":9000},{\"listing_id\":42,\"title\":\"Danish"
-                            + " keju\","
-                            + "\"unit_price_rupiah\":9000,\"qty\":1,\"line_total_rupiah\":9000}],"
-                            + "\"item_count\":2,\"subtotal_rupiah\":18000,\"service_fee_rupiah\":0,"
-                            + "\"discount_rupiah\":0,\"total_rupiah\":18000,"
-                            + "\"payment_method\":\"cash\",\"payment_status\":\"unpaid\","
-                            + "\"note\":null,\"placed_at\":\"2026-09-18T19:55:00+07:00\","
-                            + "\"completed_at\":null,\"cancelled_at\":null}}");
+                                + "\"pickup_code\":\"LF7Q2K\",\"pickup_code_status\":\"active\","
+                                + "\"pickup_start\":\"2026-09-18T20:30:00+07:00\","
+                                + "\"pickup_end\":\"2026-09-18T21:00:00+07:00\","
+                                + "\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\","
+                                + "\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta"
+                                + " Selatan\",\"latitude\":-6.2263,\"longitude\":106.8120},"
+                                + "\"items\":[{\"listing_id\":41,\"title\":\"Croissant mentega\","
+                                + "\"unit_price_rupiah\":9000,\"qty\":1,\"line_total_rupiah\":9000},"
+                                + "{\"listing_id\":42,\"title\":\"Danish keju\","
+                                + "\"unit_price_rupiah\":9000,\"qty\":1,\"line_total_rupiah\":9000}],"
+                                + "\"item_count\":2,\"subtotal_rupiah\":18000,\"service_fee_rupiah\":0,"
+                                + "\"discount_rupiah\":0,\"total_rupiah\":18000,"
+                                + "\"payment_method\":\"cash\",\"payment_status\":\"unpaid\","
+                                + "\"note\":null,\"placed_at\":\"2026-09-18T19:55:00+07:00\","
+                                + "\"completed_at\":null,\"cancelled_at\":null}}");
             }
             return new MockResponse().setResponseCode(404).setBody("{\"message\":\"x\"}");
+        }
+
+        /** Profil toko contoh Figma M14: Senin sampai Jumat 07-21, Sabtu dan Minggu 08-22. */
+        private static String tokoDetail() {
+            StringBuilder jam = new StringBuilder();
+            for (int hari = 0; hari <= 6; hari++) {
+                boolean akhirPekan = hari == 0 || hari == 6;
+                if (hari > 0) {
+                    jam.append(',');
+                }
+                jam.append("{\"day_of_week\":").append(hari);
+                jam.append(",\"is_closed\":false,\"open_time\":\"");
+                jam.append(akhirPekan ? "08:00" : "07:00").append("\",\"close_time\":\"");
+                jam.append(akhirPekan ? "22:00" : "21:00").append("\"}");
+            }
+            return "{\"data\":{\"id\":5,\"name\":\"Kopi Kalyan SCBD\",\"category\":\"cafe\","
+                    + "\"address\":\"Jl. Jend. Sudirman Kav 52\",\"photo_url\":null,"
+                    + "\"halal_label\":\"certified\",\"default_ingredients_text\":"
+                    + "\"Susu, telur, gluten. Dapur juga mengolah kacang.\","
+                    + "\"is_temporarily_closed\":false,\"hours\":["
+                    + jam
+                    + "],\"my_role\":\"owner\",\"available_balance_rupiah\":1186000,"
+                    + "\"rating_average\":4.8,\"rating_count\":180}}";
         }
 
         /**
@@ -894,13 +865,13 @@ public class TangkapanLayarTest {
                     + "\","
                     + (contohFigma
                             ? "\"wasted_value_rupiah\":1620000,\"wasted_weight_gram\":11000,"
-                                  + "\"logged_days\":7,\"rescued_value_rupiah\":1240000,"
-                                  + "\"orders_count\":58,\"items_sold\":62,"
-                                  + "\"unsold_value_rupiah\":2860000,\"wasted_change_percent\":-18,"
+                                    + "\"logged_days\":7,\"rescued_value_rupiah\":1240000,"
+                                    + "\"orders_count\":58,\"items_sold\":62,"
+                                    + "\"unsold_value_rupiah\":2860000,\"wasted_change_percent\":-18,"
                             : "\"wasted_value_rupiah\":1830000,\"wasted_weight_gram\":0,"
-                                  + "\"logged_days\":4,\"rescued_value_rupiah\":980000,"
-                                  + "\"orders_count\":41,\"items_sold\":44,"
-                                  + "\"unsold_value_rupiah\":2810000,\"wasted_change_percent\":null,")
+                                    + "\"logged_days\":4,\"rescued_value_rupiah\":980000,"
+                                    + "\"orders_count\":41,\"items_sold\":44,"
+                                    + "\"unsold_value_rupiah\":2810000,\"wasted_change_percent\":null,")
                     + "\"top_wasted_products\":["
                     + teratas
                     + "],\"daily\":["
@@ -1367,9 +1338,9 @@ public class TangkapanLayarTest {
                     + ",\"halal_certificate_no\":\"ID00410000123450825\",\"status\":\"active\""
                     + ",\"is_available\":true,\"items\":["
                     + (tas
-                            ? "{\"label\":\"Croissant mentega\",\"qty\":null},{\"label\":\"Danish"
-                                    + " keju\",\"qty\":null},{\"label\":\"Cinnamon roll atau roti"
-                                    + " manis lain\",\"qty\":null}"
+                            ? "{\"label\":\"Croissant mentega\",\"qty\":null},"
+                                    + "{\"label\":\"Danish keju\",\"qty\":null},"
+                                    + "{\"label\":\"Cinnamon roll atau roti manis lain\",\"qty\":null}"
                             : "")
                     + "],\"store\":{\"id\":5,\"name\":\"Kopi Kalyan\",\"category\":\"cafe\""
                     + ",\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan\""
