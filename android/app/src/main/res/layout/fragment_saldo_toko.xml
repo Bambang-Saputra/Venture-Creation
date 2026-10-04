@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M13 Saldo dan pencairan (Figma "M13 · Saldo dan pencairan"). Hanya pemilik. Kartu gelap saldo,
+    tombol cairkan, keterangan, lalu riwayat transaksi.
+
+    Beda dengan Figma, disengaja (ADR-0004, M13/M20 di kontrak API):
+    - Tombol "Cairkan ke BCA ••7890" diganti "Cairkan saldo" yang nonaktif dengan alasan dari server,
+      karena selama uji coba pembeli membayar langsung di toko dan rekening belum disimpan.
+    - Keterangan "Pencairan diproses setiap hari kerja" diganti penjelasan bahwa saldo ini catatan
+      penjualan, bukan uang yang dipegang Life of Foods.
+    - "Unduh laporan untuk pembukuan" belum ada endpoint-nya.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_ringkasan_gelap"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        style="@style/Teks.Kicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/m13_bisa_dicairkan"
+                        android:textColor="@color/teks_di_gelap" />
+
+                    <TextView
+                        android:id="@+id/saldo"
+                        style="@style/Teks.Hero"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Rp1.186.000" />
+
+                    <TextView
+                        android:id="@+id/dari"
+                        style="@style/Teks.Sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:alpha="0.8"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Dari 62 item terjual minggu ini." />
+
+                    <TextView
+                        android:id="@+id/tertunda"
+                        style="@style/Teks.Sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:alpha="0.8"
+                        android:textColor="@color/teks_di_gelap"
+                        android:visibility="gone"
+                        tools:text="Tertunda Rp36.000 dari pesanan yang belum diambil."
+                        tools:visibility="visible" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_cairkan"
+                        style="@style/Widget.LifeOfFoods.Tombol.Putih"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:enabled="false"
+                        android:text="@string/m13_cairkan"
+                        app:icon="@drawable/ic_bank"
+                        app:iconGravity="textStart"
+                        app:iconSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/alasan"
+                        style="@style/Teks.Sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Pencairan tersedia setelah masa uji coba." />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_kotak_lembut_12"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="2dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_info"
+                        app:tint="@color/teks_sekunder" />
+
+                    <TextView
+                        style="@style/Teks.Isi"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/m13_info"
+                        android:textColor="@color/teks_sekunder"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_kartu_20"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        style="@style/Teks.JudulKartu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:text="@string/m13_riwayat"
+                        android:textColor="@color/teks_utama" />
+
+                    <LinearLayout
+                        android:id="@+id/daftar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <TextView
+                        android:id="@+id/kosong"
+                        style="@style/Teks.Isi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/m13_kosong"
+                        android:textColor="@color/teks_sekunder"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_muat_lagi"
+                        style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:minHeight="48dp"
+                        android:text="@string/m21_muat_lagi"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+</LinearLayout>

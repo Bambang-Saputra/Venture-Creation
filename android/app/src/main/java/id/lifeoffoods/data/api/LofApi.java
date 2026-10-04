@@ -28,6 +28,8 @@ import id.lifeoffoods.data.api.model.PratinjauPesananDto;
 import id.lifeoffoods.data.api.model.ProdukDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
 import id.lifeoffoods.data.api.model.RingkasanTokoDto;
+import id.lifeoffoods.data.api.model.SaldoTokoDto;
+import id.lifeoffoods.data.api.model.SaranProduksiDto;
 import id.lifeoffoods.data.api.model.TemplateTasDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.data.api.model.TokoDetailDto;
@@ -155,6 +157,14 @@ public interface LofApi {
             @Query("date") String tanggal,
             @Query("page") int halaman);
 
+    /**
+     * M21 Riwayat pesanan. {@code hari} 7 atau 30, null untuk semua. Respons membawa summary dan
+     * pickup_code per pesanan.
+     */
+    @GET("partner/stores/{store}/orders?status=history")
+    Call<HalamanPesananMitra> riwayatPesananMitra(
+            @Path("store") long storeId, @Query("days") Integer hari, @Query("page") int halaman);
+
     /** M12 Cocokkan kode. 404 kode tidak ada di toko ini, 409 sudah dipakai, batal, atau lewat. */
     @POST("pickup-codes/redeem")
     Call<Terbungkus<PesananMitraDto>> tukarKode(@Body TukarKodeBody body);
@@ -233,4 +243,23 @@ public interface LofApi {
 
     @DELETE("partner/stores/{store}/members/{member}")
     Call<Void> cabutKasir(@Path("store") long storeId, @Path("member") long memberId);
+
+    /** M08. Bawaan untuk besok. Hanya pemilik. */
+    @GET("partner/stores/{store}/suggestions")
+    Call<Terbungkus<SaranProduksiDto>> saranProduksi(@Path("store") long storeId);
+
+    /** M08 "Pakai saran" ({@code aksi} accept) dan "Abaikan" (dismiss). */
+    @POST("partner/stores/{store}/suggestions/{suggestion}/{aksi}")
+    Call<Terbungkus<SaranProduksiDto.Tanggapan>> tanggapiSaran(
+            @Path("store") long storeId,
+            @Path("suggestion") long saranId,
+            @Path("aksi") String aksi);
+
+    /** M13. Hanya pemilik. */
+    @GET("partner/stores/{store}/balance")
+    Call<Terbungkus<SaldoTokoDto>> saldoToko(@Path("store") long storeId);
+
+    @GET("partner/stores/{store}/balance/transactions")
+    Call<SaldoTokoDto.HalamanTransaksi> transaksiSaldo(
+            @Path("store") long storeId, @Query("page") int halaman);
 }

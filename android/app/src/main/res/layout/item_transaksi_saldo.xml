@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu baris Riwayat M13: kotak ikon, judul (item · kode), waktu, nominal di kanan. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_garis_bawah"
+    android:gravity="center_vertical"
+    android:minHeight="60dp"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_kotak_lembut_12">
+
+        <ImageView
+            android:id="@+id/ikon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            app:tint="@color/teks_merek"
+            tools:src="@drawable/ic_tas" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/judul"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/teks_utama"
+            android:textSize="13.5sp"
+            tools:text="Tas Pastry Sore · LF7Q2K" />
+
+        <TextView
+            android:id="@+id/waktu"
+            style="@style/Teks.Sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/teks_sekunder"
+            tools:text="Hari ini, 20.34" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/nominal"
+        style="@style/Teks.JudulKartu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="13.5sp"
+        tools:text="+Rp18.000"
+        tools:textColor="@color/teks_merek" />
+</LinearLayout>

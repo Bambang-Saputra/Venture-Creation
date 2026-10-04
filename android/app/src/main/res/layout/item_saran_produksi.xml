@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kartu saran M08: nama produk dan pil "−4 potong", "Biasa dibuat 24 · rata-rata sisa 6", angka
+    lama dicoret ke angka saran, perkiraan hemat, lalu "Pakai saran" dan "Abaikan".
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_kartu_20"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/nama"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/teks_utama"
+            tools:text="Croissant mentega" />
+
+        <TextView
+            android:id="@+id/kurangi"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_pil_proses"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/tanda_proses_teks"
+            tools:text="−4 potong" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/biasa"
+        style="@style/Teks.Sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/teks_sekunder"
+        tools:text="Biasa dibuat 24 · rata-rata sisa 6" />
+
+    <LinearLayout
+        android:id="@+id/baris_angka"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/angka_lama"
+            style="@style/Teks.JudulToko"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/teks_coret"
+            tools:text="24" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_kanan"
+            app:tint="@color/teks_sekunder" />
+
+        <TextView
+            android:id="@+id/angka_baru"
+            style="@style/Teks.JudulToko"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/teks_merek"
+            tools:text="20" />
+
+        <TextView
+            android:id="@+id/satuan"
+            style="@style/Teks.Sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/teks_sekunder"
+            tools:text="potong" />
+
+        <TextView
+            android:id="@+id/hemat"
+            style="@style/Teks.Sub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@color/teks_merek"
+            tools:text="Hemat ±Rp112.000 per minggu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_pakai"
+            style="@style/Widget.LifeOfFoods.Tombol.Garis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/m08_pakai"
+            app:iconGravity="textStart"
+            app:iconSize="14dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_abaikan"
+            style="@style/Widget.LifeOfFoods.Tombol.Garis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/m08_abaikan" />
+    </LinearLayout>
+</LinearLayout>

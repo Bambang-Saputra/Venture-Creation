@@ -609,7 +609,7 @@ Jualan pada tanggal itu (bawaan hari ini). `status`: `draft`, `active`, `paused`
 
 ## 10. Pesanan masuk dan kode pickup (mitra)
 
-### GET /partner/stores/{store}/orders?status=pending|history&date=
+### GET /partner/stores/{store}/orders?status=pending|history&date=&days=
 
 30 per halaman.
 
@@ -624,7 +624,14 @@ Jualan pada tanggal itu (bawaan hari ini). `status`: `draft`, `active`, `paused`
 }
 ```
 
-Kode pickup tidak ikut; kasir mengetik atau memindai kode dari HP pembeli.
+Kode pickup tidak ikut untuk pesanan yang menunggu; kasir mengetik atau memindai kode dari HP pembeli.
+
+**Riwayat (M21)**: `status=history` diurutkan dari jam ambil terbaru. `days=7` atau `days=30` membatasi ke N hari terakhir termasuk hari ini (nilai lain 422); tanpa `days` berarti semua. Setiap baris riwayat membawa `pickup_code` (kode yang sudah ditukar atau kedaluwarsa), dan respons membawa `summary` untuk seluruh rentang, bukan hanya halaman ini:
+
+```json
+{ "data": [ ... ], "current_page": 1, "last_page": 3,
+  "summary": { "completed": 62, "no_show": 3, "cancelled": 1 } }
+```
 
 ### POST /pickup-codes/redeem
 

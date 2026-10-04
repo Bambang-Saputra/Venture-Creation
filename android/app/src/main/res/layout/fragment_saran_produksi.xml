@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M08 Saran produksi (Figma "M08 · Saran produksi"), PRD-14. Hanya pemilik. Banner cara hitung,
+    kartu saran per produk dengan "Pakai saran" dan "Abaikan", catatan bahwa ini perkiraan, lalu
+    bilah bawah dengan potensi hemat per minggu.
+
+    Beda dengan Figma, disengaja: judul banner "Saran untuk hari Sabtu", bukan "Sabtu biasanya paling
+    banyak sisa", karena saran memang dihitung per hari yang sama, bukan dari hari dengan sisa
+    terbanyak. Tombol bawah "Pakai semua saran" supaya jelas bedanya dengan tombol per kartu.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_catatan_merek"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_lampu"
+                        app:tint="@color/teks_merek" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/banner_judul"
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/teks_utama"
+                            tools:text="Saran untuk hari Sabtu" />
+
+                        <TextView
+                            android:id="@+id/banner_isi"
+                            style="@style/Teks.Isi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/teks_sekunder"
+                            android:textSize="13sp"
+                            tools:text="Dihitung dari catatan 4 hari Sabtu terakhir." />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Catatan belum cukup, tidak ada saran, atau produk tanpa produksi harian. -->
+                <TextView
+                    android:id="@+id/pesan"
+                    style="@style/Teks.Isi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_kartu_20"
+                    android:padding="16dp"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    tools:text="Catatan sisa belum cukup."
+                    tools:visibility="visible" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tombol_catat"
+                    style="@style/Widget.LifeOfFoods.Tombol.Lembut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/m08_catat"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/daftar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tanpa_produksi"
+                    style="@style/Teks.Sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/teks_sekunder"
+                    android:visibility="gone"
+                    tools:text="2 produk belum punya jumlah produksi harian."
+                    tools:visibility="visible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_kotak_lembut_12"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_info"
+                        app:tint="@color/teks_sekunder" />
+
+                    <TextView
+                        style="@style/Teks.Isi"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/m08_catatan"
+                        android:textColor="@color/teks_sekunder"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/aksi"
+        style="@style/BilahAksi"
+        android:gravity="center_vertical"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Teks.Sub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/m08_potensi"
+                android:textColor="@color/teks_sekunder" />
+
+            <TextView
+                android:id="@+id/total_hemat"
+                style="@style/Teks.Harga.Total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/teks_merek"
+                tools:text="Rp266.000" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_pakai_semua"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1.2"
+            android:text="@string/m08_pakai_semua" />
+    </LinearLayout>
+</LinearLayout>

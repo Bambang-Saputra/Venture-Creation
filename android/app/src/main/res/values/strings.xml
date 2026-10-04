@@ -552,6 +552,61 @@
     <string name="m07_lihat_saran">Lihat saran produksi</string>
     <string name="m07_bukan_pemilik">Laporan mingguan hanya bisa dibuka pemilik toko.</string>
 
+    <!-- M08 Saran produksi -->
+    <string name="m08_judul">Saran produksi</string>
+    <string name="m08_untuk">Untuk %1$s</string>
+    <string name="m08_banner_judul">Saran untuk hari %1$s</string>
+    <string name="m08_banner_isi">Dihitung dari catatan %1$d hari %2$s terakhir. Sisa yang tetap ada masih bisa dijual lewat tas surplus.</string>
+    <string name="m08_kurangi">−%1$d %2$s</string>
+    <string name="m08_biasa">Biasa dibuat %1$d · rata-rata sisa %2$s</string>
+    <string name="m08_hemat">Hemat ±%1$s per minggu</string>
+    <string name="m08_pakai">Pakai saran</string>
+    <string name="m08_abaikan">Abaikan</string>
+    <string name="m08_dipakai">Pakai saran, sudah dipakai</string>
+    <string name="m08_diabaikan">Diabaikan</string>
+    <string name="m08_satuan_bawaan">potong</string>
+    <string name="m08_catatan">Saran ini perkiraan dari catatanmu, bukan jaminan penjualan.</string>
+    <string name="m08_potensi">Potensi hemat per minggu</string>
+    <string name="m08_pakai_semua">Pakai semua saran</string>
+    <string name="m08_kurang_data">Catatan sisa belum cukup. Catat sisa minimal 3 hari %1$s supaya saran bisa dihitung (sekarang %2$d).</string>
+    <string name="m08_tanpa_saran">Belum ada saran untuk %1$s. Sisa produkmu di hari ini sudah kecil.</string>
+    <string name="m08_tanpa_produksi">%1$d produk belum punya jumlah produksi harian, jadi belum diberi saran.</string>
+    <string name="m08_catat">Catat sisa hari ini</string>
+    <string name="m08_bukan_pemilik">Saran produksi hanya bisa dibuka pemilik toko.</string>
+    <string name="m08_angka_lama">Biasa %1$d</string>
+    <string name="m08_angka_baru">Disarankan %1$d</string>
+
+    <!-- M13 Saldo dan pencairan -->
+    <string name="m13_judul">Saldo dan pencairan</string>
+    <string name="m13_bisa_dicairkan">SALDO BISA DICAIRKAN</string>
+    <plurals name="m13_dari_terjual">
+        <item quantity="one">Dari %1$d item terjual minggu ini.</item>
+        <item quantity="other">Dari %1$d item terjual minggu ini.</item>
+    </plurals>
+    <string name="m13_tertunda">Tertunda %1$s dari pesanan yang belum diambil.</string>
+    <string name="m13_cairkan">Cairkan saldo</string>
+    <string name="m13_pencairan_nonaktif">Pencairan tersedia setelah masa uji coba.</string>
+    <string name="m13_info">Selama uji coba pembeli membayar langsung di toko, jadi uangnya sudah kamu terima. Saldo ini adalah catatan penjualan lewat Life of Foods.</string>
+    <string name="m13_riwayat">Riwayat</string>
+    <string name="m13_kosong">Belum ada transaksi.</string>
+    <string name="m13_judul_jual">%1$s · %2$s</string>
+    <string name="m13_penyesuaian">Penyesuaian saldo</string>
+    <string name="m13_pencairan">Pencairan</string>
+    <string name="m13_biaya">Biaya layanan</string>
+    <string name="m13_bukan_pemilik">Saldo hanya bisa dibuka pemilik toko.</string>
+
+    <!-- M21 Riwayat pesanan (tab Riwayat di M11) -->
+    <string name="m21_7_hari">7 hari terakhir</string>
+    <string name="m21_30_hari">30 hari</string>
+    <string name="m21_semua">Semua</string>
+    <string name="m21_rentang_7">Tujuh hari terakhir</string>
+    <string name="m21_rentang_30">Tiga puluh hari terakhir</string>
+    <string name="m21_rentang_semua">Semua riwayat</string>
+    <string name="m21_ringkasan">%1$s: %2$d pesanan diambil, %3$d tidak diambil.</string>
+    <string name="m21_kode">Kode %1$s</string>
+    <string name="m21_muat_lagi">Muat lebih banyak</string>
+    <string name="m21_kosong">Belum ada riwayat pesanan di rentang ini.</string>
+
     <!-- M14 Profil toko -->
     <string name="m14_foto">Foto</string>
     <string name="m14_foto_toko">Foto toko</string>
