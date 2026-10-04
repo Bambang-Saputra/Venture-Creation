@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu baris jam operasional M14: "Senin sampai Jumat" di kiri, "07.00 sampai 21.00" di kanan. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/hari"
+        style="@style/Teks.Isi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/teks_sekunder"
+        tools:text="Senin sampai Jumat" />
+
+    <TextView
+        android:id="@+id/jam"
+        style="@style/Teks.JudulKartu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/teks_utama"
+        tools:text="07.00 sampai 21.00" />
+</LinearLayout>

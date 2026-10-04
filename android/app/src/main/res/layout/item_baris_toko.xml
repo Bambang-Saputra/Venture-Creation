@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Baris menu kartu M14 ("Kelola jualan", "Saldo dan pencairan", ...): kotak ikon 44dp berlatar
+    lembut, label, nilai opsional di kanan, lalu chevron. Seluruh baris bisa diketuk.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <FrameLayout
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_kotak_lembut_12">
+
+        <ImageView
+            android:id="@+id/ikon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            app:tint="@color/teks_merek"
+            tools:src="@drawable/ic_tas" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/Teks.JudulKartu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:textColor="@color/teks_utama"
+        tools:text="Kelola jualan" />
+
+    <TextView
+        android:id="@+id/nilai"
+        style="@style/Teks.Isi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/teks_sekunder"
+        android:visibility="gone"
+        tools:text="Rp1.186.000"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_chevron_kanan"
+        app:tint="@color/ikon_redup" />
+</LinearLayout>

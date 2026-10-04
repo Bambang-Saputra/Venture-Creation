@@ -552,4 +552,49 @@
     <string name="m07_lihat_saran">Lihat saran produksi</string>
     <string name="m07_bukan_pemilik">Laporan mingguan hanya bisa dibuka pemilik toko.</string>
 
+    <!-- M14 Profil toko -->
+    <string name="m14_foto">Foto</string>
+    <string name="m14_foto_toko">Foto toko</string>
+    <string name="m14_sub_toko">%1$s · %2$s</string>
+    <string name="m14_rating">Rating %1$s ulasan</string>
+    <string name="m14_jam_operasional">Jam operasional</string>
+    <string name="m14_jam_kosong">Jam operasional belum diisi.</string>
+    <string name="m14_jam_tutup">Tutup</string>
+    <string name="m14_tutup_sementara">Tutup sementara</string>
+    <string name="m14_tutup_sementara_ket">Jualan disembunyikan dari konsumen</string>
+    <string name="m14_tutup_sementara_kasir">Hanya pemilik yang bisa mengubah</string>
+    <string name="m14_tutup_aktif">Toko ditutup sementara. Jualan tidak tampil di aplikasi pembeli.</string>
+    <string name="m14_tutup_nonaktif">Toko dibuka lagi.</string>
+    <string name="m14_label_default">Label default jualan</string>
+    <string name="m14_halal_resmi">Halal</string>
+    <string name="m14_halal_klaim">Halal (klaim mitra)</string>
+    <string name="m14_kandungan">Kandungan bawaan: %1$s</string>
+    <string name="m14_kandungan_kosong">Kandungan bawaan belum diisi.</string>
+    <string name="m14_label_ket">Dipakai otomatis setiap kali memasang tas baru.</string>
+    <string name="m14_kelola_jualan">Kelola jualan</string>
+    <string name="m14_saldo">Saldo dan pencairan</string>
+    <string name="m14_laporan">Laporan mingguan</string>
+    <string name="m14_pengaturan">Pengaturan toko dan kasir</string>
+
+    <!-- M15 Pengaturan toko dan kasir -->
+    <string name="m15_judul">Pengaturan toko dan kasir</string>
+    <string name="m15_akun_kasir">Akun kasir</string>
+    <string name="m15_pemilik">Pemilik</string>
+    <string name="m15_kasir">Kasir</string>
+    <string name="m15_undang">Undang kasir lewat WhatsApp</string>
+    <string name="m15_info_kasir">Kasir hanya bisa mencatat sisa dan mencocokkan kode. Harga, pencairan saldo, dan data toko tetap di tangan pemilik.</string>
+    <string name="m15_bukan_pemilik">Pengaturan kasir hanya bisa dibuka pemilik toko.</string>
+    <string name="m15_undang_judul">Undang kasir</string>
+    <string name="m15_undang_nama">Nama kasir</string>
+    <string name="m15_undang_hp">Nomor HP kasir</string>
+    <string name="m15_galat_hp">Nomor HP tidak valid. Contoh: 0812 3456 7890.</string>
+    <string name="m15_undang_kirim">Undang</string>
+    <string name="m15_undang_bagikan">Bagikan undangan</string>
+    <string name="m15_cabut_judul">Cabut akses %1$s?</string>
+    <string name="m15_cabut_isi">%1$s tidak bisa lagi mencatat sisa atau mencocokkan kode di toko ini. Kamu bisa mengundangnya lagi kapan saja.</string>
+    <string name="m15_cabut">Cabut akses</string>
+    <string name="m15_dicabut">Akses %1$s sudah dicabut.</string>
+    <string name="m15_baris_anggota">%1$s, %2$s, %3$s</string>
+    <string name="m15_ketuk_cabut">cabut akses</string>
+
 </resources>

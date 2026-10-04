@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M14 Profil toko (Figma "M14 · Profil toko"). Tab Toko di nav mitra. Foto toko, kartu toko
+    dengan rating, jam operasional dan sakelar tutup sementara, label default jualan, menu ke
+    layar lain, lalu tombol keluar (dipindah dari M05).
+
+    Beda dengan Figma, disengaja (data belum ada di skema, lihat kontrak API bagian 12):
+    - Lencana "Terverifikasi" tidak ditampilkan; rating hanya tampil kalau sudah ada ulasan.
+    - Chip alergen default (Susu, Telur, Dapur mengolah kacang) diganti teks kandungan bawaan,
+      karena toko baru menyimpan default_ingredients_text.
+    - Ikon pensil dan "Ubah" jam operasional belum ada; layar ubah toko belum dibuat.
+    - Kasir melihat layar yang sama tanpa saldo, laporan, dan pengaturan, dan sakelar terkunci.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
+
+                <!-- Foto toko; tanpa foto, slot "Foto" seperti Figma. -->
+                <FrameLayout
+                    android:id="@+id/hero"
+                    android:layout_width="match_parent"
+                    android:layout_height="194dp"
+                    android:background="@color/latar_lembut">
+
+                    <LinearLayout
+                        android:id="@+id/slot_foto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_gambar"
+                            app:tint="@color/ikon_redup" />
+
+                        <TextView
+                            style="@style/Teks.Sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/m14_foto"
+                            android:textColor="@color/ikon_redup" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/foto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/m14_foto_toko"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <!-- Kartu toko -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/bg_kotak_gelap_16">
+
+                                <ImageView
+                                    android:id="@+id/ikon_toko"
+                                    android:layout_width="26dp"
+                                    android:layout_height="26dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@null"
+                                    app:tint="@color/merek_lime"
+                                    tools:src="@drawable/ic_kopi" />
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="14dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/nama_toko"
+                                    style="@style/Teks.JudulToko"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/teks_utama"
+                                    tools:text="Kopi Kalyan SCBD" />
+
+                                <TextView
+                                    android:id="@+id/sub_toko"
+                                    style="@style/Teks.Isi"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:textColor="@color/teks_sekunder"
+                                    tools:text="Kafe · Jl. Jend. Sudirman Kav 52" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/rating"
+                            style="@style/Teks.Pil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_pil_proses"
+                            android:paddingEnd="12dp"
+                            android:textColor="@color/tanda_proses_teks"
+                            android:visibility="gone"
+                            app:drawableStartCompat="@drawable/ic_bintang"
+                            app:drawableTint="@color/tanda_bintang"
+                            tools:text="4,8 (180)"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                    <!-- Jam operasional -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
+                            android:text="@string/m14_jam_operasional"
+                            android:textColor="@color/teks_utama" />
+
+                        <LinearLayout
+                            android:id="@+id/daftar_jam"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+
+                        <TextView
+                            android:id="@+id/jam_kosong"
+                            style="@style/Teks.Isi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/m14_jam_kosong"
+                            android:textColor="@color/teks_sekunder"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/baris_tutup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:minHeight="48dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Teks.JudulKartu"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/m14_tutup_sementara"
+                                    android:textColor="@color/teks_utama" />
+
+                                <TextView
+                                    android:id="@+id/ket_tutup"
+                                    style="@style/Teks.Sub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="@string/m14_tutup_sementara_ket"
+                                    android:textColor="@color/teks_sekunder" />
+                            </LinearLayout>
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/sakelar_tutup"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/m14_tutup_sementara"
+                                app:thumbTint="@color/latar_kartu"
+                                app:trackDecorationTint="@android:color/transparent"
+                                app:trackTint="@color/saklar_jalur" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Label default jualan -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:accessibilityHeading="true"
+                            android:text="@string/m14_label_default"
+                            android:textColor="@color/teks_utama" />
+
+                        <TextView
+                            android:id="@+id/halal"
+                            style="@style/Teks.Pil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_pil_merek"
+                            android:paddingEnd="12dp"
+                            android:textColor="@color/teks_merek_gelap"
+                            android:visibility="gone"
+                            app:drawableStartCompat="@drawable/ic_perisai"
+                            app:drawableTint="@color/teks_merek"
+                            tools:text="Halal"
+                            tools:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/kandungan"
+                            style="@style/Teks.Isi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            tools:text="Kandungan bawaan: tepung terigu, gula, telur, susu" />
+
+                        <TextView
+                            style="@style/Teks.Sub"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/m14_label_ket"
+                            android:textColor="@color/teks_sekunder" />
+                    </LinearLayout>
+
+                    <!-- Menu -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp">
+
+                        <include
+                            android:id="@+id/baris_kelola"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
+                            android:id="@+id/baris_saldo"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
+                            android:id="@+id/baris_laporan"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
+                            android:id="@+id/baris_pengaturan"
+                            layout="@layout/item_baris_toko" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_keluar"
+                        style="@style/Widget.LifeOfFoods.Tombol.Garis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/segera_keluar"
+                        app:icon="@drawable/ic_keluar"
+                        app:iconGravity="textStart" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <include
+        android:id="@+id/nav"
+        layout="@layout/include_nav_mitra" />
+</LinearLayout>
