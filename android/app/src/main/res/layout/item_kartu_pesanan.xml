@@ -100,5 +100,22 @@
                 android:textColor="@color/teks_merek"
                 tools:text="Rp18.000" />
         </LinearLayout>
+
+        <!--
+            Hanya untuk pesanan selesai: "Beri ulasan" selama masih boleh (7 hari), atau bintang
+            yang sudah diberi. Tidak ada di Figma K15; gaya mengikuti chip rating K10.
+        -->
+        <TextView
+            android:id="@+id/ulasan"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_pil_proses"
+            android:minHeight="32dp"
+            android:textColor="@color/tanda_proses_teks"
+            android:visibility="gone"
+            tools:text="Beri ulasan"
+            tools:visibility="visible" />
     </LinearLayout>
 </LinearLayout>

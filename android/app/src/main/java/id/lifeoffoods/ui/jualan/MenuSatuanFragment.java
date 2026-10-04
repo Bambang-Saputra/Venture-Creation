@@ -150,6 +150,7 @@ public class MenuSatuanFragment extends Fragment {
             return;
         }
         binding.info.removeAllViews();
+        BersamaDetail.chipRating(binding.info, d);
         BersamaDetail.chipAmbil(binding.info, d);
         String jarak = FormatTampilan.jarak(vm.jarakKm.getValue());
         if (jarak != null) {

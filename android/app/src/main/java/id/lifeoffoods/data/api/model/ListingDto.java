@@ -90,6 +90,14 @@ public class ListingDto {
         @Nullable
         @SerializedName("hours_today")
         public JamHariIni hoursToday;
+
+        /** Rata-rata bintang, satu angka di belakang koma. Null kalau belum ada ulasan. */
+        @Nullable
+        @SerializedName("rating_average")
+        public Double ratingAverage;
+
+        @SerializedName("rating_count")
+        public int ratingCount;
     }
 
     public static class JamHariIni {

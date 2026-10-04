@@ -255,6 +255,19 @@ public class TangkapanLayarTest {
     }
 
     @Test
+    public void k15Ulasan() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        MainActivity a = buka();
+        navigasi(R.id.k15_pesanan, null);
+        tunggu();
+        a.findViewById(R.id.tab_riwayat).performClick();
+        tunggu();
+        a.findViewById(R.id.ulasan).performClick();
+        tunggu();
+        tangkap("K15-ulasan");
+    }
+
+    @Test
     public void m11PesananMasuk() {
         app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
         buka();
@@ -1506,6 +1519,9 @@ public class TangkapanLayarTest {
                             "20:10")
                     + ","
                     + barisPesanan(
+                            81, "completed", "Kopi Kalyan", 2, 18000, hari.minusDays(2), "20:30")
+                    + ","
+                    + barisPesanan(
                             77, "no_show", "Dapur Senopati", 1, 20000, hari.minusDays(3), "21:05")
                     + ","
                     + barisPesanan(
@@ -1540,7 +1556,11 @@ public class TangkapanLayarTest {
                     + mulai
                     + "\",\"placed_at\":\""
                     + mulai
-                    + "\"}";
+                    + "\",\"review_rating\":"
+                    + (id == 81 ? "5" : "null")
+                    + ",\"can_review\":"
+                    + ("completed".equals(status))
+                    + "}";
         }
 
         /** Contoh Figma K12 (tas 31) dan K13 (menu 41 + 42), dipilih dari body permintaan. */
@@ -1642,7 +1662,7 @@ public class TangkapanLayarTest {
                     + ",\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama, Jakarta Selatan\""
                     + ",\"latitude\":-6.2263,\"longitude\":106.8120"
                     + ",\"hours_today\":{\"open_time\":\"07:00:00\",\"close_time\":\"21:00:00\""
-                    + ",\"is_closed\":0}}}";
+                    + ",\"is_closed\":0},\"rating_average\":4.8,\"rating_count\":180}}";
         }
 
         private static String listing(

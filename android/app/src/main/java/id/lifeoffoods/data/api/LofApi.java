@@ -36,6 +36,7 @@ import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.data.api.model.TokoDetailDto;
 import id.lifeoffoods.data.api.model.TokoMitraDto;
 import id.lifeoffoods.data.api.model.TukarKodeBody;
+import id.lifeoffoods.data.api.model.UlasanDto;
 import java.util.List;
 import java.util.Map;
 import okhttp3.MultipartBody;
@@ -142,6 +143,13 @@ public interface LofApi {
      */
     @POST("orders/{id}/cancel")
     Call<Terbungkus<PesananDto>> batalkanPesanan(@Path("id") long id);
+
+    /**
+     * K15 "Beri ulasan". 201 untuk ulasan baru, 200 kalau menimpa ulasan lama pesanan yang sama.
+     * 422 kalau pesanan belum selesai atau sudah lewat 7 hari.
+     */
+    @POST("orders/{id}/review")
+    Call<Terbungkus<UlasanDto>> kirimUlasan(@Path("id") long id, @Body UlasanDto body);
 
     /** Lencana lonceng K07; daftar lengkap di K17. */
     @GET("notifications")
