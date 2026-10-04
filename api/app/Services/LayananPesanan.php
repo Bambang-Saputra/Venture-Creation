@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -99,7 +100,12 @@ class LayananPesanan
         $aturan = config('lof.pesanan');
         $aktif = DB::table('orders')->where('user_id', $user->id)->where('status', 'pending_pickup')->count();
         if ($aktif >= $aturan['maks_pesanan_aktif']) {
-            throw ValidationException::withMessages(['items' => "Kamu masih punya {$aktif} pesanan yang belum diambil. Ambil dulu sebelum memesan lagi."]);
+            $pesan = "Kamu masih punya {$aktif} pesanan yang belum diambil. Ambil dulu sebelum memesan lagi.";
+            // Bentuknya tetap seperti galat validasi 422, ditambah code supaya
+            // Android tidak perlu mencocokkan teks pesan.
+            throw new HttpResponseException(response()->json([
+                'message' => $pesan, 'code' => 'active_order_limit', 'errors' => ['items' => [$pesan]],
+            ], 422));
         }
 
         return DB::transaction(function () use ($user, $data) {

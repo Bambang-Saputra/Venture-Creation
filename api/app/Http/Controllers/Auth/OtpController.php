@@ -41,7 +41,7 @@ class OtpController extends Controller
 
         // Akun mitra hanya dibuat lewat SeederPilot (M03 berstatus WON'T).
         if ($data['role'] === 'partner' && ! User::where('phone', $phone)->where('role', 'partner')->exists()) {
-            throw new OtpDitolak('Nomor ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.', 403);
+            throw new OtpDitolak('Nomor ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.', 403, 'partner_not_registered');
         }
 
         $terakhir = DB::table('otp_codes')->where('phone', $phone)->whereNull('consumed_at')->latest('id')->first();
@@ -126,7 +126,7 @@ class OtpController extends Controller
         $akunBaru = false;
 
         if ($user === null && $data['role'] === 'partner') {
-            throw new OtpDitolak('Nomor ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.', 403);
+            throw new OtpDitolak('Nomor ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.', 403, 'partner_not_registered');
         } elseif ($user === null) {
             $user = User::forceCreate(['phone' => $phone, 'phone_verified_at' => now(), 'role' => 'consumer'])->refresh();
             $akunBaru = true;
@@ -136,11 +136,13 @@ class OtpController extends Controller
             throw new OtpDitolak(
                 'Nomor ini terdaftar sebagai '.self::NAMA_PERAN[$user->role].'. Masuk lewat halaman '.self::NAMA_PERAN[$user->role].'.',
                 403,
+                'wrong_role',
+                ['registered_role' => $user->role],
             );
         }
 
         if (! $user->is_active) {
-            throw new OtpDitolak('Akun ini dinonaktifkan. Hubungi tim Life of Foods.', 403);
+            throw new OtpDitolak('Akun ini dinonaktifkan. Hubungi tim Life of Foods.', 403, 'account_inactive');
         }
 
         if ($user->phone_verified_at === null) {

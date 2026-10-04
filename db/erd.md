@@ -19,7 +19,7 @@ nullable; satu akun bisa punya salah satu atau keduanya.
 | Katalog | `stores`, `store_hours`, `products`, `surprise_bag_templates`, `listings`, `listing_items`, `listing_allergens` | Apa yang dijual hari ini |
 | Transaksi | `orders`, `order_items`, `pickup_codes`, `store_balances`, `balance_transactions` | Siapa memesan apa, dan sudah diambil belum |
 | Arah B | `waste_logs`, `waste_log_items`, `weekly_reports`, `production_suggestions` | Berapa yang terbuang, dan bagaimana menguranginya |
-| Pendukung | `notifications`, `favorites`, `audit_logs` | Pemberitahuan, penanda, dan jejak |
+| Pendukung | `notifications`, `favorites`, `reviews`, `audit_logs` | Pemberitahuan, penanda, ulasan, dan jejak |
 
 ## Diagram
 
@@ -61,6 +61,9 @@ erDiagram
     users ||--o{ notifications : "menerima"
     users ||--o{ favorites : "menandai"
     stores ||--o{ favorites : "ditandai"
+    orders ||--o| reviews : "dinilai"
+    stores ||--o{ reviews : "menerima"
+    users ||--o{ reviews : "menulis"
     users ||--o{ audit_logs : "melakukan"
 ```
 

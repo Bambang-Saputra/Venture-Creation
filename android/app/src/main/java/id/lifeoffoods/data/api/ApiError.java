@@ -25,11 +25,17 @@ public final class ApiError {
 
     private final int kode;
     private final String pesan;
+    @Nullable private final String kodeGalat;
     private final Map<String, List<String>> galatField;
 
-    private ApiError(int kode, String pesan, Map<String, List<String>> galatField) {
+    private ApiError(
+            int kode,
+            String pesan,
+            @Nullable String kodeGalat,
+            Map<String, List<String>> galatField) {
         this.kode = kode;
         this.pesan = pesan;
+        this.kodeGalat = kodeGalat;
         this.galatField = galatField;
     }
 
@@ -46,11 +52,11 @@ public final class ApiError {
         String pesan = isi != null && isi.message != null ? isi.message : PESAN_UMUM;
         Map<String, List<String>> field =
                 isi != null && isi.errors != null ? isi.errors : Collections.emptyMap();
-        return new ApiError(kode, pesan, field);
+        return new ApiError(kode, pesan, isi == null ? null : isi.code, field);
     }
 
     public static ApiError jaringan() {
-        return new ApiError(TANPA_JARINGAN, PESAN_JARINGAN, Collections.emptyMap());
+        return new ApiError(TANPA_JARINGAN, PESAN_JARINGAN, null, Collections.emptyMap());
     }
 
     public int kode() {
@@ -59,6 +65,15 @@ public final class ApiError {
 
     public String pesan() {
         return pesan;
+    }
+
+    /**
+     * Kode galat tetap dari server ({@code code}), misalnya {@link #AKUN_NONAKTIF}. null kalau
+     * server tidak mengirimnya; galat biasa memang tidak punya kode.
+     */
+    @Nullable
+    public String kodeGalat() {
+        return kodeGalat;
     }
 
     /** Pesan pertama untuk field tertentu, untuk ditampilkan di bawah input. */
@@ -77,24 +92,40 @@ public final class ApiError {
     }
 
     /**
-     * Server tidak punya kode galat khusus untuk akun nonaktif, jadi dikenali dari pesannya. 403
-     * lain (kasir membuka laporan, alergi untuk mitra) tetap 403 biasa.
+     * Akun dinonaktifkan ({@code account_inactive}). 403 lain (kasir membuka laporan, alergi untuk
+     * mitra) tetap 403 biasa. Pencocokan teks hanya cadangan untuk server lama tanpa {@code code}.
      */
     public boolean akunNonaktif() {
-        return kode == 403 && pesan != null && pesan.contains("dinonaktifkan");
+        return kode == 403
+                && (AKUN_NONAKTIF.equals(kodeGalat)
+                        || (kodeGalat == null && pesan != null && pesan.contains("dinonaktifkan")));
     }
 
     /**
-     * 403 dari verifikasi OTP atau Google: nomor terdaftar dengan peran lain ("Masuk lewat halaman
-     * mitra"). Dikenali dari pesannya, sama seperti {@link #akunNonaktif()}.
+     * 403 dari verifikasi OTP atau Google: nomor terdaftar dengan peran lain ({@code wrong_role},
+     * "Masuk lewat halaman mitra").
      */
     public boolean salahHalaman() {
-        return kode == 403 && pesan != null && pesan.contains("Masuk lewat halaman");
+        return kode == 403
+                && (SALAH_PERAN.equals(kodeGalat)
+                        || (kodeGalat == null
+                                && pesan != null
+                                && pesan.contains("Masuk lewat halaman")));
     }
+
+    /** Kode galat tetap dari server (kontrak API bagian 1, "Galat"). */
+    public static final String AKUN_NONAKTIF = "account_inactive";
+
+    public static final String SALAH_PERAN = "wrong_role";
+    public static final String MITRA_BELUM_TERDAFTAR = "partner_not_registered";
+    public static final String BATAS_PESANAN_AKTIF = "active_order_limit";
 
     private static final class Isi {
         @SerializedName("message")
         String message;
+
+        @SerializedName("code")
+        String code;
 
         @SerializedName("errors")
         Map<String, List<String>> errors;

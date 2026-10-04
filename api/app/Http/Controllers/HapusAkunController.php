@@ -52,6 +52,8 @@ class HapusAkunController extends Controller
             }
 
             DB::table('orders')->where('user_id', $u->id)->update(['note' => null, 'allergen_snapshot' => null, 'updated_at' => now()]);
+            // Bintangnya tetap dihitung di rating toko; teks ulasan bisa memuat data pribadi.
+            DB::table('reviews')->where('user_id', $u->id)->update(['comment' => null, 'updated_at' => now()]);
             foreach (['consumer_profiles', 'user_allergens', 'favorites', 'notifications'] as $tabel) {
                 DB::table($tabel)->where('user_id', $u->id)->delete();
             }

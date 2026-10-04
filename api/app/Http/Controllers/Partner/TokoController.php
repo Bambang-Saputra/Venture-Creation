@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
 use App\Services\FotoUnggahan;
+use App\Services\RatingToko;
 use App\Services\RingkasanSisa;
 use App\Support\NomorHp;
 use Illuminate\Http\JsonResponse;
@@ -191,6 +192,8 @@ class TokoController extends Controller
             'default_ingredients_text' => $toko->default_ingredients_text,
             'is_temporarily_closed' => (bool) $toko->is_temporarily_closed,
             'is_pilot_partner' => $toko->pilot_consent_at !== null,
+            // Chip "4,8 (180)" di M14.
+            ...RatingToko::untukToko($toko->id),
             'hours' => $jam->map(fn (object $h) => [
                 'day_of_week' => (int) $h->day_of_week,
                 'is_closed' => (bool) $h->is_closed,

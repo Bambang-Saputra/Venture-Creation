@@ -67,6 +67,17 @@ Daftar berhalaman memakai paginator Laravel. Android cukup membaca `data`, `curr
 
 Data milik orang lain (pesanan, toko, notifikasi) sengaja dijawab 404, bukan 403, supaya id tidak bisa ditebak.
 
+#### Kode galat tetap (`code`)
+
+Galat yang perlu ditangani Android dengan cara khusus membawa `code`. Android memakai `code`, bukan isi `message`, karena teks pesan boleh diubah kapan saja. Galat lain tidak punya `code`.
+
+| `code` | Status | Di mana | Yang dilakukan Android |
+|---|---|---|---|
+| `account_inactive` | 403 | semua rute ber-token, verifikasi OTP, login Google | Hapus sesi, kembali ke K01 |
+| `wrong_role` | 403 | verifikasi OTP, login Google. Ada juga `registered_role` (`consumer` atau `partner`) | Arahkan ke halaman masuk peran yang benar |
+| `partner_not_registered` | 403 | minta dan verifikasi OTP dengan `role=partner` | Tampilkan pesan, jangan buat akun |
+| `active_order_limit` | 422 | `POST /orders`. `errors.items` tetap ada | Arahkan ke K15 Pesanan saya |
+
 ### Peran
 
 - `consumer`: aplikasi konsumen (K01 sampai K23).
@@ -103,6 +114,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | GET | `/orders` | T | K | K15 | |
 | GET | `/orders/{id}` | T | K | K14 | |
 | POST | `/orders/{id}/cancel` | T | K | K14 | |
+| POST | `/orders/{id}/review` | T | K | K15 | 20/menit |
 | GET | `/notifications` | T | K, M | K17 | |
 | POST | `/notifications/{id}/read` | T | K, M | K17 | |
 | POST | `/notifications/read-all` | T | K, M | K17 | |
@@ -114,6 +126,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | POST | `/partner/stores/{store}/listings/{listing}/photo` | T | P | M09, M10 | 10/menit |
 | GET | `/partner/stores/{store}/balance` | T | P | M13 | |
 | GET | `/partner/stores/{store}/balance/transactions` | T | P | M13 | |
+| GET | `/partner/stores/{store}/reviews` | T | M | M14 | |
 | GET | `/partner/stores/{store}/members` | T | P | M15 | |
 | POST | `/partner/stores/{store}/members` | T | P | M15 | 10/menit |
 | DELETE | `/partner/stores/{store}/members/{member}` | T | P | M15 | |
@@ -307,7 +320,7 @@ Satu item:
   "minutes_until_end": 95, "halal_label": "self_claim",
   "allergens": [ { "code": "gluten", "name": "Gluten", "presence": "contains" } ],
   "distance_km": 0.38,
-  "store": { "id": 5, "name": "Kopi Kalyan", "category": "cafe" }
+  "store": { "id": 5, "name": "Kopi Kalyan", "category": "cafe", "rating_average": 4.8, "rating_count": 180 }
 }
 ```
 
@@ -324,7 +337,8 @@ Semua field ringkas di atas, ditambah:
   "items": [ { "label": "Croissant", "qty": 2, "weight_gram": null, "unit_value_rupiah": 28000 } ],
   "store": {
     "id": 5, "name": "Kopi Kalyan", "category": "cafe", "address": "Jl. ...", "latitude": -6.22, "longitude": 106.80,
-    "hours_today": { "open_time": "07:00:00", "close_time": "21:00:00", "is_closed": 0 }
+    "hours_today": { "open_time": "07:00:00", "close_time": "21:00:00", "is_closed": 0 },
+    "rating_average": 4.8, "rating_count": 180
   }
 }
 ```
@@ -394,7 +408,7 @@ Body sama dengan preview, ditambah `note` (opsional, maks 300) dan `payment_meth
 
 ### GET /orders?status=active|history
 
-20 per halaman: `id`, `code`, `status`, `store_name`, `item_count`, `total_rupiah`, `pickup_start`, `pickup_end`, `placed_at`.
+20 per halaman: `id`, `code`, `status`, `store_name`, `item_count`, `total_rupiah`, `pickup_start`, `pickup_end`, `placed_at`, `review_rating` (bintang yang sudah diberi, atau `null`), `can_review`.
 
 ### GET /orders/{id}
 
@@ -407,13 +421,23 @@ Body sama dengan preview, ditambah `note` (opsional, maks 300) dan `payment_meth
   "items": [ { "listing_id": 31, "title": "Tas Pastry Sore", "unit_price_rupiah": 18000, "qty": 1, "line_total_rupiah": 18000 } ],
   "item_count": 1, "subtotal_rupiah": 18000, "service_fee_rupiah": 0, "discount_rupiah": 0, "total_rupiah": 18000,
   "payment_method": "cash", "payment_status": "unpaid", "note": null,
-  "placed_at": "...", "completed_at": null, "cancelled_at": null
+  "placed_at": "...", "completed_at": null, "cancelled_at": null,
+  "review": null, "can_review": false
 } }
 ```
 
 - `status`: `pending_pickup`, `completed`, `cancelled`, `no_show`.
 - `pickup_code` hanya terisi selama kodenya masih bisa ditukar (K14).
 - Pesanan yang tidak diambil sampai 30 menit setelah `pickup_end` otomatis jadi `no_show`.
+- `review`: `{ "rating": 5, "comment": "...", "created_at": "..." }` atau `null`. `can_review` bernilai `true` untuk pesanan `completed` sampai 7 hari setelah `completed_at`.
+
+### POST /orders/{id}/review
+
+`{ "rating": 5, "comment": "Croissantnya masih renyah" }`. `rating` wajib, 1 sampai 5. `comment` opsional, maks 500.
+
+- **201** untuk ulasan baru, **200** kalau menimpa ulasan lama pesanan yang sama. Isinya `{ "data": { "rating", "comment", "created_at", "updated_at" } }`.
+- 409 kalau pesanan belum `completed` atau sudah lewat 7 hari sejak diambil. 404 untuk pesanan orang lain, 403 untuk akun mitra.
+- Rating toko (`rating_average` satu angka di belakang koma, `rating_count`) ikut tampil di `store` pada `GET /listings`, `GET /listings/{id}`, dan `GET /partner/stores/{store}`. `rating_average` bernilai `null` kalau belum ada ulasan. Pada `sort=popular`, rating dipakai sebagai urutan kedua setelah jumlah pesanan.
 
 ### POST /orders/{id}/cancel
 
@@ -470,7 +494,7 @@ Dipanggil setelah M02 untuk mendapatkan `store_id` dan peran.
   "id": 5, "name": "Kopi Kalyan SCBD", "slug": "kopi-kalyan", "category": "cafe", "address": "Jl. Jend. Sudirman Kav 52",
   "latitude": -6.22, "longitude": 106.80, "whatsapp": "6281299887766", "photo_path": null,
   "halal_label": "self_claim", "halal_certificate_no": null, "default_ingredients_text": "...",
-  "is_temporarily_closed": false, "is_pilot_partner": true,
+  "is_temporarily_closed": false, "is_pilot_partner": true, "rating_average": 4.8, "rating_count": 180,
   "hours": [ { "day_of_week": 1, "is_closed": false, "open_time": "07:00", "close_time": "21:00" } ],
   "my_role": "owner", "available_balance_rupiah": 1186000
 } }
@@ -508,6 +532,10 @@ Tombol "Cairkan" ditampilkan nonaktif dengan `withdrawal.reason`.
 ### GET /partner/stores/{store}/balance/transactions
 
 20 per halaman: `id`, `type` (`sale`, `adjustment`, `withdrawal`, `service_fee`), `amount_rupiah` (negatif untuk pengurangan), `balance_after_rupiah`, `title` (contoh "Tas Pastry Sore" atau "Tas Pastry Sore +1 lainnya"), `pickup_code`, `description`, `created_at`.
+
+### GET /partner/stores/{store}/reviews
+
+Pemilik dan kasir. 20 per halaman, terbaru dulu: `id`, `rating`, `comment`, `buyer_name` (nama depan saja, "Pembeli" untuk akun yang sudah dihapus), `created_at`. Di luar paginasi ada `summary`: `{ "rating_average": 4.8, "rating_count": 180 }`.
 
 ### GET /partner/stores/{store}/members
 
@@ -705,5 +733,5 @@ Di `daily`, `null` berarti hari itu tidak dicatat (bukan 0). Gambar grafik denga
 | K17 | Push notification | FCM belum dipasang |
 | K21, K22 | Voucher | WON'T selama pilot |
 | M13, M20 | Pencairan saldo | WON'T selama pilot |
-| M14 | Rating, lencana terverifikasi, label alergen bawaan toko | Belum ada di skema |
+| M14 | Lencana terverifikasi, label alergen bawaan toko | Belum ada di skema |
 | M15 | Sakelar pengingat, rekening pencairan, dokumen verifikasi | Belum ada di skema |
