@@ -62,6 +62,10 @@ public class PesananMitraDto {
     @SerializedName("completed_at")
     public String completedAt;
 
+    /** Hanya ada di riwayat (M21); pesanan yang menunggu tidak pernah membawa kodenya. */
+    @SerializedName("pickup_code")
+    public String pickupCode;
+
     public static class Butir {
         @SerializedName("title")
         public String title;

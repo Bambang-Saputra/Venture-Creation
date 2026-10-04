@@ -24,30 +24,54 @@ class PesananMitraController extends Controller
     // pesanan ditutup sebagai no_show oleh pesanan:tutup-yang-lewat.
     private const TOLERANSI_MENIT = TutupPesananLewat::TOLERANSI_MENIT;
 
-    /** GET /api/partner/stores/{store}/orders?status=pending|history&date= */
+    /**
+     * GET /api/partner/stores/{store}/orders?status=pending|history&date=&days=
+     *
+     * M21 Riwayat: `days` 7 atau 30 membatasi ke hari ambil N hari terakhir
+     * (termasuk hari ini). Riwayat juga membawa `summary`, hitungan seluruh
+     * rentang itu (bukan hanya halaman ini).
+     */
     public function daftar(Request $request, int $store): JsonResponse
     {
         $this->tokoMilik($request, $store, pemilikSaja: false);
         $f = $request->validate([
             'status' => ['sometimes', Rule::in(['pending', 'history'])],
             'date' => ['sometimes', 'date_format:Y-m-d'],
+            'days' => ['sometimes', 'integer', Rule::in([7, 30])],
         ]);
         $riwayat = ($f['status'] ?? 'pending') === 'history';
+        $sejak = isset($f['days']) ? today()->subDays($f['days'] - 1) : null;
+
+        $saring = fn ($q) => $q->where('orders.store_id', $store)
+            ->when($f['date'] ?? null, fn ($q, $tgl) => $q->whereDate('orders.pickup_start', $tgl))
+            ->when($sejak, fn ($q, $s) => $q->where('orders.pickup_start', '>=', $s));
 
         $halaman = DB::table('orders')
             ->join('users', 'users.id', '=', 'orders.user_id')
-            ->where('orders.store_id', $store)
+            ->leftJoin('pickup_codes', 'pickup_codes.order_id', '=', 'orders.id')
+            ->where($saring)
             ->when(! $riwayat, fn ($q) => $q->where('orders.status', 'pending_pickup')->orderBy('orders.pickup_start'))
-            ->when($riwayat, fn ($q) => $q->where('orders.status', '!=', 'pending_pickup')->orderByDesc('orders.placed_at'))
-            ->when($f['date'] ?? null, fn ($q, $tgl) => $q->whereDate('orders.pickup_start', $tgl))
+            ->when($riwayat, fn ($q) => $q->where('orders.status', '!=', 'pending_pickup')->orderByDesc('orders.pickup_start'))
             ->orderBy('orders.id')
-            ->select('orders.*', 'users.name as buyer_name')
+            ->select('orders.*', 'users.name as buyer_name', 'pickup_codes.code as pickup_code')
             ->paginate(30);
 
         $item = $this->itemPer($halaman->pluck('id'));
         $halaman->through(fn (object $o) => $this->bentuk($o, $item->get($o->id, collect())));
 
-        return response()->json($halaman);
+        if (! $riwayat) {
+            return response()->json($halaman);
+        }
+
+        // "Tujuh hari terakhir: 62 pesanan diambil, 3 tidak diambil."
+        $hitung = DB::table('orders')->where($saring)->where('orders.status', '!=', 'pending_pickup')
+            ->groupBy('orders.status')->selectRaw('orders.status, COUNT(*) AS n')->pluck('n', 'status');
+
+        return response()->json([...$halaman->toArray(), 'summary' => [
+            'completed' => (int) ($hitung['completed'] ?? 0),
+            'no_show' => (int) ($hitung['no_show'] ?? 0),
+            'cancelled' => (int) ($hitung['cancelled'] ?? 0),
+        ]]);
     }
 
     /** POST /api/pickup-codes/redeem { store_id, code } */
@@ -153,6 +177,10 @@ class PesananMitraController extends Controller
             'pickup_end' => Carbon::parse($o->pickup_end)->toIso8601String(),
             'placed_at' => Carbon::parse($o->placed_at)->toIso8601String(),
             'completed_at' => $o->completed_at === null ? null : Carbon::parse($o->completed_at)->toIso8601String(),
+            // "Kode Q7ZR2A" di kartu M21. Hanya untuk riwayat: pesanan yang menunggu
+            // harus dicocokkan dengan kode yang ditunjukkan pembeli, jadi kodenya
+            // tidak pernah dikirim ke perangkat kasir.
+            ...($o->status !== 'pending_pickup' ? ['pickup_code' => $o->pickup_code ?? null] : []),
         ];
     }
 }

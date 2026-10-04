@@ -79,29 +79,13 @@
         android:id="@+id/m15_pengaturan"
         android:name="id.lifeoffoods.ui.mitra.PengaturanTokoFragment" />
 
+    <!-- M13 Saldo dan pencairan (PRD-16). Dari M14, hanya pemilik. -->
     <fragment
         android:id="@+id/m13_saldo"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="M13"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Saldo dan pencairan"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.mitra.SaldoTokoFragment" />
 
+    <!-- M08 Saran produksi (PRD-14). Dari M07, hanya pemilik. -->
     <fragment
         android:id="@+id/m08_saran"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="M08"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Saran produksi"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.mitra.SaranProduksiFragment" />
 </navigation>

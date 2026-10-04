@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Satu baris M21 Riwayat: judul hari ("Kemarin", "2 hari lalu") di baris pertama tiap tanggal,
+    lalu kartu pesanan yang sama dengan M11. Di riwayat kartu menampilkan kode pickup, bukan cara
+    bayar dan jam ambil, seperti Figma M21.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/judul_hari"
+        style="@style/Teks.Isi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="10dp"
+        android:accessibilityHeading="true"
+        android:textColor="@color/teks_sekunder"
+        android:textSize="13sp"
+        tools:text="Kemarin" />
+
+    <include
+        android:id="@+id/kartu"
+        layout="@layout/item_pesanan_masuk" />
+</LinearLayout>

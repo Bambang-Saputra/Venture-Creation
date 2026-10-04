@@ -116,8 +116,83 @@
                     tools:text="Offline. Daftar terakhir diperbarui 20.41."
                     tools:visibility="visible" />
 
+                <!-- M21: saringan rentang dan ringkasan (tab Riwayat saja). -->
+                <LinearLayout
+                    android:id="@+id/kepala_riwayat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/saringan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingHorizontal="8dp"
+                        app:selectionRequired="true"
+                        app:singleLine="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/saring_7"
+                            style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/m21_7_hari" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/saring_30"
+                            style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/m21_30_hari" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/saring_semua"
+                            style="@style/Widget.LifeOfFoods.Chip.Pilihan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/m21_semua" />
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <LinearLayout
+                        android:id="@+id/ringkasan_riwayat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_kotak_lembut_12"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_laporan"
+                            app:tint="@color/teks_sekunder" />
+
+                        <TextView
+                            android:id="@+id/teks_ringkasan_riwayat"
+                            style="@style/Teks.Isi"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:accessibilityLiveRegion="polite"
+                            android:textColor="@color/teks_sekunder"
+                            android:textSize="12.5sp"
+                            tools:text="Tujuh hari terakhir: 62 pesanan diambil, 3 tidak diambil." />
+                    </LinearLayout>
+                </LinearLayout>
+
                 <!-- Ringkasan -->
                 <LinearLayout
+                    android:id="@+id/ringkasan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -155,6 +230,15 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_pesanan_masuk" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tombol_muat_lagi"
+                    style="@style/Widget.LifeOfFoods.Tombol.Lembut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/m21_muat_lagi"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/kosong"

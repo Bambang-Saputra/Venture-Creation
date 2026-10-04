@@ -76,7 +76,33 @@ class PesananMitraTest extends TestCase
 
         $this->tukar($kode)->assertStatus(409);
         $this->sebagai($this->kasir)->getJson("/api/partner/stores/{$this->toko}/orders?status=history")
-            ->assertJsonCount(1, 'data')->assertJsonPath('data.0.status', 'completed');
+            ->assertJsonCount(1, 'data')->assertJsonPath('data.0.status', 'completed')
+            ->assertJsonPath('data.0.pickup_code', $kode);
+    }
+
+    public function test_riwayat_m21_dibatasi_hari_dan_membawa_ringkasan(): void
+    {
+        $diambil = $this->pesan(1)['pickup_code'];
+        $this->tukar($diambil)->assertOk();
+        $this->pesan(1);
+        $tidak = DB::table('orders')->latest('id')->value('id');
+        DB::table('orders')->where('id', $tidak)->update(['status' => 'no_show']);
+
+        // Pesanan selesai 10 hari lalu: masuk "30 hari" dan "Semua", tidak masuk "7 hari".
+        $lama = $this->pesan(1)['id'];
+        DB::table('orders')->where('id', $lama)->update([
+            'status' => 'completed', 'pickup_start' => now()->subDays(10)->setTime(18, 0), 'pickup_end' => now()->subDays(10)->setTime(20, 0),
+        ]);
+
+        $url = "/api/partner/stores/{$this->toko}/orders?status=history";
+        $this->sebagai($this->kasir)->getJson("{$url}&days=7")->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('summary', ['completed' => 1, 'no_show' => 1, 'cancelled' => 0]);
+        $this->sebagai($this->kasir)->getJson("{$url}&days=30")->assertJsonCount(3, 'data')
+            ->assertJsonPath('summary.completed', 2)
+            ->assertJsonPath('data.2.id', $lama);
+        $this->sebagai($this->kasir)->getJson($url)->assertJsonCount(3, 'data');
+        $this->sebagai($this->kasir)->getJson("{$url}&days=14")->assertStatus(422);
     }
 
     public function test_kode_salah_batal_atau_lewat_ditolak(): void

@@ -1,5 +1,6 @@
 package id.lifeoffoods.data.api.model;
 
+import androidx.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
@@ -15,7 +16,23 @@ public class HalamanPesananMitra {
     @SerializedName("last_page")
     public int lastPage;
 
+    /** Hanya untuk status=history (M21): hitungan seluruh rentang, bukan hanya halaman ini. */
+    @Nullable
+    @SerializedName("summary")
+    public Ringkasan summary;
+
     public boolean adaBerikutnya() {
         return currentPage > 0 && currentPage < lastPage;
+    }
+
+    public static class Ringkasan {
+        @SerializedName("completed")
+        public int completed;
+
+        @SerializedName("no_show")
+        public int noShow;
+
+        @SerializedName("cancelled")
+        public int cancelled;
     }
 }

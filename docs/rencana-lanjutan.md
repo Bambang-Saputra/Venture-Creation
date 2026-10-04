@@ -21,9 +21,9 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 ## 3. Layar SHOULD
 
 - [x] M14 Profil toko dan M15 Pengaturan toko. Tombol keluar dipindah ke sini dari M05.
-- [ ] M21 Riwayat pesanan mitra (pakai ulang M11)
-- [ ] M08 Saran produksi (endpoint sudah ada, khusus pemilik)
-- [ ] M13 Saldo
+- [x] M21 Riwayat pesanan mitra (pakai ulang M11)
+- [x] M08 Saran produksi (endpoint sudah ada, khusus pemilik)
+- [x] M13 Saldo
 - [ ] K17 Notifikasi
 - [ ] K18-K20 Profil, Edit profil, Pengaturan pembeli
 - [ ] K06 Onboarding
@@ -41,6 +41,6 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 - [ ] Hosting API dan MySQL di server sendiri (VPS atau Railway), supaya laptop tidak harus nyala terus.
 - [ ] OTP lewat SMS atau WhatsApp, lalu matikan `PILOT_MODE`.
 - [x] Kode galat khusus dari server untuk akun nonaktif, peran salah, dan batas 3 pesanan.
-- [ ] M11 memuat lebih dari 30 pesanan (paginasi).
+- [x] M11 memuat lebih dari 30 pesanan (paginasi). Tab Riwayat (M21) punya "Muat lebih banyak"; tab Hari ini masih halaman pertama saja.
 - [ ] APK rilis yang ditandatangani, lalu Play Store (internal testing).
 - [ ] Pembayaran online (ditunda, lihat ADR-0004).

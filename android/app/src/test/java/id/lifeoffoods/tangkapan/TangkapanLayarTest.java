@@ -438,6 +438,38 @@ public class TangkapanLayarTest {
         tangkap("M15");
     }
 
+    @Test
+    public void m21RiwayatPesanan() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        navigasi(R.id.m11_pesanan, null);
+        tunggu();
+        a.findViewById(R.id.tab_riwayat).performClick();
+        tunggu();
+        tangkap("M21");
+    }
+
+    @Test
+    public void m08SaranProduksi() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m08_saran, null);
+        tunggu();
+        tangkapPanjang("M08");
+    }
+
+    @Test
+    public void m13Saldo() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m13_saldo, null);
+        tunggu();
+        tangkap("M13");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -785,6 +817,22 @@ public class TangkapanLayarTest {
                                 + "\"address\":\"Jl. Jend. Sudirman\",\"photo_path\":null,"
                                 + "\"is_temporarily_closed\":false,\"my_role\":\"owner\"}]}");
             }
+            if (path.startsWith("/api/partner/stores/5/orders") && path.contains("days=")) {
+                return json(riwayatM21());
+            }
+            if (path.startsWith("/api/partner/stores/5/suggestions")) {
+                return json(saranProduksi());
+            }
+            if (path.startsWith("/api/partner/stores/5/balance/transactions")) {
+                return json(transaksiSaldo());
+            }
+            if (path.startsWith("/api/partner/stores/5/balance")) {
+                return json(
+                        "{\"data\":{\"available_rupiah\":1186000,\"pending_rupiah\":0,"
+                                + "\"lifetime_rupiah\":2086000,\"items_sold_this_week\":62,"
+                                + "\"withdrawal\":{\"enabled\":false,\"reason\":\"Pencairan"
+                                + " tersedia setelah masa uji coba.\"}}}");
+            }
             if (path.startsWith("/api/partner/stores/5/orders")) {
                 return json(pesananMitra(path.contains("status=history")));
             }
@@ -1079,6 +1127,128 @@ public class TangkapanLayarTest {
                     + "\"published_at\":null,\"allergens\":"
                     + alergen
                     + "}";
+        }
+
+        /** Contoh Figma M21: kemarin dua pesanan, dua hari lalu dua pesanan. */
+        private static String riwayatM21() {
+            String[] baris = {
+                riwayat(
+                        1,
+                        80,
+                        "completed",
+                        "Nadia",
+                        "Tas Minuman Dingin",
+                        1,
+                        15000,
+                        "20:12",
+                        "Q7ZR2A"),
+                riwayat(1, 77, "no_show", "Rafi", "Tas Pastry Sore", 1, 18000, null, "H2W9LC"),
+                riwayat(
+                        2,
+                        71,
+                        "completed",
+                        "Sinta",
+                        "Croissant mentega",
+                        2,
+                        18000,
+                        "19:44",
+                        "T5NB1X"),
+                riwayat(2, 70, "completed", "Andi", "Tas campur", 1, 22000, "20:51", "V8QM3R")
+            };
+            return "{\"data\":["
+                    + String.join(",", baris)
+                    + "],\"current_page\":1,\"last_page\":2,"
+                    + "\"summary\":{\"completed\":62,\"no_show\":3,\"cancelled\":1}}";
+        }
+
+        private static String riwayat(
+                int hariLalu,
+                long id,
+                String status,
+                String pembeli,
+                String judul,
+                int qty,
+                long total,
+                String selesai,
+                String kode) {
+            java.time.LocalDate ini = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7));
+            String isi =
+                    barisMitra(
+                            id, status, pembeli, judul, qty, total, "cash", null, "[]", "20:00",
+                            "21:00", selesai);
+            return isi.replace(ini.toString(), ini.minusDays(hariLalu).toString())
+                    .replaceFirst("\\}$", ",\"pickup_code\":\"" + kode + "\"}");
+        }
+
+        /** Contoh Figma M08: dua saran sudah dipakai, satu belum. */
+        private static String saranProduksi() {
+            return "{\"data\":{\"suggested_for_date\":\"2026-09-19\",\"weekday\":\"Sabtu\","
+                    + "\"sample_days\":4,\"has_enough_data\":true,"
+                    + "\"products_missing_production_qty\":0,"
+                    + "\"total_saving_per_week_rupiah\":266000,\"items\":["
+                    + saran(1, "Croissant mentega", 24, 20, 6, 112000, "accepted")
+                    + ","
+                    + saran(2, "Kopi susu botol", 30, 26, 5, 100000, "accepted")
+                    + ","
+                    + saran(3, "Danish keju", 18, 16, 4, 54000, "new")
+                    + "]}}";
+        }
+
+        private static String saran(
+                long id, String nama, int biasa, int saran, int sisa, long hemat, String status) {
+            return "{\"id\":"
+                    + id
+                    + ",\"product_id\":"
+                    + id
+                    + ",\"name\":\""
+                    + nama
+                    + "\",\"unit\":\"potong\",\"current_production\":"
+                    + biasa
+                    + ",\"suggested_production\":"
+                    + saran
+                    + ",\"reduce_by\":"
+                    + (biasa - saran)
+                    + ",\"avg_waste_qty\":"
+                    + sisa
+                    + ",\"estimated_saving_per_week_rupiah\":"
+                    + hemat
+                    + ",\"status\":\""
+                    + status
+                    + "\"}";
+        }
+
+        /** Contoh Figma M13. */
+        private static String transaksiSaldo() {
+            java.time.LocalDate ini = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7));
+            String kemarin = ini.minusDays(1).toString();
+            return "{\"data\":["
+                    + transaksi(4, "sale", 18000, "Tas Pastry Sore", "LF7Q2K", ini + "T20:34")
+                    + ","
+                    + transaksi(3, "sale", 15000, "Tas Minuman Dingin", "Q7ZR2A", ini + "T20:12")
+                    + ","
+                    + transaksi(2, "sale", 29000, "Menu satuan", "M3K8PD", kemarin + "T20:45")
+                    + ","
+                    + transaksi(1, "adjustment", 0, null, null, kemarin + "T09:00")
+                    + "],\"current_page\":1,\"last_page\":1}";
+        }
+
+        private static String transaksi(
+                long id, String tipe, long nominal, String judul, String kode, String waktu) {
+            return "{\"id\":"
+                    + id
+                    + ",\"type\":\""
+                    + tipe
+                    + "\",\"amount_rupiah\":"
+                    + nominal
+                    + ",\"balance_after_rupiah\":0,\"title\":"
+                    + (judul == null ? "null" : "\"" + judul + "\"")
+                    + ",\"pickup_code\":"
+                    + (kode == null ? "null" : "\"" + kode + "\"")
+                    + ",\"description\":"
+                    + (judul == null ? "\"Saldo awal pilot\"" : "null")
+                    + ",\"created_at\":\""
+                    + waktu
+                    + ":00+07:00\"}";
         }
 
         /** Contoh Figma M11: tiga menunggu, satu diambil, satu tidak diambil. */
