@@ -50,9 +50,13 @@ public class TangkapanLayarTest {
     private MockWebServer server;
     private ActivityController<MainActivity> kontrol;
 
+    /** GET /favorites mengirim contoh Figma K16; tetap kosong untuk layar lain (hati K10). */
+    private static volatile boolean isiFavorit;
+
     @Before
     public void siapkan() throws IOException {
         assumeTrue(Boolean.getBoolean("lof.tangkapan"));
+        isiFavorit = false;
         lepasPabrikViewModelLama();
         server = new MockWebServer();
         server.setDispatcher(new DataContoh());
@@ -481,6 +485,13 @@ public class TangkapanLayarTest {
     }
 
     @Test
+    public void k16Favorit() {
+        isiFavorit = true;
+        bukaKonsumen(R.id.k16_favorit);
+        tangkap("K16");
+    }
+
+    @Test
     public void k17Notifikasi() {
         bukaKonsumen(R.id.k17_notifikasi);
         tangkap("K17");
@@ -694,7 +705,7 @@ public class TangkapanLayarTest {
                                 + "],\"current_page\":1,\"last_page\":1}");
             }
             if (path.startsWith("/api/favorites")) {
-                return json("{\"data\":[]}");
+                return json(isiFavorit ? favoritK16() : "{\"data\":[]}");
             }
             if (path.startsWith("/api/listings")) {
                 // K09 menghitung jumlah dengan per_page=1; Figma menampilkan "Tampilkan 12 jualan".
@@ -1621,6 +1632,47 @@ public class TangkapanLayarTest {
                             : "[{\"listing_id\":31,\"code\":\"kacang_tanah\","
                                     + "\"name\":\"Kacang tanah\",\"presence\":\"may_contain\","
                                     + "\"severity\":\"avoid\"}]")
+                    + "}";
+        }
+
+        /** Contoh Figma K16: empat mitra dengan empat jenis chip status. */
+        private static String favoritK16() {
+            return "{\"data\":["
+                    + favorit(5, "Kopi Kalyan", "cafe", 0.38, "21:00", 2, false, null)
+                    + ","
+                    + favorit(6, "Bakerman Blok M", "bakery", 1.1, "20:00", 0, true, null)
+                    + ","
+                    + favorit(7, "Dapur Senopati", "catering", 0.65, "21:30", 0, false, null)
+                    + ","
+                    + favorit(8, "Toko Kopi Ashta", "cafe", 0.9, "21:00", 0, false, "19:00")
+                    + "]}";
+        }
+
+        private static String favorit(
+                long id,
+                String nama,
+                String kategori,
+                double km,
+                String tutup,
+                int tas,
+                boolean menu,
+                String biasanya) {
+            return "{\"id\":"
+                    + id
+                    + ",\"name\":\""
+                    + nama
+                    + "\",\"category\":\""
+                    + kategori
+                    + "\",\"photo_url\":null,\"distance_km\":"
+                    + km
+                    + ",\"closes_at\":\""
+                    + tutup
+                    + "\",\"is_temporarily_closed\":false,\"available_bags\":"
+                    + tas
+                    + ",\"has_menu_available\":"
+                    + menu
+                    + ",\"usual_publish_time\":"
+                    + (biasanya == null ? "null" : "\"" + biasanya + "\"")
                     + "}";
         }
 

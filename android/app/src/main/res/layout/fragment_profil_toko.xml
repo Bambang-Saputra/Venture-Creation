@@ -76,6 +76,23 @@
                         android:contentDescription="@string/m14_foto_toko"
                         android:scaleType="centerCrop"
                         android:visibility="gone" />
+
+                    <!-- Pemilik saja: pilih foto dari galeri, diunggah ke POST .../photo. -->
+                    <TextView
+                        android:id="@+id/tombol_ganti_foto"
+                        style="@style/Teks.Pil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="12dp"
+                        android:background="@drawable/bg_pil_isian"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:minHeight="32dp"
+                        android:text="@string/m14_ganti_foto"
+                        android:textColor="@color/teks_kuat"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
                 </FrameLayout>
 
                 <LinearLayout

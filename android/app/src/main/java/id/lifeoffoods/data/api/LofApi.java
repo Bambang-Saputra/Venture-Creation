@@ -116,6 +116,10 @@ public interface LofApi {
     @GET("favorites")
     Call<Terbungkus<List<FavoritDto>>> favorit();
 
+    /** K16: sama dengan favorit(), ditambah lat/lng supaya jarak tiap toko dihitung server. */
+    @GET("favorites")
+    Call<Terbungkus<List<FavoritDto>>> daftarFavorit(@QueryMap Map<String, String> query);
+
     @POST("favorites")
     Call<Void> tambahFavorit(@Body FavoritDto.Body body);
 
@@ -173,6 +177,27 @@ public interface LofApi {
     @Multipart
     @POST("me/photo")
     Call<AkunDto.Foto> unggahFotoProfil(@Part MultipartBody.Part foto);
+
+    /** M14: foto toko, juga dipakai jualan yang tidak punya foto sendiri. Pemilik saja. */
+    @Multipart
+    @POST("partner/stores/{store}/photo")
+    Call<AkunDto.Foto> unggahFotoToko(@Path("store") long storeId, @Part MultipartBody.Part foto);
+
+    /** M09: foto template, dipakai lagi setiap kali tas dari template itu dipasang. */
+    @Multipart
+    @POST("partner/stores/{store}/templates/{template}/photo")
+    Call<AkunDto.Foto> unggahFotoTemplate(
+            @Path("store") long storeId,
+            @Path("template") long templateId,
+            @Part MultipartBody.Part foto);
+
+    /** M09 (setelah tas dipasang) dan M10: foto untuk satu jualan. Pemilik saja. */
+    @Multipart
+    @POST("partner/stores/{store}/listings/{listing}/photo")
+    Call<AkunDto.Foto> unggahFotoJualan(
+            @Path("store") long storeId,
+            @Path("listing") long listingId,
+            @Part MultipartBody.Part foto);
 
     /** K20 Hapus akun. 409 kalau masih ada pesanan yang belum diambil. */
     @HTTP(method = "DELETE", path = "me", hasBody = true)

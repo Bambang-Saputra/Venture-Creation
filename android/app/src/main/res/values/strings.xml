@@ -261,6 +261,27 @@
     <string name="k14_maps_tidak_ada">Tidak ada aplikasi peta di HP ini.</string>
 
     <!-- K15 Pesanan saya (PRD-08) -->
+    <string name="k16_judul">Favorit</string>
+    <string name="k16_tab_mitra">Mitra</string>
+    <string name="k16_meta">%1$s · %2$s</string>
+    <string name="k16_tutup_jam">tutup %1$s</string>
+    <string name="k16_tutup_hari_ini">tutup hari ini</string>
+    <plurals name="k16_tas_tersedia">
+        <item quantity="one">%1$d tas tersedia</item>
+        <item quantity="other">%1$d tas tersedia</item>
+    </plurals>
+    <string name="k16_menu_tersedia">Menu satuan tersedia</string>
+    <string name="k16_belum_ada_tas">Belum ada tas hari ini</string>
+    <string name="k16_biasanya">Biasanya pasang jam %1$s</string>
+    <string name="k16_tutup_sementara">Tutup sementara</string>
+    <string name="k16_hapus">Hapus %1$s dari favorit</string>
+    <string name="k16_terhapus">%1$s dihapus dari favorit.</string>
+    <string name="k16_batalkan">Batalkan</string>
+    <string name="k16_belum_ada">%1$s belum memasang jualan hari ini.</string>
+    <string name="k16_kabari">Kabari saat mitra favorit memasang tas</string>
+    <string name="k16_kabari_ket">Paling banyak satu notifikasi per mitra per hari</string>
+    <string name="k16_kosong_judul">Belum ada mitra favorit</string>
+    <string name="k16_kosong_isi">Ketuk ikon hati di halaman jualan untuk menyimpan tokonya di sini.</string>
     <string name="k15_judul">Pesanan saya</string>
     <string name="k15_tab_aktif">Aktif</string>
     <string name="k15_tab_riwayat">Riwayat</string>
@@ -334,7 +355,8 @@
     <!-- M12 Cocokkan kode (PRD-11) -->
     <string name="m12_judul">Cocokkan kode pickup</string>
     <string name="m12_pindai_qr">Pindai QR</string>
-    <string name="m12_pindai_belum">Pindai QR belum tersedia. Ketik kode dari HP pembeli.</string>
+    <string name="m12_arahkan_kamera">Arahkan kamera ke kode QR di layar pelanggan</string>
+    <string name="m12_qr_bukan_kode">QR ini bukan kode pickup Life of Foods. Minta pelanggan membuka pesanannya, atau ketik kodenya.</string>
     <string name="m12_ketik_kode">Ketik kode</string>
     <string name="m12_petunjuk">Minta pelanggan menunjukkan kode di aplikasinya, lalu ketik di sini.</string>
     <string name="m12_hint_kode">Kode pickup 6 huruf dan angka</string>
@@ -376,6 +398,9 @@
     <string name="m09_jenis">Jenis jualan</string>
     <string name="m09_jenis_ket">Menu satuan butuh stok per item. Pakai bila pelanggan sering bertanya soal isi tas.</string>
     <string name="m09_pilih_template">Pilih template tas</string>
+    <string name="m09_foto_tas">Foto tas</string>
+    <string name="m09_foto_ket">Pakai foto etalase tersimpan atau taruh foto baru</string>
+    <string name="m09_foto_pilih">Pilih foto tas dari galeri</string>
     <string name="m09_template_isi">template tersimpan, %1$s</string>
     <string name="m09_template_tanpa_isi">template tersimpan</string>
     <string name="m09_campur">Tas campur</string>
@@ -715,6 +740,10 @@
     <string name="m14_foto_toko">Foto toko</string>
     <string name="m14_sub_toko">%1$s · %2$s</string>
     <string name="m14_rating">Rating %1$s ulasan</string>
+    <string name="m14_ganti_foto">Ganti foto</string>
+    <string name="m10_ganti_foto">Ganti foto %1$s</string>
+    <string name="m14_foto_tersimpan">Foto toko diganti. Jualan tanpa foto sendiri ikut memakai foto ini.</string>
+    <string name="foto_gagal_dibaca">Foto tidak bisa dibaca. Pilih foto lain.</string>
     <string name="m14_jam_operasional">Jam operasional</string>
     <string name="m14_jam_kosong">Jam operasional belum diisi.</string>
     <string name="m14_jam_tutup">Tutup</string>

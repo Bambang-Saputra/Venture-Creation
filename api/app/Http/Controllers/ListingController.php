@@ -117,6 +117,7 @@ class ListingController extends Controller
             ->select('listings.*', 'stores.name as store_name', 'stores.category as store_category',
                 'stores.address as store_address', 'stores.latitude as store_latitude',
                 'stores.longitude as store_longitude', 'stores.is_temporarily_closed',
+                'stores.photo_path as store_photo_path',
                 'rating.rating_avg', 'rating.rating_count')
             ->first();
 
@@ -164,6 +165,7 @@ class ListingController extends Controller
             ->select('listings.*', 'stores.name as store_name', 'stores.category as store_category',
                 'stores.address as store_address', 'stores.latitude as store_latitude',
                 'stores.longitude as store_longitude',
+                'stores.photo_path as store_photo_path',
                 'rating.rating_avg', 'rating.rating_count')
             ->where('listings.status', 'active')
             ->where('listings.pickup_end', '>', now())
@@ -195,7 +197,8 @@ class ListingController extends Controller
             'id' => $l->id,
             'type' => $l->type,
             'title' => $l->title,
-            'photo_url' => FotoUnggahan::url($l->photo_path),
+            // Jualan tanpa foto sendiri (menu satuan, template tanpa foto) memakai foto toko.
+            'photo_url' => FotoUnggahan::url($l->photo_path ?? $l->store_photo_path ?? null),
             'price_rupiah' => $l->price_rupiah,
             'original_value_rupiah' => $l->original_value_rupiah,
             'qty_remaining' => max(0, $l->qty_total - $l->qty_reserved - $l->qty_sold),

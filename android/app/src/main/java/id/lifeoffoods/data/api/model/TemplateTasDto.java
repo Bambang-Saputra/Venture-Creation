@@ -9,6 +9,11 @@ public class TemplateTasDto {
     @SerializedName("id")
     public long id;
 
+    /** Foto yang otomatis dipakai setiap tas dari template ini, atau null. */
+    @Nullable
+    @SerializedName("photo_url")
+    public String photoUrl;
+
     @SerializedName("name")
     public String name;
 

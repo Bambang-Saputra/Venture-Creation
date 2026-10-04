@@ -256,7 +256,7 @@ Kirim sebagai `multipart/form-data` dengan field `photo`. Header `Accept: applic
 - Hak akses: `/me/photo` untuk semua peran. Foto toko, template, dan jualan hanya untuk pemilik (kasir 403). Toko, template, atau jualan milik orang lain dijawab 404.
 - **Foto template** (M09) dipakai lagi setiap kali tas dari template itu dipasang. **Foto jualan** hanya berlaku untuk satu listing, dan tidak menghapus foto template yang sebelumnya dipakai listing itu.
 - `DELETE /me/photo` menghapus foto profil. Foto profil juga ikut terhapus saat akun dihapus (K20).
-- `photo_url` ada di `GET /me` (`user.photo_url`), `GET /partner/stores/{store}`, `GET .../templates`, `GET .../listings` milik mitra, `GET /favorites`, dan listing konsumen.
+- `photo_url` ada di `GET /me` (`user.photo_url`), `GET /partner/stores/{store}`, `GET .../templates`, `GET .../listings` milik mitra, `GET /favorites`, dan listing konsumen. Di listing konsumen (`GET /listings` dan `GET /listings/{id}`), jualan tanpa foto sendiri memakai foto toko.
 - Di laptop dev, URL `/storage/...` baru bisa dibuka setelah `php artisan storage:link` dijalankan sekali.
 
 ### GET /me/impact

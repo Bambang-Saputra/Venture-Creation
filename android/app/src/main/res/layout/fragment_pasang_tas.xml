@@ -5,7 +5,8 @@
     dan "Terbitkan tas".
 
     Beda dengan Figma, disengaja:
-    - Kotak "Foto tas" tidak ada: unggah foto (F-20) belum punya endpoint.
+    - Kotak "Foto tas": foto template terpilih, atau foto baru dari galeri yang diunggah ke jualan
+      sesudah tas dipasang (dan ke template, supaya dipakai lagi besok).
     - Chip alergen dibangun dari GET /allergens, ditambah "Tidak mengandung alergen umum" supaya
       mitra wajib menyatakan alergen secara sadar (PRD-09 kriteria 10).
     - Jam ambil memakai pemilih jam, bukan tiga chip jam tetap.
@@ -63,6 +64,69 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/m09_jenis_ket" />
+
+                <!-- Foto tas: foto template terpilih, atau foto baru dari galeri. -->
+                <TextView
+                    style="@style/Teks.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/m09_foto_tas" />
+
+                <FrameLayout
+                    android:id="@+id/kotak_foto"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_kotak_putus"
+                    android:clickable="true"
+                    android:contentDescription="@string/m09_foto_pilih"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_gambar"
+                            app:tint="@color/ikon_redup" />
+
+                        <TextView
+                            style="@style/Teks.Keterangan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/m09_foto_ket"
+                            android:textColor="@color/ikon_redup" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/foto_tas"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@null"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/foto_ganti"
+                        style="@style/Teks.Pil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_pil_isian"
+                        android:text="@string/m14_ganti_foto"
+                        android:textColor="@color/teks_kuat"
+                        android:visibility="gone" />
+                </FrameLayout>
 
                 <!-- Cetakan -->
                 <TextView

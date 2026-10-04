@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kartu mitra favorit K16 (Figma 60:1263): foto 72x72, nama toko, "Kafe · 380 m · tutup 21.00",
+    chip status stok hari ini, lalu tombol hati untuk menghapus dari favorit.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_kartu_jualan"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_slot_foto">
+
+        <ImageView
+            android:id="@+id/ikon_kategori"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_gambar"
+            app:tint="@color/ikon_redup" />
+
+        <ImageView
+            android:id="@+id/foto_jualan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nama"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/teks_utama"
+            tools:text="Kopi Kalyan" />
+
+        <TextView
+            android:id="@+id/meta"
+            style="@style/Teks.Sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/teks_sekunder"
+            tools:text="Kafe · 380 m · tutup 21.00" />
+
+        <TextView
+            android:id="@+id/status"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_pil_merek"
+            android:textColor="@color/teks_merek_gelap"
+            tools:text="2 tas tersedia" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/tombol_hati"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_hati"
+        app:tint="@color/teks_merek"
+        tools:contentDescription="Hapus Kopi Kalyan dari favorit" />
+</LinearLayout>

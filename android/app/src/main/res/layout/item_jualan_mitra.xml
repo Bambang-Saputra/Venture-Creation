@@ -21,18 +21,38 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
+        <!-- Ketuk untuk mengganti foto jualan ini (pemilik). Kasir mendapat 403 dari server. -->
         <FrameLayout
+            android:id="@+id/slot_foto"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:background="@drawable/bg_kotak_lembut_12">
+            android:background="@drawable/bg_kotak_lembut_12"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_gambar"
+                android:src="@drawable/ic_kamera"
                 app:tint="@color/ikon_redup" />
+
+            <ImageView
+                android:id="@+id/foto_jualan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progres_foto"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </FrameLayout>
 
         <LinearLayout

@@ -89,6 +89,23 @@ class FotoTest extends TestCase
         Storage::disk('public')->assertExists('templates/9/lama.jpg');
     }
 
+    public function test_jualan_tanpa_foto_memakai_foto_toko_di_sisi_pembeli(): void
+    {
+        $url = $this->sebagai($this->pemilik)->post($this->url('/photo'), ['photo' => UploadedFile::fake()->image('toko.jpg', 800, 600)], ['Accept' => 'application/json'])
+            ->assertOk()->json('photo_url');
+        $buat = fn (string $judul, ?string $foto) => DB::table('listings')->insertGetId([
+            'store_id' => $this->toko, 'type' => 'menu_item', 'title' => $judul, 'price_rupiah' => 9000,
+            'qty_total' => 3, 'pickup_date' => now()->toDateString(), 'pickup_start' => now()->subHour(), 'pickup_end' => now()->addHours(2),
+            'status' => 'active', 'photo_path' => $foto, 'ingredients_text' => 'Tepung, mentega',
+        ]);
+        $tanpa = $buat('Croissant', null);
+        Storage::disk('public')->put('listings/99/sendiri.jpg', 'x');
+        $sendiri = $buat('Danish', 'listings/99/sendiri.jpg');
+
+        $this->getJson("/api/listings/{$tanpa}")->assertOk()->assertJsonPath('data.photo_url', $url);
+        $this->assertStringEndsWith('listings/99/sendiri.jpg', $this->getJson("/api/listings/{$sendiri}")->assertOk()->json('data.photo_url'));
+    }
+
     public function test_foto_template_dipakai_tas_baru(): void
     {
         $template = DB::table('surprise_bag_templates')->insertGetId([

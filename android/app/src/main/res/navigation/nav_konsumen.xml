@@ -97,18 +97,10 @@
         android:id="@+id/k15_pesanan"
         android:name="id.lifeoffoods.ui.pesanan.PesananSayaFragment" />
 
+    <!-- K16 Favorit (PRD-22). Dari tab Favorit di nav bawah K07, K15, dan K18. -->
     <fragment
         android:id="@+id/k16_favorit"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="K16"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Favorit"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.favorit.FavoritFragment" />
 
     <!-- K17 Notifikasi (PRD-18). Dari lonceng K07 dan dari K18. -->
     <fragment

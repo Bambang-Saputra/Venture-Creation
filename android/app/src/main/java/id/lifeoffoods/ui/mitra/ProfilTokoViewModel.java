@@ -8,8 +8,10 @@ import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
+import id.lifeoffoods.data.api.model.AkunDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.data.api.model.TokoDetailDto;
+import id.lifeoffoods.ui.umum.FotoUnggah;
 import id.lifeoffoods.ui.umum.Peristiwa;
 
 /**
@@ -142,6 +144,44 @@ public class ProfilTokoViewModel extends AndroidViewModel {
                                 // Pasang ulang nilai lama supaya sakelar kembali ke posisinya.
                                 toko.setValue(toko.getValue());
                                 pesan.setValue(new Peristiwa<>(e.pesan()));
+                            }
+                        });
+    }
+
+    /** Pemilik mengganti foto toko dari M14. Foto dipakai juga oleh jualan tanpa foto sendiri. */
+    public void unggahFoto(byte[] jpeg) {
+        TokoDetailDto t = toko.getValue();
+        if (t == null || !t.pemilik() || Boolean.TRUE.equals(menyimpan.getValue())) {
+            return;
+        }
+        menyimpan.setValue(true);
+        LofApp app = getApplication();
+        app.api()
+                .unggahFotoToko(t.id, FotoUnggah.bagian(jpeg, "toko.jpg"))
+                .enqueue(
+                        new ApiCallback<>() {
+                            @Override
+                            public void sukses(AkunDto.Foto data) {
+                                menyimpan.setValue(false);
+                                TokoDetailDto sekarang = toko.getValue();
+                                if (sekarang != null && data != null) {
+                                    sekarang.photoUrl = data.photoUrl;
+                                    toko.setValue(sekarang);
+                                }
+                                pesan.setValue(
+                                        new Peristiwa<>(
+                                                app.getString(R.string.m14_foto_tersimpan)));
+                            }
+
+                            @Override
+                            public void gagal(ApiError e) {
+                                menyimpan.setValue(false);
+                                if (e.perluMasukUlang()) {
+                                    sesiBerakhir.setValue(new Peristiwa<>(true));
+                                    return;
+                                }
+                                String g = e.pesanField("photo");
+                                pesan.setValue(new Peristiwa<>(g != null ? g : e.pesan()));
                             }
                         });
     }

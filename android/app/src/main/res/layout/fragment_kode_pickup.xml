@@ -3,7 +3,7 @@
     K14 Kode pickup (Figma "Layar aplikasi", PRD-07). Gradasi hijau, kartu putih berisi kode besar.
 
     Beda dengan Figma, disengaja:
-    - QR code tidak ada: PRD-07 menaruhnya di luar lingkup (untuk M18 Pindai QR, COULD).
+    - QR code berisi "LOF:<kode>", dibuat di HP (ZXing) dan dipindai kasir di M12.
     - "Dibayar" diganti "Bayar di tempat", karena selama pilot tidak ada pembayaran di aplikasi.
     - Kotak dampak hanya menyebut porsi pesanan ini; API belum mengirim total porsi dan CO2e.
     - Tautan "Buka di Google Maps" dan "Batalkan pesanan" ditambahkan (PRD-07 alur 3 dan 4).
@@ -126,6 +126,15 @@
                         android:layout_marginTop="16dp"
                         android:textIsSelectable="true"
                         tools:text="LF7Q2K" />
+
+                    <!-- Dipindai kasir di M12 (M18 Pindai QR). Isinya "LOF:<kode>". -->
+                    <ImageView
+                        android:id="@+id/qr"
+                        android:layout_width="132dp"
+                        android:layout_height="132dp"
+                        android:layout_marginTop="12dp"
+                        android:importantForAccessibility="no"
+                        android:scaleType="fitXY" />
                 </LinearLayout>
 
                 <!-- Selesai, dibatalkan, atau tidak diambil -->

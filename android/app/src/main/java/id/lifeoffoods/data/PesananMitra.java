@@ -80,6 +80,32 @@ public final class PesananMitra {
      * Kode yang diketik kasir: huruf dan angka saja, kapital, paling banyak 6. Spasi atau tanda
      * hubung yang ikut tertempel dibuang.
      */
+    /** Awalan isi QR K14, supaya kasir tidak menukar QR lain (menu, pembayaran) sebagai kode. */
+    public static final String AWALAN_QR = "LOF:";
+
+    /** Isi QR K14 untuk kode pickup. */
+    public static String isiQr(String kode) {
+        return AWALAN_QR + rapikanKode(kode);
+    }
+
+    /**
+     * Kode dari hasil pindai M12: "LOF:LF7Q2K" dari K14. Null untuk QR lain, termasuk teks tanpa
+     * awalan, supaya QR pembayaran atau menu tidak pernah ditukar sebagai kode pickup.
+     */
+    @Nullable
+    public static String kodeDariQr(@Nullable String isi) {
+        if (isi == null) {
+            return null;
+        }
+        String t = isi.trim();
+        if (!t.regionMatches(true, 0, AWALAN_QR, 0, AWALAN_QR.length())) {
+            return null;
+        }
+        String sisa = t.substring(AWALAN_QR.length());
+        String kode = rapikanKode(sisa);
+        return kode.length() == PANJANG_KODE && kode.length() == sisa.length() ? kode : null;
+    }
+
     public static String rapikanKode(@Nullable CharSequence ketikan) {
         if (ketikan == null) {
             return "";
