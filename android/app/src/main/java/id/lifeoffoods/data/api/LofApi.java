@@ -1,5 +1,6 @@
 package id.lifeoffoods.data.api;
 
+import id.lifeoffoods.data.api.model.AkunDto;
 import id.lifeoffoods.data.api.model.AlergenBody;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.AnggotaTokoDto;
@@ -37,14 +38,18 @@ import id.lifeoffoods.data.api.model.TokoMitraDto;
 import id.lifeoffoods.data.api.model.TukarKodeBody;
 import java.util.List;
 import java.util.Map;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -141,6 +146,29 @@ public interface LofApi {
     /** Lencana lonceng K07; daftar lengkap di K17. */
     @GET("notifications")
     Call<NotifikasiResponse> notifikasi(@Query("unread") int belumDibaca);
+
+    /** K17, 20 per halaman, terbaru dulu. */
+    @GET("notifications")
+    Call<NotifikasiResponse> daftarNotifikasi(@Query("page") int halaman);
+
+    @POST("notifications/{id}/read")
+    Call<Void> bacaNotifikasi(@Path("id") long id);
+
+    @POST("notifications/read-all")
+    Call<Void> bacaSemuaNotifikasi();
+
+    /** K18 header: porsi diselamatkan dan hemat. Khusus konsumen. */
+    @GET("me/impact")
+    Call<Terbungkus<AkunDto.Dampak>> dampakSaya();
+
+    /** K19 Ganti foto. Kirim JPEG yang sudah diperkecil (sisi maks 1600 px). */
+    @Multipart
+    @POST("me/photo")
+    Call<AkunDto.Foto> unggahFotoProfil(@Part MultipartBody.Part foto);
+
+    /** K20 Hapus akun. 409 kalau masih ada pesanan yang belum diambil. */
+    @HTTP(method = "DELETE", path = "me", hasBody = true)
+    Call<Void> hapusAkun(@Body AkunDto.HapusAkun body);
 
     /** Toko milik akun mitra (pemilik atau kasir); dipakai untuk mendapatkan store_id. */
     @GET("partner/stores")

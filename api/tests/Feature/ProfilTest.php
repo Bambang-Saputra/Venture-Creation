@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
@@ -76,6 +77,38 @@ class ProfilTest extends TestCase
         $user = $this->user();
 
         $this->ubah($user, ['name' => 'Dara', 'role' => 'admin'])->assertOk()->assertJsonPath('user.role', 'consumer');
+    }
+
+    public function test_k18_dampak_hanya_dari_pesanan_yang_diambil(): void
+    {
+        $user = $this->user(['name' => 'Dara']);
+        $pemilik = User::forceCreate(['phone' => '6281200000001', 'role' => 'partner']);
+        $toko = DB::table('stores')->insertGetId([
+            'owner_user_id' => $pemilik->id, 'name' => 'Kopi Kalyan', 'slug' => 'kopi', 'category' => 'cafe', 'address' => 'Jl. Uji',
+        ]);
+        $listing = DB::table('listings')->insertGetId([
+            'store_id' => $toko, 'type' => 'surprise_bag', 'title' => 'Tas Pastry Sore', 'price_rupiah' => 18000,
+            'original_value_rupiah' => 54000, 'qty_total' => 5, 'pickup_date' => '2026-09-18',
+            'pickup_start' => '2026-09-18 19:00:00', 'pickup_end' => '2026-09-18 21:00:00', 'status' => 'active',
+            'ingredients_text' => 'Tepung',
+        ]);
+        foreach (['completed' => 2, 'no_show' => 1] as $status => $qty) {
+            $order = DB::table('orders')->insertGetId([
+                'user_id' => $user->id, 'store_id' => $toko, 'code' => 'ORD-'.$status, 'status' => $status,
+                'subtotal_rupiah' => 18000 * $qty, 'total_rupiah' => 18000 * $qty,
+                'pickup_start' => '2026-09-18 19:00:00', 'pickup_end' => '2026-09-18 21:00:00', 'placed_at' => now(),
+            ]);
+            DB::table('order_items')->insert(['order_id' => $order, 'listing_id' => $listing, 'title_snapshot' => 'Tas Pastry Sore',
+                'unit_price_rupiah' => 18000, 'qty' => $qty, 'line_total_rupiah' => 18000 * $qty]);
+        }
+
+        $this->withToken($user->createToken('uji')->plainTextToken)->getJson('/api/me/impact')->assertOk()
+            ->assertJsonPath('data.portions_rescued', 2)
+            ->assertJsonPath('data.saved_rupiah', 72000)
+            ->assertJsonPath('data.orders_completed', 1);
+
+        $this->app['auth']->forgetGuards();
+        $this->withToken($pemilik->createToken('uji')->plainTextToken)->getJson('/api/me/impact')->assertForbidden();
     }
 
     private function user(array $atribut = []): User

@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::post('/auth/logout', KeluarController::class);
     Route::get('/me', [ProfilController::class, 'tampil']);
     Route::patch('/me', [ProfilController::class, 'ubah']);
+    Route::get('/me/impact', [ProfilController::class, 'dampak']);
     Route::put('/me/allergens', [AlergenController::class, 'gantiMilikSaya']);
     Route::delete('/me', HapusAkunController::class)->middleware('throttle:3,1');
     Route::post('/me/photo', [FotoController::class, 'profil'])->middleware('throttle:10,1');

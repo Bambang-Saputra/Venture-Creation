@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,6 +25,9 @@ import java.util.List;
  * API, PUT /me/allergens).
  */
 public class AlergiFragment extends Fragment {
+
+    /** Argumen navigasi: true kalau dibuka dari profil (K18-K20), bukan dari onboarding. */
+    public static final String ARG_DARI_PROFIL = "dari_profil";
 
     private FragmentAlergiBinding binding;
     private AlergiViewModel vm;
@@ -46,7 +50,9 @@ public class AlergiFragment extends Fragment {
 
         binding.kepala.judul.setText(R.string.k05_judul_bar);
         binding.kepala.subjudul.setText(R.string.k05_langkah);
-        binding.kepala.subjudul.setVisibility(View.VISIBLE);
+        binding.kepala.subjudul.setVisibility(dariProfil() ? View.GONE : View.VISIBLE);
+        // Dari profil: tidak ada "Lewati", Simpan kembali ke layar sebelumnya.
+        binding.tombolLewati.setVisibility(dariProfil() ? View.GONE : View.VISIBLE);
         binding.kepala.tombolKembali.setOnClickListener(
                 v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
 
@@ -123,7 +129,16 @@ public class AlergiFragment extends Fragment {
     }
 
     private void selesai() {
+        if (dariProfil()) {
+            NavHostFragment.findNavController(this).navigateUp();
+            return;
+        }
         ((MainActivity) requireActivity()).selesaiOnboarding();
+    }
+
+    /** Dibuka dari K18/K19/K20 untuk mengubah alergi, bukan bagian onboarding. */
+    private boolean dariProfil() {
+        return getArguments() != null && getArguments().getBoolean(ARG_DARI_PROFIL, false);
     }
 
     @Override

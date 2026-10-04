@@ -552,6 +552,55 @@
     <string name="m07_lihat_saran">Lihat saran produksi</string>
     <string name="m07_bukan_pemilik">Laporan mingguan hanya bisa dibuka pemilik toko.</string>
 
+    <!-- K17 Notifikasi -->
+    <string name="k17_judul">Notifikasi</string>
+    <string name="k17_kosong">Belum ada notifikasi. Kabar pesanan dan mitra favoritmu akan muncul di sini.</string>
+    <string name="k17_baris">%1$s. %2$s. %3$s</string>
+
+    <!-- K18 Profil -->
+    <string name="k18_anggota">Anggota sejak %1$s</string>
+    <string name="k18_anggota_area">Anggota sejak %1$s, %2$s</string>
+    <string name="k18_porsi">Porsi</string>
+    <string name="k18_hemat">Hemat</string>
+    <string name="k18_pesanan">Pesanan</string>
+    <string name="k18_pengaturan">Pengaturan</string>
+    <string name="k18_edit_profil">Edit profil</string>
+    <string name="k18_alergi">Alergi dan pantangan</string>
+    <string name="k18_alergi_kosong">Belum diisi</string>
+    <string name="k18_notifikasi">Notifikasi</string>
+    <string name="k18_keluar">Keluar dan ganti peran</string>
+    <string name="k18_buka_pengaturan">Buka pengaturan</string>
+    <string name="k18_ubin">%1$s: %2$s</string>
+
+    <!-- K19 Edit profil -->
+    <string name="k19_judul">Edit profil</string>
+    <string name="k19_ganti_foto">Ganti foto</string>
+    <string name="k19_foto_profil">Foto profil</string>
+    <string name="k19_nomor_hp">Nomor HP</string>
+    <string name="k19_nomor_ket">Terverifikasi lewat WhatsApp. Nomor tidak bisa diganti dari aplikasi.</string>
+    <string name="k19_email">Email</string>
+    <string name="k19_area">Area utama</string>
+    <string name="k19_simpan">Simpan perubahan</string>
+    <string name="k19_tersimpan">Profil tersimpan.</string>
+    <string name="k19_foto_tersimpan">Foto profil diganti.</string>
+    <string name="k19_foto_gagal">Foto tidak bisa dibaca. Pilih foto lain.</string>
+
+    <!-- K20 Pengaturan -->
+    <string name="k20_judul">Pengaturan</string>
+    <string name="k20_notifikasi">Notifikasi</string>
+    <string name="k20_favorit">Mitra favorit memasang jualan</string>
+    <string name="k20_favorit_ket">Kabar saat ada tas atau menu baru</string>
+    <string name="k20_pengingat">Pengingat jam ambil</string>
+    <string name="k20_pengingat_ket">30 menit sebelum waktu ambil dimulai</string>
+    <string name="k20_promo">Promo dan voucher</string>
+    <string name="k20_promo_ket">Paling banyak dua kali seminggu</string>
+    <string name="k20_akun">Akun</string>
+    <string name="k20_keluar">Keluar dari akun</string>
+    <string name="k20_hapus">Hapus akun</string>
+    <string name="k20_hapus_judul">Hapus akun?</string>
+    <string name="k20_hapus_isi">Nama, nomor HP, email, alergi, dan favoritmu dihapus. Riwayat pesanan tetap ada untuk laporan mitra, tapi tidak lagi terhubung denganmu. Tindakan ini tidak bisa dibatalkan.</string>
+    <string name="k20_hapus_ya">Hapus permanen</string>
+
     <!-- M08 Saran produksi -->
     <string name="m08_judul">Saran produksi</string>
     <string name="m08_untuk">Untuk %1$s</string>

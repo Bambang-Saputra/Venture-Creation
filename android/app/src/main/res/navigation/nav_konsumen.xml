@@ -113,30 +113,23 @@
             app:argType="string" />
     </fragment>
 
+    <!-- K17 Notifikasi (PRD-18). Dari lonceng K07 dan dari K18. -->
     <fragment
         android:id="@+id/k17_notifikasi"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="K17"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Notifikasi"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.akun.NotifikasiFragment" />
 
-    <!-- Penanda K18 memuat tombol "Keluar dari akun", jadi alur masuk tetap bisa diulang. -->
+    <!-- K18 Profil (PRD-19). Tab Profil konsumen. -->
     <fragment
         android:id="@+id/k18_profil"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="K18"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Profil"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.akun.ProfilFragment" />
+
+    <!-- K19 Edit profil. -->
+    <fragment
+        android:id="@+id/k19_edit_profil"
+        android:name="id.lifeoffoods.ui.akun.EditProfilFragment" />
+
+    <!-- K20 Pengaturan, termasuk hapus akun (F-19). -->
+    <fragment
+        android:id="@+id/k20_pengaturan"
+        android:name="id.lifeoffoods.ui.akun.PengaturanFragment" />
 </navigation>
