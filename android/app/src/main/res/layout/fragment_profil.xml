@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    K18 Profil (Figma "K18 · Profil"), tab Profil konsumen. Header hijau dengan avatar, nama,
+    anggota sejak dan area, tombol pengaturan (K20), dan ubin dampak; lalu menu dan tombol keluar.
+
+    Beda dengan Figma, disengaja:
+    - Ubin ketiga "Pesanan" (jumlah pesanan diambil), bukan "Kg CO2e": faktor CO2e per porsi belum
+      disepakati tim, jadi angkanya belum bisa dihitung dengan jujur.
+    - Kartu "Ajak teman, dapat Rp10.000", "Metode pembayaran", dan "Voucher saya" tidak ada:
+      referral dan voucher berstatus WON'T, dan pembayaran dilakukan di tempat (ADR-0004).
+    - "Pusat bantuan" (K23, COULD) belum ada; baris "Edit profil" ditambahkan supaya K19 terjangkau.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
+
+                <LinearLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/merek_utama"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp">
+
+                            <TextView
+                                android:id="@+id/inisial"
+                                style="@style/Teks.JudulToko"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_ubin_profil_bulat"
+                                android:gravity="center"
+                                android:importantForAccessibility="no"
+                                android:textColor="@color/teks_di_gelap"
+                                tools:text="DR" />
+
+                            <ImageView
+                                android:id="@+id/foto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/k19_foto_profil"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/nama"
+                                style="@style/Teks.JudulToko"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/teks_di_gelap"
+                                tools:text="Dara Renata" />
+
+                            <TextView
+                                android:id="@+id/sub"
+                                style="@style/Teks.Sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textColor="@color/teks_di_gelap"
+                                tools:text="Anggota sejak Maret 2026, SCBD, Jakarta Selatan" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/tombol_pengaturan"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/k18_buka_pengaturan"
+                            android:src="@drawable/ic_pengaturan"
+                            app:tint="@color/teks_di_gelap" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <include
+                            android:id="@+id/ubin_porsi"
+                            layout="@layout/item_ubin_profil" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="0dp" />
+
+                        <include
+                            android:id="@+id/ubin_hemat"
+                            layout="@layout/item_ubin_profil" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="0dp" />
+
+                        <include
+                            android:id="@+id/ubin_pesanan"
+                            layout="@layout/item_ubin_profil" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_kartu_20"
+                        android:orientation="vertical"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="4dp"
+                            android:accessibilityHeading="true"
+                            android:text="@string/k18_pengaturan"
+                            android:textColor="@color/teks_utama" />
+
+                        <include
+                            android:id="@+id/baris_edit"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
+                            android:id="@+id/baris_alergi"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
+                            android:id="@+id/baris_notifikasi"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
+                            android:id="@+id/baris_pengaturan"
+                            layout="@layout/item_baris_toko" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_keluar"
+                        style="@style/Widget.LifeOfFoods.Tombol.Garis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/k18_keluar" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <include
+        android:id="@+id/nav"
+        layout="@layout/include_nav_bawah" />
+</LinearLayout>

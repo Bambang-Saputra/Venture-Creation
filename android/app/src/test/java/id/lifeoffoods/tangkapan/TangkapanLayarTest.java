@@ -439,6 +439,38 @@ public class TangkapanLayarTest {
     }
 
     @Test
+    public void k17Notifikasi() {
+        bukaKonsumen(R.id.k17_notifikasi);
+        tangkap("K17");
+    }
+
+    @Test
+    public void k18Profil() {
+        bukaKonsumen(R.id.k18_profil);
+        tangkap("K18");
+    }
+
+    @Test
+    public void k19EditProfil() {
+        bukaKonsumen(R.id.k19_edit_profil);
+        tangkap("K19");
+    }
+
+    @Test
+    public void k20Pengaturan() {
+        bukaKonsumen(R.id.k20_pengaturan);
+        tangkap("K20");
+    }
+
+    private void bukaKonsumen(int tujuan) {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        tunggu();
+        navigasi(tujuan, null);
+        tunggu();
+    }
+
+    @Test
     public void m21RiwayatPesanan() {
         app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
         MainActivity a = buka();
@@ -532,6 +564,12 @@ public class TangkapanLayarTest {
         @Override
         public MockResponse dispatch(RecordedRequest r) {
             String path = r.getPath() == null ? "" : r.getPath();
+            if (path.startsWith("/api/me/impact")) {
+                return json(
+                        "{\"data\":{\"portions_rescued\":16,\"saved_rupiah\":412000,"
+                                + "\"orders_completed\":14,"
+                                + "\"member_since\":\"2026-03-05T10:00:00+07:00\"}}");
+            }
             if (path.startsWith("/api/me") && "GET".equals(r.getMethod())) {
                 return json(
                         "{\"user\":{\"id\":12,\"name\":\"Dara Renata\","
@@ -711,6 +749,9 @@ public class TangkapanLayarTest {
                                         "20:30",
                                         "22:00")
                                 + "],\"current_page\":1,\"last_page\":1}");
+            }
+            if (path.startsWith("/api/notifications") && path.contains("page=")) {
+                return json(notifikasiK17());
             }
             if (path.startsWith("/api/notifications")) {
                 return json("{\"data\":[],\"unread_count\":3,\"current_page\":1,\"last_page\":1}");
@@ -1127,6 +1168,59 @@ public class TangkapanLayarTest {
                     + "\"published_at\":null,\"allergens\":"
                     + alergen
                     + "}";
+        }
+
+        /** Contoh Figma K17: tiga hari ini, satu kemarin (jenis yang memang dikirim server). */
+        private static String notifikasiK17() {
+            java.time.OffsetDateTime kini =
+                    java.time.OffsetDateTime.now(java.time.ZoneOffset.ofHours(7));
+            return "{\"data\":["
+                    + notif(
+                            4,
+                            "pengingat_ambil",
+                            "Pesananmu siap diambil",
+                            "Tas Pastry Sore di Kopi Kalyan. Tunjukkan kode LF7Q2K ke kasir.",
+                            kini.minusMinutes(5),
+                            88)
+                    + ","
+                    + notif(
+                            3,
+                            "mitra_favorit_memasang",
+                            "Mitra favoritmu memasang jualan",
+                            "Bakerman Blok M baru saja membuka menu satuan roti sore.",
+                            kini.minusMinutes(32),
+                            0)
+                    + ","
+                    + notif(
+                            2,
+                            "porsi_terselamatkan",
+                            "1 porsi terselamatkan",
+                            "Pesanan Tas Minuman Dingin selesai. Totalmu sekarang 16 porsi.",
+                            kini.minusDays(1).withHour(20).withMinute(12),
+                            0)
+                    + "],\"unread_count\":2,\"current_page\":1,\"last_page\":1}";
+        }
+
+        private static String notif(
+                long id,
+                String jenis,
+                String judul,
+                String isi,
+                java.time.OffsetDateTime waktu,
+                long pesanan) {
+            return "{\"id\":"
+                    + id
+                    + ",\"type\":\""
+                    + jenis
+                    + "\",\"title\":\""
+                    + judul
+                    + "\",\"body\":\""
+                    + isi
+                    + "\",\"data\":"
+                    + (pesanan > 0 ? "{\"screen\":\"K14\",\"order_id\":" + pesanan + "}" : "null")
+                    + ",\"is_read\":false,\"created_at\":\""
+                    + waktu.withSecond(0).withNano(0)
+                    + "\"}";
         }
 
         /** Contoh Figma M21: kemarin dua pesanan, dua hari lalu dua pesanan. */

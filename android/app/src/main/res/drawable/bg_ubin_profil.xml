@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ubin angka di header hijau K18 ("Porsi 16", "Hemat Rp412rb"): tinta gelap transparan. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#33000000" />
+    <corners android:radius="16dp" />
+</shape>

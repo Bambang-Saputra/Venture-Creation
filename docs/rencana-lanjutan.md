@@ -24,8 +24,8 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 - [x] M21 Riwayat pesanan mitra (pakai ulang M11)
 - [x] M08 Saran produksi (endpoint sudah ada, khusus pemilik)
 - [x] M13 Saldo
-- [ ] K17 Notifikasi
-- [ ] K18-K20 Profil, Edit profil, Pengaturan pembeli
+- [x] K17 Notifikasi
+- [x] K18-K20 Profil, Edit profil, Pengaturan pembeli
 - [ ] K06 Onboarding
 - [ ] K08 Peta (versi daftar ditambah `geo:`, lihat ADR-0005)
 - [ ] Login Google K02/M01 (ADR-0006, butuh setup Google Cloud Console)

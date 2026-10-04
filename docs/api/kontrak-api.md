@@ -99,6 +99,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | POST | `/auth/logout` | T | K, M | K20, M15 | |
 | GET | `/me` | T | K, M | K18, pembuka aplikasi | |
 | PATCH | `/me` | T | K, M | K04, K19, K20 | |
+| GET | `/me/impact` | T | K | K18 | |
 | DELETE | `/me` | T | K | K20 | 3/menit |
 | POST | `/me/photo` | T | K, M | K04, K19 | 10/menit |
 | DELETE | `/me/photo` | T | K, M | K19 | |
@@ -257,6 +258,17 @@ Kirim sebagai `multipart/form-data` dengan field `photo`. Header `Accept: applic
 - `DELETE /me/photo` menghapus foto profil. Foto profil juga ikut terhapus saat akun dihapus (K20).
 - `photo_url` ada di `GET /me` (`user.photo_url`), `GET /partner/stores/{store}`, `GET .../templates`, `GET .../listings` milik mitra, `GET /favorites`, dan listing konsumen.
 - Di laptop dev, URL `/storage/...` baru bisa dibuka setelah `php artisan storage:link` dijalankan sekali.
+
+### GET /me/impact
+
+Header K18, khusus konsumen (mitra 403). Hanya pesanan `completed` yang dihitung.
+
+```json
+{ "data": { "portions_rescued": 16, "saved_rupiah": 412000, "orders_completed": 14,
+  "member_since": "2026-03-05T10:00:00+07:00" } }
+```
+
+`saved_rupiah` = jumlah (nilai asli - harga) x jumlah per item, memakai nilai asli listing. Angka CO2e di Figma belum ada, karena faktor konversinya belum disepakati tim.
 
 ### DELETE /me
 

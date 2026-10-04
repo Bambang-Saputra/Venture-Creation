@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu ubin angka header K18: label kecil di atas, angka besar di bawah. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="@drawable/bg_ubin_profil"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/Teks.Keterangan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/teks_di_gelap"
+        tools:text="Porsi" />
+
+    <TextView
+        android:id="@+id/angka"
+        style="@style/Teks.JudulToko"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:textColor="@color/teks_di_gelap"
+        android:textSize="21sp"
+        tools:text="16" />
+</LinearLayout>

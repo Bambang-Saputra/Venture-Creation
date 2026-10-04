@@ -21,4 +21,17 @@ public class ProfilBody {
     @Nullable
     @SerializedName("area_label")
     public String areaLabel;
+
+    /** Sakelar K20, khusus konsumen. */
+    @Nullable
+    @SerializedName("notify_favorite_store")
+    public Boolean notifyFavoriteStore;
+
+    @Nullable
+    @SerializedName("notify_pickup_reminder")
+    public Boolean notifyPickupReminder;
+
+    @Nullable
+    @SerializedName("notify_promo")
+    public Boolean notifyPromo;
 }

@@ -29,4 +29,8 @@ public class UserDto {
     /** Hanya ada di GET /me. */
     @SerializedName("has_google")
     public boolean hasGoogle;
+
+    /** Foto profil (K19); null kalau belum ada. Hanya di GET /me. */
+    @SerializedName("photo_url")
+    public String photoUrl;
 }

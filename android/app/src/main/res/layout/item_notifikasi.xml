@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Satu notifikasi K17: judul hari di baris pertama tiap tanggal, lalu kotak ikon, judul, isi, dan
+    waktu ("5 menit lalu", "Kemarin, 20.12"). Garis tipis di bawah seperti Figma.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/judul_hari"
+        style="@style/Teks.Isi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:accessibilityHeading="true"
+        android:textColor="@color/teks_sekunder"
+        android:textSize="13sp"
+        tools:text="Hari ini" />
+
+    <LinearLayout
+        android:id="@+id/baris"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_garis_bawah"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <FrameLayout
+            android:id="@+id/kotak_ikon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_ikon_mint">
+
+            <ImageView
+                android:id="@+id/ikon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                app:tint="@color/teks_merek"
+                tools:src="@drawable/ic_tas" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/judul"
+                style="@style/Teks.JudulKartu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/teks_utama"
+                android:textSize="13.5sp"
+                tools:text="Pesananmu siap diambil" />
+
+            <TextView
+                android:id="@+id/isi"
+                style="@style/Teks.Isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/teks_sekunder"
+                android:textSize="13sp"
+                tools:text="Tas Pastry Sore di Kopi Kalyan. Tunjukkan kode LF7Q2K ke kasir." />
+
+            <TextView
+                android:id="@+id/waktu"
+                style="@style/Teks.Keterangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="5 menit lalu" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
