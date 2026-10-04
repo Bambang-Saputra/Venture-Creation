@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.TextView;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
+import id.lifeoffoods.data.ProfilToko;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.pesanan.RingkasanPesananFragment;
@@ -48,6 +50,27 @@ final class BersamaDetail {
             @ColorRes int warna,
             @DrawableRes int ikon) {
         grup.addView(Pil.buat(grup.getContext(), teks, latar, warna, ikon));
+    }
+
+    /** Chip "4,8 (180)" kuning dengan bintang di depan. Tidak dipasang kalau belum ada ulasan. */
+    static void chipRating(ChipGroup grup, ListingDto l) {
+        if (l.store == null) {
+            return;
+        }
+        String rating = ProfilToko.rating(l.store.ratingAverage, l.store.ratingCount);
+        if (rating == null) {
+            return;
+        }
+        TextView pil =
+                Pil.buat(
+                        grup.getContext(),
+                        rating,
+                        R.drawable.bg_pil_proses,
+                        R.color.tanda_proses_teks,
+                        0);
+        Pil.ikon(pil, R.drawable.ic_bintang, R.color.tanda_bintang);
+        pil.setContentDescription(grup.getContext().getString(R.string.m14_rating, rating));
+        grup.addView(pil);
     }
 
     static void chipAmbil(ChipGroup grup, ListingDto l) {

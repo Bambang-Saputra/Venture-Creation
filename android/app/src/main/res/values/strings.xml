@@ -285,6 +285,23 @@
     <string name="k15_kosong_riwayat_isi">Pesanan yang sudah selesai akan muncul di sini.</string>
     <string name="k15_ke_beranda">Ke Beranda</string>
     <string name="k15_buka_pesanan">Buka pesanan %1$s, %2$s</string>
+    <string name="k15_beri_ulasan">Beri ulasan</string>
+    <string name="k15_ulasanmu">Ulasanmu %1$d/5</string>
+    <string name="k15_ulasanmu_ubah">Ulasanmu %1$d/5 · Ubah</string>
+    <string name="k15_ulasan_judul">Bagaimana pesananmu?</string>
+    <string name="k15_ulasan_pilih">Ketuk bintang untuk menilai</string>
+    <string name="k15_ulasan_komentar">Ceritakan sedikit (opsional)</string>
+    <string name="k15_ulasan_kirim">Kirim ulasan</string>
+    <string name="k15_ulasan_mengirim">Mengirim.</string>
+    <string name="k15_ulasan_terkirim">Terima kasih, ulasanmu membantu pembeli lain.</string>
+    <string name="k15_bintang">%1$d dari 5 bintang</string>
+    <string-array name="k15_arti_bintang">
+        <item>Kecewa</item>
+        <item>Kurang</item>
+        <item>Cukup</item>
+        <item>Puas</item>
+        <item>Sangat puas</item>
+    </string-array>
 
     <!-- Nav mitra -->
     <string name="nav_catat">Catat</string>

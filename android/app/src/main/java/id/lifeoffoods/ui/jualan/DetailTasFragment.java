@@ -139,6 +139,7 @@ public class DetailTasFragment extends Fragment {
         Pil.ikon(binding.chipJenis, R.drawable.ic_paket, R.color.teks_utama);
 
         binding.info.removeAllViews();
+        BersamaDetail.chipRating(binding.info, d);
         BersamaDetail.chipAmbil(binding.info, d);
         BersamaDetail.chip(
                 binding.info,

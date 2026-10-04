@@ -1,5 +1,6 @@
 package id.lifeoffoods.data.api.model;
 
+import androidx.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 /** Satu baris GET /orders?status=active|history (K15, kontrak API bagian 6). */
@@ -32,4 +33,13 @@ public class PesananRingkasDto {
 
     @SerializedName("placed_at")
     public String placedAt;
+
+    /** Bintang yang sudah diberi pembeli untuk pesanan ini, atau null. */
+    @Nullable
+    @SerializedName("review_rating")
+    public Integer reviewRating;
+
+    /** true untuk pesanan completed sampai 7 hari setelah diambil. */
+    @SerializedName("can_review")
+    public boolean canReview;
 }

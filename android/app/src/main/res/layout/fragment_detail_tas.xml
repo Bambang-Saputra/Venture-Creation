@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     K10 Detail tas kejutan (Figma 57:1068). Foto mengisi sampai ke balik status bar; tombol kembali
-    dan favorit diberi jarak aman oleh SisiAman. Chip rating "4,8 (180)" belum ada karena API
-    belum punya ulasan.
+    dan favorit diberi jarak aman oleh SisiAman. Chip rating "4,8 (180)" hanya dipasang kalau toko
+    sudah punya ulasan.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

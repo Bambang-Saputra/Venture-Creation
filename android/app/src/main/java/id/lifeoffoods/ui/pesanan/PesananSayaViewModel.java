@@ -2,6 +2,7 @@ package id.lifeoffoods.ui.pesanan;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import id.lifeoffoods.LofApp;
@@ -10,6 +11,8 @@ import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.data.api.model.HalamanPesanan;
 import id.lifeoffoods.data.api.model.PesananRingkasDto;
+import id.lifeoffoods.data.api.model.Terbungkus;
+import id.lifeoffoods.data.api.model.UlasanDto;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -152,5 +155,58 @@ public class PesananSayaViewModel extends AndroidViewModel {
         if (berjalan != null) {
             berjalan.cancel();
         }
+        if (ulasanBerjalan != null) {
+            ulasanBerjalan.cancel();
+        }
+    }
+
+    /** true selama POST ulasan berjalan; tombol Kirim di lembar ulasan dimatikan. */
+    public final MutableLiveData<Boolean> mengirimUlasan = new MutableLiveData<>(false);
+
+    /** Ulasan tersimpan: lembar ditutup dan kartu menampilkan bintangnya. */
+    public final MutableLiveData<Peristiwa<Integer>> ulasanTerkirim = new MutableLiveData<>();
+
+    /** Gagal mengirim: pesan ditampilkan di lembar, isiannya tidak hilang. */
+    public final MutableLiveData<Peristiwa<String>> galatUlasan = new MutableLiveData<>();
+
+    private Call<Terbungkus<UlasanDto>> ulasanBerjalan;
+
+    public void kirimUlasan(long idPesanan, int bintang, @Nullable String komentar) {
+        if (Boolean.TRUE.equals(mengirimUlasan.getValue())) {
+            return;
+        }
+        String isi = komentar == null || komentar.trim().isEmpty() ? null : komentar.trim();
+        mengirimUlasan.setValue(true);
+        ulasanBerjalan =
+                ((LofApp) getApplication())
+                        .api()
+                        .kirimUlasan(idPesanan, new UlasanDto(bintang, isi));
+        ulasanBerjalan.enqueue(
+                new ApiCallback<>() {
+                    @Override
+                    public void sukses(Terbungkus<UlasanDto> data) {
+                        mengirimUlasan.setValue(false);
+                        for (PesananRingkasDto p : terkumpul) {
+                            if (p.id == idPesanan) {
+                                p.reviewRating = bintang;
+                            }
+                        }
+                        // Daftar baru (bukan objek yang sama) supaya ListAdapter mengisi ulang
+                        // kartu.
+                        List<PesananRingkasDto> lama = daftar.getValue();
+                        daftar.setValue(lama == null ? new ArrayList<>() : new ArrayList<>(lama));
+                        ulasanTerkirim.setValue(new Peristiwa<>(bintang));
+                    }
+
+                    @Override
+                    public void gagal(ApiError e) {
+                        mengirimUlasan.setValue(false);
+                        if (e.perluMasukUlang()) {
+                            sesiBerakhir.setValue(new Peristiwa<>(true));
+                            return;
+                        }
+                        galatUlasan.setValue(new Peristiwa<>(e.pesan()));
+                    }
+                });
     }
 }

@@ -1,9 +1,14 @@
 package id.lifeoffoods.ui.pesanan;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -11,11 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.DaftarPesanan;
@@ -23,8 +30,11 @@ import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.api.model.PesananRingkasDto;
 import id.lifeoffoods.databinding.FragmentPesananSayaBinding;
 import id.lifeoffoods.databinding.ItemKartuPesananBinding;
+import id.lifeoffoods.databinding.SheetUlasanBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
+import id.lifeoffoods.ui.umum.Peristiwa;
+import id.lifeoffoods.ui.umum.Pil;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -225,6 +235,133 @@ public class PesananSayaFragment extends Fragment {
                 .setContentDescription(
                         getString(R.string.k15_buka_pesanan, p.storeName, b.status.getText()));
         b.getRoot().setOnClickListener(v -> keKodePickup(p.id));
+        isiUlasan(b.ulasan, p, jenis);
+    }
+
+    private void isiUlasan(TextView tv, PesananRingkasDto p, DaftarPesanan.Jenis jenis) {
+        boolean ada = p.reviewRating != null;
+        if (jenis != DaftarPesanan.Jenis.SELESAI || (!ada && !p.canReview)) {
+            tv.setVisibility(View.GONE);
+            tv.setOnClickListener(null);
+            return;
+        }
+        tv.setVisibility(View.VISIBLE);
+        if (ada) {
+            tv.setText(
+                    getString(
+                            p.canReview ? R.string.k15_ulasanmu_ubah : R.string.k15_ulasanmu,
+                            p.reviewRating));
+        } else {
+            tv.setText(R.string.k15_beri_ulasan);
+        }
+        Pil.ikon(tv, R.drawable.ic_bintang, R.color.tanda_bintang);
+        tv.setClickable(p.canReview);
+        tv.setOnClickListener(p.canReview ? v -> bukaLembarUlasan(p) : null);
+    }
+
+    /** Lembar bawah lima bintang dan komentar. Bintang lama (kalau ada) sudah terpilih. */
+    private void bukaLembarUlasan(PesananRingkasDto p) {
+        SheetUlasanBinding s = SheetUlasanBinding.inflate(getLayoutInflater());
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        dialog.setContentView(s.getRoot());
+        // Latar bawaan Material 3 keunguan; samakan dengan kartu aplikasi.
+        View lembar = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if (lembar != null) {
+            lembar.setBackgroundTintList(
+                    ColorStateList.valueOf(
+                            ContextCompat.getColor(requireContext(), R.color.latar_kartu)));
+        }
+        s.toko.setText(p.storeName);
+        String[] arti = getResources().getStringArray(R.array.k15_arti_bintang);
+        int[] pilihan = {p.reviewRating == null ? 0 : p.reviewRating};
+        ImageView[] bintang = new ImageView[5];
+        int ukuran = Math.round(48 * getResources().getDisplayMetrics().density);
+        int jarak = Math.round(4 * getResources().getDisplayMetrics().density);
+        Runnable tandai =
+                () -> {
+                    for (int i = 0; i < bintang.length; i++) {
+                        bintang[i].setColorFilter(
+                                ContextCompat.getColor(
+                                        requireContext(),
+                                        i < pilihan[0]
+                                                ? R.color.tanda_bintang
+                                                : R.color.garis_tegas));
+                        bintang[i].setSelected(i < pilihan[0]);
+                    }
+                    s.arti.setText(
+                            pilihan[0] == 0
+                                    ? getString(R.string.k15_ulasan_pilih)
+                                    : arti[pilihan[0] - 1]);
+                    s.tombolKirim.setEnabled(
+                            pilihan[0] > 0 && !Boolean.TRUE.equals(vm.mengirimUlasan.getValue()));
+                };
+        for (int i = 0; i < bintang.length; i++) {
+            int nilai = i + 1;
+            ImageView iv = new ImageView(requireContext());
+            iv.setImageResource(R.drawable.ic_bintang);
+            iv.setPadding(jarak, jarak, jarak, jarak);
+            TypedValue latar = new TypedValue();
+            requireContext()
+                    .getTheme()
+                    .resolveAttribute(
+                            android.R.attr.selectableItemBackgroundBorderless, latar, true);
+            iv.setBackgroundResource(latar.resourceId);
+            iv.setContentDescription(getString(R.string.k15_bintang, nilai));
+            iv.setOnClickListener(
+                    v -> {
+                        pilihan[0] = nilai;
+                        s.galat.setVisibility(View.GONE);
+                        tandai.run();
+                    });
+            s.bintang.addView(iv, new LinearLayout.LayoutParams(ukuran, ukuran));
+            bintang[i] = iv;
+        }
+        tandai.run();
+
+        s.tombolKirim.setOnClickListener(
+                v -> {
+                    Editable e = s.komentar.getText();
+                    vm.kirimUlasan(p.id, pilihan[0], e == null ? null : e.toString());
+                });
+
+        // Pengamat hidup selama lembar terbuka saja.
+        Observer<Boolean> mengirim =
+                k -> {
+                    s.tombolKirim.setText(
+                            Boolean.TRUE.equals(k)
+                                    ? R.string.k15_ulasan_mengirim
+                                    : R.string.k15_ulasan_kirim);
+                    tandai.run();
+                };
+        Observer<Peristiwa<Integer>> terkirim =
+                pe -> {
+                    if (pe.ambil() != null) {
+                        dialog.dismiss();
+                        Snackbar.make(
+                                        binding.getRoot(),
+                                        R.string.k15_ulasan_terkirim,
+                                        Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                };
+        Observer<Peristiwa<String>> gagal =
+                pe -> {
+                    String pesan = pe.ambil();
+                    if (pesan != null) {
+                        s.galat.setText(pesan);
+                        s.galat.setVisibility(View.VISIBLE);
+                    }
+                };
+        vm.mengirimUlasan.observe(getViewLifecycleOwner(), mengirim);
+        vm.ulasanTerkirim.observe(getViewLifecycleOwner(), terkirim);
+        vm.galatUlasan.observe(getViewLifecycleOwner(), gagal);
+        dialog.setOnDismissListener(
+                d -> {
+                    vm.mengirimUlasan.removeObserver(mengirim);
+                    vm.ulasanTerkirim.removeObserver(terkirim);
+                    vm.galatUlasan.removeObserver(gagal);
+                });
+        dialog.show();
     }
 
     private void pil(TextView tv, @StringRes int teks, @DrawableRes int latar, int warna) {
