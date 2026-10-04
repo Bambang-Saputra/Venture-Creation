@@ -565,6 +565,7 @@
     <string name="k06_lewati">Lewati</string>
     <string name="k06_lanjut">Lanjut</string>
     <string name="k06_mulai">Mulai cari makanan</string>
+    <string name="k06_catatan_lokasi">Berikutnya kami minta izin lokasi, supaya jualan terdekat dari posisimu tampil lebih dulu. Boleh ditolak.</string>
     <string name="k06_halaman">Halaman %1$d dari %2$d</string>
 
     <!-- K08 Peta (versi daftar, ADR-0005) -->
@@ -578,6 +579,15 @@
     <string name="k08_tanpa_lokasi">Lokasimu belum tersimpan, jadi jualan diurutkan dari jam ambil terdekat. Isi area di Edit profil supaya jarak terlihat.</string>
     <string name="k08_kosong">Tidak ada jualan yang bisa dipesan di jarak ini. Coba jarak yang lebih jauh.</string>
     <string name="k08_peta_tidak_ada">Tidak ada aplikasi peta di HP ini.</string>
+    <string name="k08_tab_peta">Peta</string>
+    <string name="k08_tab_daftar">Daftar</string>
+    <string name="k08_peta_isi">Peta jualan di sekitar. Ketuk penanda harga untuk melihat jualannya.</string>
+    <string name="k08_atribusi_osm">© OpenStreetMap</string>
+    <string name="k08_lokasiku">Kembali ke lokasiku</string>
+    <string name="k08_posisi_sekarang">Di sekitar posisimu sekarang</string>
+    <string name="k08_posisi_gagal">Posisi HP belum terbaca. Pastikan lokasi di HP menyala.</string>
+    <string name="k08_penanda">%1$s, %2$s</string>
+    <string name="k08_penanda_lebih">%1$s · %2$d</string>
 
     <!-- K17 Notifikasi -->
     <string name="k17_judul">Notifikasi</string>

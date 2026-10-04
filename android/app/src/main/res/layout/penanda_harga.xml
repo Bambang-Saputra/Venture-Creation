@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Penanda harga K08 di atas peta (Figma: pil "Rp18.000" dengan titik di bawahnya). Digambar ke
+    bitmap oleh PenandaHarga; warna latar dan teks diganti untuk penanda terpilih.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/harga"
+        style="@style/Teks.JudulKotak"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:background="@drawable/bg_penanda_harga"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textSize="12sp"
+        tools:text="Rp18.000" />
+
+    <View
+        android:id="@+id/titik"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_titik_penanda" />
+</LinearLayout>

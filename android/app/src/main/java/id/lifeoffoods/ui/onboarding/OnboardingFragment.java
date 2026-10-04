@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -15,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import id.lifeoffoods.R;
 import id.lifeoffoods.databinding.FragmentOnboardingBinding;
 import id.lifeoffoods.databinding.ItemHalamanOnboardingBinding;
+import id.lifeoffoods.ui.umum.LokasiPerangkat;
 import id.lifeoffoods.ui.umum.SisiAman;
 
 /** K06 Onboarding. Sekali sesudah K05; Lewati dan halaman terakhir membuka K07. */
@@ -56,17 +59,33 @@ public class OnboardingFragment extends Fragment {
         binding.tombolLanjut.setOnClickListener(
                 v -> {
                     int i = binding.halaman.getCurrentItem();
-                    if (i >= HALAMAN.length - 1) {
+                    if (i < HALAMAN.length - 1) {
+                        binding.halaman.setCurrentItem(i + 1);
+                    } else if (LokasiPerangkat.diizinkan(requireContext())) {
                         keBeranda();
                     } else {
-                        binding.halaman.setCurrentItem(i + 1);
+                        // Beranda tetap dibuka apa pun jawabannya; izin bisa diberi nanti di K08.
+                        mintaIzin.launch(LokasiPerangkat.IZIN);
                     }
                 });
         tampilkan(binding.halaman.getCurrentItem());
     }
 
+    private final ActivityResultLauncher<String[]> mintaIzin =
+            registerForActivityResult(
+                    new ActivityResultContracts.RequestMultiplePermissions(),
+                    hasil -> {
+                        if (binding != null) {
+                            keBeranda();
+                        }
+                    });
+
     private void tampilkan(int posisi) {
         boolean terakhir = posisi >= HALAMAN.length - 1;
+        binding.catatanLokasi.setVisibility(
+                terakhir && !LokasiPerangkat.diizinkan(requireContext())
+                        ? View.VISIBLE
+                        : View.GONE);
         binding.tombolLanjut.setText(terakhir ? R.string.k06_mulai : R.string.k06_lanjut);
         binding.tombolLewati.setVisibility(terakhir ? View.GONE : View.VISIBLE);
         View[] titik = {binding.titik1, binding.titik2, binding.titik3};

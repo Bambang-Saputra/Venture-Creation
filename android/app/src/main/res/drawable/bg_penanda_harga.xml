@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pil penanda harga K08. Warna isi diganti lewat kode untuk penanda terpilih. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_kartu" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/garis_tegas" />
+    <corners android:radius="12dp" />
+</shape>

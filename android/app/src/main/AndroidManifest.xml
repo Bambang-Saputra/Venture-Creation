@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- K06 meminta izin lokasi supaya K08 menghitung jarak dari posisi HP. Perkiraan sudah cukup. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- allowBackup mati: token sesi tidak boleh ikut dicadangkan ke akun Google. -->
     <application
