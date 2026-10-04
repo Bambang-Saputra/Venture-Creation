@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FotoUnggahan;
 use App\Services\RatingToko;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
@@ -192,7 +193,7 @@ class ListingController extends Controller
             'id' => $l->id,
             'type' => $l->type,
             'title' => $l->title,
-            'photo_url' => $l->photo_path === null ? null : asset('storage/'.$l->photo_path),
+            'photo_url' => FotoUnggahan::url($l->photo_path),
             'price_rupiah' => $l->price_rupiah,
             'original_value_rupiah' => $l->original_value_rupiah,
             'qty_remaining' => max(0, $l->qty_total - $l->qty_reserved - $l->qty_sold),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
+use App\Services\FotoUnggahan;
 use App\Services\RatingToko;
 use App\Services\RingkasanSisa;
 use App\Support\NomorHp;
@@ -37,6 +38,7 @@ class TokoController extends Controller
             'category' => $t->category,
             'address' => $t->address,
             'photo_path' => $t->photo_path,
+            'photo_url' => FotoUnggahan::url($t->photo_path),
             'is_temporarily_closed' => (bool) $t->is_temporarily_closed,
             'my_role' => (int) $t->owner_user_id === $user->id ? 'owner' : $anggota[$t->id],
         ])]);
@@ -184,6 +186,7 @@ class TokoController extends Controller
             'longitude' => $toko->longitude === null ? null : (float) $toko->longitude,
             'whatsapp' => $toko->whatsapp,
             'photo_path' => $toko->photo_path,
+            'photo_url' => FotoUnggahan::url($toko->photo_path),
             'halal_label' => $toko->halal_label,
             'halal_certificate_no' => $toko->halal_certificate_no,
             'default_ingredients_text' => $toko->default_ingredients_text,

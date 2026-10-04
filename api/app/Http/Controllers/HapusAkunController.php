@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FotoUnggahan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,8 @@ class HapusAkunController extends Controller
                 DB::table('otp_codes')->where('phone', $u->phone)->delete();
             }
             DB::table('personal_access_tokens')->where('tokenable_type', $user::class)->where('tokenable_id', $u->id)->delete();
+            // Foto profil adalah wajah pengguna: selalu dihapus, apa pun jalurnya.
+            FotoUnggahan::hapus($u->photo_path, "users/{$u->id}");
 
             // Tanpa nomor HP atau id pengguna: yang tersisa hanya bahwa sebuah akun dihapus.
             DB::table('audit_logs')->insert([
@@ -56,6 +59,7 @@ class HapusAkunController extends Controller
             }
             DB::table('users')->where('id', $u->id)->update([
                 'phone' => null, 'name' => null, 'email' => null, 'google_sub' => null, 'phone_verified_at' => null,
+                'photo_path' => null,
                 'password' => null, 'remember_token' => null, 'is_active' => false, 'updated_at' => now(),
             ]);
         });

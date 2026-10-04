@@ -16,7 +16,7 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 
 - [ ] **Rating dan ulasan.** Pembeli memberi bintang setelah pesanan selesai. Rating toko tampil di kartu jualan dan ikut dipakai untuk mengurutkan "Populer hari ini". Butuh tabel baru, karena belum ada di skema.
 - [ ] **Iklan berbayar per hari tayang.** Terpisah dari "Populer hari ini". Tampil di hasil pencarian dan K09 dengan label "Iklan". Mitra memilih jualan dan jumlah hari. Tarif dan cara bayar (potong saldo atau bayar langsung) belum diputuskan. Filter alergi tetap berlaku untuk jualan yang diiklankan.
-- [ ] **Upload foto oleh mitra** (endpoint F-20). Untuk sekarang foto cuma ada di data demo.
+- [x] **Upload foto oleh mitra** (endpoint F-20). Backend sudah ada: foto profil, toko, template tas, dan jualan. Layar Android untuk mengunggah belum.
 
 ## 3. Layar SHOULD
 

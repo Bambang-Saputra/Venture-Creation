@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FotoUnggahan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -67,6 +68,7 @@ class ProfilController extends Controller
         return response()->json([
             'user' => [
                 ...$user->only(['id', 'name', 'email', 'phone', 'role']),
+                'photo_url' => FotoUnggahan::url($user->photo_path),
                 'has_google' => $user->google_sub !== null,
             ],
             // false berarti user menutup aplikasi sebelum K04 selesai:

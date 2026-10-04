@@ -100,6 +100,8 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | GET | `/me` | T | K, M | K18, pembuka aplikasi | |
 | PATCH | `/me` | T | K, M | K04, K19, K20 | |
 | DELETE | `/me` | T | K | K20 | 3/menit |
+| POST | `/me/photo` | T | K, M | K04, K19 | 10/menit |
+| DELETE | `/me/photo` | T | K, M | K19 | |
 | GET | `/allergens` | - | | K05, K09 | |
 | PUT | `/me/allergens` | T | K | K05, K19 | |
 | GET | `/listings` | - | | K07, K08, K09 | 60/menit |
@@ -119,6 +121,9 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | GET | `/partner/stores` | T | M | setelah M02 | |
 | GET | `/partner/stores/{store}` | T | M | M14 | |
 | PUT, PATCH | `/partner/stores/{store}` | T | P | M14 | 30/menit |
+| POST | `/partner/stores/{store}/photo` | T | P | M14 | 10/menit |
+| POST | `/partner/stores/{store}/templates/{template}/photo` | T | P | M09 | 10/menit |
+| POST | `/partner/stores/{store}/listings/{listing}/photo` | T | P | M09, M10 | 10/menit |
 | GET | `/partner/stores/{store}/balance` | T | P | M13 | |
 | GET | `/partner/stores/{store}/balance/transactions` | T | P | M13 | |
 | GET | `/partner/stores/{store}/reviews` | T | M | M14 | |
@@ -239,6 +244,19 @@ Semua field opsional; hanya yang dikirim yang diubah. Respons sama dengan `GET /
 | `notify_favorite_store`, `notify_pickup_reminder`, `notify_promo` | boolean | K |
 
 Field khusus konsumen yang dikirim akun mitra ditolak 422. Contoh K20: `{ "notify_promo": true }`.
+
+### Unggah foto (`POST /me/photo` dan tiga rute `.../photo` mitra)
+
+Kirim sebagai `multipart/form-data` dengan field `photo`. Header `Accept: application/json` tetap wajib.
+
+- Format JPEG, PNG, atau WebP. Ukuran maks 5 MB, sisi minimal 200 px dan maksimal 4096 px. Di luar batas ini ditolak 422 di `errors.photo`. Kamera HP 50 MP menghasilkan foto di atas 4096 px, jadi **Android wajib memperkecil foto sebelum mengunggah**, misalnya ke sisi terpanjang 1600 px.
+- Server menyimpan ulang foto sebagai JPEG dengan sisi maksimal 1600 px. Metadata kamera, termasuk lokasi GPS, ikut terbuang. Foto yang miring karena EXIF diluruskan lebih dulu.
+- **200** `{ "photo_url": "https://.../storage/listings/12/<uuid>.jpg" }`. Unggahan baru menggantikan foto lama, dan berkas lamanya dihapus.
+- Hak akses: `/me/photo` untuk semua peran. Foto toko, template, dan jualan hanya untuk pemilik (kasir 403). Toko, template, atau jualan milik orang lain dijawab 404.
+- **Foto template** (M09) dipakai lagi setiap kali tas dari template itu dipasang. **Foto jualan** hanya berlaku untuk satu listing, dan tidak menghapus foto template yang sebelumnya dipakai listing itu.
+- `DELETE /me/photo` menghapus foto profil. Foto profil juga ikut terhapus saat akun dihapus (K20).
+- `photo_url` ada di `GET /me` (`user.photo_url`), `GET /partner/stores/{store}`, `GET .../templates`, `GET .../listings` milik mitra, `GET /favorites`, dan listing konsumen.
+- Di laptop dev, URL `/storage/...` baru bisa dibuka setelah `php artisan storage:link` dijalankan sekali.
 
 ### DELETE /me
 
@@ -709,7 +727,6 @@ Di `daily`, `null` berarti hari itu tidak dicatat (bukan 0). Gambar grafik denga
 
 | Layar | Hal | Alasan |
 |---|---|---|
-| K04, M09, M14 | Unggah foto profil, tas, dan toko | Belum ada endpoint upload dan penyimpanan file |
 | K05 | Chip "Halal saja" dan "Tidak pedas" | Halal lewat filter `halal=1` di listing; tingkat pedas belum ada di skema |
 | K09 | Filter vegetarian | Belum ada penanda vegetarian per jualan |
 | K16 | Tab Tas | `favorites` hanya menyimpan toko |
