@@ -417,6 +417,27 @@ public class TangkapanLayarTest {
         tangkapPanjang("M07-celah");
     }
 
+    /** M14 dari tab Toko; contoh Figma. */
+    @Test
+    public void m14ProfilToko() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m14_toko, null);
+        tunggu();
+        tangkapPanjang("M14");
+    }
+
+    @Test
+    public void m15PengaturanToko() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m15_pengaturan, null);
+        tunggu();
+        tangkap("M15");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -746,6 +767,17 @@ public class TangkapanLayarTest {
                                 + "\"Tepung terigu, keju, telur\"},{\"id\":9,\"name\":\"Cinnamon"
                                 + " roll\",\"unit\":\"pcs\",\"price_rupiah\":30000,"
                                 + "\"ingredients_text\":\"Tepung terigu, kayu manis, gula\"}]}");
+            }
+            if (path.equals("/api/partner/stores/5")) {
+                return json(tokoDetail());
+            }
+            if (path.startsWith("/api/partner/stores/5/members")) {
+                return json(
+                        "{\"data\":[{\"id\":null,\"user_id\":3,\"name\":\"Kalyan Pratama\","
+                                + "\"phone\":\"6281299887766\",\"role\":\"owner\","
+                                + "\"is_store_owner\":true},{\"id\":7,\"user_id\":9,"
+                                + "\"name\":\"Rina\",\"phone\":\"6281322445566\","
+                                + "\"role\":\"cashier\",\"is_store_owner\":false}]}");
             }
             if (path.startsWith("/api/partner/stores?") || path.equals("/api/partner/stores")) {
                 return json(
