@@ -332,7 +332,7 @@ Satu item:
   "minutes_until_end": 95, "halal_label": "self_claim",
   "allergens": [ { "code": "gluten", "name": "Gluten", "presence": "contains" } ],
   "distance_km": 0.38,
-  "store": { "id": 5, "name": "Kopi Kalyan", "category": "cafe", "rating_average": 4.8, "rating_count": 180 }
+  "store": { "id": 5, "name": "Kopi Kalyan", "category": "cafe", "address": "Jl. ...", "latitude": -6.22, "longitude": 106.80, "rating_average": 4.8, "rating_count": 180 }
 }
 ```
 

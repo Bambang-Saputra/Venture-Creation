@@ -439,6 +439,18 @@ public class TangkapanLayarTest {
     }
 
     @Test
+    public void k06Onboarding() {
+        bukaKonsumen(R.id.k06_onboarding);
+        tangkap("K06");
+    }
+
+    @Test
+    public void k08Peta() {
+        bukaKonsumen(R.id.k08_peta);
+        tangkap("K08");
+    }
+
+    @Test
     public void k17Notifikasi() {
         bukaKonsumen(R.id.k17_notifikasi);
         tangkap("K17");

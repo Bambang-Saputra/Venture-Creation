@@ -11,4 +11,14 @@ public class HalamanListing {
 
     @SerializedName("total")
     public int total;
+
+    @SerializedName("current_page")
+    public int currentPage;
+
+    @SerializedName("last_page")
+    public int lastPage;
+
+    public boolean adaBerikutnya() {
+        return currentPage > 0 && currentPage < lastPage;
+    }
 }

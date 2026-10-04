@@ -37,24 +37,21 @@
         android:id="@+id/k05_alergi"
         android:name="id.lifeoffoods.ui.onboarding.AlergiFragment" />
 
+    <!-- K06 Onboarding: sekali sesudah K05, sebelum beranda. -->
+    <fragment
+        android:id="@+id/k06_onboarding"
+        android:name="id.lifeoffoods.ui.onboarding.OnboardingFragment" />
+
     <fragment
         android:id="@+id/k07_beranda"
         android:name="id.lifeoffoods.ui.beranda.BerandaFragment" />
 
-    <!-- Tujuan dari K07 yang layarnya belum dibuat. -->
+    <!-- K08 Peta versi daftar (ADR-0005). -->
     <fragment
         android:id="@+id/k08_peta"
-        android:name="id.lifeoffoods.ui.SegeraFragment">
-        <argument
-            android:name="kode_layar"
-            android:defaultValue="K08"
-            app:argType="string" />
-        <argument
-            android:name="judul"
-            android:defaultValue="Peta"
-            app:argType="string" />
-    </fragment>
+        android:name="id.lifeoffoods.ui.peta.PetaFragment" />
 
+    <!-- Tujuan dari K07 yang layarnya belum dibuat. -->
     <!-- K09 Filter: argumen dan hasilnya dibungkus FilterBundle. -->
     <fragment
         android:id="@+id/k09_filter"
