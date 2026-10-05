@@ -9,6 +9,7 @@ import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
 import id.lifeoffoods.data.api.model.JualanBody;
 import id.lifeoffoods.data.api.model.JualanMitraDto;
+import id.lifeoffoods.data.api.model.ProdukBaruBody;
 import id.lifeoffoods.data.api.model.ProdukDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
 import java.util.ArrayList;
@@ -162,6 +163,87 @@ public class PasangMenuViewModel extends PasangJualanViewModel {
         galatField.setValue(Collections.emptyMap());
         kirim(b);
         return galat;
+    }
+
+    /** Hasil "Tambah menu baru". Dipanggil di main thread. */
+    public interface HasilMenuBaru {
+        void sukses(ProdukDto p);
+
+        /** {@code field} = name, price_rupiah, ingredients_text, atau null untuk galat umum. */
+        void gagal(@androidx.annotation.Nullable String field, String pesan);
+    }
+
+    private boolean menyimpanMenu;
+
+    /**
+     * POST produk baru, lalu produknya langsung masuk "Item hari ini" dengan stok 1 supaya mitra
+     * tinggal mengisi harga jual dan alergen.
+     */
+    public void tambahMenu(String nama, long hargaNormal, String kandungan, HasilMenuBaru hasil) {
+        if (menyimpanMenu) {
+            return;
+        }
+        menyimpanMenu = true;
+        LofApp app = getApplication();
+        TokoAktif.ambil(
+                app,
+                new TokoAktif.Hasil() {
+                    @Override
+                    public void siap(long idToko) {
+                        app.api()
+                                .tambahProduk(
+                                        idToko, new ProdukBaruBody(nama, hargaNormal, kandungan))
+                                .enqueue(
+                                        new ApiCallback<>() {
+                                            @Override
+                                            public void sukses(Terbungkus<ProdukDto> data) {
+                                                menyimpanMenu = false;
+                                                if (data == null || data.data == null) {
+                                                    hasil.gagal(null, "");
+                                                    return;
+                                                }
+                                                ProdukDto p = data.data;
+                                                List<ProdukDto> baru = new ArrayList<>();
+                                                baru.add(p);
+                                                if (produk.getValue() != null) {
+                                                    baru.addAll(produk.getValue());
+                                                }
+                                                stok.put(p.id, 1);
+                                                produk.setValue(baru);
+                                                hapusGalat("items");
+                                                hasil.sukses(p);
+                                            }
+
+                                            @Override
+                                            public void gagal(ApiError e) {
+                                                gagalMenu(e, hasil);
+                                            }
+                                        });
+                    }
+
+                    @Override
+                    public void gagal(ApiError e) {
+                        gagalMenu(e, hasil);
+                    }
+                });
+    }
+
+    private void gagalMenu(ApiError e, HasilMenuBaru hasil) {
+        menyimpanMenu = false;
+        if (e.perluMasukUlang()) {
+            sesiBerakhir.setValue(new id.lifeoffoods.ui.umum.Peristiwa<>(true));
+            return;
+        }
+        if (e.kode() == 422) {
+            for (String f : new String[] {"name", "price_rupiah", "ingredients_text"}) {
+                String p = e.pesanField(f);
+                if (p != null) {
+                    hasil.gagal(f, p);
+                    return;
+                }
+            }
+        }
+        hasil.gagal(null, e.pesan());
     }
 
     /** Harga item di bawah Rp500. */

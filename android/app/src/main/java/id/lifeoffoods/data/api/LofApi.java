@@ -26,6 +26,7 @@ import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PesananDto;
 import id.lifeoffoods.data.api.model.PesananMitraDto;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
+import id.lifeoffoods.data.api.model.ProdukBaruBody;
 import id.lifeoffoods.data.api.model.ProdukDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
 import id.lifeoffoods.data.api.model.RingkasanTokoDto;
@@ -237,6 +238,11 @@ public interface LofApi {
     /** M16: produk toko untuk menu satuan. Hanya pemilik. */
     @GET("partner/stores/{store}/products")
     Call<Terbungkus<List<ProdukDto>>> produkToko(@Path("store") long storeId);
+
+    /** M16 "Tambah menu baru". 201 berisi produknya; 422 nama kembar atau kandungan kosong. */
+    @POST("partner/stores/{store}/products")
+    Call<Terbungkus<ProdukDto>> tambahProduk(
+            @Path("store") long storeId, @Body ProdukBaruBody body);
 
     /** M10, M17: jualan hari ini. {@code type} = surprise_bag atau menu_item. */
     @GET("partner/stores/{store}/listings")

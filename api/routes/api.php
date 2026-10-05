@@ -69,6 +69,7 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
         Route::delete('/members/{member}', [AnggotaTokoController::class, 'cabut'])->whereNumber('member');
         Route::get('/templates', [ListingMitraController::class, 'template']);
         Route::get('/products', [ListingMitraController::class, 'produk']);
+        Route::post('/products', [ListingMitraController::class, 'tambahProduk'])->middleware('throttle:30,1');
         Route::get('/listings', [ListingMitraController::class, 'daftar']);
         Route::post('/listings', [ListingMitraController::class, 'buat'])->middleware('throttle:30,1');
         Route::post('/listings/{listing}/publish', [ListingMitraController::class, 'terbitkan']);
