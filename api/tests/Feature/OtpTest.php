@@ -152,6 +152,27 @@ class OtpTest extends TestCase
         $this->assertDatabaseCount('personal_access_tokens', 0);
     }
 
+    public function test_banyak_penguji_di_satu_ip_tidak_saling_menghabiskan_jatah(): void
+    {
+        // Dulu throttle:5,1 per IP: permintaan keenam dari satu Wi-Fi langsung 429.
+        foreach (range(1, 8) as $i) {
+            $this->minta('62812345678'.str_pad((string) $i, 2, '0', STR_PAD_LEFT))->assertStatus(202);
+        }
+    }
+
+    public function test_terlalu_sering_verifikasi_dibalas_pesan_indonesia(): void
+    {
+        $this->minta()->assertStatus(202);
+        foreach (range(1, 10) as $i) {
+            $this->verifikasi('000000');
+        }
+
+        $this->verifikasi('000000')
+            ->assertStatus(429)
+            ->assertJsonPath('code', 'too_many_requests')
+            ->assertJsonPath('message', fn (string $pesan) => str_starts_with($pesan, 'Terlalu sering mencoba. Tunggu '));
+    }
+
     private function minta(string $phone = self::NOMOR, string $role = 'consumer'): TestResponse
     {
         return $this->postJson('/api/auth/otp/request', ['phone' => $phone, 'role' => $role]);

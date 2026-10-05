@@ -60,7 +60,7 @@ Daftar berhalaman memakai paginator Laravel. Android cukup membaca `data`, `curr
 | 404 | Tidak ditemukan, termasuk milik orang lain | `{ "message": "..." }` |
 | 409 | Status data tidak mengizinkan aksi ini | `{ "message": "..." }` |
 | 422 | Validasi gagal | `{ "message": "...", "errors": { "field": ["..."] } }` |
-| 429 | Terlalu sering | `{ "message": "..." }` |
+| 429 | Terlalu sering | `{ "message": "...", "code": "too_many_requests", "retry_after": 42 }` untuk batas laju. OTP dibatasi per nomor HP (minta 3/menit, verifikasi 10/menit), dengan batas IP longgar sebagai pengaman |
 | 503 | Fitur belum tersedia di server ini | `{ "message": "..." }` |
 
 `message` selalu dalam Bahasa Indonesia dan boleh langsung ditampilkan di Snackbar. Untuk 422, tampilkan `errors.<field>[0]` di bawah input yang bersangkutan.
