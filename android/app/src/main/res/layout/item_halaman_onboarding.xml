@@ -14,7 +14,7 @@
         android:contentDescription="@null"
         android:importantForAccessibility="no"
         android:scaleType="centerCrop"
-        tools:src="@drawable/foto_perkenalan_segar" />
+        tools:src="@drawable/foto_perkenalan_bakery" />
 
     <View
         android:layout_width="match_parent"

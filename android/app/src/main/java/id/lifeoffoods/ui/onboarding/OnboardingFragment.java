@@ -31,9 +31,9 @@ public class OnboardingFragment extends Fragment {
 
     /** Foto per halaman (CC BY/BY-SA, atribusi di docs/aset/SUMBER-foto-onboarding.md). */
     private static final int[] FOTO = {
-        R.drawable.foto_perkenalan_segar,
-        R.drawable.foto_perkenalan_berbagi,
-        R.drawable.foto_perkenalan_senang,
+        R.drawable.foto_perkenalan_bakery,
+        R.drawable.foto_perkenalan_kacang,
+        R.drawable.foto_perkenalan_kasir,
     };
 
     private FragmentOnboardingBinding binding;
