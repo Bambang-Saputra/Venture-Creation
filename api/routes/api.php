@@ -20,8 +20,8 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UlasanController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/auth/otp/request', [OtpController::class, 'minta'])->middleware('throttle:5,1');
-Route::post('/auth/otp/verify', [OtpController::class, 'verifikasi'])->middleware('throttle:10,1');
+Route::post('/auth/otp/request', [OtpController::class, 'minta'])->middleware('throttle:otp-minta');
+Route::post('/auth/otp/verify', [OtpController::class, 'verifikasi'])->middleware('throttle:otp-verifikasi');
 Route::post('/auth/google', LoginGoogleController::class)->middleware('throttle:10,1');
 
 // Data rujukan tanpa data pribadi, jadi tidak butuh token.
