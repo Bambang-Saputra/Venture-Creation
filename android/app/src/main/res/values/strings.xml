@@ -606,8 +606,7 @@
     <string name="k06_isi_3">Pesan dari aplikasi, datang di jam ambil, lalu tunjukkan kode pickup ke kasir. Bayarnya tunai atau QRIS langsung di toko.</string>
     <string name="k06_lewati">Lewati</string>
     <string name="k06_lanjut">Lanjut</string>
-    <string name="k06_mulai">Mulai cari makanan</string>
-    <string name="k06_catatan_lokasi">Berikutnya kami minta izin lokasi, supaya jualan terdekat dari posisimu tampil lebih dulu. Boleh ditolak.</string>
+    <string name="k06_mulai">Mulai sekarang</string>
     <string name="k06_halaman">Halaman %1$d dari %2$d</string>
 
     <!-- K08 Peta (versi daftar, ADR-0005) -->

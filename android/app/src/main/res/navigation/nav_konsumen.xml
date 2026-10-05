@@ -37,10 +37,7 @@
         android:id="@+id/k05_alergi"
         android:name="id.lifeoffoods.ui.onboarding.AlergiFragment" />
 
-    <!-- K06 Onboarding: sekali sesudah K05, sebelum beranda. -->
-    <fragment
-        android:id="@+id/k06_onboarding"
-        android:name="id.lifeoffoods.ui.onboarding.OnboardingFragment" />
+    <!-- K06 Onboarding pindah ke nav_awal: tampil sebelum masuk, bukan sesudah K05. -->
 
     <fragment
         android:id="@+id/k07_beranda"

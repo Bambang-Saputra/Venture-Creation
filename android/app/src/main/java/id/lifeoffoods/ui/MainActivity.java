@@ -56,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
                     grafUntuk(peran),
                     sesi.perluProfil() ? R.id.k04_lengkapi_profil : berandaUntuk(peran));
         } else {
-            pasangGraf(R.navigation.nav_awal, R.id.k01_pilih_peran);
+            // Instalasi baru: K06 Onboarding dulu, sebelum K01 Pilih peran.
+            pasangGraf(
+                    R.navigation.nav_awal,
+                    sesi.perkenalanSelesai() ? R.id.k01_pilih_peran : R.id.k06_onboarding);
         }
     }
 
@@ -88,11 +91,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Dari K05 (Simpan atau Lewati): onboarding selesai, buka K06 lalu beranda tanpa riwayat
-     * K04/K05.
+     * Dari K05 (Simpan atau Lewati): profil selesai, buka beranda tanpa riwayat K04/K05. K06 sudah
+     * tampil sebelum masuk, jadi tidak diulang di sini.
      */
     public void selesaiOnboarding() {
-        pasangGraf(R.navigation.nav_konsumen, R.id.k06_onboarding);
+        pasangGraf(R.navigation.nav_konsumen, R.id.k07_beranda);
+    }
+
+    /** Dari K06 (Lewati atau halaman terakhir): tandai sudah dilihat, lalu buka K01. */
+    public void selesaiPerkenalan() {
+        sesi.tandaiPerkenalan(true);
+        kembaliKeAwal();
     }
 
     /** Token ditolak server (401): hapus sesi lokal lalu kembali ke K01. */

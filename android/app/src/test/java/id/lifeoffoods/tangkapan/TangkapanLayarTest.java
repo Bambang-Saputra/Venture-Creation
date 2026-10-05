@@ -63,6 +63,8 @@ public class TangkapanLayarTest {
         server.start();
         app().arahkanApiKe(server.url("/api/").toString());
         app().sesi().hapus();
+        // Default: K06 sudah dilihat, supaya buka() tanpa sesi berhenti di K01.
+        app().sesi().tandaiPerkenalan(true);
     }
 
     @After
@@ -457,7 +459,9 @@ public class TangkapanLayarTest {
 
     @Test
     public void k06Onboarding() {
-        bukaKonsumen(R.id.k06_onboarding);
+        // Instalasi baru tanpa sesi: K06 tampil sebelum K01.
+        app().sesi().tandaiPerkenalan(false);
+        buka();
         tangkap("K06");
     }
 
@@ -469,11 +473,20 @@ public class TangkapanLayarTest {
 
     @Test
     public void k06HalamanTerakhir() {
-        MainActivity a = bukaKonsumen(R.id.k06_onboarding);
+        app().sesi().tandaiPerkenalan(false);
+        MainActivity a = buka();
         ((androidx.viewpager2.widget.ViewPager2) a.findViewById(R.id.halaman))
                 .setCurrentItem(2, false);
         tunggu();
         tangkap("K06-akhir");
+
+        // Tombol terakhir membuka K01 dan K06 tidak tampil lagi, termasuk setelah logout.
+        a.findViewById(R.id.tombol_lanjut).performClick();
+        idle();
+        org.junit.Assert.assertNotNull(a.findViewById(R.id.kartu_konsumen));
+        org.junit.Assert.assertTrue(app().sesi().perkenalanSelesai());
+        app().sesi().hapus();
+        org.junit.Assert.assertTrue(app().sesi().perkenalanSelesai());
     }
 
     @Test
