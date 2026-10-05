@@ -13,6 +13,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FilterJualan;
 import id.lifeoffoods.data.FormatTampilan;
@@ -97,6 +98,8 @@ public class BerandaFragment extends Fragment {
                 new BaseListAdapter<>(
                         ItemKartuFlashBinding::inflate, this::isiKartuPopuler, l -> l.id);
         binding.daftarPopuler.setAdapter(adapterPopuler);
+        // Digeser satu kartu per sapuan, seperti carousel Flash Sale.
+        new LinearSnapHelper().attachToRecyclerView(binding.daftarPopuler);
         BaseListAdapter<ListingDto, ItemKartuFlashBinding> adapterSegera =
                 new BaseListAdapter<>(
                         ItemKartuFlashBinding::inflate, this::isiKartuFlash, l -> l.id);
@@ -157,6 +160,8 @@ public class BerandaFragment extends Fragment {
                     adapterPopuler.submitList(daftar);
                     binding.bagianPopuler.setVisibility(
                             daftar.isEmpty() ? View.GONE : View.VISIBLE);
+                    binding.geserPopuler.setVisibility(
+                            daftar.size() > 1 ? View.VISIBLE : View.GONE);
                 });
         vm.segeraTutup.observe(
                 getViewLifecycleOwner(),

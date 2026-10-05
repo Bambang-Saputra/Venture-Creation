@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "Populer hari ini" ala Flash Sale: gradasi hijau merek, sudut 20dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="315"
+        android:endColor="@color/merek_terang"
+        android:startColor="@color/gradasi_kode_atas" />
+    <corners android:radius="20dp" />
+</shape>

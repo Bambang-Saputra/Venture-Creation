@@ -288,8 +288,13 @@
                 android:id="@+id/bagian_populer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="22dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_kotak_populer"
                 android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -298,31 +303,44 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
 
                     <ImageView
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_tren_naik"
-                        app:tint="@color/merek_utama" />
+                        app:tint="@color/merek_lime" />
 
                     <TextView
                         style="@style/Teks.JudulSeksi"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="@string/k07_populer" />
+                        android:layout_weight="1"
+                        android:text="@string/k07_populer"
+                        android:textColor="@color/teks_di_gelap" />
+
+                    <TextView
+                        android:id="@+id/geser_populer"
+                        style="@style/Teks.Keterangan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:importantForAccessibility="no"
+                        android:text="@string/k07_populer_geser"
+                        android:textColor="@color/teks_di_gelap" />
                 </LinearLayout>
 
                 <TextView
                     style="@style/Teks.Keterangan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="2dp"
-                    android:text="@string/k07_populer_ket" />
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/k07_populer_ket"
+                    android:textColor="@color/teks_di_gelap" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/daftar_populer"
@@ -330,10 +348,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:clipToPadding="false"
+                    android:contentDescription="@string/k07_populer"
                     android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="8dp"
+                    android:overScrollMode="never"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="4dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_kartu_flash" />
             </LinearLayout>
