@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    K06 Onboarding (Figma "K06 · Onboarding"). Tampil sekali sesudah K05, sebelum beranda. Tiga
-    halaman yang bisa digeser; Lewati dan halaman terakhir membuka K07.
+    K06 Onboarding (Figma "K06 · Onboarding"). Tampil sekali per instalasi, sebelum K01. Tiga
+    halaman yang bisa digeser; Lewati dan halaman terakhir membuka K01.
 
     Figma hanya menggambar halaman pertama (titik indikator menunjukkan tiga). Halaman 2 dan 3
     memakai pola yang sama, isinya dari alur pilot: peringatan alergi dan bayar di tempat.
@@ -22,8 +22,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/halaman"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="128dp" />
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <LinearLayout
@@ -63,21 +62,6 @@
                 android:layout_marginStart="6dp"
                 android:background="@drawable/bg_titik_pasif" />
         </LinearLayout>
-
-        <!-- Hanya di halaman terakhir: alasan izin lokasi sebelum dialog sistem muncul. -->
-        <TextView
-            android:id="@+id/catatan_lokasi"
-            style="@style/Teks.Keterangan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:text="@string/k06_catatan_lokasi"
-            android:textColor="@color/teks_sekunder"
-            android:visibility="gone"
-            app:drawableStartCompat="@drawable/ic_pin_lokasi"
-            app:drawableTint="@color/teks_merek" />
 
         <LinearLayout
             android:layout_width="match_parent"

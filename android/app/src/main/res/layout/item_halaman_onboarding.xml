@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Satu halaman K06: slot foto dengan selubung gelap, lalu kicker, judul, dan isi di atasnya. -->
+<!-- Satu halaman K06: foto penuh, selubung gelap di atas dan bawah, lalu kicker, judul, dan isi. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_selubung_onboarding">
+    android:background="@color/merek_tinta">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:importantForAccessibility="noHideDescendants"
-        android:orientation="vertical">
+    <ImageView
+        android:id="@+id/foto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/foto_perkenalan_bakery" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_gambar"
-            app:tint="@color/ikon_redup" />
-
-        <TextView
-            style="@style/Teks.Keterangan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/m14_foto"
-            android:textColor="@color/ikon_redup" />
-    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_selubung_onboarding" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -25,8 +25,29 @@ public class SesiPengguna {
 
     private final SharedPreferences prefs;
 
+    /**
+     * Penanda tingkat perangkat, bukan akun. Berkasnya terpisah supaya tidak ikut terhapus di
+     * {@link #hapus()}: K06 cukup tampil sekali per instalasi, tidak tiap kali logout.
+     */
+    private final SharedPreferences perangkat;
+
+    private static final String BERKAS_PERANGKAT = "perangkat";
+    private static final String KUNCI_PERKENALAN = "perkenalan_selesai";
+
     public SesiPengguna(Context context) {
         prefs = context.getApplicationContext().getSharedPreferences(BERKAS, Context.MODE_PRIVATE);
+        perangkat =
+                context.getApplicationContext()
+                        .getSharedPreferences(BERKAS_PERANGKAT, Context.MODE_PRIVATE);
+    }
+
+    /** true kalau K06 Onboarding sudah dilihat (atau dilewati) di perangkat ini. */
+    public boolean perkenalanSelesai() {
+        return perangkat.getBoolean(KUNCI_PERKENALAN, false);
+    }
+
+    public void tandaiPerkenalan(boolean selesai) {
+        perangkat.edit().putBoolean(KUNCI_PERKENALAN, selesai).apply();
     }
 
     /**

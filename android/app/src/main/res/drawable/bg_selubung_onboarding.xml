@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Selubung foto K06: terang di atas, makin gelap ke bawah supaya teks putih terbaca. -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:angle="270"
-        android:centerColor="#99314A3C"
-        android:centerY="0.55"
-        android:endColor="@color/merek_tinta"
-        android:startColor="@color/latar_lembut"
-        android:type="linear" />
-</shape>
+<!--
+    Selubung foto K06. Atas agak gelap supaya ikon status bar terbaca, tengah bening supaya fotonya
+    kelihatan, bawah makin gelap supaya teks putih terbaca.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:height="140dp"
+        android:gravity="top">
+        <shape>
+            <gradient
+                android:angle="270"
+                android:endColor="#000F2A1E"
+                android:startColor="#990F2A1E" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <gradient
+                android:angle="270"
+                android:centerColor="#330F2A1E"
+                android:centerY="0.45"
+                android:endColor="@color/merek_tinta"
+                android:startColor="#000F2A1E"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>
