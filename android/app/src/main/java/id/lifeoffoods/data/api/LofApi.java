@@ -5,6 +5,7 @@ import id.lifeoffoods.data.api.model.AlergenBody;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.AnggotaTokoDto;
 import id.lifeoffoods.data.api.model.AuthResponse;
+import id.lifeoffoods.data.api.model.BannerDto;
 import id.lifeoffoods.data.api.model.CatatSisaBody;
 import id.lifeoffoods.data.api.model.CatatanSisaDto;
 import id.lifeoffoods.data.api.model.FavoritDto;
@@ -28,6 +29,7 @@ import id.lifeoffoods.data.api.model.PesananMitraDto;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
 import id.lifeoffoods.data.api.model.ProdukDto;
 import id.lifeoffoods.data.api.model.ProfilBody;
+import id.lifeoffoods.data.api.model.PromosiDto;
 import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.data.api.model.SaldoTokoDto;
 import id.lifeoffoods.data.api.model.SaranProduksiDto;
@@ -323,4 +325,22 @@ public interface LofApi {
     @GET("partner/stores/{store}/balance/transactions")
     Call<SaldoTokoDto.HalamanTransaksi> transaksiSaldo(
             @Path("store") long storeId, @Query("page") int halaman);
+
+    /**
+     * Karusel iklan paling atas K07. Tanpa token. Toko yang semua jualannya mengandung alergen
+     * pembeli tidak ikut.
+     */
+    @GET("promotions/banners")
+    Call<Terbungkus<List<BannerDto>>> bannerPromosi(
+            @QueryMap Map<String, String> query,
+            @Query("exclude_allergens[]") List<String> alergen);
+
+    /** Promosikan toko (dari M14): tarif paket dan iklan toko. Hanya pemilik. */
+    @GET("partner/stores/{store}/promotions")
+    Call<PromosiDto.Halaman> promosiToko(@Path("store") long storeId);
+
+    /** 201. Paket yang sama dan masih tayang disambung setelah tanggal berakhirnya. */
+    @POST("partner/stores/{store}/promotions")
+    Call<Terbungkus<PromosiDto>> beliPromosi(
+            @Path("store") long storeId, @Body PromosiDto.Body body);
 }

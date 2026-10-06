@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Satu banner iklan di karusel K07 (GET /promotions/banners). Lebar 300dp supaya kartu berikutnya
+    mengintip di layar 360dp dan pembeli tahu bisa digeser. Label "Iklan" selalu tampil.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="140dp"
+    android:layout_marginEnd="12dp"
+    android:background="@drawable/bg_kartu_banner"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/foto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_selubung_banner" />
+
+    <LinearLayout
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <TextView
+            style="@style/Teks.Lencana"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pil_iklan"
+            android:paddingStart="7dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="2dp"
+            android:text="@string/iklan"
+            android:textColor="@color/tanda_proses_teks" />
+
+        <TextView
+            android:id="@+id/toko"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/teks_di_gelap"
+            tools:text="Nasi Goreng Pak Syahdan" />
+
+        <TextView
+            android:id="@+id/kalimat"
+            style="@style/Teks.IsiKecil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/teks_di_gelap"
+            tools:text="Nasi goreng hangat, hemat sampai 60%" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/mulai"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pil_lime"
+            android:textColor="@color/merek_tinta"
+            tools:text="Mulai Rp9.000" />
+    </LinearLayout>
+</FrameLayout>

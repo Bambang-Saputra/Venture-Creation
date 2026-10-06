@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Label "Iklan" di kartu yang dibayar mitra: kuning lembut, beda dari pil hijau jualan biasa. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/tanda_proses_latar" />
+    <corners android:radius="6dp" />
+</shape>

@@ -38,6 +38,13 @@ public class ListingDto {
     @SerializedName("qty_ordered")
     public int qtyOrdered;
 
+    /**
+     * true kalau jualan ini ditaruh paling atas karena tokonya membeli paket prioritas pencarian.
+     * Kartunya wajib memakai label "Iklan".
+     */
+    @SerializedName("is_sponsored")
+    public boolean isSponsored;
+
     /** ISO 8601 dengan offset +07:00. */
     @SerializedName("pickup_start")
     public String pickupStart;

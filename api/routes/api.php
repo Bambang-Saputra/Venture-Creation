@@ -14,6 +14,7 @@ use App\Http\Controllers\Partner\CatatSisaController;
 use App\Http\Controllers\Partner\DasborMitraController;
 use App\Http\Controllers\Partner\ListingMitraController;
 use App\Http\Controllers\Partner\PesananMitraController;
+use App\Http\Controllers\Partner\PromosiMitraController;
 use App\Http\Controllers\Partner\TokoController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfilController;
@@ -28,6 +29,7 @@ Route::post('/auth/google', LoginGoogleController::class)->middleware('throttle:
 Route::get('/allergens', [AlergenController::class, 'daftar']);
 Route::get('/listings', [ListingController::class, 'daftar'])->middleware('throttle:60,1');
 Route::get('/listings/{id}', [ListingController::class, 'detail'])->whereNumber('id')->middleware('throttle:60,1');
+Route::get('/promotions/banners', [ListingController::class, 'banner'])->middleware('throttle:60,1');
 
 Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::post('/auth/logout', KeluarController::class);
@@ -63,6 +65,8 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
         Route::post('/listings/{listing}/photo', [FotoController::class, 'listing'])->middleware('throttle:10,1');
         Route::get('/balance', [TokoController::class, 'saldo']);
         Route::get('/balance/transactions', [TokoController::class, 'transaksi']);
+        Route::get('/promotions', [PromosiMitraController::class, 'daftar']);
+        Route::post('/promotions', [PromosiMitraController::class, 'buat'])->middleware('throttle:10,1');
         Route::get('/reviews', [UlasanController::class, 'daftarToko']);
         Route::get('/members', [AnggotaTokoController::class, 'daftar']);
         Route::post('/members', [AnggotaTokoController::class, 'undang'])->middleware('throttle:10,1');

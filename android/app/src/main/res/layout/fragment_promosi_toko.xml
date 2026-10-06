@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M22 Promosikan toko (#3 rencana lanjutan; belum ada di Figma). Dari baris "Promosikan toko" di
+    M14, hanya pemilik. Pilih paket, kalimat banner, lama tayang, lihat total, lalu aktifkan.
+    Selama uji coba belum ada tagihan: alasannya dari server (billing.reason) ditampilkan di atas.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_halaman"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_kotak_lembut_12"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="2dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_info"
+                        app:tint="@color/teks_sekunder" />
+
+                    <TextView
+                        android:id="@+id/info_tagihan"
+                        style="@style/Teks.Isi"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/m22_tagihan_nonaktif"
+                        android:textColor="@color/teks_sekunder"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Teks.JudulSeksi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:accessibilityHeading="true"
+                    android:text="@string/m22_pilih_paket" />
+
+                <include
+                    android:id="@+id/paket_prioritas"
+                    layout="@layout/item_paket_promosi" />
+
+                <include
+                    android:id="@+id/paket_banner"
+                    layout="@layout/item_paket_promosi" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/isian_kalimat"
+                    style="@style/IsianBulat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:hint="@string/m22_kalimat"
+                    android:visibility="gone"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="80"
+                    app:helperText="@string/m22_kalimat_bantuan"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/kalimat"
+                        style="@style/IsianTeks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences"
+                        android:maxLength="80" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_kartu_20"
+                    android:gravity="center_vertical"
+                    android:minHeight="64dp"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/m22_lama" />
+
+                        <TextView
+                            android:id="@+id/rentang"
+                            style="@style/Teks.IsiKecil"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/teks_sekunder"
+                            tools:text="Tayang 6 Okt sampai 12 Okt" />
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/stepper"
+                        layout="@layout/include_stepper" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_ringkasan_gelap"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <TextView
+                        style="@style/Teks.Kicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/m22_total"
+                        android:textColor="@color/teks_di_gelap" />
+
+                    <TextView
+                        android:id="@+id/total"
+                        style="@style/Teks.Hero"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Rp35.000" />
+
+                    <TextView
+                        android:id="@+id/rincian"
+                        style="@style/Teks.Sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:alpha="0.8"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Rp5.000 × 7 hari" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_aktifkan"
+                        style="@style/Widget.LifeOfFoods.Tombol.Putih"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="@string/m22_aktifkan" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_kartu_20"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        style="@style/Teks.JudulKartu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:text="@string/m22_riwayat" />
+
+                    <LinearLayout
+                        android:id="@+id/daftar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <TextView
+                        android:id="@+id/kosong"
+                        style="@style/Teks.Isi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/m22_kosong"
+                        android:textColor="@color/teks_sekunder"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+</LinearLayout>

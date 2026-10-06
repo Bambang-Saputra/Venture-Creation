@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Satu kartu paket di "Promosikan toko": nama, keterangan, dan tarif per hari. Terpilih = garis hijau. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bg_pilihan_kartu"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="72dp"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <ImageView
+        android:id="@+id/ikon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_ikon_mint"
+        android:contentDescription="@null"
+        android:padding="8dp"
+        app:tint="@color/merek_utama"
+        tools:src="@drawable/ic_cari" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nama"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Prioritas pencarian" />
+
+        <TextView
+            android:id="@+id/ket"
+            style="@style/Teks.IsiKecil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/teks_sekunder"
+            tools:text="Jualanmu tampil paling atas di daftar Beranda dan kategori, dengan label Iklan." />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tarif"
+        style="@style/Teks.Harga"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="end"
+        tools:text="Rp5.000\n/hari" />
+</LinearLayout>

@@ -87,6 +87,11 @@ public class ProfilTokoFragment extends Fragment {
                 R.id.m10_kelola);
         siapkanBaris(binding.barisSaldo, R.drawable.ic_dompet, R.string.m14_saldo, R.id.m13_saldo);
         siapkanBaris(
+                binding.barisPromosi,
+                R.drawable.ic_tren_naik,
+                R.string.m14_promosi,
+                R.id.m22_promosi);
+        siapkanBaris(
                 binding.barisLaporan,
                 R.drawable.ic_laporan,
                 R.string.m14_laporan,
@@ -202,6 +207,7 @@ public class ProfilTokoFragment extends Fragment {
         // Kasir: saldo, laporan, dan pengaturan kasir hanya untuk pemilik (M15).
         boolean pemilik = t.pemilik();
         binding.barisSaldo.getRoot().setVisibility(pemilik ? View.VISIBLE : View.GONE);
+        binding.barisPromosi.getRoot().setVisibility(pemilik ? View.VISIBLE : View.GONE);
         binding.barisLaporan.getRoot().setVisibility(pemilik ? View.VISIBLE : View.GONE);
         binding.barisPengaturan.getRoot().setVisibility(pemilik ? View.VISIBLE : View.GONE);
         if (t.availableBalanceRupiah != null) {

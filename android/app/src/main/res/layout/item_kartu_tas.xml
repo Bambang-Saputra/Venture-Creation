@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Komponen "Kartu tas" (Figma "Kartu tas"), 362 lebar: foto 94x94, lalu jarak, judul, toko,
-     harga dan pil jam ambil. Lencana "Bersponsor" belum dipakai karena API belum punya iklan. -->
+     harga dan pil jam ambil. Label "Iklan" hanya untuk jualan dari paket prioritas pencarian. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -40,12 +40,36 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/jarak"
-            style="@style/Teks.Keterangan"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Hanya untuk jualan dari paket prioritas pencarian (is_sponsored). -->
+            <TextView
+                android:id="@+id/label_iklan"
+                style="@style/Teks.Lencana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_pil_iklan"
+                android:paddingStart="6dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="6dp"
+                android:paddingBottom="1dp"
+                android:text="@string/iklan"
+                android:textColor="@color/tanda_proses_teks"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/jarak"
+                style="@style/Teks.Keterangan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/judul"
