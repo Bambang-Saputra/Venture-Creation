@@ -42,5 +42,6 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 - [ ] OTP lewat SMS atau WhatsApp, lalu matikan `PILOT_MODE`.
 - [x] Kode galat khusus dari server untuk akun nonaktif, peran salah, dan batas 3 pesanan.
 - [x] M11 memuat lebih dari 30 pesanan (paginasi). Tab Riwayat (M21) punya "Muat lebih banyak"; tab Hari ini masih halaman pertama saja.
+- [x] **Pendaftaran mitra dari app** (M03, M04, ADR-0007). Nomor baru di halaman mitra mengisi data usaha, lalu menunggu tim menyetujui lewat `php artisan mitra:pendaftaran` dan `mitra:setujui {id}`. KTP tidak diminta, NIB opsional.
 - [ ] APK rilis yang ditandatangani, lalu Play Store (internal testing).
 - [ ] Pembayaran online (ditunda, lihat ADR-0004).

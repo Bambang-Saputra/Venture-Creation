@@ -24,6 +24,14 @@
         android:id="@+id/m02_verifikasi"
         android:name="id.lifeoffoods.ui.masuk.VerifikasiOtpFragment" />
 
+    <!--
+        M03 Daftar sebagai mitra dan M04 Verifikasi usaha. Dibuka M05 (tanpa riwayat) kalau akun
+        mitra belum punya toko; kembali ke M05 begitu pendaftarannya disetujui tim.
+    -->
+    <fragment
+        android:id="@+id/m03_daftar_mitra"
+        android:name="id.lifeoffoods.ui.mitra.PendaftaranMitraFragment" />
+
     <!-- M05 Dashboard mitra (PRD-24). Tujuan awal mitra yang sudah masuk; tab Beranda. -->
     <fragment
         android:id="@+id/m05_dashboard"

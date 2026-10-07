@@ -40,12 +40,15 @@ final class TokoAktif {
                                                 ? null
                                                 : data.data.get(0);
                                 if (t == null) {
+                                    // Akun mitra baru: tokonya baru dibuat setelah
+                                    // pendaftaran M03 disetujui tim.
                                     hasil.gagal(
                                             ApiError.dariRespons(
                                                     404,
-                                                    "{\"message\":\"Akun ini belum terhubung ke"
-                                                            + " toko mana pun. Hubungi tim Life of"
-                                                            + " Foods.\"}"));
+                                                    "{\"message\":\"Akun ini belum punya toko.\","
+                                                            + "\"code\":\""
+                                                            + ApiError.BELUM_ADA_TOKO
+                                                            + "\"}"));
                                     return;
                                 }
                                 app.sesi().simpanToko(t.id);

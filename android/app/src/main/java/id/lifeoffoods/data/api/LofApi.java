@@ -22,6 +22,7 @@ import id.lifeoffoods.data.api.model.NotifikasiResponse;
 import id.lifeoffoods.data.api.model.OtpRequestBody;
 import id.lifeoffoods.data.api.model.OtpRequestResponse;
 import id.lifeoffoods.data.api.model.OtpVerifyBody;
+import id.lifeoffoods.data.api.model.PendaftaranMitraDto;
 import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PesananDto;
 import id.lifeoffoods.data.api.model.PesananMitraDto;
@@ -206,6 +207,18 @@ public interface LofApi {
     /** Toko milik akun mitra (pemilik atau kasir); dipakai untuk mendapatkan store_id. */
     @GET("partner/stores")
     Call<Terbungkus<List<TokoMitraDto>>> tokoSaya();
+
+    /**
+     * M03/M04: pendaftaran terakhir akun mitra yang belum punya toko. {@code data} bernilai null
+     * kalau belum pernah mendaftar.
+     */
+    @GET("partner/application")
+    Call<Terbungkus<PendaftaranMitraDto>> pendaftaranMitra();
+
+    /** M04 "Kirim untuk ditinjau". 409 kalau masih ada yang menunggu atau akun sudah punya toko. */
+    @POST("partner/application")
+    Call<Terbungkus<PendaftaranMitraDto>> kirimPendaftaranMitra(
+            @Body PendaftaranMitraDto.Kirim body);
 
     /**
      * M11 Pesanan masuk dan M21 Riwayat. {@code status} = {@code pending} (urut jam ambil) atau

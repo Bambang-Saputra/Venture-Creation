@@ -784,4 +784,44 @@
     <string name="m15_baris_anggota">%1$s, %2$s, %3$s</string>
     <string name="m15_ketuk_cabut">cabut akses</string>
 
+    <!-- M03 Daftar sebagai mitra dan M04 Verifikasi usaha (rencana lanjutan #7) -->
+    <string name="m03_judul">Daftar sebagai mitra</string>
+    <string name="m03_langkah">Langkah 1 dari 2 · Data usaha</string>
+    <string name="m03_nama_usaha">Nama usaha</string>
+    <string name="m03_nama_usaha_contoh">Contoh: Kopi Kalyan SCBD</string>
+    <string name="m03_jenis_usaha">Jenis usaha</string>
+    <string name="m03_alamat">Alamat usaha</string>
+    <string name="m03_alamat_contoh">Nama jalan, nomor, dan patokan</string>
+    <string name="m03_alamat_bantuan">Dipakai pembeli untuk mencari tokomu.</string>
+    <string name="m03_jam_buka">Jam buka</string>
+    <string name="m03_jam_tutup">Jam tutup</string>
+    <string name="m03_galat_nama">Isi nama usaha, minimal 2 huruf.</string>
+    <string name="m03_galat_kategori">Pilih jenis usahamu.</string>
+    <string name="m03_galat_alamat">Tulis alamat lengkap, termasuk nama jalan dan nomor.</string>
+    <string name="m03_galat_jam">Jam tutup harus setelah jam buka.</string>
+    <string name="m03_ditolak">Pendaftaran sebelumnya belum disetujui. Alasan dari tim: %1$s</string>
+    <string name="m03_ditolak_tanpa_alasan">Pendaftaran sebelumnya belum disetujui. Periksa lagi datanya, lalu kirim ulang.</string>
+    <string name="m04_judul">Verifikasi usaha</string>
+    <string name="m04_langkah">Langkah 2 dari 2 · Pemilik dan izin</string>
+    <string name="m04_pemilik">Nama pemilik</string>
+    <string name="m04_pemilik_contoh">Sesuai nama yang biasa dipakai</string>
+    <string name="m04_galat_pemilik">Isi nama pemilik, minimal 2 huruf.</string>
+    <string name="m04_nib">NIB (opsional)</string>
+    <string name="m04_nib_contoh">13 angka dari OSS</string>
+    <string name="m04_nib_bantuan">Kosongkan kalau belum punya, termasuk kalau izin usahanya atas nama orang tua. Pendaftaran dengan NIB diperiksa lebih dulu.</string>
+    <string name="m04_galat_nib">NIB terdiri dari 13 angka. Kosongkan kalau belum punya.</string>
+    <string name="m04_halal">Nomor sertifikat halal (opsional)</string>
+    <string name="m04_halal_contoh">Contoh: ID12345678</string>
+    <string name="m04_halal_bantuan">Isi hanya kalau usahamu sudah bersertifikat. Tanpa nomor ini, status halal tampil “tidak disebutkan”.</string>
+    <string name="m04_info_tinjau">Tim kami meninjau dalam 1&#160;×&#160;24&#160;jam. Begitu disetujui, kamu langsung bisa memasang jualan dan mencatat sisa.</string>
+    <string name="m04_kirim">Kirim untuk ditinjau</string>
+    <string name="m04_menunggu_bar">Menunggu verifikasi</string>
+    <string name="m04_menunggu_judul">Pendaftaranmu sedang ditinjau</string>
+    <string name="m04_menunggu_isi">Tim Life of Foods memeriksa %1$s dalam 1&#160;×&#160;24&#160;jam. Buka lagi aplikasi ini nanti, atau ketuk Periksa status.</string>
+    <string name="m04_ringkasan_jam">%1$s · %2$s–%3$s</string>
+    <string name="m04_ringkasan_nib">NIB %1$s</string>
+    <string name="m04_ringkasan_tanpa_nib">Tanpa NIB</string>
+    <string name="m04_periksa_status">Periksa status</string>
+    <string name="m04_masih_ditinjau">Masih ditinjau tim. Coba periksa lagi nanti.</string>
+    <string name="m04_keluar">Keluar dari akun ini</string>
 </resources>

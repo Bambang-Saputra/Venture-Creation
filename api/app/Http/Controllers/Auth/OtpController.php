@@ -39,10 +39,9 @@ class OtpController extends Controller
             throw new OtpDitolak('Pengiriman kode lewat WhatsApp belum tersedia. Coba lagi nanti.', 503);
         }
 
-        // Akun mitra hanya dibuat lewat SeederPilot (M03 berstatus WON'T).
-        if ($data['role'] === 'partner' && ! User::where('phone', $phone)->where('role', 'partner')->exists()) {
-            throw new OtpDitolak('Nomor ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.', 403, 'partner_not_registered');
-        }
+        // Nomor baru di halaman mitra boleh meminta kode: setelah masuk, akunnya diarahkan ke
+        // M03 Daftar jadi mitra. Tanpa toko yang disetujui tim, akun itu tidak bisa membuka
+        // satu pun rute /partner/stores.
 
         $terakhir = DB::table('otp_codes')->where('phone', $phone)->whereNull('consumed_at')->latest('id')->first();
         if ($terakhir !== null) {
@@ -125,10 +124,9 @@ class OtpController extends Controller
         $user = User::where('phone', $phone)->first();
         $akunBaru = false;
 
-        if ($user === null && $data['role'] === 'partner') {
-            throw new OtpDitolak('Nomor ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.', 403, 'partner_not_registered');
-        } elseif ($user === null) {
-            $user = User::forceCreate(['phone' => $phone, 'phone_verified_at' => now(), 'role' => 'consumer'])->refresh();
+        if ($user === null) {
+            // Mitra baru belum punya toko: Android membuka M03 karena GET /partner/stores kosong.
+            $user = User::forceCreate(['phone' => $phone, 'phone_verified_at' => now(), 'role' => $data['role']])->refresh();
             $akunBaru = true;
         }
 

@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    M03 Daftar sebagai mitra (Figma 65:1754) dan M04 Verifikasi usaha (Figma 66:1804), lalu layar
+    menunggu verifikasi tim. Satu layar dengan tiga bagian; PendaftaranMitraFragment menampilkan
+    satu bagian sesuai tahap.
+
+    Beda dari Figma, sesuai keputusan tim (rencana lanjutan #7):
+    - M03 tanpa "WhatsApp usaha" (nomor masuk dipakai) dan tanpa chip "Yang biasanya tersisa"
+      (belum ada di API; daftar catat sisa memakai produk toko).
+    - M04 tanpa foto KTP dan rekening pencairan. NIB berupa nomor 13 angka, opsional.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/latar_kartu"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/kepala"
+        layout="@layout/include_kepala" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/gulir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- ===== M03 langkah 1: data usaha ===== -->
+                <LinearLayout
+                    android:id="@+id/bagian_usaha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Pendaftaran sebelumnya ditolak: alasan dari tim. -->
+                    <LinearLayout
+                        android:id="@+id/spanduk_ditolak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:background="@drawable/bg_kotak_peringatan"
+                        android:backgroundTint="@color/tanda_bahaya_latar"
+                        android:orientation="horizontal"
+                        android:padding="14dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_peringatan"
+                            app:tint="@color/tanda_bahaya_teks" />
+
+                        <TextView
+                            android:id="@+id/teks_ditolak"
+                            style="@style/Teks.Catatan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:accessibilityLiveRegion="polite"
+                            android:textColor="@color/tanda_bahaya_teks"
+                            tools:text="Pendaftaran sebelumnya ditolak: alamat tidak ditemukan." />
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/Teks.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/nama_usaha"
+                        android:text="@string/m03_nama_usaha" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_nama_usaha"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nama_usaha"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="@string/m03_nama_usaha_contoh"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapWords"
+                            android:maxLength="140" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/bantuan_nama_usaha"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/Teks.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="@string/m03_jenis_usaha" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/grup_kategori"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:chipSpacingHorizontal="8dp"
+                        app:chipSpacingVertical="8dp"
+                        app:selectionRequired="true"
+                        app:singleSelection="true" />
+
+                    <TextView
+                        android:id="@+id/galat_kategori"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:textColor="@color/tanda_bahaya_teks"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/Teks.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:labelFor="@id/alamat"
+                        android:text="@string/m03_alamat" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_alamat"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/alamat"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="postalAddress"
+                            android:gravity="center_vertical|start"
+                            android:hint="@string/m03_alamat_contoh"
+                            android:inputType="textPostalAddress|textCapSentences|textMultiLine"
+                            android:maxLength="255"
+                            android:minHeight="50dp"
+                            android:paddingTop="14dp"
+                            android:paddingBottom="14dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/bantuan_alamat"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:text="@string/m03_alamat_bantuan" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/Teks.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/m03_jam_buka" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/tombol_jam_buka"
+                                style="@style/Widget.LifeOfFoods.Tombol.Garis"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:minHeight="50dp"
+                                app:icon="@drawable/ic_jam"
+                                app:iconGravity="textStart"
+                                app:iconSize="16dp"
+                                app:iconTint="@color/teks_merek"
+                                tools:text="07.00" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/Teks.Label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/m03_jam_tutup" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/tombol_jam_tutup"
+                                style="@style/Widget.LifeOfFoods.Tombol.Garis"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:minHeight="50dp"
+                                app:icon="@drawable/ic_jam"
+                                app:iconGravity="textStart"
+                                app:iconSize="16dp"
+                                app:iconTint="@color/teks_merek"
+                                tools:text="21.00" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/galat_jam"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:textColor="@color/tanda_bahaya_teks"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- ===== M04 langkah 2: pemilik dan izin ===== -->
+                <LinearLayout
+                    android:id="@+id/bagian_pemilik"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/Teks.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/pemilik"
+                        android:text="@string/m04_pemilik" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_pemilik"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/pemilik"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:autofillHints="name"
+                            android:hint="@string/m04_pemilik_contoh"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPersonName|textCapWords"
+                            android:maxLength="120" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/bantuan_pemilik"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/Teks.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:labelFor="@id/nib"
+                        android:text="@string/m04_nib" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_nib"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nib"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:digits="0123456789 "
+                            android:hint="@string/m04_nib_contoh"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="number"
+                            android:maxLength="16" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/bantuan_nib"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:text="@string/m04_nib_bantuan" />
+
+                    <TextView
+                        style="@style/Teks.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:labelFor="@id/halal"
+                        android:text="@string/m04_halal" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/isian_halal"
+                        style="@style/IsianBulat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/halal"
+                            style="@style/IsianTeks"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="@string/m04_halal_contoh"
+                            android:imeOptions="actionDone"
+                            android:importantForAutofill="no"
+                            android:inputType="textCapCharacters"
+                            android:maxLength="80" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/bantuan_halal"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:accessibilityLiveRegion="polite"
+                        android:text="@string/m04_halal_bantuan" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:background="@drawable/bg_catatan_merek"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_info"
+                            app:tint="@color/teks_merek_gelap" />
+
+                        <TextView
+                            style="@style/Teks.Catatan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="@string/m04_info_tinjau"
+                            android:textColor="@color/teks_merek_gelap" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- ===== Menunggu verifikasi tim ===== -->
+                <LinearLayout
+                    android:id="@+id/bagian_menunggu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="24dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_catatan_merek"
+                        android:contentDescription="@null"
+                        android:padding="18dp"
+                        android:src="@drawable/ic_jam"
+                        app:tint="@color/teks_merek" />
+
+                    <TextView
+                        style="@style/Teks.JudulHalaman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:accessibilityHeading="true"
+                        android:gravity="center"
+                        android:text="@string/m04_menunggu_judul" />
+
+                    <TextView
+                        android:id="@+id/teks_menunggu"
+                        style="@style/Teks.Isi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        tools:text="Tim Life of Foods memeriksa Kopi Kalyan SCBD dalam 1 × 24 jam." />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:background="@drawable/bg_kotak_lembut_16"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/ringkasan_toko"
+                            style="@style/Teks.JudulKartu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Kopi Kalyan SCBD" />
+
+                        <TextView
+                            android:id="@+id/ringkasan_isi"
+                            style="@style/Teks.Keterangan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingExtra="3dp"
+                            tools:text="Kafe · 07.00–21.00\nJl. Jend. Sudirman Kav 52\nNIB 1234567890123" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/keadaan"
+            layout="@layout/include_keadaan_muat" />
+    </FrameLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progres_kirim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/bilah_aksi"
+        style="@style/BilahAksi"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_utama"
+            style="@style/Widget.LifeOfFoods.Tombol.Utama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/lanjut" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tombol_keluar"
+            style="@style/Widget.LifeOfFoods.Tombol.Tautan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/m04_keluar"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

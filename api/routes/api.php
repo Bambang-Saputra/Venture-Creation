@@ -13,6 +13,7 @@ use App\Http\Controllers\Partner\AnggotaTokoController;
 use App\Http\Controllers\Partner\CatatSisaController;
 use App\Http\Controllers\Partner\DasborMitraController;
 use App\Http\Controllers\Partner\ListingMitraController;
+use App\Http\Controllers\Partner\PendaftaranMitraController;
 use App\Http\Controllers\Partner\PesananMitraController;
 use App\Http\Controllers\Partner\TokoController;
 use App\Http\Controllers\PesananController;
@@ -55,6 +56,9 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::post('/orders/{order}/review', [UlasanController::class, 'simpan'])->whereNumber('order')->middleware('throttle:20,1');
 
     Route::get('/partner/stores', [TokoController::class, 'daftar']);
+    // M03/M04: akun mitra baru mendaftarkan toko lalu menunggu verifikasi tim.
+    Route::get('/partner/application', [PendaftaranMitraController::class, 'tampil']);
+    Route::post('/partner/application', [PendaftaranMitraController::class, 'kirim'])->middleware('throttle:5,1');
     Route::prefix('/partner/stores/{store}')->whereNumber(['store', 'listing'])->group(function () {
         Route::get('/', [TokoController::class, 'tampil']);
         Route::match(['put', 'patch'], '/', [TokoController::class, 'ubah'])->middleware('throttle:30,1');

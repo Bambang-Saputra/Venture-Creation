@@ -75,7 +75,6 @@ Galat yang perlu ditangani Android dengan cara khusus membawa `code`. Android me
 |---|---|---|---|
 | `account_inactive` | 403 | semua rute ber-token, verifikasi OTP, login Google | Hapus sesi, kembali ke K01 |
 | `wrong_role` | 403 | verifikasi OTP, login Google. Ada juga `registered_role` (`consumer` atau `partner`) | Arahkan ke halaman masuk peran yang benar |
-| `partner_not_registered` | 403 | minta dan verifikasi OTP dengan `role=partner` | Tampilkan pesan, jangan buat akun |
 | `active_order_limit` | 422 | `POST /orders`. `errors.items` tetap ada | Arahkan ke K15 Pesanan saya |
 
 ### Peran
@@ -120,6 +119,8 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | POST | `/notifications/{id}/read` | T | K, M | K17 | |
 | POST | `/notifications/read-all` | T | K, M | K17 | |
 | GET | `/partner/stores` | T | M | setelah M02 | |
+| GET | `/partner/application` | T | M | M03, M04 | |
+| POST | `/partner/application` | T | M | M04 | 5/menit |
 | GET | `/partner/stores/{store}` | T | M | M14 | |
 | PUT, PATCH | `/partner/stores/{store}` | T | P | M14 | 30/menit |
 | POST | `/partner/stores/{store}/photo` | T | P | M14 | 10/menit |
@@ -172,7 +173,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 ```
 
 - `pilot_code` hanya ada selama `PILOT_MODE=true`. K03 menampilkannya dengan spanduk "mode uji coba".
-- 403: nomor mitra belum terdaftar (akun mitra hanya dibuat tim lewat SeederPilot atau diundang pemilik toko).
+- Nomor baru di halaman mitra tetap dikirimi kode. Setelah verifikasi, akunnya menjadi akun mitra tanpa toko dan Android membuka M03 (lihat bagian 8, "Pendaftaran mitra").
 - 429: diminta lagi sebelum `resend_in` detik.
 - 503: `PILOT_MODE=false`, karena gateway WhatsApp belum ada.
 - Meminta kode baru membatalkan kode sebelumnya.
@@ -193,7 +194,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 }
 ```
 
-- `is_new_user = true` berarti buka K04 Lengkapi profil, bukan beranda.
+- `is_new_user = true` berarti buka K04 Lengkapi profil, bukan beranda. Untuk `role=partner` artinya akun mitra baru tanpa toko: `GET /partner/stores` kosong, lalu buka M03.
 - 422: kode salah (pesan menyebut sisa percobaan), kedaluwarsa, atau belum diminta. Kode berlaku 5 menit, maksimal 5 kali salah.
 - 429: percobaan habis, minta kode baru.
 - 403: nomor terdaftar dengan peran lain ("Masuk lewat halaman mitra"), atau akun dinonaktifkan.
@@ -207,7 +208,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 Respons sama dengan `/auth/otp/verify`. Konsumen baru dibuatkan akun. Mitra hanya bisa masuk kalau email Google-nya sama dengan email akun mitra yang sudah terdaftar; login Google tidak pernah membuat akun mitra.
 
 - 401: token Google tidak sah.
-- 403: email mitra belum terdaftar, peran tidak cocok, atau akun dinonaktifkan.
+- 403: email mitra belum terdaftar (login Google tidak pernah membuat akun mitra; pendaftaran lewat OTP dan M03), peran tidak cocok, atau akun dinonaktifkan.
 - 503: `GOOGLE_CLIENT_ID` belum diisi di server, atau server Google sedang tidak bisa dihubungi.
 
 ### POST /auth/logout
@@ -493,11 +494,55 @@ Hanya di dalam aplikasi; ambil saat layar dibuka atau aplikasi kembali ke depan.
 
 ### GET /partner/stores
 
-Dipanggil setelah M02 untuk mendapatkan `store_id` dan peran.
+Dipanggil setelah M02 untuk mendapatkan `store_id` dan peran. Daftar kosong berarti akun mitra baru yang tokonya belum disetujui: buka M03/M04.
 
 ```json
 { "data": [ { "id": 5, "name": "Kopi Kalyan SCBD", "category": "cafe", "address": "...", "photo_path": null, "is_temporarily_closed": false, "my_role": "owner" } ] }
 ```
+
+### Pendaftaran mitra (M03, M04)
+
+Akun mitra baru mendaftarkan tokonya dari aplikasi, lalu menunggu tim menyetujui. Toko baru dibuat saat disetujui, jadi sebelum itu akun ini tidak bisa membuka satu pun rute `/partner/stores/{store}`. KTP tidak diminta; NIB opsional (ADR-0007).
+
+#### GET /partner/application
+
+Pendaftaran terakhir akun ini, atau `{ "data": null }` kalau belum pernah mendaftar.
+
+```json
+{ "data": {
+  "id": 3, "status": "pending", "owner_name": "Siti Aminah", "store_name": "Warung Bu Siti", "category": "resto",
+  "address": "Jl. Tebet Raya No. 12, Jakarta Selatan", "latitude": null, "longitude": null,
+  "open_time": "08:00", "close_time": "21:00", "nib": "1234567890123", "halal_certificate_no": null,
+  "rejection_reason": null, "store_id": null, "submitted_at": "2026-10-07T10:15:00+07:00"
+} }
+```
+
+`status`: `pending` buka layar menunggu, `rejected` buka M03 terisi dengan `rejection_reason`, `approved` buka M05.
+
+#### POST /partner/application
+
+| Field | Aturan |
+|---|---|
+| `owner_name` | wajib, 2 sampai 120 |
+| `store_name` | wajib, 2 sampai 140 |
+| `category` | wajib, lihat kategori di bagian 4 |
+| `address` | wajib, 10 sampai 255 |
+| `latitude`, `longitude` | opsional, berpasangan |
+| `open_time`, `close_time` | wajib, `HH:mm`, tutup setelah buka |
+| `nib` | opsional, 13 angka |
+| `halal_certificate_no` | opsional, maks 80 |
+
+**201** berisi pendaftaran seperti di atas. 409 kalau masih ada pendaftaran yang menunggu atau akun ini sudah terhubung ke toko. 403 untuk akun konsumen. Yang ditolak boleh mengirim ulang.
+
+Persetujuan dilakukan tim di server selama pilot (belum ada panel admin):
+
+```
+php artisan mitra:pendaftaran                  daftar yang menunggu (--semua untuk semuanya)
+php artisan mitra:setujui 3                    buat toko, jam buka tiap hari, saldo kosong
+php artisan mitra:setujui 3 --tolak="Alasan"   tolak; alasan tampil di M03
+```
+
+Toko yang disetujui memakai nomor HP pendaftar sebagai WhatsApp toko. Label halal `certified` kalau nomor sertifikat diisi, selain itu `not_stated`.
 
 ### GET /partner/stores/{store}
 

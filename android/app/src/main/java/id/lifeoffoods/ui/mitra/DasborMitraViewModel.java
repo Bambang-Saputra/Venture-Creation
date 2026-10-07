@@ -37,6 +37,9 @@ public class DasborMitraViewModel extends AndroidViewModel {
     public final MutableLiveData<String> galat = new MutableLiveData<>();
     public final MutableLiveData<Peristiwa<Boolean>> sesiBerakhir = new MutableLiveData<>();
 
+    /** Akun mitra belum punya toko: fragment membuka M03 Daftar sebagai mitra. */
+    public final MutableLiveData<Peristiwa<Boolean>> perluDaftar = new MutableLiveData<>();
+
     private boolean memuat;
 
     /** Nomor permintaan terakhir: jawaban lama yang datang terlambat diabaikan. */
@@ -128,6 +131,10 @@ public class DasborMitraViewModel extends AndroidViewModel {
     private void gagalMuat(ApiError e) {
         if (e.perluMasukUlang()) {
             sesiBerakhir.setValue(new Peristiwa<>(true));
+            return;
+        }
+        if (e.belumAdaToko()) {
+            perluDaftar.setValue(new Peristiwa<>(true));
             return;
         }
         // Penyegaran diam-diam yang gagal tidak menimpa dashboard yang sudah tampil.

@@ -68,8 +68,8 @@ Catatan layar konsumen:
 | M01 | Masuk mitra | F-01 | MUST | `POST /auth/otp/request` | `users` |
 | M01 | Masuk mitra (tombol Google) | F-25 | SHOULD | `POST /auth/google` | `users`, `personal_access_tokens`, `store_members` |
 | M02 | Verifikasi OTP mitra | F-01 | MUST | `POST /auth/otp/verify` | `users`, `personal_access_tokens`, `store_members` |
-| M03 | Daftar usaha | — | WON'T | — | — |
-| M04 | Verifikasi dan rekening | — | WON'T | — | — |
+| M03 | Daftar usaha | F-26 | SHOULD | `GET/POST /partner/application` | `partner_applications` |
+| M04 | Verifikasi usaha | F-26 | SHOULD | `POST /partner/application` | `partner_applications`, `stores` |
 | M05 | Dashboard mitra | F-24 | SHOULD | `GET /partner/stores/{id}/summary` | `orders`, `waste_logs`, `weekly_reports` |
 | M06 | Catat sisa | F-12 | MUST | `POST/GET /partner/stores/{id}/waste-logs` | `waste_logs`, `waste_log_items`, `products` |
 | M07 | Laporan mingguan | F-13 | MUST | `GET /partner/stores/{id}/reports/weekly` | `weekly_reports`, `waste_logs`, `orders` |
@@ -89,7 +89,7 @@ Catatan layar konsumen:
 | M21 | Riwayat pesanan | F-10 | SHOULD | `GET .../orders?status=history` | `orders`, `order_items` |
 
 Catatan layar mitra:
-- **M03 dan M04** tidak dibangun. Akun mitra dibuat tim lewat `SeederPilot` yang membaca CSV lokal, dan CSV itu tidak pernah masuk repo.
+- **M03 dan M04** (F-26, ADR-0007): nomor baru di halaman mitra mendaftarkan tokonya, lalu menunggu tim menyetujui lewat `php artisan mitra:setujui`. M04 tanpa KTP dan rekening; NIB opsional. `SeederPilot` tetap ada untuk mitra yang datanya dimasukkan tim.
 - **M06 dan M19** adalah satu fitur dengan dua mode: hitung per item dan timbang per kilogram. Nilai rupiah dihitung saat mengetik lalu **disimpan**, bukan dihitung ulang dari HPP yang bisa berubah.
 - **M11** wajib menampilkan catatan konsumen dan alergi langsung di kartu daftar, bukan disembunyikan di detail. Menyimpan alergi tanpa menampilkannya sama saja tidak punya fitur alergi.
 - **M12** adalah momen demo berlangsung. Kode sudah dipakai menghasilkan `409` beserta jam pemakaian, kode milik toko lain menghasilkan `403`, dan setiap penukaran masuk `audit_logs` lengkap dengan identitas kasir.
