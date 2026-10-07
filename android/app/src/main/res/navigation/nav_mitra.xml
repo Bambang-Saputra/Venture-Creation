@@ -84,6 +84,11 @@
         android:id="@+id/m13_saldo"
         android:name="id.lifeoffoods.ui.mitra.SaldoTokoFragment" />
 
+    <!-- M22 Promosikan toko (#3 iklan per hari tayang). Dari M14, hanya pemilik. -->
+    <fragment
+        android:id="@+id/m22_promosi"
+        android:name="id.lifeoffoods.ui.mitra.PromosiTokoFragment" />
+
     <!-- M08 Saran produksi (PRD-14). Dari M07, hanya pemilik. -->
     <fragment
         android:id="@+id/m08_saran"

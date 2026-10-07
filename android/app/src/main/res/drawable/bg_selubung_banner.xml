@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Selubung banner iklan K07: kiri gelap supaya teks putih terbaca, kanan bening supaya foto terlihat. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="0"
+        android:centerColor="#990F2A1E"
+        android:endColor="#1A0F2A1E"
+        android:startColor="#E60F2A1E" />
+    <corners android:radius="18dp" />
+</shape>

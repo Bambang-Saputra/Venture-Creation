@@ -14,12 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FilterJualan;
 import id.lifeoffoods.data.FormatTampilan;
+import id.lifeoffoods.data.api.model.BannerDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.databinding.FragmentBerandaBinding;
 import id.lifeoffoods.databinding.IncludeUbinKategoriBinding;
+import id.lifeoffoods.databinding.ItemBannerPromosiBinding;
 import id.lifeoffoods.databinding.ItemKartuFlashBinding;
 import id.lifeoffoods.databinding.ItemKartuTasBinding;
 import id.lifeoffoods.ui.MainActivity;
@@ -94,6 +97,11 @@ public class BerandaFragment extends Fragment {
                 R.drawable.ic_toko,
                 R.string.kategori_swalayan);
 
+        BaseListAdapter<BannerDto, ItemBannerPromosiBinding> adapterBanner =
+                new BaseListAdapter<>(
+                        ItemBannerPromosiBinding::inflate, this::isiBanner, b -> b.storeId);
+        binding.daftarBanner.setAdapter(adapterBanner);
+        new PagerSnapHelper().attachToRecyclerView(binding.daftarBanner);
         BaseListAdapter<ListingDto, ItemKartuFlashBinding> adapterPopuler =
                 new BaseListAdapter<>(
                         ItemKartuFlashBinding::inflate, this::isiKartuPopuler, l -> l.id);
@@ -153,6 +161,12 @@ public class BerandaFragment extends Fragment {
                     binding.tombolNotifikasi.setContentDescription(
                             getString(
                                     ada ? R.string.k07_notifikasi_baru : R.string.k07_notifikasi));
+                });
+        vm.banner.observe(
+                getViewLifecycleOwner(),
+                daftar -> {
+                    adapterBanner.submitList(daftar);
+                    binding.daftarBanner.setVisibility(daftar.isEmpty() ? View.GONE : View.VISIBLE);
                 });
         vm.populer.observe(
                 getViewLifecycleOwner(),
@@ -307,9 +321,39 @@ public class BerandaFragment extends Fragment {
         b.sisaWaktu.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
     }
 
+    private void isiBanner(ItemBannerPromosiBinding b, BannerDto d) {
+        FotoJualan.muat(b.foto, d.photoUrl, 18);
+        b.toko.setText(d.storeName);
+        boolean adaKalimat = d.headline != null && !d.headline.trim().isEmpty();
+        b.kalimat.setVisibility(adaKalimat ? View.VISIBLE : View.GONE);
+        b.kalimat.setText(adaKalimat ? d.headline : "");
+        b.mulai.setText(
+                getString(R.string.k07_banner_mulai, FormatTampilan.rupiah(d.priceFromRupiah)));
+        b.getRoot()
+                .setContentDescription(
+                        getString(R.string.iklan)
+                                + ". "
+                                + d.storeName
+                                + (adaKalimat ? ". " + d.headline : "")
+                                + ". "
+                                + b.mulai.getText());
+        b.getRoot()
+                .setOnClickListener(
+                        v -> {
+                            Bundle args = new Bundle();
+                            args.putLong(ARG_LISTING_ID, d.listingId);
+                            buka(
+                                    ListingDto.TIPE_MENU.equals(d.listingType)
+                                            ? R.id.k11_detail_menu
+                                            : R.id.k10_detail_tas,
+                                    args);
+                        });
+    }
+
     private void isiKartuTas(ItemKartuTasBinding b, ListingDto l) {
         // Sudut 14dp mengikuti bg_slot_foto.
         FotoJualan.muat(b.fotoJualan, l.photoUrl, 14);
+        b.labelIklan.setVisibility(l.isSponsored ? View.VISIBLE : View.GONE);
         String jarak = FormatTampilan.jarak(l.distanceKm);
         b.jarak.setText(jarak);
         b.jarak.setVisibility(jarak == null ? View.GONE : View.VISIBLE);
@@ -347,6 +391,7 @@ public class BerandaFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding.daftarBanner.setAdapter(null);
         binding.daftarPopuler.setAdapter(null);
         binding.daftarSegera.setAdapter(null);
         binding.daftarTerdekat.setAdapter(null);

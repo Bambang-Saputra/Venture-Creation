@@ -797,4 +797,37 @@
     <string name="m15_baris_anggota">%1$s, %2$s, %3$s</string>
     <string name="m15_ketuk_cabut">cabut akses</string>
 
+    <!-- Iklan mitra (#3). Label "Iklan" wajib di setiap tempat yang dibayar mitra. -->
+    <string name="iklan">Iklan</string>
+    <string name="k07_banner">Promo dari mitra</string>
+    <string name="k07_banner_mulai">Mulai %1$s</string>
+    <string name="m14_promosi">Promosikan toko</string>
+    <string name="m22_judul">Promosikan toko</string>
+    <string name="m22_tagihan_nonaktif">Selama uji coba, promosi belum ditagih dan saldo tidak dipotong.</string>
+    <string name="m22_pilih_paket">Pilih paket</string>
+    <string name="m22_per_hari">%1$s\n/hari</string>
+    <string name="m22_terpilih">terpilih</string>
+    <string name="m22_pilih">ketuk untuk memilih</string>
+    <string name="m22_kalimat">Kalimat banner (opsional)</string>
+    <string name="m22_kalimat_bantuan">Contoh: Tas roti sore mulai jam 18.00</string>
+    <string name="m22_lama">Lama tayang</string>
+    <string name="m22_tayang">Tayang %1$s</string>
+    <plurals name="m22_hari">
+        <item quantity="one">%d hari</item>
+        <item quantity="other">%d hari</item>
+    </plurals>
+    <string name="m22_total">TOTAL BIAYA</string>
+    <string name="m22_rincian">%1$s × %2$s</string>
+    <string name="m22_aktifkan">Aktifkan promosi</string>
+    <string name="m22_menyimpan">Mengaktifkan…</string>
+    <string name="m22_berhasil">Promosi aktif. Pembeli di sekitar tokomu akan melihatnya dengan label Iklan.</string>
+    <string name="m22_riwayat">Promosi tokomu</string>
+    <string name="m22_kosong">Belum ada promosi.</string>
+    <string name="m22_baris">%1$s · %2$s</string>
+    <string name="m22_paket_prioritas">Prioritas pencarian</string>
+    <string name="m22_paket_banner">Banner Beranda</string>
+    <string name="m22_status_tayang">Sedang tayang</string>
+    <string name="m22_status_terjadwal">Terjadwal</string>
+    <string name="m22_status_selesai">Selesai</string>
+    <string name="m22_bukan_pemilik">Hanya pemilik toko yang bisa membeli promosi.</string>
 </resources>
