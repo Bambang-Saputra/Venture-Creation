@@ -136,6 +136,43 @@ class ListingMitraTest extends TestCase
         $this->flushHeaders()->getJson($this->url('/listings'))->assertUnauthorized();
     }
 
+    public function test_m16_tambah_menu_baru_lalu_langsung_bisa_dijual(): void
+    {
+        $id = $this->sebagai($this->pemilik)->postJson($this->url('/products'), [
+            'name' => '  Pisang goreng keju ', 'price_rupiah' => 12000, 'ingredients_text' => 'Pisang, tepung terigu, keju',
+        ])
+            ->assertCreated()
+            ->assertJsonPath('data.name', 'Pisang goreng keju')
+            ->assertJsonPath('data.unit', 'pcs')
+            ->assertJsonPath('data.price_rupiah', 12000)
+            ->json('data.id');
+
+        $this->sebagai($this->pemilik)->getJson($this->url('/products'))->assertJsonPath('data.0.id', $id);
+
+        $this->buat(['type' => 'menu_item', 'pickup_start' => '18:00', 'pickup_end' => '20:00',
+            'items' => [['product_id' => $id, 'qty_total' => 5, 'price_rupiah' => 6000, 'allergens' => [['code' => 'gluten']]]]])
+            ->assertCreated()
+            ->assertJsonPath('data.0.title', 'Pisang goreng keju')
+            ->assertJsonPath('data.0.original_value_rupiah', 12000)
+            ->assertJsonPath('data.0.ingredients_text', 'Pisang, tepung terigu, keju');
+    }
+
+    public function test_m16_menu_baru_divalidasi(): void
+    {
+        $this->produk('Croissant mentega', 28000);
+
+        $this->sebagai($this->pemilik)->postJson($this->url('/products'), ['name' => 'croissant MENTEGA', 'price_rupiah' => 20000, 'ingredients_text' => 'Tepung'])
+            ->assertUnprocessable()->assertJsonValidationErrors('name');
+        $this->sebagai($this->pemilik)->postJson($this->url('/products'), ['name' => 'Donat', 'price_rupiah' => 100])
+            ->assertJsonValidationErrors(['price_rupiah', 'ingredients_text']);
+
+        $kasir = User::forceCreate(['phone' => '6281200000002', 'role' => 'partner'])->refresh();
+        DB::table('store_members')->insert(['store_id' => $this->toko, 'user_id' => $kasir->id, 'role' => 'cashier']);
+        $this->sebagai($kasir)->postJson($this->url('/products'), ['name' => 'Donat', 'price_rupiah' => 8000, 'ingredients_text' => 'Tepung'])
+            ->assertForbidden();
+        $this->assertSame(1, DB::table('products')->where('store_id', $this->toko)->count());
+    }
+
     private function produk(string $nama, int $harga): int
     {
         return DB::table('products')->insertGetId(['store_id' => $this->toko, 'name' => $nama, 'price_rupiah' => $harga, 'ingredients_text' => 'Tepung, mentega, susu']);

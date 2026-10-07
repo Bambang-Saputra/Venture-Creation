@@ -133,6 +133,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | DELETE | `/partner/stores/{store}/members/{member}` | T | P | M15 | |
 | GET | `/partner/stores/{store}/templates` | T | P | M09 | |
 | GET | `/partner/stores/{store}/products` | T | P | M16 | |
+| POST | `/partner/stores/{store}/products` | T | P | M16 | 30/menit |
 | PATCH | `/partner/stores/{store}/products/{product}` | T | P | M08 | |
 | GET | `/partner/stores/{store}/listings` | T | P | M10, M17 | |
 | POST | `/partner/stores/{store}/listings` | T | P | M09, M16 | 30/menit |
@@ -581,6 +582,16 @@ Baris pertama selalu pemilik toko (`is_store_owner: true`, `id: null`).
 Template tas (M09): `id`, `name`, `content_hint`, `price_rupiah`, `original_value_rupiah`, `default_qty`, `pickup_start_time`, `pickup_end_time`, `halal_label`.
 
 Produk (M16): `id`, `name`, `unit`, `price_rupiah`, `ingredients_text`.
+
+### POST /partner/stores/{store}/products
+
+"Tambah menu baru" di M16. Hanya pemilik.
+
+```json
+{ "name": "Pisang goreng keju", "price_rupiah": 12000, "unit": "pcs", "ingredients_text": "Pisang, tepung terigu, keju, gula" }
+```
+
+`price_rupiah` = harga normal (min. 500, jadi harga coret); harga jual hari ini tetap diisi per item saat terbit. `unit` opsional (`pcs` bawaan). `ingredients_text` wajib. Nama yang sama (tanpa beda huruf besar) dengan produk aktif toko itu ditolak 422 di `name`. Balasan 201 berbentuk sama dengan satu baris GET produk.
 
 ### PATCH /partner/stores/{store}/products/{product}
 

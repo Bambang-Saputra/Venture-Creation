@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
@@ -19,6 +21,7 @@ import id.lifeoffoods.data.JualanMitra;
 import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.JualanMitraDto;
 import id.lifeoffoods.data.api.model.ProdukDto;
+import id.lifeoffoods.databinding.DialogMenuBaruBinding;
 import id.lifeoffoods.databinding.FragmentPasangMenuBinding;
 import id.lifeoffoods.databinding.ItemProdukMenuBinding;
 import id.lifeoffoods.ui.MainActivity;
@@ -71,6 +74,7 @@ public class PasangMenuFragment extends Fragment {
         binding.segmen.tabMenu.setSelected(true);
         binding.segmen.tabTas.setOnClickListener(v -> keTas());
         binding.labelToko.ketHalal.setText(R.string.m16_halal_ket);
+        binding.tombolMenuBaru.setOnClickListener(v -> tanyaMenuBaru());
 
         TampilanPasang.pasangJam(this, binding.jam, vm);
         TampilanPasang.pasangLabel(this, binding.labelToko, vm);
@@ -282,6 +286,85 @@ public class PasangMenuFragment extends Fragment {
                             }
                         })
                 .show();
+    }
+
+    /** Dialog "Tambah menu baru"; tetap terbuka selama isian atau server masih menolak. */
+    private void tanyaMenuBaru() {
+        DialogMenuBaruBinding d = DialogMenuBaruBinding.inflate(getLayoutInflater());
+        AlertDialog dialog =
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.m16_baru_judul)
+                        .setView(d.getRoot())
+                        .setNegativeButton(R.string.batal, null)
+                        .setPositiveButton(R.string.m16_baru_simpan, null)
+                        .show();
+        Button simpan = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        simpan.setOnClickListener(
+                v -> {
+                    String nama = teks(d.nama);
+                    long harga = PasangTasFragment.angka(d.harga.getText());
+                    String kandungan = teks(d.kandungan);
+                    d.isianNama.setError(
+                            nama.length() < 2 ? getString(R.string.m16_baru_g_nama) : null);
+                    d.isianHarga.setError(
+                            harga < PasangMenuViewModel.HARGA_MIN_ITEM
+                                    ? getString(R.string.m16_baru_g_harga)
+                                    : null);
+                    d.isianKandungan.setError(
+                            kandungan.length() < 3
+                                    ? getString(R.string.m16_baru_g_kandungan)
+                                    : null);
+                    if (nama.length() < 2
+                            || harga < PasangMenuViewModel.HARGA_MIN_ITEM
+                            || kandungan.length() < 3) {
+                        return;
+                    }
+                    simpan.setEnabled(false);
+                    simpan.setText(R.string.m16_baru_menyimpan);
+                    vm.tambahMenu(
+                            nama,
+                            harga,
+                            kandungan,
+                            new PasangMenuViewModel.HasilMenuBaru() {
+                                @Override
+                                public void sukses(ProdukDto p) {
+                                    dialog.dismiss();
+                                    if (binding != null && isAdded()) {
+                                        Snackbar.make(
+                                                        binding.getRoot(),
+                                                        getString(
+                                                                R.string.m16_baru_tersimpan,
+                                                                p.name),
+                                                        Snackbar.LENGTH_LONG)
+                                                .show();
+                                    }
+                                }
+
+                                @Override
+                                public void gagal(@Nullable String field, String pesan) {
+                                    if (!isAdded() || !dialog.isShowing()) {
+                                        return;
+                                    }
+                                    simpan.setEnabled(true);
+                                    simpan.setText(R.string.m16_baru_simpan);
+                                    String p =
+                                            pesan == null || pesan.isEmpty()
+                                                    ? getString(R.string.m16_baru_g_umum)
+                                                    : pesan;
+                                    if ("price_rupiah".equals(field)) {
+                                        d.isianHarga.setError(p);
+                                    } else if ("ingredients_text".equals(field)) {
+                                        d.isianKandungan.setError(p);
+                                    } else {
+                                        d.isianNama.setError(p);
+                                    }
+                                }
+                            });
+                });
+    }
+
+    private static String teks(android.widget.EditText e) {
+        return e.getText() == null ? "" : e.getText().toString().trim();
     }
 
     private void terbitkan() {
