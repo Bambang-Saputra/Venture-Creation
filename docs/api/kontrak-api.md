@@ -134,6 +134,7 @@ Kolom Auth: **-** tanpa token, **T** butuh token. Kolom Peran: **K** konsumen, *
 | DELETE | `/partner/stores/{store}/members/{member}` | T | P | M15 | |
 | GET | `/partner/stores/{store}/templates` | T | P | M09 | |
 | GET | `/partner/stores/{store}/products` | T | P | M16 | |
+| POST | `/partner/stores/{store}/products` | T | P | M16 | 30/menit |
 | PATCH | `/partner/stores/{store}/products/{product}` | T | P | M08 | |
 | GET | `/partner/stores/{store}/listings` | T | P | M10, M17 | |
 | POST | `/partner/stores/{store}/listings` | T | P | M09, M16 | 30/menit |
@@ -627,6 +628,16 @@ Template tas (M09): `id`, `name`, `content_hint`, `price_rupiah`, `original_valu
 
 Produk (M16): `id`, `name`, `unit`, `price_rupiah`, `ingredients_text`.
 
+### POST /partner/stores/{store}/products
+
+"Tambah menu baru" di M16. Hanya pemilik.
+
+```json
+{ "name": "Pisang goreng keju", "price_rupiah": 12000, "unit": "pcs", "ingredients_text": "Pisang, tepung terigu, keju, gula" }
+```
+
+`price_rupiah` = harga normal (min. 500, jadi harga coret); harga jual hari ini tetap diisi per item saat terbit. `unit` opsional (`pcs` bawaan). `ingredients_text` wajib. Nama yang sama (tanpa beda huruf besar) dengan produk aktif toko itu ditolak 422 di `name`. Balasan 201 berbentuk sama dengan satu baris GET produk.
+
 ### PATCH /partner/stores/{store}/products/{product}
 
 `{ "daily_production_qty": 24 }` atau `null` untuk mengosongkan. Dipakai saran produksi M08.
@@ -784,6 +795,37 @@ Di `daily`, `null` berarti hari itu tidak dicatat (bukan 0). Gambar grafik denga
 ### POST .../suggestions/{id}/accept, POST .../suggestions/{id}/dismiss
 
 **200** `{ "data": { "id": 40, "status": "accepted" } }`.
+
+---
+
+## 11a. Iklan mitra (M22, K07)
+
+Iklan dibayar per hari tayang, dipasang per toko. Tarif: `search_priority` Rp5.000/hari, `home_banner` Rp10.000/hari. Selama uji coba belum ditagih (`payment_status: simulated`), saldo M13 tidak dipotong. "Populer hari ini" (`sort=popular`) tidak pernah dipengaruhi iklan.
+
+### GET /listings?sponsored=1
+
+Dipakai daftar utama K07. Halaman pertama diawali paling banyak 2 jualan dari toko yang punya `search_priority` tayang hari ini, sisanya urutan biasa. Semua filter (alergi, jenis, kategori, jarak, jam) tetap berlaku untuk iklan. Setiap item punya `is_sponsored` (boolean); kartu dengan `true` wajib berlabel "Iklan". Halaman pertama bisa berisi `per_page + 2` item.
+
+### GET /promotions/banners?lat=&lng=&exclude_allergens[]=
+
+Tanpa token. Paling banyak 5 toko dengan `home_banner` tayang hari ini, dalam radius 15 km kalau `lat/lng` dikirim. Tiap banner menunjuk jualan termurah toko itu yang masih bisa dibeli dan lolos filter alergi; toko tanpa jualan seperti itu tidak tampil.
+
+```json
+{ "data": [ { "store_id": 6, "store_name": "Nasi Goreng Pak Syahdan", "store_category": "resto",
+  "headline": "Nasi goreng hangat, hemat sampai 60%", "photo_url": "https://.../storage/demo/nasi-goreng.jpg",
+  "listing_id": 120, "listing_type": "surprise_bag", "price_from_rupiah": 9000,
+  "rating_average": 4.6, "rating_count": 12 } ] }
+```
+
+### GET /partner/stores/{store}/promotions
+
+Hanya pemilik (kasir 403). Berisi `packages` (code, name, description, price_per_day_rupiah), `billing` (`enabled: false`, `reason`), dan `data` (20 iklan terbaru toko).
+
+### POST /partner/stores/{store}/promotions
+
+Hanya pemilik. Body `{ "package": "home_banner", "days": 7, "headline": "Tas roti sore mulai jam 18.00" }`. `days` 1-30; `headline` opsional (maks 80) dan hanya disimpan untuk banner. Mulai hari ini, atau sehari setelah iklan paket yang sama berakhir kalau masih tayang.
+
+**201** `{ "data": { "id": 3, "package": "home_banner", "headline": "...", "starts_on": "2026-10-06", "ends_on": "2026-10-12", "days": 7, "price_per_day_rupiah": 10000, "total_rupiah": 70000, "payment_status": "simulated", "status": "active" } }`. `status`: `active`, `scheduled`, atau `ended`.
 
 ---
 

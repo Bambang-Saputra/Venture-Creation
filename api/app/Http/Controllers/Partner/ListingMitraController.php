@@ -48,6 +48,48 @@ class ListingMitraController extends Controller
             ->get(['id', 'name', 'unit', 'price_rupiah', 'ingredients_text'])]);
     }
 
+    /**
+     * POST /api/partner/stores/{store}/products ("Tambah menu baru" di M16)
+     *
+     * Mitra mendaftarkan menu yang belum ada di menu toko. Harga di sini harga
+     * normal (jadi harga coret); harga jual hari ini tetap diisi per jualan.
+     */
+    public function tambahProduk(Request $request, int $store): JsonResponse
+    {
+        $this->tokoMilik($request, $store);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:140'],
+            'price_rupiah' => ['required', 'integer', 'min:500', 'max:5000000'],
+            'unit' => ['sometimes', Rule::in(['pcs', 'porsi', 'pack', 'kg', 'botol'])],
+            'ingredients_text' => ['required', 'string', 'min:3', 'max:2000'],
+        ], [
+            'ingredients_text.required' => 'Isi kandungan menu, supaya pembeli yang alergi bisa memeriksa.',
+            'ingredients_text.min' => 'Isi kandungan menu, supaya pembeli yang alergi bisa memeriksa.',
+        ]);
+
+        $nama = trim($data['name']);
+        $kembar = DB::table('products')->where('store_id', $store)->where('is_active', true)
+            ->whereRaw('LOWER(name) = ?', [mb_strtolower($nama)])->exists();
+        if ($kembar) {
+            throw ValidationException::withMessages(['name' => 'Menu dengan nama ini sudah ada di menu toko.']);
+        }
+
+        $id = DB::table('products')->insertGetId([
+            'store_id' => $store,
+            'name' => $nama,
+            'unit' => $data['unit'] ?? 'pcs',
+            'price_rupiah' => $data['price_rupiah'],
+            'ingredients_text' => trim($data['ingredients_text']),
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['data' => DB::table('products')->where('id', $id)
+            ->first(['id', 'name', 'unit', 'price_rupiah', 'ingredients_text'])], 201);
+    }
+
     /** GET /api/partner/stores/{store}/listings?type=&status=&date= (M10, M17) */
     public function daftar(Request $request, int $store): JsonResponse
     {

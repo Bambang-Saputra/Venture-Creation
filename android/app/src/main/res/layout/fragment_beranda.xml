@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     K07 Beranda (Figma 22:79). Header tetap di atas, isi bergulir, Nav bawah tetap di bawah.
-    Karusel promo (voucher K22 dan mitra sorotan) belum dipasang: voucher berstatus WON'T dan API
-    belum punya data promo, jadi kartu statis hanya akan menampilkan penawaran palsu.
+    Karusel paling atas berisi iklan banner mitra (berlabel "Iklan"); voucher K22 tetap WON'T.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -198,6 +197,26 @@
             android:paddingTop="16dp"
             android:paddingBottom="18dp">
 
+            <!--
+                Karusel iklan (paket banner Beranda, GET /promotions/banners). Disembunyikan kalau
+                tidak ada toko di sekitar yang sedang beriklan. Terpisah dari Populer hari ini.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/daftar_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:clipToPadding="false"
+                android:contentDescription="@string/k07_banner"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="8dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_banner_promosi"
+                tools:visibility="visible" />
             <!-- Penanda filter (PRD-04 kriteria 5): ada jualan yang disembunyikan. -->
             <LinearLayout
                 android:id="@+id/penanda_filter"

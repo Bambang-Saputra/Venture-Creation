@@ -3,7 +3,7 @@ package id.lifeoffoods.data.api.model;
 import androidx.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
-/** Produk toko dari GET /partner/stores/{store}/products (M16). Didaftarkan tim selama pilot. */
+/** Produk toko dari GET /partner/stores/{store}/products (M16). Mitra bisa menambahnya sendiri. */
 public class ProdukDto {
 
     @SerializedName("id")

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\FotoUnggahan;
+use App\Services\Promosi;
 use App\Services\RatingToko;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
@@ -45,6 +46,9 @@ class ListingController extends Controller
             // popular: bagian "Populer hari ini" di K07. Bukan iklan; urutannya
             // murni dari jumlah yang sudah dipesan.
             'sort' => ['sometimes', Rule::in(['popular'])],
+            // Daftar utama K07: halaman pertama diawali paling banyak dua jualan dari toko
+            // yang membeli paket prioritas pencarian, ditandai is_sponsored.
+            'sponsored' => ['sometimes', 'boolean'],
         ]);
 
         $query = $this->yangTampil();
@@ -74,12 +78,7 @@ class ListingController extends Controller
                 ->orWhere('stores.name', 'like', '%'.addcslashes($kata, '%_\\').'%')))
             // Label halal hanya dari mitra: certified atau self_claim, tidak pernah ditebak.
             ->when($f['halal'] ?? false, fn (Builder $q) => $q->whereIn('listings.halal_label', ['certified', 'self_claim']))
-            ->when($f['exclude_allergens'] ?? null, fn (Builder $q, $kode) => $q->whereNotExists(fn (Builder $sub) => $sub
-                ->from('listing_allergens')
-                ->join('allergens', 'allergens.id', '=', 'listing_allergens.allergen_id')
-                ->whereColumn('listing_allergens.listing_id', 'listings.id')
-                // may_contain ikut disembunyikan: untuk alergi, ragu berarti jangan.
-                ->whereIn('allergens.code', $kode)))
+            ->when($f['exclude_allergens'] ?? null, fn (Builder $q, $kode) => $this->tanpaAlergen($q, $kode))
             // Rentang jam ambil beririsan dengan jam yang dipilih di K09.
             ->when($f['pickup_from'] ?? null, fn (Builder $q, $jam) => $q->whereTime('listings.pickup_end', '>', $jam))
             ->when($f['pickup_until'] ?? null, fn (Builder $q, $jam) => $q->whereTime('listings.pickup_start', '<', $jam))
@@ -97,12 +96,91 @@ class ListingController extends Controller
         }
 
         $adaLokasi ? $query->orderBy('distance_km') : $query->orderBy('listings.pickup_end');
-        $halaman = $query->orderBy('listings.id')->paginate($f['per_page'] ?? 20)->withQueryString();
+        $query->orderBy('listings.id');
+
+        // Iklan hanya di halaman pertama daftar utama, tidak pernah di Populer hari ini.
+        // Filter alergi dan filter K09 sudah terpasang di $query, jadi ikut berlaku untuk iklan.
+        $iklan = collect();
+        if (($f['sponsored'] ?? false) && ($f['sort'] ?? null) === null && $request->integer('page', 1) <= 1) {
+            $iklan = Promosi::tayangHariIni(clone $query, Promosi::PRIORITAS)
+                ->limit(Promosi::MAKS_SLOT_PRIORITAS)->get();
+            $query->whereNotIn('listings.id', $iklan->pluck('id'));
+        }
+
+        $halaman = $query->paginate($f['per_page'] ?? 20)->withQueryString();
+        if ($iklan->isNotEmpty()) {
+            $halaman->setCollection($iklan->concat($halaman->getCollection()));
+        }
+        $idIklan = $iklan->pluck('id')->flip();
 
         $alergen = $this->alergenPer($halaman->pluck('id'));
-        $halaman->through(fn (object $l) => $this->ringkas($l, $alergen->get($l->id, collect())));
+        $halaman->through(fn (object $l) => [
+            ...$this->ringkas($l, $alergen->get($l->id, collect())),
+            'is_sponsored' => $idIklan->has($l->id),
+        ]);
 
         return response()->json($halaman);
+    }
+
+    /**
+     * GET /api/promotions/banners: karusel paling atas K07, dari toko yang membeli paket
+     * banner. Tiap banner membuka jualan termurah toko itu yang masih bisa dibeli, jadi toko
+     * tanpa jualan aktif (atau yang semua jualannya mengandung alergen pembeli) tidak tampil.
+     */
+    public function banner(Request $request): JsonResponse
+    {
+        $f = $request->validate([
+            'lat' => ['required_with:lng', 'numeric', 'between:-90,90'],
+            'lng' => ['required_with:lat', 'numeric', 'between:-180,180'],
+            'exclude_allergens' => ['sometimes', 'array', 'max:30'],
+            'exclude_allergens.*' => ['string', 'max:40'],
+        ]);
+
+        $hariIni = today()->toDateString();
+        $query = Promosi::tayangHariIni($this->yangTampil(), Promosi::BANNER)
+            ->selectSub(fn (Builder $q) => $q->from('store_promotions as sp')
+                ->whereColumn('sp.store_id', 'stores.id')
+                ->where('sp.package', Promosi::BANNER)
+                ->where('sp.starts_on', '<=', $hariIni)
+                ->where('sp.ends_on', '>=', $hariIni)
+                ->orderByDesc('sp.id')->limit(1)->select('sp.headline'), 'promo_headline')
+            ->when($f['exclude_allergens'] ?? null, fn (Builder $q, $kode) => $this->tanpaAlergen($q, $kode))
+            ->orderBy('listings.price_rupiah')->orderBy('listings.id');
+
+        if (isset($f['lat'], $f['lng'])) {
+            $query->whereRaw(
+                'ST_Distance_Sphere(POINT(stores.longitude, stores.latitude), POINT(?, ?)) <= ?',
+                [$f['lng'], $f['lat'], self::RADIUS_BANNER_KM * 1000],
+            );
+        }
+
+        $banner = $query->get()->unique('store_id')->take(Promosi::MAKS_BANNER)->values();
+
+        return response()->json(['data' => $banner->map(fn (object $l) => [
+            'store_id' => $l->store_id,
+            'store_name' => $l->store_name,
+            'store_category' => $l->store_category,
+            'headline' => $l->promo_headline,
+            'photo_url' => FotoUnggahan::url($l->store_photo_path ?? $l->photo_path ?? null),
+            'listing_id' => $l->id,
+            'listing_type' => $l->type,
+            'price_from_rupiah' => $l->price_rupiah,
+            ...RatingToko::format($l->rating_avg, $l->rating_count),
+        ])]);
+    }
+
+    /** Banner hanya untuk toko yang masih masuk akal didatangi. */
+    private const RADIUS_BANNER_KM = 15;
+
+    /** @param  list<string>  $kode */
+    private function tanpaAlergen(Builder $q, array $kode): Builder
+    {
+        return $q->whereNotExists(fn (Builder $sub) => $sub
+            ->from('listing_allergens')
+            ->join('allergens', 'allergens.id', '=', 'listing_allergens.allergen_id')
+            ->whereColumn('listing_allergens.listing_id', 'listings.id')
+            // may_contain ikut disembunyikan: untuk alergi, ragu berarti jangan.
+            ->whereIn('allergens.code', $kode));
     }
 
     /** GET /api/listings/{id} */

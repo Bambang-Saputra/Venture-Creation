@@ -10,13 +10,17 @@ import id.lifeoffoods.data.FilterJualan;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
+import id.lifeoffoods.data.api.model.BannerDto;
 import id.lifeoffoods.data.api.model.HalamanListing;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.data.api.model.MeResponse;
 import id.lifeoffoods.data.api.model.NotifikasiResponse;
+import id.lifeoffoods.data.api.model.Terbungkus;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -47,6 +51,11 @@ public class BerandaViewModel extends AndroidViewModel {
 
     public final MutableLiveData<List<ListingDto>> terdekat =
             new MutableLiveData<>(Collections.emptyList());
+
+    /** Karusel iklan di atas Beranda; selalu berlabel "Iklan", terpisah dari Populer. */
+    public final MutableLiveData<List<BannerDto>> banner =
+            new MutableLiveData<>(Collections.emptyList());
+
     public final MutableLiveData<Status> status = new MutableLiveData<>(Status.MEMUAT);
     public final MutableLiveData<String> kategori = new MutableLiveData<>(null);
 
@@ -69,6 +78,7 @@ public class BerandaViewModel extends AndroidViewModel {
     private int urutanSegera;
     private int urutanPopuler;
     private int urutanTerdekat;
+    private int urutanBanner;
 
     public BerandaViewModel(@NonNull Application app) {
         super(app);
@@ -119,6 +129,7 @@ public class BerandaViewModel extends AndroidViewModel {
             return;
         }
         filter.setValue(baru);
+        muatBanner();
         muatPopuler();
         muatSegeraTutup();
         muatTerdekat();
@@ -160,10 +171,43 @@ public class BerandaViewModel extends AndroidViewModel {
     }
 
     private void muatDaftar() {
+        muatBanner();
         muatPopuler();
         muatSegeraTutup();
         muatTerdekat();
         muatLencana();
+    }
+
+    /** Hanya alergi yang ikut: banner tidak menunjuk jualan yang berbahaya bagi pembeli. */
+    private void muatBanner() {
+        FilterJualan f = filterSekarang();
+        Map<String, String> q = new HashMap<>();
+        if (lat != null && lng != null) {
+            q.put("lat", String.format(Locale.US, "%.6f", lat));
+            q.put("lng", String.format(Locale.US, "%.6f", lng));
+        }
+        int urutan = ++urutanBanner;
+        app().api()
+                .bannerPromosi(q, f.alergenDikirim())
+                .enqueue(
+                        new ApiCallback<>() {
+                            @Override
+                            public void sukses(Terbungkus<List<BannerDto>> data) {
+                                if (urutan == urutanBanner) {
+                                    banner.setValue(
+                                            data == null || data.data == null
+                                                    ? Collections.emptyList()
+                                                    : data.data);
+                                }
+                            }
+
+                            @Override
+                            public void gagal(ApiError e) {
+                                if (urutan == urutanBanner) {
+                                    banner.setValue(Collections.emptyList());
+                                }
+                            }
+                        });
     }
 
     /**
@@ -231,6 +275,8 @@ public class BerandaViewModel extends AndroidViewModel {
         if (k != null) {
             q.put("category", k);
         }
+        // Halaman pertama boleh diawali paling banyak dua jualan berlabel "Iklan".
+        q.put("sponsored", "1");
         // Jawaban kategori atau filter lama yang datang terlambat diabaikan.
         int urutan = ++urutanTerdekat;
         status.setValue(Status.MEMUAT);

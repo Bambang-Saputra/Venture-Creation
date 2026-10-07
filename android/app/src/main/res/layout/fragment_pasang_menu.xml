@@ -7,6 +7,7 @@
     - Tiap item punya kolom harga jual, karena harga produk di API adalah harga normal (jadi harga
       coret), dan tombol alergen untuk pernyataan alergen per item (PRD-09 kriteria 10).
     - "Tambah item dari menu toko" tidak ada: semua produk aktif sudah tampil; stok 0 = tidak dijual.
+      Gantinya "Tambah menu baru" untuk mendaftarkan menu yang belum ada (POST /products).
     - Jam ambil memakai pemilih jam.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -111,6 +112,19 @@
                         android:paddingBottom="12dp"
                         android:text="@string/m16_kosong"
                         android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tombol_menu_baru"
+                        style="@style/Widget.Material3.Button.TextButton.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:minHeight="48dp"
+                        android:text="@string/m16_menu_baru"
+                        android:textColor="@color/merek_utama"
+                        app:icon="@drawable/ic_tambah"
+                        app:iconTint="@color/merek_utama" />
                 </LinearLayout>
 
                 <TextView

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Services\Promosi;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,7 @@ class SeederDemo extends Seeder
         $listing = $this->buatListing($toko);
         $this->buatPesanan($konsumen, $listing);
         $this->buatCatatanSisa($toko);
+        $this->buatPromosi($toko);
 
         $this->command?->info('SeederDemo selesai: '.count($toko).' toko, '.count($listing).' listing.');
     }
@@ -53,6 +55,44 @@ class SeederDemo extends Seeder
     }
 
     private const FOLDER_FOTO = 'demo';
+
+    /**
+     * Iklan contoh supaya Beranda demo terlihat hidup: dua banner (satu di sekitar BINUS, satu
+     * di Jakarta Selatan) dan satu prioritas pencarian. Semuanya tayang 7 hari mulai hari ini,
+     * tanpa tagihan (simulated), sama seperti iklan yang dibeli lewat app selama uji coba.
+     *
+     * @param  list<array<string,mixed>>  $toko
+     */
+    private function buatPromosi(array $toko): void
+    {
+        $perNama = collect($toko)->keyBy('nama');
+        $iklan = [
+            ['Nasi Goreng Pak Syahdan', Promosi::BANNER, 'Nasi goreng hangat, hemat sampai 60%'],
+            ['Roti Sari Bakery', Promosi::BANNER, 'Tas roti sore mulai jam 18.00'],
+            ['Rotiku Palmerah', Promosi::PRIORITAS, null],
+        ];
+
+        foreach ($iklan as [$nama, $paket, $kalimat]) {
+            $t = $perNama->get($nama);
+            if ($t === null) {
+                continue;
+            }
+            DB::table('store_promotions')->insert([
+                'store_id' => $t['id'],
+                'package' => $paket,
+                'headline' => $kalimat,
+                'starts_on' => $this->hariIni->toDateString(),
+                'ends_on' => $this->hariIni->copy()->addDays(6)->toDateString(),
+                'days' => 7,
+                'price_per_day_rupiah' => Promosi::TARIF[$paket],
+                'total_rupiah' => Promosi::TARIF[$paket] * 7,
+                'payment_status' => 'simulated',
+                'created_by_user_id' => $t['owner'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+    }
 
     /**
      * Jam ambil demo 18.00-23.00 dan toko tutup 23.30, supaya responden yang mencoba malam

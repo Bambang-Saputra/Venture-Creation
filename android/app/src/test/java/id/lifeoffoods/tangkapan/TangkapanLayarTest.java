@@ -640,6 +640,16 @@ public class TangkapanLayarTest {
         idle();
     }
 
+    @Test
+    public void m22Promosi() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m22_promosi, null);
+        tunggu();
+        tangkapPanjang("M22");
+    }
+
     private MainActivity buka() {
         kontrol = Robolectric.buildActivity(MainActivity.class).setup();
         idle();
@@ -815,6 +825,19 @@ public class TangkapanLayarTest {
             if (path.startsWith("/api/favorites")) {
                 return json(isiFavorit ? favoritK16() : "{\"data\":[]}");
             }
+            if (path.startsWith("/api/promotions/banners")) {
+                return json(
+                        "{\"data\":[{\"store_id\":7,\"store_name\":\"Nasi Goreng Pak Syahdan\","
+                                + "\"store_category\":\"resto\","
+                                + "\"headline\":\"Nasi goreng hangat, hemat sampai 60%\","
+                                + "\"photo_url\":null,\"listing_id\":34,\"listing_type\":\"menu_item\","
+                                + "\"price_from_rupiah\":9000},"
+                                + "{\"store_id\":8,\"store_name\":\"Roti Sari Bakery\","
+                                + "\"store_category\":\"bakery\","
+                                + "\"headline\":\"Tas roti sore mulai jam 18.00\","
+                                + "\"photo_url\":null,\"listing_id\":33,\"listing_type\":\"surprise_bag\","
+                                + "\"price_from_rupiah\":12000}]}");
+            }
             if (path.startsWith("/api/listings")) {
                 // K09 menghitung jumlah dengan per_page=1; Figma menampilkan "Tampilkan 12 jualan".
                 if (path.contains("per_page=1&") || path.endsWith("per_page=1")) {
@@ -888,16 +911,23 @@ public class TangkapanLayarTest {
                 return json(
                         "{\"data\":["
                                 + listing(
-                                        31,
-                                        "surprise_bag",
-                                        "Tas Pastry Sore",
-                                        "Kopi Kalyan",
-                                        18000,
-                                        55000,
-                                        48,
-                                        0.38,
-                                        "20:30",
-                                        "21:00")
+                                                31,
+                                                "surprise_bag",
+                                                "Tas Pastry Sore",
+                                                "Kopi Kalyan",
+                                                18000,
+                                                55000,
+                                                48,
+                                                0.38,
+                                                "20:30",
+                                                "21:00")
+                                        // Kartu pertama dari paket prioritas pencarian: label
+                                        // Iklan.
+                                        .replace(
+                                                "\"qty_remaining\":3",
+                                                path.contains("sponsored=1")
+                                                        ? "\"qty_remaining\":3,\"is_sponsored\":true"
+                                                        : "\"qty_remaining\":3")
                                 + ","
                                 + listing(
                                         32,
@@ -920,6 +950,30 @@ public class TangkapanLayarTest {
             }
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");
+            }
+            if (path.startsWith("/api/partner/stores/5/promotions")) {
+                java.time.LocalDate hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7));
+                return json(
+                        "{\"packages\":[{\"code\":\"search_priority\",\"name\":\"Prioritas pencarian\","
+                                + "\"description\":\"Jualanmu tampil paling atas di daftar Beranda dan"
+                                + " kategori, dengan label \\\"Iklan\\\".\",\"price_per_day_rupiah\":5000},"
+                                + "{\"code\":\"home_banner\",\"name\":\"Banner Beranda\","
+                                + "\"description\":\"Tokomu tampil di banner geser paling atas Beranda"
+                                + " pembeli.\",\"price_per_day_rupiah\":10000}],"
+                                + "\"billing\":{\"enabled\":false,\"reason\":\"Selama uji coba, promosi"
+                                + " belum ditagih dan saldo tidak dipotong.\"},"
+                                + "\"data\":[{\"id\":2,\"package\":\"home_banner\",\"headline\":null,"
+                                + "\"starts_on\":\""
+                                + hari.minusDays(1)
+                                + "\",\"ends_on\":\""
+                                + hari.plusDays(2)
+                                + "\",\"days\":4,\"total_rupiah\":40000,\"status\":\"active\"},"
+                                + "{\"id\":1,\"package\":\"search_priority\",\"headline\":null,"
+                                + "\"starts_on\":\""
+                                + hari.minusDays(10)
+                                + "\",\"ends_on\":\""
+                                + hari.minusDays(4)
+                                + "\",\"days\":7,\"total_rupiah\":35000,\"status\":\"ended\"}]}");
             }
             if (path.startsWith("/api/partner/stores/5/reports/weekly")) {
                 java.time.LocalDate senin =

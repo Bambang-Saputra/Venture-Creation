@@ -355,6 +355,10 @@
                             layout="@layout/item_baris_toko" />
 
                         <include
+                            android:id="@+id/baris_promosi"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
                             android:id="@+id/baris_laporan"
                             layout="@layout/item_baris_toko" />
 
