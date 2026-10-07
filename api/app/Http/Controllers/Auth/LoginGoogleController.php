@@ -74,7 +74,7 @@ class LoginGoogleController extends Controller
 
         if ($mitra === null) {
             throw new LoginGoogleDitolak(
-                'Email ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.',
+                'Email ini belum terdaftar sebagai mitra. Daftarkan tokomu lewat nomor HP di halaman ini.',
                 403,
             );
         }

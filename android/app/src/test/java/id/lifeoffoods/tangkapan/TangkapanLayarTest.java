@@ -53,10 +53,17 @@ public class TangkapanLayarTest {
     /** GET /favorites mengirim contoh Figma K16; tetap kosong untuk layar lain (hati K10). */
     private static volatile boolean isiFavorit;
 
+    /**
+     * Akun mitra tanpa toko (M03/M04): null = toko sudah ada (bawaan), lainnya isi GET
+     * /partner/application: "kosong" (belum mendaftar), "menunggu", atau "ditolak".
+     */
+    private static volatile String pendaftaran;
+
     @Before
     public void siapkan() throws IOException {
         assumeTrue(Boolean.getBoolean("lof.tangkapan"));
         isiFavorit = false;
+        pendaftaran = null;
         lepasPabrikViewModelLama();
         server = new MockWebServer();
         server.setDispatcher(new DataContoh());
@@ -569,6 +576,70 @@ public class TangkapanLayarTest {
         tangkap("M13");
     }
 
+    /** Mitra baru tanpa toko: M05 langsung berganti ke M03, langkah 1. */
+    @Test
+    public void m03DaftarMitra() {
+        pendaftaran = "kosong";
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        isiDataUsaha(a);
+        tangkap("M03");
+    }
+
+    @Test
+    public void m03GalatKosong() {
+        pendaftaran = "kosong";
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        a.findViewById(R.id.tombol_utama).performClick();
+        idle();
+        tangkap("M03-galat");
+    }
+
+    @Test
+    public void m04Verifikasi() {
+        pendaftaran = "kosong";
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        MainActivity a = buka();
+        tunggu();
+        isiDataUsaha(a);
+        a.findViewById(R.id.tombol_utama).performClick();
+        idle();
+        ((android.widget.EditText) a.findViewById(R.id.pemilik)).setText("Kalyan Pratama");
+        idle();
+        tangkap("M04");
+    }
+
+    @Test
+    public void m04Menunggu() {
+        pendaftaran = "menunggu";
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        tangkap("M04-menunggu");
+    }
+
+    @Test
+    public void m03Ditolak() {
+        pendaftaran = "ditolak";
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        tangkap("M03-ditolak");
+    }
+
+    /** Isi M03 seperti contoh Figma 65:1754. */
+    private static void isiDataUsaha(MainActivity a) {
+        ((android.widget.EditText) a.findViewById(R.id.nama_usaha)).setText("Kopi Kalyan SCBD");
+        ((android.widget.EditText) a.findViewById(R.id.alamat))
+                .setText("Jl. Jend. Sudirman Kav 52, Lobi Utama");
+        com.google.android.material.chip.ChipGroup grup = a.findViewById(R.id.grup_kategori);
+        ((com.google.android.material.chip.Chip) grup.getChildAt(0)).setChecked(true);
+        idle();
+    }
+
     @Test
     public void m22Promosi() {
         app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
@@ -636,11 +707,35 @@ public class TangkapanLayarTest {
         return (LofApp) org.robolectric.RuntimeEnvironment.getApplication();
     }
 
+    /** GET /partner/application sesuai {@link #pendaftaran}. */
+    private static String pendaftaranM03() {
+        if ("kosong".equals(pendaftaran)) {
+            return "{\"data\":null}";
+        }
+        boolean ditolak = "ditolak".equals(pendaftaran);
+        return "{\"data\":{\"id\":3,\"status\":\""
+                + (ditolak ? "rejected" : "pending")
+                + "\",\"owner_name\":\"Kalyan Pratama\",\"store_name\":\"Kopi Kalyan SCBD\","
+                + "\"category\":\"cafe\",\"address\":\"Jl. Jend. Sudirman Kav 52, Lobi Utama\","
+                + "\"latitude\":null,\"longitude\":null,\"open_time\":\"07:00\","
+                + "\"close_time\":\"21:00\",\"nib\":"
+                + (ditolak ? "null" : "\"9120001234567\"")
+                + ",\"halal_certificate_no\":null,\"rejection_reason\":"
+                + (ditolak ? "\"Alamat belum lengkap, tambahkan nomor gedung.\"" : "null")
+                + ",\"store_id\":null,\"submitted_at\":\"2026-10-07T10:15:00+07:00\"}}";
+    }
+
     /** Jawaban API dengan isi yang sama dengan contoh di Figma. */
     private static final class DataContoh extends Dispatcher {
         @Override
         public MockResponse dispatch(RecordedRequest r) {
             String path = r.getPath() == null ? "" : r.getPath();
+            if (pendaftaran != null && path.equals("/api/partner/stores")) {
+                return json("{\"data\":[]}");
+            }
+            if (path.equals("/api/partner/application")) {
+                return json(pendaftaranM03());
+            }
             if (path.startsWith("/api/me/impact")) {
                 return json(
                         "{\"data\":{\"portions_rescued\":16,\"saved_rupiah\":412000,"

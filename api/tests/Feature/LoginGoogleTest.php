@@ -107,7 +107,7 @@ class LoginGoogleTest extends TestCase
     {
         $this->masuk($this->token(), 'partner')
             ->assertForbidden()
-            ->assertJsonPath('message', 'Email ini belum terdaftar sebagai mitra. Hubungi tim Life of Foods.');
+            ->assertJsonPath('message', 'Email ini belum terdaftar sebagai mitra. Daftarkan tokomu lewat nomor HP di halaman ini.');
 
         $this->assertDatabaseCount('users', 0);
     }

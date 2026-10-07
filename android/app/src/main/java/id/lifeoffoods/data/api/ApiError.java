@@ -113,11 +113,22 @@ public final class ApiError {
                                 && pesan.contains("Masuk lewat halaman")));
     }
 
+    /** Akun mitra yang belum punya toko; lihat {@link #BELUM_ADA_TOKO}. */
+    public boolean belumAdaToko() {
+        return BELUM_ADA_TOKO.equals(kodeGalat);
+    }
+
     /** Kode galat tetap dari server (kontrak API bagian 1, "Galat"). */
     public static final String AKUN_NONAKTIF = "account_inactive";
 
     public static final String SALAH_PERAN = "wrong_role";
-    public static final String MITRA_BELUM_TERDAFTAR = "partner_not_registered";
+
+    /**
+     * Dibuat aplikasi, bukan dari server: GET /partner/stores kosong karena pendaftaran toko belum
+     * disetujui. M05 lalu membuka M03/M04.
+     */
+    public static final String BELUM_ADA_TOKO = "no_store";
+
     public static final String BATAS_PESANAN_AKTIF = "active_order_limit";
 
     private static final class Isi {

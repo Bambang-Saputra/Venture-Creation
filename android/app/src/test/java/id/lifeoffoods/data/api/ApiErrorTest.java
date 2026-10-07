@@ -100,9 +100,24 @@ public class ApiErrorTest {
                         "{\"message\":\"Akun dengan nomor ini sedang dinonaktifkan.\","
                                 + "\"code\":\"partner_not_registered\"}");
         assertFalse(lain.perluMasukUlang());
-        assertEquals(ApiError.MITRA_BELUM_TERDAFTAR, lain.kodeGalat());
+        assertEquals("partner_not_registered", lain.kodeGalat());
+        assertFalse(lain.belumAdaToko());
 
         assertNull(ApiError.jaringan().kodeGalat());
+    }
+
+    /** Dibuat TokoAktif saat GET /partner/stores kosong; M05 lalu membuka M03. */
+    @Test
+    public void belumAdaTokoDikenali() {
+        ApiError e =
+                ApiError.dariRespons(
+                        404,
+                        "{\"message\":\"Akun ini belum punya toko.\",\"code\":\""
+                                + ApiError.BELUM_ADA_TOKO
+                                + "\"}");
+        assertTrue(e.belumAdaToko());
+        assertFalse(e.perluMasukUlang());
+        assertFalse(ApiError.dariRespons(404, "{\"message\":\"Tidak ada.\"}").belumAdaToko());
     }
 
     @Test

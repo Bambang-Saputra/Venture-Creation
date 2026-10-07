@@ -51,10 +51,14 @@ class OtpTest extends TestCase
         $this->minta('021-555-1234')->assertUnprocessable()->assertJsonValidationErrors('phone');
     }
 
-    public function test_mitra_yang_belum_terdaftar_tidak_dikirimi_kode(): void
+    public function test_nomor_baru_di_halaman_mitra_dibuatkan_akun_mitra_tanpa_toko(): void
     {
-        $this->minta(self::NOMOR, 'partner')->assertForbidden();
-        $this->assertDatabaseCount('otp_codes', 0);
+        $kode = $this->minta(self::NOMOR, 'partner')->assertStatus(202)->json('pilot_code');
+
+        $this->verifikasi($kode, 'partner')->assertCreated()
+            ->assertJsonPath('is_new_user', true)
+            ->assertJsonPath('user.role', 'partner');
+        $this->assertDatabaseCount('stores', 0);
     }
 
     public function test_kirim_ulang_menunggu_jeda_dan_kode_lama_gugur(): void
@@ -138,9 +142,12 @@ class OtpTest extends TestCase
             ->assertJsonPath('code', 'wrong_role')->assertJsonPath('registered_role', 'partner');
     }
 
-    public function test_nomor_belum_terdaftar_ditolak_di_halaman_mitra(): void
+    public function test_nomor_konsumen_tetap_ditolak_di_halaman_mitra(): void
     {
-        $this->minta(self::NOMOR, 'partner')->assertForbidden()->assertJsonPath('code', 'partner_not_registered');
+        User::forceCreate(['phone' => self::NOMOR, 'role' => 'consumer']);
+        $kode = $this->minta(self::NOMOR, 'partner')->json('pilot_code');
+
+        $this->verifikasi($kode, 'partner')->assertForbidden()->assertJsonPath('code', 'wrong_role');
     }
 
     public function test_akun_nonaktif_ditolak(): void

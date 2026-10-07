@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.CatatSisa;
@@ -67,6 +68,20 @@ public class DasborMitraFragment extends Fragment {
                 p -> {
                     if (p.ambil() != null) {
                         ((MainActivity) requireActivity()).sesiBerakhir();
+                    }
+                });
+        // Akun mitra yang tokonya belum disetujui: M05 diganti M03/M04, tanpa bisa kembali ke sini.
+        vm.perluDaftar.observe(
+                getViewLifecycleOwner(),
+                p -> {
+                    if (p.ambil() != null) {
+                        NavHostFragment.findNavController(this)
+                                .navigate(
+                                        R.id.m03_daftar_mitra,
+                                        null,
+                                        new NavOptions.Builder()
+                                                .setPopUpTo(R.id.m05_dashboard, true)
+                                                .build());
                     }
                 });
     }
