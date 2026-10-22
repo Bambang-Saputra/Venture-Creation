@@ -1,0 +1,307 @@
+<!doctype html>
+<!--
+  Sumber banner promosi Life of Foods.
+  Dua ukuran dari satu berkas:
+    banner.html#readme  1280x640  (README dan social preview GitHub)
+    banner.html#promosi 1080x1350 (unggahan Instagram/WhatsApp)
+  Cara membuat ulang PNG ada di README.md folder ini.
+-->
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Banner Life of Foods</title>
+<style>
+  @font-face { font-family: Gabarito; src: url(../../../android/app/src/main/res/font/gabarito_extrabold.ttf); font-weight: 800; }
+  @font-face { font-family: Figtree; src: url(../../../android/app/src/main/res/font/figtree_regular.ttf); font-weight: 400; }
+  @font-face { font-family: Figtree; src: url(../../../android/app/src/main/res/font/figtree_medium.ttf); font-weight: 500; }
+  @font-face { font-family: Figtree; src: url(../../../android/app/src/main/res/font/figtree_semibold.ttf); font-weight: 600; }
+  @font-face { font-family: Figtree; src: url(../../../android/app/src/main/res/font/figtree_bold.ttf); font-weight: 700; }
+
+  /* Warna diambil dari android/app/src/main/res/values/colors.xml */
+  :root {
+    --merek: #1B8A5A;
+    --merek-terang: #3FC078;
+    --lime: #A3D977;
+    --tinta: #0F2A1E;
+    --latar: #F5F9F5;
+    --latar-merek: #E6F4EA;
+    --teks-merek-gelap: #14573C;
+    --teks-sekunder: #5E6F64;
+    --garis: #E2EAE4;
+    --proses-latar: #FBF0D8;
+    --proses-teks: #8A5A08;
+    --bahaya-latar: #FCEBE8;
+    --bahaya-teks: #C0392B;
+    --bintang: #E0A82E;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--latar); }
+  body { font-family: Figtree, sans-serif; color: var(--tinta); -webkit-font-smoothing: antialiased; }
+
+  .kanvas { position: relative; overflow: hidden; background: var(--latar); }
+  body.readme .kanvas { width: 1280px; height: 640px; }
+  body.promosi .kanvas { width: 1080px; height: 1350px; }
+
+  /* Panel gelap tempat ponsel berdiri */
+  .panel {
+    position: absolute; background: radial-gradient(120% 90% at 30% 20%, #1E6E4B 0%, #13402C 45%, var(--tinta) 100%);
+    overflow: hidden;
+  }
+  .panel::before, .panel::after {
+    content: ""; position: absolute; border-radius: 50%; border: 2px solid rgba(163, 217, 119, .14);
+  }
+  .panel::before { width: 520px; height: 520px; right: -140px; top: -160px; }
+  .panel::after { width: 760px; height: 760px; right: -260px; top: -280px; }
+
+  /* Teks */
+  .merek { display: flex; align-items: center; gap: 12px; }
+  .logo {
+    width: 48px; height: 48px; border-radius: 14px; background: var(--merek);
+    display: grid; place-items: center; box-shadow: 0 6px 16px rgba(27, 138, 90, .35);
+  }
+  .nama { font-family: Gabarito; font-weight: 800; font-size: 26px; letter-spacing: -.3px; }
+  .kicker {
+    display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 1.6px;
+    color: var(--teks-merek-gelap); background: var(--latar-merek); padding: 7px 12px; border-radius: 999px;
+  }
+  h1 { font-family: Gabarito; font-weight: 800; letter-spacing: -1.5px; line-height: 1.02; }
+  h1 em { font-style: normal; color: var(--merek); }
+  .isi { color: var(--teks-sekunder); line-height: 1.5; }
+  .poin { display: flex; flex-direction: column; gap: 10px; }
+  .poin div { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .poin svg { flex: none; }
+  .kaki { color: var(--teks-sekunder); font-size: 14px; font-weight: 500; }
+  .kaki b { color: var(--tinta); font-weight: 700; }
+
+  /* Ponsel */
+  .hp {
+    position: absolute; width: 252px; height: 530px; border-radius: 38px; background: #0A1A12;
+    padding: 9px; box-shadow: 0 30px 60px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .08) inset;
+  }
+  .layar { position: relative; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; background: var(--latar); }
+  .status { height: 26px; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; font-size: 10px; font-weight: 700; }
+  .status::after { content: ""; width: 34px; height: 9px; border-radius: 3px; border: 1.5px solid currentColor; opacity: .7; }
+  .pad { padding: 0 14px; }
+
+  .lokasi { font-size: 9px; color: var(--teks-sekunder); font-weight: 600; }
+  .lokasi b { display: block; font-size: 12px; color: var(--tinta); }
+  .cari { margin-top: 8px; background: #fff; border: 1px solid var(--garis); border-radius: 12px; padding: 8px 10px; font-size: 10px; color: #8A9A90; }
+  .judul-bagian { margin: 11px 0 7px; display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; }
+  .judul-bagian span { color: var(--merek); font-size: 10px; }
+  .kartu { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); margin-bottom: 9px; }
+  .kartu .foto { height: 92px; background-size: cover; background-position: center; position: relative; }
+  .pil {
+    position: absolute; left: 8px; top: 8px; font-size: 8.5px; font-weight: 700; padding: 3px 7px; border-radius: 999px;
+    background: var(--proses-latar); color: var(--proses-teks);
+  }
+  .pil.kanan { left: auto; right: 8px; background: rgba(15, 42, 30, .75); color: #fff; }
+  .kartu .badan { padding: 8px 10px 10px; }
+  .kartu .toko { font-size: 9px; color: var(--teks-sekunder); font-weight: 600; }
+  .kartu .menu { font-size: 12px; font-weight: 700; margin: 1px 0 5px; }
+  .harga { display: flex; align-items: baseline; gap: 6px; }
+  .harga b { font-size: 13px; color: var(--merek); }
+  .harga s { font-size: 9.5px; color: #6B7C71; }
+  .harga i { margin-left: auto; font-style: normal; font-size: 9px; font-weight: 700; color: var(--teks-merek-gelap); background: var(--latar-merek); padding: 2px 6px; border-radius: 999px; }
+  .meta { margin-top: 5px; font-size: 9px; color: var(--teks-sekunder); }
+  .meta .bintang { color: var(--bintang); }
+  .alergi { margin-top: 6px; display: inline-block; font-size: 8.5px; font-weight: 700; color: var(--bahaya-teks); background: var(--bahaya-latar); padding: 3px 7px; border-radius: 6px; }
+
+  .navbawah { position: absolute; left: 0; right: 0; bottom: 0; height: 46px; background: #fff; border-top: 1px solid var(--garis); display: flex; justify-content: space-around; align-items: center; }
+  .navbawah i { width: 18px; height: 4px; border-radius: 2px; background: #C6D5C9; }
+  .navbawah i.aktif { background: var(--merek); width: 26px; }
+
+  /* K14 Kode pickup */
+  .kode-latar { background: linear-gradient(180deg, #146B47, #23A066); color: #fff; height: 100%; }
+  .kode-latar .status { color: #fff; }
+  .k14-atas { padding: 6px 16px 0; }
+  .k14-atas small { font-size: 9px; letter-spacing: 1.4px; font-weight: 700; opacity: .8; }
+  .k14-atas h3 { font-family: Gabarito; font-weight: 800; font-size: 20px; margin-top: 2px; }
+  .k14-kartu { margin: 14px 14px 0; background: #fff; color: var(--tinta); border-radius: 20px; padding: 16px 14px; text-align: center; }
+  .k14-kartu small { font-size: 9px; letter-spacing: 1.4px; font-weight: 700; color: var(--teks-sekunder); }
+  .kode { font-family: Gabarito; font-weight: 800; font-size: 38px; letter-spacing: 4px; margin: 4px 0 10px; }
+  .qr { width: 108px; height: 108px; margin: 0 auto; display: block; }
+  .k14-baris { display: flex; justify-content: space-between; font-size: 10px; padding: 7px 2px; border-top: 1px solid var(--garis); text-align: left; }
+  .k14-baris:first-of-type { margin-top: 12px; }
+  .k14-baris span { color: var(--teks-sekunder); }
+  .k14-baris b { font-weight: 700; }
+  .k14-dampak { margin: 12px 14px 0; background: rgba(255, 255, 255, .14); border-radius: 14px; padding: 10px 12px; font-size: 10px; line-height: 1.4; }
+
+  /* M05 Dashboard mitra */
+  .m05-kepala { background: var(--tinta); color: #fff; padding: 0 14px 16px; }
+  .m05-kepala .status { color: #fff; padding: 0 4px; }
+  .m05-kepala small { font-size: 9px; opacity: .7; font-weight: 600; }
+  .m05-kepala h3 { font-size: 14px; font-weight: 700; margin-top: 1px; display: flex; align-items: center; gap: 6px; }
+  .m05-kepala h3 span { font-size: 8.5px; background: var(--merek-terang); color: var(--tinta); padding: 2px 7px; border-radius: 999px; }
+  .tertahan { margin-top: 12px; background: rgba(63, 192, 120, .16); border-radius: 16px; padding: 12px; }
+  .tertahan small { opacity: .85; }
+  .tertahan b { display: block; font-family: Gabarito; font-weight: 800; font-size: 26px; margin: 2px 0; color: var(--lime); }
+  .tertahan p { font-size: 9px; opacity: .8; line-height: 1.4; }
+  .aksi { display: flex; gap: 8px; margin: 12px 0 0; }
+  .aksi div { flex: 1; background: #fff; border-radius: 12px; padding: 10px 8px; font-size: 10px; font-weight: 700; text-align: center; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); }
+  .aksi div.utama { background: var(--merek); color: #fff; }
+  .grafik { background: #fff; border-radius: 16px; padding: 11px 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); }
+  .grafik small { font-size: 9px; color: var(--teks-sekunder); font-weight: 600; }
+  .batang { display: flex; align-items: flex-end; gap: 7px; height: 70px; margin-top: 8px; }
+  .batang i { flex: 1; background: #D8ECDD; border-radius: 5px 5px 2px 2px; }
+  .batang i.aktif { background: var(--merek); }
+  .hari { display: flex; gap: 7px; margin-top: 4px; }
+  .hari span { flex: 1; text-align: center; font-size: 8px; color: var(--teks-sekunder); }
+  .pesanan { background: #fff; border-radius: 14px; padding: 10px 12px; margin-top: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); }
+  .pesanan .titik { width: 30px; height: 30px; border-radius: 10px; background: var(--latar-merek); display: grid; place-items: center; font-family: Gabarito; font-weight: 800; color: var(--merek); font-size: 13px; }
+  .pesanan div { font-size: 10px; font-weight: 700; }
+  .pesanan div span { display: block; font-size: 9px; color: var(--teks-sekunder); font-weight: 500; margin-top: 1px; }
+
+  /* ===== Tata letak README 1280x640 ===== */
+  body.readme .panel { left: 640px; top: 0; width: 640px; height: 640px; border-radius: 0 0 0 56px; }
+  body.readme .teks { position: absolute; left: 64px; top: 56px; width: 540px; }
+  body.readme .kicker { margin-top: 44px; }
+  body.readme h1 { font-size: 62px; margin-top: 16px; }
+  body.readme .isi { font-size: 18px; margin-top: 18px; width: 500px; }
+  body.readme .poin { margin-top: 24px; font-size: 16px; }
+  body.readme .kaki { position: absolute; left: 64px; bottom: 40px; }
+  body.readme .hp1 { left: 650px; top: 96px; transform: rotate(-7deg) scale(.86); }
+  body.readme .hp2 { left: 834px; top: 56px; z-index: 2; }
+  body.readme .hp3 { left: 1012px; top: 104px; transform: rotate(7deg) scale(.86); }
+
+  /* ===== Tata letak promosi 1080x1350 ===== */
+  body.promosi .panel { left: 0; right: 0; bottom: 0; height: 700px; border-radius: 64px 64px 0 0; }
+  body.promosi .teks { position: absolute; left: 72px; right: 72px; top: 64px; }
+  body.promosi .merek .logo { width: 56px; height: 56px; border-radius: 16px; }
+  body.promosi .nama { font-size: 30px; }
+  body.promosi .kicker { margin-top: 48px; font-size: 15px; padding: 8px 14px; }
+  body.promosi h1 { font-size: 92px; margin-top: 20px; letter-spacing: -2.5px; }
+  body.promosi .isi { font-size: 24px; margin-top: 22px; width: 860px; }
+  body.promosi .poin { display: none; }
+  body.promosi .hp { width: 296px; height: 622px; border-radius: 44px; padding: 10px; }
+  body.promosi .layar { border-radius: 35px; }
+  body.promosi .hp1 { left: 72px; top: 760px; transform: rotate(-6deg) scale(.92); }
+  body.promosi .hp2 { left: 392px; top: 700px; z-index: 2; }
+  body.promosi .hp3 { left: 712px; top: 770px; transform: rotate(6deg) scale(.92); }
+  body.promosi .label { position: absolute; z-index: 3; background: #fff; border-radius: 999px; padding: 12px 20px; font-weight: 700; font-size: 20px; box-shadow: 0 12px 30px rgba(0, 0, 0, .25); display: flex; align-items: center; gap: 10px; }
+  body.readme .label { display: none; }
+  body.promosi .label.l1 { left: 56px; top: 690px; }
+  body.promosi .label.l2 { right: 56px; top: 1130px; }
+  body.promosi .kaki { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; line-height: 84px; text-align: center; background: var(--tinta); border-top: 1px solid rgba(163, 217, 119, .2); color: rgba(255, 255, 255, .8); z-index: 4; font-size: 18px; }
+  body.promosi .kaki b { color: #fff; }
+  body.promosi .ajakan { position: absolute; left: 72px; top: 560px; display: flex; gap: 12px; }
+  body.readme .ajakan { display: none; }
+  .ajakan span { font-size: 20px; font-weight: 700; padding: 14px 22px; border-radius: 16px; background: var(--merek); color: #fff; }
+  .ajakan span.garis { background: transparent; color: var(--tinta); border: 2px solid var(--tinta); }
+</style>
+</head>
+<body>
+<div class="kanvas">
+  <div class="panel"></div>
+
+  <div class="teks">
+    <div class="merek">
+      <div class="logo">
+        <!-- daun di atas mangkuk -->
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M14 3c4.8 1.4 7 5 6.2 9.8C15.6 13 13 10.1 14 3Z" fill="#A3D977"/>
+          <path d="M14 3c-1 7.1 1.6 10 6.2 9.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M4 15h20a10 10 0 0 1-20 0Z" fill="#fff"/>
+        </svg>
+      </div>
+      <span class="nama">Life of Foods</span>
+    </div>
+    <span class="kicker">SELAMATKAN MAKANAN SEBELUM TUTUP</span>
+    <h1>Makanan layak,<br><em>harga sepertiga.</em></h1>
+    <p class="isi">Kafe dan bakery melepas stok yang tidak habis hari itu. Pesan dari aplikasi, datang di jam ambil, tunjukkan kode ke kasir.</p>
+    <div class="poin">
+      <div><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Kandungan dan alergi ditulis apa adanya</div>
+      <div><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Bayar tunai atau QRIS langsung di toko</div>
+      <div><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Mitra tetap dapat pemasukan, sampah berkurang</div>
+    </div>
+  </div>
+
+  <div class="ajakan"><span>Pembeli: cari tas hari ini</span><span class="garis">Mitra: daftarkan toko</span></div>
+
+  <!-- K07 Beranda -->
+  <div class="hp hp1"><div class="layar">
+    <div class="status">18.42</div>
+    <div class="pad">
+      <div class="lokasi">Lokasi kamu<b>Tebet, Jakarta Selatan</b></div>
+      <div class="cari">Cari kafe, bakery, atau menu</div>
+      <div class="judul-bagian">Terdekat dari kamu <span>Lihat semua</span></div>
+      <div class="kartu">
+        <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/roti-sari-tas.jpg)"><span class="pil">Tutup &lt; 1 jam</span><span class="pil kanan">0,4 km</span></div>
+        <div class="badan">
+          <div class="toko">Roti Sari Bakery</div>
+          <div class="menu">Tas Kejutan Roti Sore</div>
+          <div class="harga"><b>Rp21.000</b><s>Rp60.000</s><i>Hemat 65%</i></div>
+          <div class="meta"><span class="bintang">★</span> 4,8 · Ambil 18.00–23.00</div>
+        </div>
+      </div>
+      <div class="kartu">
+        <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/kopi-lembur-tas.jpg)"><span class="pil kanan">1,2 km</span></div>
+        <div class="badan">
+          <div class="toko">Kopi Lembur</div>
+          <div class="menu">Tas Kejutan Pastry</div>
+          <div class="harga"><b>Rp16.000</b><s>Rp45.000</s><i>Hemat 64%</i></div>
+          <div class="alergi">Mengandung susu</div>
+        </div>
+      </div>
+    </div>
+    <div class="navbawah"><i class="aktif"></i><i></i><i></i><i></i></div>
+  </div></div>
+
+  <!-- K14 Kode pickup -->
+  <div class="hp hp2"><div class="layar kode-latar">
+    <div class="status">18.47</div>
+    <div class="k14-atas"><small>PESANAN AKTIF</small><h3>Siap diambil</h3></div>
+    <div class="k14-kartu">
+      <small>TUNJUKKAN KE KASIR</small>
+      <div class="kode">LF7Q2K</div>
+      <svg class="qr" viewBox="0 0 21 21" shape-rendering="crispEdges">
+        <rect width="21" height="21" fill="#fff"/>
+        <g fill="#0F2A1E">
+          <path d="M0 0h7v7H0zM14 0h7v7h-7zM0 14h7v7H0z"/>
+        </g>
+        <g fill="#fff"><path d="M1 1h5v5H1zM15 1h5v5h-5zM1 15h5v5H1z"/></g>
+        <g fill="#0F2A1E">
+          <path d="M2 2h3v3H2zM16 2h3v3h-3zM2 16h3v3H2z"/>
+          <path d="M8 0h1v2H8zM10 1h2v1h-2zM9 3h1v2H9zM11 3h2v1h-2zM8 5h2v1H8zM12 5h1v2h-1zM8 8h2v1H8zM11 8h3v1h-3zM0 8h2v1H0zM3 8h2v2H3zM6 9h1v2H6zM1 10h1v2H1zM15 8h1v2h-1zM17 8h2v1h-2zM19 9h2v2h-2zM8 10h1v3H8zM10 10h2v2h-2zM13 10h1v1h-1zM16 11h2v2h-2zM3 12h3v1H3zM12 12h2v2h-2zM19 12h1v3h-1zM9 14h2v1H9zM14 14h3v1h-3zM8 16h1v3H8zM10 16h3v1h-3zM15 16h1v2h-1zM17 16h3v1h-3zM10 18h1v3h-1zM12 18h2v1h-2zM17 18h1v3h-1zM19 19h2v2h-2zM13 20h3v1h-3z"/>
+        </g>
+      </svg>
+      <div class="k14-baris"><span>Mitra</span><b>Roti Sari Bakery</b></div>
+      <div class="k14-baris"><span>Jam ambil</span><b>18.00–23.00</b></div>
+      <div class="k14-baris"><span>Bayar di tempat</span><b>Rp21.000 · QRIS</b></div>
+    </div>
+    <div class="k14-dampak">Pesanan ini menyelamatkan 4 porsi dari terbuang. Ambil tepat waktu supaya mitra tidak menunggu.</div>
+  </div></div>
+
+  <!-- M05 Dashboard mitra -->
+  <div class="hp hp3"><div class="layar">
+    <div class="m05-kepala">
+      <div class="status">21.10</div>
+      <small>Akun mitra</small>
+      <h3>Roti Sari Bakery <span>Buka</span></h3>
+      <div class="tertahan">
+        <small style="font-size:9px;font-weight:600">Kerugian yang tertahan minggu ini</small>
+        <b>Rp1.284.000</b>
+        <p>Dari 61 item terjual. Nilai itu sebelumnya berakhir sebagai limbah.</p>
+      </div>
+    </div>
+    <div class="pad">
+      <div class="aksi"><div class="utama">Pasang tas</div><div>Catat sisa</div></div>
+      <div class="grafik">
+        <small>Sisa harian rata-rata, 7 hari terakhir</small>
+        <div class="batang"><i style="height:92%"></i><i style="height:78%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:41%"></i><i class="aktif" style="height:34%"></i></div>
+        <div class="hari"><span>Sn</span><span>Sl</span><span>Rb</span><span>Km</span><span>Jm</span><span>Sb</span><span>Mg</span></div>
+      </div>
+      <div class="pesanan"><span class="titik">3</span><div>pesanan menunggu diambil<span>Cocokkan kode pembeli di kasir</span></div></div>
+    </div>
+  </div></div>
+
+  <div class="label l1"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Alergi selalu terlihat</div>
+  <div class="label l2"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Bayar di toko, tanpa top up</div>
+
+  <div class="kaki"><b>Life of Foods</b> · Aplikasi Android · Venture Creation ENPR6312, BINUS University</div>
+</div>
+<script>
+  document.body.className = location.hash === '#promosi' ? 'promosi' : 'readme';
+</script>
+</body>
+</html>
