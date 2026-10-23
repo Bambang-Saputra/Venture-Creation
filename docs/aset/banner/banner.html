@@ -17,288 +17,286 @@
   @font-face { font-family: Figtree; src: url(../../../android/app/src/main/res/font/figtree_semibold.ttf); font-weight: 600; }
   @font-face { font-family: Figtree; src: url(../../../android/app/src/main/res/font/figtree_bold.ttf); font-weight: 700; }
 
-  /* Warna diambil dari android/app/src/main/res/values/colors.xml */
+  /* Warna disalin dari android/app/src/main/res/values/colors.xml */
   :root {
     --merek: #1B8A5A;
     --merek-terang: #3FC078;
     --lime: #A3D977;
     --tinta: #0F2A1E;
+    --gradasi-atas: #146B47;
     --latar: #F5F9F5;
     --latar-merek: #E6F4EA;
-    --teks-merek-gelap: #14573C;
+    --latar-isian: #F1F6F2;
+    --teks-kuat: #4E5F55;
     --teks-sekunder: #5E6F64;
-    --garis: #E2EAE4;
-    --proses-latar: #FBF0D8;
-    --proses-teks: #8A5A08;
-    --bahaya-latar: #FCEBE8;
-    --bahaya-teks: #C0392B;
-    --bintang: #E0A82E;
+    --teks-coret: #6B7C71;
+    --teks-merek-gelap: #14573C;
+    --garis-halus: #E8EFE9;
+    --garis-tegas: #E2EAE4;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--latar); }
   body { font-family: Figtree, sans-serif; color: var(--tinta); -webkit-font-smoothing: antialiased; }
+  svg.ikon { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   .kanvas { position: relative; overflow: hidden; background: var(--latar); }
   body.readme .kanvas { width: 1280px; height: 640px; }
   body.promosi .kanvas { width: 1080px; height: 1350px; }
 
-  /* Panel gelap tempat ponsel berdiri */
-  .panel {
-    position: absolute; background: radial-gradient(120% 90% at 30% 20%, #1E6E4B 0%, #13402C 45%, var(--tinta) 100%);
-    overflow: hidden;
-  }
-  .panel::before, .panel::after {
-    content: ""; position: absolute; border-radius: 50%; border: 2px solid rgba(163, 217, 119, .14);
-  }
-  .panel::before { width: 520px; height: 520px; right: -140px; top: -160px; }
-  .panel::after { width: 760px; height: 760px; right: -260px; top: -280px; }
-
-  /* Teks */
-  .merek { display: flex; align-items: center; gap: 12px; }
-  .logo {
-    width: 48px; height: 48px; border-radius: 14px; background: var(--merek);
-    display: grid; place-items: center; box-shadow: 0 6px 16px rgba(27, 138, 90, .35);
-  }
-  .nama { font-family: Gabarito; font-weight: 800; font-size: 26px; letter-spacing: -.3px; }
+  /* ---------- Teks ---------- */
+  .merek { display: flex; align-items: center; gap: 10px; }
+  .nama { font-family: Gabarito; font-weight: 800; font-size: 25px; letter-spacing: -.3px; }
   .kicker {
-    display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: 1.6px;
-    color: var(--teks-merek-gelap); background: var(--latar-merek); padding: 7px 12px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 36px; padding: 7px 13px 7px 10px; border-radius: 999px;
+    background: var(--latar-merek); color: var(--teks-merek-gelap); font-weight: 700; font-size: 13px; letter-spacing: .3px;
   }
-  h1 { font-family: Gabarito; font-weight: 800; letter-spacing: -1.5px; line-height: 1.02; }
+  .kicker svg { width: 16px; height: 16px; }
+  h1 { font-family: Gabarito; font-weight: 800; letter-spacing: -1.4px; line-height: 1.04; margin-top: 16px; }
   h1 em { font-style: normal; color: var(--merek); }
-  .isi { color: var(--teks-sekunder); line-height: 1.5; }
-  .poin { display: flex; flex-direction: column; gap: 10px; }
-  .poin div { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-  .poin svg { flex: none; }
-  .kaki { color: var(--teks-sekunder); font-size: 14px; font-weight: 500; }
-  .kaki b { color: var(--tinta); font-weight: 700; }
+  .isi { color: var(--teks-sekunder); line-height: 1.5; margin-top: 16px; }
 
-  /* Ponsel */
-  .hp {
-    position: absolute; width: 252px; height: 530px; border-radius: 38px; background: #0A1A12;
-    padding: 9px; box-shadow: 0 30px 60px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .08) inset;
+  /* Ubin kategori K07: kotak 62dp putih, sudut 20dp; yang terpilih hijau lembut bergaris merek */
+  .kategori { display: flex; gap: 14px; }
+  .ubin { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--teks-kuat); }
+  .ubin span {
+    width: 62px; height: 62px; border-radius: 20px; background: #fff; border: 1px solid var(--garis-halus);
+    display: grid; place-items: center; color: var(--tinta);
   }
-  .layar { position: relative; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; background: var(--latar); }
-  .status { height: 26px; display: flex; justify-content: space-between; align-items: center; padding: 0 18px; font-size: 10px; font-weight: 700; }
-  .status::after { content: ""; width: 34px; height: 9px; border-radius: 3px; border: 1.5px solid currentColor; opacity: .7; }
-  .pad { padding: 0 14px; }
+  .ubin.pilih span { background: var(--latar-merek); border: 1.5px solid var(--merek); color: var(--merek); }
+  .ubin svg { width: 22px; height: 22px; }
 
-  .lokasi { font-size: 9px; color: var(--teks-sekunder); font-weight: 600; }
-  .lokasi b { display: block; font-size: 12px; color: var(--tinta); }
-  .cari { margin-top: 8px; background: #fff; border: 1px solid var(--garis); border-radius: 12px; padding: 8px 10px; font-size: 10px; color: #8A9A90; }
-  .judul-bagian { margin: 11px 0 7px; display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; }
-  .judul-bagian span { color: var(--merek); font-size: 10px; }
-  .kartu { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); margin-bottom: 9px; }
-  .kartu .foto { height: 92px; background-size: cover; background-position: center; position: relative; }
-  .pil {
-    position: absolute; left: 8px; top: 8px; font-size: 8.5px; font-weight: 700; padding: 3px 7px; border-radius: 999px;
-    background: var(--proses-latar); color: var(--proses-teks);
+  .langkah { display: flex; justify-content: space-between; }
+  .langkah div { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .langkah b {
+    width: 34px; height: 34px; border-radius: 50%; flex: none; display: grid; place-items: center;
+    background: var(--merek); color: #fff; font-family: Gabarito; font-weight: 800; font-size: 17px;
   }
-  .pil.kanan { left: auto; right: 8px; background: rgba(15, 42, 30, .75); color: #fff; }
-  .kartu .badan { padding: 8px 10px 10px; }
-  .kartu .toko { font-size: 9px; color: var(--teks-sekunder); font-weight: 600; }
-  .kartu .menu { font-size: 12px; font-weight: 700; margin: 1px 0 5px; }
-  .harga { display: flex; align-items: baseline; gap: 6px; }
-  .harga b { font-size: 13px; color: var(--merek); }
-  .harga s { font-size: 9.5px; color: #6B7C71; }
-  .harga i { margin-left: auto; font-style: normal; font-size: 9px; font-weight: 700; color: var(--teks-merek-gelap); background: var(--latar-merek); padding: 2px 6px; border-radius: 999px; }
-  .meta { margin-top: 5px; font-size: 9px; color: var(--teks-sekunder); }
-  .meta .bintang { color: var(--bintang); }
-  .alergi { margin-top: 6px; display: inline-block; font-size: 8.5px; font-weight: 700; color: var(--bahaya-teks); background: var(--bahaya-latar); padding: 3px 7px; border-radius: 6px; }
+  .kaki { color: var(--teks-sekunder); font-size: 13px; font-weight: 500; }
 
-  .navbawah { position: absolute; left: 0; right: 0; bottom: 0; height: 46px; background: #fff; border-top: 1px solid var(--garis); display: flex; justify-content: space-around; align-items: center; }
-  .navbawah i { width: 18px; height: 4px; border-radius: 2px; background: #C6D5C9; }
-  .navbawah i.aktif { background: var(--merek); width: 26px; }
+  /* ---------- Peta K08 ---------- */
+  .peta { position: absolute; border-radius: 32px; overflow: hidden; border: 1px solid var(--garis-tegas); background: #E6EFE8; }
+  .peta > svg.jalan { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .rute { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
 
-  /* K14 Kode pickup */
-  .kode-latar { background: linear-gradient(180deg, #146B47, #23A066); color: #fff; height: 100%; }
-  .kode-latar .status { color: #fff; }
-  .k14-atas { padding: 6px 16px 0; }
-  .k14-atas small { font-size: 9px; letter-spacing: 1.4px; font-weight: 700; opacity: .8; }
-  .k14-atas h3 { font-family: Gabarito; font-weight: 800; font-size: 20px; margin-top: 2px; }
-  .k14-kartu { margin: 14px 14px 0; background: #fff; color: var(--tinta); border-radius: 20px; padding: 16px 14px; text-align: center; }
-  .k14-kartu small { font-size: 9px; letter-spacing: 1.4px; font-weight: 700; color: var(--teks-sekunder); }
-  .kode { font-family: Gabarito; font-weight: 800; font-size: 38px; letter-spacing: 4px; margin: 4px 0 10px; }
-  .qr { width: 108px; height: 108px; margin: 0 auto; display: block; }
-  .k14-baris { display: flex; justify-content: space-between; font-size: 10px; padding: 7px 2px; border-top: 1px solid var(--garis); text-align: left; }
-  .k14-baris:first-of-type { margin-top: 12px; }
-  .k14-baris span { color: var(--teks-sekunder); }
-  .k14-baris b { font-weight: 700; }
-  .k14-dampak { margin: 12px 14px 0; background: rgba(255, 255, 255, .14); border-radius: 14px; padding: 10px 12px; font-size: 10px; line-height: 1.4; }
+  .penanda { position: absolute; z-index: 2; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; }
+  .penanda b {
+    height: 34px; padding: 0 12px; display: flex; align-items: center; border-radius: 12px; background: #fff;
+    border: 1px solid var(--garis-tegas); font-size: 13px; font-weight: 700; box-shadow: 0 2px 6px rgba(15, 42, 30, .1);
+  }
+  .penanda i { width: 6px; height: 6px; margin-top: 4px; border-radius: 50%; background: var(--merek); }
+  .penanda.pilih b { background: var(--merek); border-color: var(--merek); color: #fff; height: 38px; font-size: 14px; box-shadow: 0 8px 18px rgba(27, 138, 90, .35); }
 
-  /* M05 Dashboard mitra */
-  .m05-kepala { background: var(--tinta); color: #fff; padding: 0 14px 16px; }
-  .m05-kepala .status { color: #fff; padding: 0 4px; }
-  .m05-kepala small { font-size: 9px; opacity: .7; font-weight: 600; }
-  .m05-kepala h3 { font-size: 14px; font-weight: 700; margin-top: 1px; display: flex; align-items: center; gap: 6px; }
-  .m05-kepala h3 span { font-size: 8.5px; background: var(--merek-terang); color: var(--tinta); padding: 2px 7px; border-radius: 999px; }
-  .tertahan { margin-top: 12px; background: rgba(63, 192, 120, .16); border-radius: 16px; padding: 12px; }
-  .tertahan small { opacity: .85; }
-  .tertahan b { display: block; font-family: Gabarito; font-weight: 800; font-size: 26px; margin: 2px 0; color: var(--lime); }
-  .tertahan p { font-size: 9px; opacity: .8; line-height: 1.4; }
-  .aksi { display: flex; gap: 8px; margin: 12px 0 0; }
-  .aksi div { flex: 1; background: #fff; border-radius: 12px; padding: 10px 8px; font-size: 10px; font-weight: 700; text-align: center; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); }
-  .aksi div.utama { background: var(--merek); color: #fff; }
-  .grafik { background: #fff; border-radius: 16px; padding: 11px 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); }
-  .grafik small { font-size: 9px; color: var(--teks-sekunder); font-weight: 600; }
-  .batang { display: flex; align-items: flex-end; gap: 7px; height: 70px; margin-top: 8px; }
-  .batang i { flex: 1; background: #D8ECDD; border-radius: 5px 5px 2px 2px; }
-  .batang i.aktif { background: var(--merek); }
-  .hari { display: flex; gap: 7px; margin-top: 4px; }
-  .hari span { flex: 1; text-align: center; font-size: 8px; color: var(--teks-sekunder); }
-  .pesanan { background: #fff; border-radius: 14px; padding: 10px 12px; margin-top: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(15, 42, 30, .06); }
-  .pesanan .titik { width: 30px; height: 30px; border-radius: 10px; background: var(--latar-merek); display: grid; place-items: center; font-family: Gabarito; font-weight: 800; color: var(--merek); font-size: 13px; }
-  .pesanan div { font-size: 10px; font-weight: 700; }
-  .pesanan div span { display: block; font-size: 9px; color: var(--teks-sekunder); font-weight: 500; margin-top: 1px; }
+  .kamu { position: absolute; z-index: 2; width: 0; height: 0; }
+  .kamu .radius { position: absolute; left: -110px; top: -110px; width: 220px; height: 220px; border-radius: 50%; border: 1.5px dashed rgba(27, 138, 90, .5); background: rgba(27, 138, 90, .06); }
+  .kamu .halo { position: absolute; left: -24px; top: -24px; width: 48px; height: 48px; border-radius: 50%; background: rgba(27, 138, 90, .2); }
+  .kamu .titik { position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%; background: var(--merek); border: 4px solid #fff; box-shadow: 0 2px 6px rgba(0, 0, 0, .2); }
+  .kamu .label { position: absolute; left: -24px; top: 18px; width: 48px; text-align: center; font-size: 11px; font-weight: 700; color: #fff; background: var(--tinta); border-radius: 999px; padding: 3px 0; }
 
-  /* ===== Tata letak README 1280x640 ===== */
-  body.readme .panel { left: 640px; top: 0; width: 640px; height: 640px; border-radius: 0 0 0 56px; }
-  body.readme .teks { position: absolute; left: 64px; top: 56px; width: 540px; }
-  body.readme .kicker { margin-top: 44px; }
-  body.readme h1 { font-size: 62px; margin-top: 16px; }
-  body.readme .isi { font-size: 18px; margin-top: 18px; width: 500px; }
-  body.readme .poin { margin-top: 24px; font-size: 16px; }
-  body.readme .kaki { position: absolute; left: 64px; bottom: 40px; }
-  body.readme .hp1 { left: 650px; top: 96px; transform: rotate(-7deg) scale(.86); }
-  body.readme .hp2 { left: 834px; top: 56px; z-index: 2; }
-  body.readme .hp3 { left: 1012px; top: 104px; transform: rotate(7deg) scale(.86); }
+  /* ---------- Kartu mengambang ---------- */
+  .apung { position: absolute; z-index: 3; transform-origin: top left; }
 
-  /* ===== Tata letak promosi 1080x1350 ===== */
-  body.promosi .panel { left: 0; right: 0; bottom: 0; height: 700px; border-radius: 64px 64px 0 0; }
-  body.promosi .teks { position: absolute; left: 72px; right: 72px; top: 64px; }
-  body.promosi .merek .logo { width: 56px; height: 56px; border-radius: 16px; }
+  /* Kotak "Populer hari ini": gradasi #146B47 ke #3FC078, sudut 20dp */
+  .populer {
+    width: 238px; padding: 14px 0 14px 14px; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(135deg, var(--gradasi-atas), var(--merek-terang)); color: #fff;
+    box-shadow: 0 22px 44px rgba(15, 42, 30, .28);
+  }
+  .populer .kepala { display: flex; align-items: center; gap: 6px; padding-right: 14px; font-weight: 700; font-size: 14px; }
+  .populer .kepala svg { width: 16px; height: 16px; }
+  .populer .kepala span { margin-left: auto; font-size: 11px; font-weight: 600; opacity: .85; }
+  .populer small { display: block; font-size: 10.5px; opacity: .8; margin-top: 2px; }
+  .geser { display: flex; gap: 10px; margin-top: 10px; width: 400px; }
+
+  /* Kartu flash: putih, garis halus, sudut 18dp, foto 108dp, pil lime "sisa waktu" */
+  .flash { width: 184px; flex: none; background: #fff; border: 1px solid var(--garis-halus); border-radius: 18px; overflow: hidden; color: var(--tinta); }
+  .flash .foto { height: 108px; background-size: cover; background-position: center; position: relative; }
+  .flash .sisa { position: absolute; left: 8px; top: 8px; background: var(--lime); color: var(--tinta); font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 999px; display: flex; align-items: center; gap: 4px; }
+  .flash .sisa svg { width: 11px; height: 11px; stroke-width: 2.4; }
+  .flash .badan { padding: 9px 11px 11px; }
+  .flash .judul { font-size: 13.5px; font-weight: 700; line-height: 1.25; }
+  .flash .toko { font-size: 11px; color: var(--teks-sekunder); margin-top: 4px; }
+  .harga { margin-top: 6px; display: flex; align-items: baseline; gap: 6px; }
+  .harga b { font-size: 15px; color: var(--merek); }
+  .harga s { font-size: 11px; color: var(--teks-coret); }
+
+  /* Kartu jualan (daftar Terdekat): foto 94dp di kiri */
+  .tas { width: 312px; display: flex; gap: 12px; padding: 10px; background: #fff; border: 1px solid var(--garis-halus); border-radius: 18px; box-shadow: 0 18px 36px rgba(15, 42, 30, .16); }
+  .tas .foto { width: 94px; height: 94px; flex: none; border-radius: 14px; background-size: cover; background-position: center; }
+  .tas .jarak { font-size: 10.5px; color: var(--teks-sekunder); font-weight: 600; }
+  .tas .judul { font-size: 14px; font-weight: 700; margin-top: 1px; }
+  .tas .toko { font-size: 11px; color: var(--teks-sekunder); margin-top: 1px; }
+  .tas .harga { margin-top: 4px; }
+  .tas .jam { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 10.5px; font-weight: 600; color: var(--teks-kuat); background: var(--latar-isian); padding: 3px 8px; border-radius: 999px; }
+  .tas .jam svg { width: 11px; height: 11px; }
+
+  /* Notifikasi K17 */
+  .notif { width: 300px; display: flex; gap: 11px; align-items: center; padding: 12px 14px; background: #fff; border-radius: 18px; border: 1px solid var(--garis-halus); box-shadow: 0 16px 32px rgba(15, 42, 30, .14); }
+  .notif .ikon-bulat { width: 38px; height: 38px; flex: none; border-radius: 12px; background: var(--latar-merek); color: var(--merek); display: grid; place-items: center; }
+  .notif .ikon-bulat svg { width: 20px; height: 20px; }
+  .notif b { display: block; font-size: 13px; }
+  .notif span { display: block; font-size: 11px; color: var(--teks-sekunder); margin-top: 2px; }
+
+  /* ===== README 1280x640 ===== */
+  body.readme .teks { position: absolute; left: 64px; top: 52px; width: 540px; }
+  body.readme h1 { font-size: 52px; }
+  body.readme .isi { font-size: 17px; width: 500px; }
+  body.readme .kategori { margin-top: 26px; }
+  body.readme .kaki { position: absolute; left: 64px; bottom: 30px; }
+  body.readme .langkah { display: none; }
+  body.readme .peta { left: 652px; top: 32px; width: 596px; height: 576px; }
+  body.readme .rute-promosi, body.promosi .rute-readme { display: none; }
+  body.readme .p1 { left: 420px; top: 226px; }
+  body.readme .p2 { left: 236px; top: 150px; }
+  body.readme .p3 { left: 520px; top: 340px; }
+  body.readme .p4 { left: 238px; top: 470px; }
+  body.readme .p5 { left: 120px; top: 92px; }
+  body.readme .kamu { left: 300px; top: 330px; }
+  body.readme .a-populer { left: 584px; top: 196px; }
+  body.readme .a-tas { left: 914px; top: 484px; }
+  body.readme .a-notif { left: 924px; top: 60px; }
+
+  /* ===== Promosi 1080x1350 ===== */
+  body.promosi .teks { position: absolute; left: 64px; right: 64px; top: 64px; }
+  body.promosi .merek svg { width: 40px; height: 40px; }
   body.promosi .nama { font-size: 30px; }
-  body.promosi .kicker { margin-top: 48px; font-size: 15px; padding: 8px 14px; }
-  body.promosi h1 { font-size: 92px; margin-top: 20px; letter-spacing: -2.5px; }
-  body.promosi .isi { font-size: 24px; margin-top: 22px; width: 860px; }
-  body.promosi .poin { display: none; }
-  body.promosi .hp { width: 296px; height: 622px; border-radius: 44px; padding: 10px; }
-  body.promosi .layar { border-radius: 35px; }
-  body.promosi .hp1 { left: 72px; top: 760px; transform: rotate(-6deg) scale(.92); }
-  body.promosi .hp2 { left: 392px; top: 700px; z-index: 2; }
-  body.promosi .hp3 { left: 712px; top: 770px; transform: rotate(6deg) scale(.92); }
-  body.promosi .label { position: absolute; z-index: 3; background: #fff; border-radius: 999px; padding: 12px 20px; font-weight: 700; font-size: 20px; box-shadow: 0 12px 30px rgba(0, 0, 0, .25); display: flex; align-items: center; gap: 10px; }
-  body.readme .label { display: none; }
-  body.promosi .label.l1 { left: 56px; top: 690px; }
-  body.promosi .label.l2 { right: 56px; top: 1130px; }
-  body.promosi .kaki { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; line-height: 84px; text-align: center; background: var(--tinta); border-top: 1px solid rgba(163, 217, 119, .2); color: rgba(255, 255, 255, .8); z-index: 4; font-size: 18px; }
-  body.promosi .kaki b { color: #fff; }
-  body.promosi .ajakan { position: absolute; left: 72px; top: 560px; display: flex; gap: 12px; }
-  body.readme .ajakan { display: none; }
-  .ajakan span { font-size: 20px; font-weight: 700; padding: 14px 22px; border-radius: 16px; background: var(--merek); color: #fff; }
-  .ajakan span.garis { background: transparent; color: var(--tinta); border: 2px solid var(--tinta); }
+  body.promosi .kicker { font-size: 16px; padding: 9px 16px 9px 12px; margin-top: 44px; }
+  body.promosi .kicker svg { width: 19px; height: 19px; }
+  body.promosi h1 { font-size: 80px; letter-spacing: -2.2px; }
+  body.promosi .isi { font-size: 23px; width: 900px; }
+  body.promosi .kategori { display: none; }
+  body.promosi .peta { left: 48px; top: 500px; width: 984px; height: 680px; }
+  body.promosi .penanda { transform: translate(-50%, -100%) scale(1.3); transform-origin: 50% 100%; }
+  body.promosi .kamu { transform: scale(1.3); }
+  body.promosi .p1 { left: 640px; top: 230px; }
+  body.promosi .p2 { left: 400px; top: 150px; }
+  body.promosi .p3 { left: 850px; top: 390px; }
+  body.promosi .p4 { left: 480px; top: 610px; }
+  body.promosi .p5 { left: 890px; top: 200px; }
+  body.promosi .kamu { left: 470px; top: 380px; }
+  body.promosi .apung { transform: scale(1.18); }
+  body.promosi .a-populer { left: 30px; top: 610px; }
+  body.promosi .a-tas { left: 618px; top: 1020px; }
+  body.promosi .a-notif { left: 600px; top: 528px; }
+  body.promosi .langkah { position: absolute; left: 64px; right: 64px; bottom: 82px; font-size: 19px; }
+  body.promosi .kaki { position: absolute; left: 0; right: 0; bottom: 34px; text-align: center; font-size: 16px; }
 </style>
 </head>
 <body>
-<div class="kanvas">
-  <div class="panel"></div>
+<!-- Ikon dari android/app/src/main/res/drawable (ic_roti, ic_kopi, ic_restoran, ic_jam, ic_daun, ic_pin_lokasi) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-roti" viewBox="0 0 24 24"><path d="M6.4443 3.6853C8.08879 2.58649 10.0222 2 12 2C11.786 2.69499 11.7655 3.43517 11.9407 4.14094C12.116 4.8467 12.4803 5.49135 12.9945 6.00555C13.5087 6.51975 14.1533 6.88405 14.8591 7.05927C15.5648 7.23449 16.305 7.214 17 7C16.786 7.69499 16.7655 8.43517 16.9407 9.14094C17.116 9.8467 17.4803 10.4913 17.9945 11.0056C18.5087 11.5198 19.1533 11.8841 19.8591 12.0593C20.5648 12.2345 21.305 12.214 22 12C22 13.9778 21.4135 15.9112 20.3147 17.5557C19.2159 19.2002 17.6541 20.4819 15.8268 21.2388C13.9996 21.9957 11.9889 22.1937 10.0491 21.8079C8.10929 21.422 6.32746 20.4696 4.92894 19.0711C3.53041 17.6725 2.578 15.8907 2.19215 13.9509C1.8063 12.0111 2.00433 10.0004 2.76121 8.17317C3.51809 6.3459 4.79981 4.78412 6.4443 3.6853Z"/><path d="M8.5 8.5H8.51"/><path d="M16 15.5H16.01"/><path d="M12 12H12.01"/><path d="M11 17H11.01"/><path d="M7 14H7.01"/></symbol>
+  <symbol id="i-kopi" viewBox="0 0 24 24"><path d="M17 8H18C19.0609 8 20.0783 8.42143 20.8284 9.17157C21.5786 9.92172 22 10.9391 22 12C22 13.0609 21.5786 14.0783 20.8284 14.8284C20.0783 15.5786 19.0609 16 18 16H17"/><path d="M3 8H17V17C17 18.0609 16.5786 19.0783 15.8284 19.8284C15.0783 20.5786 14.0609 21 13 21H7C5.93913 21 4.92172 20.5786 4.17157 19.8284C3.42143 19.0783 3 18.0609 3 17V8Z"/><path d="M6 2V4"/><path d="M10 2V4"/><path d="M14 2V4"/></symbol>
+  <symbol id="i-restoran" viewBox="0 0 24 24"><path d="M3 2V9C3 10.1 3.9 11 5 11H9C9.53043 11 10.0391 10.7893 10.4142 10.4142C10.7893 10.0391 11 9.53043 11 9V2"/><path d="M7 2V22"/><path d="M21 15V2C19.6739 2 18.4021 2.52678 17.4645 3.46447C16.5268 4.40215 16 5.67392 16 7V13C16 14.1 16.9 15 18 15H21ZM21 15V22"/></symbol>
+  <symbol id="i-jam" viewBox="0 0 24 24"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 6V12L16 14"/></symbol>
+  <symbol id="i-daun" viewBox="0 0 24 24"><path d="M11 20C9.24407 20.0053 7.55026 19.3505 6.25453 18.1654C4.95879 16.9803 4.15578 15.3515 4.00475 13.6021C3.85371 11.8527 4.3657 10.1104 5.43916 8.72074C6.51262 7.33112 8.06914 6.3957 9.80001 6.1C15.5 5 17 4.48 19 2C20 4 21 6.18 21 10C21 15.5 16.22 20 11 20Z"/><path d="M2 21C2 18 3.85 15.64 7.08 15C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z"/><path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"/></symbol>
+  <symbol id="i-naik" viewBox="0 0 24 24"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></symbol>
+</svg>
 
+<div class="kanvas">
   <div class="teks">
     <div class="merek">
-      <div class="logo">
-        <!-- daun di atas mangkuk -->
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M14 3c4.8 1.4 7 5 6.2 9.8C15.6 13 13 10.1 14 3Z" fill="#A3D977"/>
-          <path d="M14 3c-1 7.1 1.6 10 6.2 9.8" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M4 15h20a10 10 0 0 1-20 0Z" fill="#fff"/>
-        </svg>
-      </div>
+      <!-- Logo resmi, sama dengan drawable/ic_logo.xml -->
+      <svg width="34" height="34" viewBox="0 0 120 120" fill="none" stroke-linecap="round" stroke-width="14">
+        <path stroke="#1B8A5A" d="M60,22C51.6349,22.0002 43.5037,24.7606 36.8674,29.8531C30.231,34.9456 25.4605,42.0856 23.2956,50.1656C21.1308,58.2457 21.6925,66.8143 24.8938,74.5426C28.0951,82.2708 33.7571,88.7268 41.0015,92.9092C48.2459,97.0917 56.6679,98.7668 64.9614,97.6749C73.2549,96.5829 80.9563,92.7849 86.8713,86.8699C92.7862,80.9548 96.5841,73.2534 97.6759,64.9599C98.7678,56.6664 97.0925,48.2444 92.91,41"/>
+        <path stroke="#A3D977" d="M82.693,9.62875C84.5317,16.0409 88.0259,21.8561 92.8243,26.4898C97.6228,31.1235 103.556,34.4124 110.029,36.026"/>
+      </svg>
       <span class="nama">Life of Foods</span>
     </div>
-    <span class="kicker">SELAMATKAN MAKANAN SEBELUM TUTUP</span>
-    <h1>Makanan layak,<br><em>harga sepertiga.</em></h1>
-    <p class="isi">Kafe dan bakery melepas stok yang tidak habis hari itu. Pesan dari aplikasi, datang di jam ambil, tunjukkan kode ke kasir.</p>
-    <div class="poin">
-      <div><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Kandungan dan alergi ditulis apa adanya</div>
-      <div><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Bayar tunai atau QRIS langsung di toko</div>
-      <div><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Mitra tetap dapat pemasukan, sampah berkurang</div>
+    <div class="kicker"><svg class="ikon"><use href="#i-daun"/></svg>Hemat sambil mengurangi sampah makanan</div>
+    <h1>Masih enak, masih layak, <em>harganya jauh lebih hemat.</em></h1>
+    <p class="isi">Toko roti, kafe, dan restoran di dekatmu menjual makanan yang belum terjual hari ini dengan harga miring. Pesan lewat aplikasi, lalu ambil sendiri di toko.</p>
+    <div class="kategori">
+      <div class="ubin pilih"><span><svg class="ikon"><use href="#i-roti"/></svg></span>Bakery</div>
+      <div class="ubin"><span><svg class="ikon"><use href="#i-kopi"/></svg></span>Kafe</div>
+      <div class="ubin"><span><svg class="ikon"><use href="#i-restoran"/></svg></span>Restoran</div>
     </div>
   </div>
 
-  <div class="ajakan"><span>Pembeli: cari tas hari ini</span><span class="garis">Mitra: daftarkan toko</span></div>
+  <div class="peta">
+    <!-- Jalan dan taman, digambar bebas; dipotong mengikuti ukuran kotak -->
+    <svg class="jalan" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" fill="none" stroke-linecap="round">
+      <rect width="1000" height="700" fill="#E6EFE8"/>
+      <rect x="610" y="430" width="230" height="170" rx="28" fill="#D3E9D8"/>
+      <g fill="#C2E0CA"><circle cx="660" cy="480" r="16"/><circle cx="700" cy="520" r="20"/><circle cx="770" cy="470" r="14"/><circle cx="790" cy="550" r="18"/><circle cx="650" cy="560" r="12"/></g>
+      <ellipse cx="130" cy="260" rx="80" ry="44" fill="#D4E6EC"/>
+      <g stroke="#D7E2D9" stroke-width="34">
+        <path d="M-20 390C200 360 430 430 1020 300"/><path d="M520 -20 470 720"/><path d="M-20 130 1020 210"/>
+      </g>
+      <g stroke="#fff" stroke-width="26">
+        <path d="M-20 390C200 360 430 430 1020 300"/><path d="M520 -20 470 720"/><path d="M-20 130 1020 210"/>
+      </g>
+      <g stroke="#FAFCFA" stroke-width="12">
+        <path d="M210 -20 260 720"/><path d="M770 -20 820 720"/><path d="M-20 570 1020 610"/><path d="M350 0C390 200 300 300 370 700"/><path d="M600 210 940 0"/>
+      </g>
+    </svg>
 
-  <!-- K07 Beranda -->
-  <div class="hp hp1"><div class="layar">
-    <div class="status">18.42</div>
-    <div class="pad">
-      <div class="lokasi">Lokasi kamu<b>Tebet, Jakarta Selatan</b></div>
-      <div class="cari">Cari kafe, bakery, atau menu</div>
-      <div class="judul-bagian">Terdekat dari kamu <span>Lihat semua</span></div>
-      <div class="kartu">
-        <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/roti-sari-tas.jpg)"><span class="pil">Tutup &lt; 1 jam</span><span class="pil kanan">0,4 km</span></div>
-        <div class="badan">
-          <div class="toko">Roti Sari Bakery</div>
-          <div class="menu">Tas Kejutan Roti Sore</div>
-          <div class="harga"><b>Rp21.000</b><s>Rp60.000</s><i>Hemat 65%</i></div>
-          <div class="meta"><span class="bintang">★</span> 4,8 · Ambil 18.00–23.00</div>
+    <!-- Rute dari posisi pembeli ke toko terpilih -->
+    <svg class="rute rute-readme" viewBox="0 0 596 576"><path d="M300 330C330 300 380 270 420 224" stroke="#1B8A5A" stroke-width="3.5" stroke-dasharray="2 8" stroke-linecap="round" fill="none"/></svg>
+    <svg class="rute rute-promosi" viewBox="0 0 984 680"><path d="M470 380C530 350 600 300 640 228" stroke="#1B8A5A" stroke-width="3.5" stroke-dasharray="2 8" stroke-linecap="round" fill="none"/></svg>
+
+    <div class="kamu"><div class="radius"></div><div class="halo"></div><div class="titik"></div><div class="label">Kamu</div></div>
+
+    <div class="penanda pilih p1"><b>Rp8.000</b><i></i></div>
+    <div class="penanda p2"><b>Rp12.000</b><i></i></div>
+    <div class="penanda p3"><b>Rp10.000</b><i></i></div>
+    <div class="penanda p4"><b>Rp15.000</b><i></i></div>
+    <div class="penanda p5"><b>Rp9.000</b><i></i></div>
+  </div>
+
+  <div class="apung a-populer">
+    <div class="populer">
+      <div class="kepala"><svg class="ikon"><use href="#i-naik"/></svg>Populer hari ini<span>Geser ›</span></div>
+      <small>Paling banyak dipesan hari ini</small>
+      <div class="geser">
+        <div class="flash">
+          <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/roti-manis-cokelat.jpg)"><span class="sisa"><svg class="ikon"><use href="#i-jam"/></svg>Sisa 45 menit</span></div>
+          <div class="badan">
+            <div class="judul">Roti Manis Cokelat</div>
+            <div class="toko">Roti Sari Bakery · 300 m</div>
+            <div class="harga"><b>Rp8.000</b><s>Rp16.000</s></div>
+          </div>
+        </div>
+        <div class="flash">
+          <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/donat-gula.jpg)"><span class="sisa"><svg class="ikon"><use href="#i-jam"/></svg>Sisa 1 jam</span></div>
+          <div class="badan">
+            <div class="judul">Donat Gula</div>
+            <div class="toko">Roti Sari Bakery</div>
+            <div class="harga"><b>Rp5.000</b><s>Rp10.000</s></div>
+          </div>
         </div>
       </div>
-      <div class="kartu">
-        <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/kopi-lembur-tas.jpg)"><span class="pil kanan">1,2 km</span></div>
-        <div class="badan">
-          <div class="toko">Kopi Lembur</div>
-          <div class="menu">Tas Kejutan Pastry</div>
-          <div class="harga"><b>Rp16.000</b><s>Rp45.000</s><i>Hemat 64%</i></div>
-          <div class="alergi">Mengandung susu</div>
-        </div>
+    </div>
+  </div>
+
+  <div class="apung a-notif">
+    <div class="notif">
+      <div class="ikon-bulat"><svg class="ikon"><use href="#i-pin"/></svg></div>
+      <div><b>Pesananmu siap diambil</b><span>Roti Sari Bakery · 300 m dari kamu</span></div>
+    </div>
+  </div>
+
+  <div class="apung a-tas">
+    <div class="tas">
+      <div class="foto" style="background-image:url(../../../api/database/seeders/foto-demo/croissant.jpg)"></div>
+      <div>
+        <div class="jarak">1,2 km</div>
+        <div class="judul">Croissant Mentega</div>
+        <div class="toko">Kopi Lembur</div>
+        <div class="harga"><b>Rp12.000</b><s>Rp24.000</s></div>
+        <div class="jam"><svg class="ikon"><use href="#i-jam"/></svg>Ambil sampai 21.00</div>
       </div>
     </div>
-    <div class="navbawah"><i class="aktif"></i><i></i><i></i><i></i></div>
-  </div></div>
+  </div>
 
-  <!-- K14 Kode pickup -->
-  <div class="hp hp2"><div class="layar kode-latar">
-    <div class="status">18.47</div>
-    <div class="k14-atas"><small>PESANAN AKTIF</small><h3>Siap diambil</h3></div>
-    <div class="k14-kartu">
-      <small>TUNJUKKAN KE KASIR</small>
-      <div class="kode">LF7Q2K</div>
-      <svg class="qr" viewBox="0 0 21 21" shape-rendering="crispEdges">
-        <rect width="21" height="21" fill="#fff"/>
-        <g fill="#0F2A1E">
-          <path d="M0 0h7v7H0zM14 0h7v7h-7zM0 14h7v7H0z"/>
-        </g>
-        <g fill="#fff"><path d="M1 1h5v5H1zM15 1h5v5h-5zM1 15h5v5H1z"/></g>
-        <g fill="#0F2A1E">
-          <path d="M2 2h3v3H2zM16 2h3v3h-3zM2 16h3v3H2z"/>
-          <path d="M8 0h1v2H8zM10 1h2v1h-2zM9 3h1v2H9zM11 3h2v1h-2zM8 5h2v1H8zM12 5h1v2h-1zM8 8h2v1H8zM11 8h3v1h-3zM0 8h2v1H0zM3 8h2v2H3zM6 9h1v2H6zM1 10h1v2H1zM15 8h1v2h-1zM17 8h2v1h-2zM19 9h2v2h-2zM8 10h1v3H8zM10 10h2v2h-2zM13 10h1v1h-1zM16 11h2v2h-2zM3 12h3v1H3zM12 12h2v2h-2zM19 12h1v3h-1zM9 14h2v1H9zM14 14h3v1h-3zM8 16h1v3H8zM10 16h3v1h-3zM15 16h1v2h-1zM17 16h3v1h-3zM10 18h1v3h-1zM12 18h2v1h-2zM17 18h1v3h-1zM19 19h2v2h-2zM13 20h3v1h-3z"/>
-        </g>
-      </svg>
-      <div class="k14-baris"><span>Mitra</span><b>Roti Sari Bakery</b></div>
-      <div class="k14-baris"><span>Jam ambil</span><b>18.00–23.00</b></div>
-      <div class="k14-baris"><span>Bayar di tempat</span><b>Rp21.000 · QRIS</b></div>
-    </div>
-    <div class="k14-dampak">Pesanan ini menyelamatkan 4 porsi dari terbuang. Ambil tepat waktu supaya mitra tidak menunggu.</div>
-  </div></div>
+  <div class="langkah">
+    <div><b>1</b>Cari makanan di sekitarmu</div>
+    <div><b>2</b>Pesan dari aplikasi</div>
+    <div><b>3</b>Ambil dan bayar di toko</div>
+  </div>
 
-  <!-- M05 Dashboard mitra -->
-  <div class="hp hp3"><div class="layar">
-    <div class="m05-kepala">
-      <div class="status">21.10</div>
-      <small>Akun mitra</small>
-      <h3>Roti Sari Bakery <span>Buka</span></h3>
-      <div class="tertahan">
-        <small style="font-size:9px;font-weight:600">Kerugian yang tertahan minggu ini</small>
-        <b>Rp1.284.000</b>
-        <p>Dari 61 item terjual. Nilai itu sebelumnya berakhir sebagai limbah.</p>
-      </div>
-    </div>
-    <div class="pad">
-      <div class="aksi"><div class="utama">Pasang tas</div><div>Catat sisa</div></div>
-      <div class="grafik">
-        <small>Sisa harian rata-rata, 7 hari terakhir</small>
-        <div class="batang"><i style="height:92%"></i><i style="height:78%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:41%"></i><i class="aktif" style="height:34%"></i></div>
-        <div class="hari"><span>Sn</span><span>Sl</span><span>Rb</span><span>Km</span><span>Jm</span><span>Sb</span><span>Mg</span></div>
-      </div>
-      <div class="pesanan"><span class="titik">3</span><div>pesanan menunggu diambil<span>Cocokkan kode pembeli di kasir</span></div></div>
-    </div>
-  </div></div>
-
-  <div class="label l1"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Alergi selalu terlihat</div>
-  <div class="label l2"><svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#E6F4EA"/><path d="m6.5 11.2 3 3 6-6.2" stroke="#1B8A5A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Bayar di toko, tanpa top up</div>
-
-  <div class="kaki"><b>Life of Foods</b> · Aplikasi Android · Venture Creation ENPR6312, BINUS University</div>
+  <div class="kaki">Aplikasi Android · Venture Creation ENPR6312, BINUS University</div>
 </div>
 <script>
   document.body.className = location.hash === '#promosi' ? 'promosi' : 'readme';

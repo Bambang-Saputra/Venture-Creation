@@ -9,7 +9,7 @@
 
 Font (Gabarito, Figtree) dan foto diambil langsung dari `android/app/src/main/res/font` dan `api/database/seeders/foto-demo`, jadi banner selalu memakai aset yang sama dengan aplikasi. Warnanya disalin dari `colors.xml`. Kalau warna merek berubah, ubah juga blok `:root` di `banner.html`.
 
-Isi layar ponsel adalah tiruan HTML dari K07 Beranda, K14 Kode pickup, dan M05 Dashboard mitra, bukan tangkapan layar. Kalau teks di aplikasi berubah, sesuaikan di sini juga. Foto yang dipakai hanya yang berlisensi CC BY atau Pexels License, bukan CC BY-SA.
+Banner tidak memakai tangkapan layar aplikasi, tapi menyusun ulang komponen prototipe dengan ukuran dan warna yang sama: peta dengan penanda harga (K08), kotak "Populer hari ini" dan kartu jualan (K07), notifikasi (K17), ubin kategori, dan logo dari `drawable/ic_logo.xml`. Ikonnya disalin dari `drawable/ic_*.xml`. Bahasanya sengaja umum, tanpa istilah aplikasi seperti "tas kejutan" atau "kode pickup", supaya orang yang belum kenal aplikasinya langsung paham. Nama toko mengikuti data demo (`SeederDemo`); harganya hanya contoh. Foto yang dipakai hanya yang berlisensi CC BY, Pexels License, atau domain publik, bukan CC BY-SA.
 
 ## Membuat ulang PNG
 
@@ -30,4 +30,4 @@ SUMBER="file:///$(pwd -W)/docs/aset/banner/banner.html"
 
 ## Social preview GitHub
 
-Unggah `banner-readme.png` di Settings repo, bagian **Social preview**, supaya banner muncul saat tautan repo dibagikan.
+Unggah `banner-readme.png` di Settings repo, bagian **Social preview**, supaya banner muncul saat tautan repo dibagikan. GitHub membatasi ukurannya maksimal 1 MB; kalau setelah diubah PNG-nya lebih besar dari itu, render dengan `--force-device-scale-factor=1` untuk keperluan ini.

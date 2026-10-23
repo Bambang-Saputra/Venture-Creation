@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/aset/banner-readme.png" alt="Life of Foods: Beranda pembeli, kode pickup, dan dashboard mitra" width="100%">
+  <img src="docs/aset/banner-readme.png" alt="Life of Foods: peta toko di sekitar pembeli dengan harga hemat, daftar makanan populer hari ini, dan notifikasi pesanan siap diambil" width="100%">
 </p>
 
 # Life of Foods
@@ -7,7 +7,7 @@
 [![android-ci](https://github.com/Bambang-Saputra/Venture-Creation/actions/workflows/android-ci.yml/badge.svg)](https://github.com/Bambang-Saputra/Venture-Creation/actions/workflows/android-ci.yml)
 [![api-ci](https://github.com/Bambang-Saputra/Venture-Creation/actions/workflows/api-ci.yml/badge.svg)](https://github.com/Bambang-Saputra/Venture-Creation/actions/workflows/api-ci.yml)
 
-Aplikasi Android yang menyalurkan makanan surplus dari kafe, bakery, dan bisnis F&B lain ke pembeli di sekitarnya, sebelum makanan itu berakhir di tempat sampah. Mitra memasang tas kejutan atau menu satuan menjelang tutup dengan harga sekitar sepertiga dari harga normal. Pembeli memesan lewat aplikasi, datang di jam ambil, menunjukkan kode pickup, lalu membayar tunai atau QRIS langsung di toko.
+Aplikasi Android untuk membeli makanan yang belum terjual hari ini dari toko roti, kafe, dan restoran di sekitarmu, dengan harga jauh lebih murah. Makanannya masih enak dan layak dimakan, hanya saja tidak habis sebelum toko tutup. Pembeli memesan lewat aplikasi, datang ke toko di jam yang ditentukan, menunjukkan kode pesanan ke kasir, lalu membayar tunai atau QRIS di tempat.
 
 **Mata kuliah:** Venture Creation (ENPR6312), BINUS University
 **Isu:** SDG 12, konsumsi dan produksi yang bertanggung jawab
@@ -35,7 +35,7 @@ Aplikasi Android yang menyalurkan makanan surplus dari kafe, bakery, dan bisnis 
 
 Jam 9 malam di sebuah bakery di Tebet. Masih ada belasan roti di etalase, dan toko tutup sebentar lagi. Besok pagi roti itu tidak lagi dijual, jadi biasanya dibuang. Di saat yang sama, ada orang beberapa ratus meter dari sana yang mau makan malam enak tanpa keluar banyak uang.
 
-**Life of Foods mempertemukan keduanya.** Mitra memasang sisa hari itu sebagai tas kejutan atau menu satuan, pembeli di sekitar memesannya dengan harga jauh lebih murah, lalu mengambilnya sendiri sebelum toko tutup.
+**Life of Foods mempertemukan keduanya.** Toko memasang makanan yang belum terjual di aplikasi, pembeli di sekitar memesannya dengan harga jauh lebih murah, lalu mengambilnya sendiri sebelum toko tutup. Makanan bisa dijual satuan, atau dikemas dalam satu paket campur berisi beberapa jenis dengan harga lebih hemat lagi (di aplikasi disebut "tas kejutan").
 
 Ada tiga prinsip yang kami pegang:
 
@@ -108,7 +108,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 | Fitur | Keterangan |
 |---|---|
 | Onboarding (K06) | Tiga halaman pengenalan sebelum login, halaman terakhir meminta izin lokasi |
-| Masuk (K02–K05) | Nomor HP dan OTP, lengkapi profil, simpan alergi dan pantangan |
+| Masuk (K02-K05) | Nomor HP dan OTP, lengkapi profil, simpan alergi dan pantangan |
 | Beranda (K07) | Cari, kategori, "Tutup kurang dari satu jam", Populer hari ini, Terdekat dari kamu, banner iklan mitra |
 | Peta (K08) | Penanda harga per toko di OpenStreetMap, tab Daftar urut jarak, buka aplikasi peta lewat `geo:` |
 | Filter (K09) | Jenis jualan, alergi yang dihindari (terisi dari profil), pola makan, halal, jarak, dan jam ambil |
@@ -117,7 +117,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 | Kode pickup (K14) | Kode 6 karakter dan QR, status realtime, tombol batalkan, jumlah porsi yang diselamatkan |
 | Pesanan saya (K15) | Pesanan aktif dan riwayat, beri ulasan setelah pesanan selesai |
 | Favorit dan notifikasi (K16, K17) | Simpan toko, pengingat 30 menit sebelum jam ambil, kabar saat toko favorit memasang jualan |
-| Profil (K18–K20) | Ubah profil dan alergi, pengaturan, hapus akun |
+| Profil (K18-K20) | Ubah profil dan alergi, pengaturan, hapus akun |
 
 ### Untuk mitra
 
@@ -152,7 +152,7 @@ Selama uji coba, tim tidak memegang uang mitra: pembeli membayar langsung di tok
 
 | Bagian | Status |
 |---|---|
-| Alur pembeli ujung ke ujung (K01–K20) | Selesai, tersambung ke API |
+| Alur pembeli ujung ke ujung (K01-K20) | Selesai, tersambung ke API |
 | Alur mitra: pasang jualan, pesanan, cocokkan kode, catat sisa, laporan | Selesai, tersambung ke API |
 | Rating dan ulasan | Selesai |
 | Iklan per hari tayang | Selesai, tagihan sungguhan belum aktif |
@@ -248,7 +248,7 @@ Selengkapnya di [docs/panduan/alur-kerja-git.md](docs/panduan/alur-kerja-git.md)
 
 ## Desain
 
-Prototipe Figma **Life of Foods v2**, 44 layar: 23 layar konsumen (K01–K23) dan 21 layar mitra (M01–M21). Pemetaan tiap layar ke fitur, endpoint, dan tabel ada di [docs/figma/peta-layar.md](docs/figma/peta-layar.md).
+Prototipe Figma **Life of Foods v2**, 44 layar: 23 layar konsumen (K01-K23) dan 21 layar mitra (M01-M21). Pemetaan tiap layar ke fitur, endpoint, dan tabel ada di [docs/figma/peta-layar.md](docs/figma/peta-layar.md).
 
 Perubahan warna, tipografi, jarak, dan komponen dilakukan di Figma lewat variables dan styles, bukan di layar satu per satu. Di aplikasi, warnanya ada di `android/app/src/main/res/values/colors.xml` dengan font Gabarito (judul) dan Figtree (teks).
 
