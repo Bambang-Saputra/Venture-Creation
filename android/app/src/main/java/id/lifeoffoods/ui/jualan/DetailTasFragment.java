@@ -51,6 +51,13 @@ public class DetailTasFragment extends Fragment {
         binding.tombolKembali.setOnClickListener(
                 v -> NavHostFragment.findNavController(this).popBackStack());
         binding.tombolFavorit.setOnClickListener(v -> vm.ubahFavorit());
+        binding.tombolBagikan.setOnClickListener(
+                v -> {
+                    ListingDetailDto d = vm.detail.getValue();
+                    if (d != null) {
+                        BersamaDetail.bagikan(this, d, null, false);
+                    }
+                });
         binding.tombolMaps.setOnClickListener(
                 v -> {
                     ListingDetailDto d = vm.detail.getValue();
@@ -118,6 +125,7 @@ public class DetailTasFragment extends Fragment {
         }
         binding.tombolFavorit.setVisibility(
                 app().sesi().sudahMasuk() && d.store != null ? View.VISIBLE : View.GONE);
+        binding.tombolBagikan.setVisibility(View.VISIBLE);
         binding.judul.setText(d.title);
         FotoJualan.muat(binding.fotoJualan, d.photoUrl, 0);
         isiMeta();

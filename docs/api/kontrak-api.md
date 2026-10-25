@@ -724,6 +724,7 @@ M18 Pindai QR memakai endpoint yang sama; QR cukup berisi kodenya.
 { "data": {
   "log_date": "2026-09-18", "is_recorded": true, "is_locked": false, "method": "per_item", "note": null,
   "total_value_rupiah": 42000, "total_weight_gram": 0, "total_items": 6, "change_vs_last_week_percent": 12,
+  "prefilled_from_listings": 0,
   "products": [ { "product_id": 7, "name": "Croissant", "unit": "pcs", "price_rupiah": 28000, "unit_value_rupiah": 7000,
                   "qty": 6, "weight_gram": null, "disposition": "discarded" } ],
   "other_items": [ { "label": "Roti tawar sisa", "qty": 2, "weight_gram": null, "value_rupiah": 6000 } ]
@@ -731,6 +732,15 @@ M18 Pindai QR memakai endpoint yang sama; QR cukup berisi kodenya.
 ```
 
 `products` berisi semua produk aktif, termasuk yang sisanya 0, supaya layar cukup tombol +/-.
+
+**Terisi otomatis.** Kalau tanggal itu belum dicatat dan belum terkunci, isian awal diambil dari jualan tanggal itu yang tidak laku, supaya mitra tinggal memeriksa lalu menyimpan:
+
+- Sisa satu jualan = `qty_total` - `qty_sold` - `qty_reserved`. Pesanan `no_show` sudah melepas pesanannya, jadi ikut terhitung sebagai sisa. Draf tidak ikut.
+- Menu satuan menambah `qty` produknya di `products`.
+- Tas kejutan, dan menu yang produknya sudah dinonaktifkan, masuk ke `other_items` dengan nilai `qty` x harga jual.
+- `prefilled_from_listings` adalah jumlah jualan yang dipakai. Nilainya 0 kalau tanggal itu sudah dicatat, sehingga yang tampil adalah catatan mitra.
+
+Isian otomatis tidak tersimpan sampai mitra mengirim `POST`.
 
 ### POST /partner/stores/{store}/waste-logs
 

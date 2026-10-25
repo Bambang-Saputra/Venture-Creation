@@ -84,7 +84,12 @@ public class CatatSisaFragment extends Fragment {
         NavMitra.pasang(this, binding.nav, R.id.m06_catat);
 
         vm.status.observe(getViewLifecycleOwner(), s -> tampilkanStatus());
-        vm.catatan.observe(getViewLifecycleOwner(), this::bangunProduk);
+        vm.catatan.observe(
+                getViewLifecycleOwner(),
+                c -> {
+                    bangunProduk(c);
+                    tampilkanKeterangan(vm.timbang());
+                });
         vm.itemLain.observe(getViewLifecycleOwner(), l -> bangunItemLain());
         vm.mode.observe(getViewLifecycleOwner(), m -> tampilkanMode());
         vm.versi.observe(getViewLifecycleOwner(), v -> perbarui());
@@ -231,7 +236,7 @@ public class CatatSisaFragment extends Fragment {
         boolean timbang = vm.timbang();
         binding.segmen.tabTas.setSelected(!timbang);
         binding.segmen.tabMenu.setSelected(timbang);
-        binding.keterangan.setText(timbang ? R.string.m19_ket : R.string.m06_ket);
+        tampilkanKeterangan(timbang);
         binding.labelRingkasan.setText(
                 timbang ? R.string.m19_berat_terbuang : R.string.m06_nilai_terbuang);
         binding.tipsTimbang.setVisibility(timbang ? View.VISIBLE : View.GONE);
@@ -298,9 +303,32 @@ public class CatatSisaFragment extends Fragment {
         perbaruiTombol();
     }
 
+    /**
+     * Hari yang belum dicatat sudah terisi dari jualan yang tidak laku, jadi keterangannya meminta
+     * mitra memeriksa, bukan mengetik dari nol.
+     */
+    private void tampilkanKeterangan(boolean timbang) {
+        int otomatis = jualanOtomatis(vm.catatan.getValue());
+        if (!timbang && otomatis > 0) {
+            binding.keterangan.setText(
+                    getResources()
+                            .getQuantityString(R.plurals.m06_ket_otomatis, otomatis, otomatis));
+        } else {
+            binding.keterangan.setText(timbang ? R.string.m19_ket : R.string.m06_ket);
+        }
+    }
+
+    private static int jualanOtomatis(@Nullable CatatanSisaDto c) {
+        return c == null || c.isRecorded ? 0 : c.prefilledFromListings;
+    }
+
     /** "naik 12% dari Kamis lalu" dari server; "belum disimpan" kalau hari ini belum dicatat. */
     @Nullable
     private String banding(@Nullable CatatanSisaDto c) {
+        // Isian otomatis berupa jumlah, jadi hanya disebut di mode hitung per item.
+        if (!vm.timbang() && jualanOtomatis(c) > 0) {
+            return getString(R.string.m06_terisi_otomatis);
+        }
         if (c == null || !c.isRecorded) {
             return getString(R.string.m06_belum_disimpan);
         }

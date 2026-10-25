@@ -1,7 +1,5 @@
 package id.lifeoffoods.ui.mitra;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +21,12 @@ import id.lifeoffoods.databinding.DialogUndangKasirBinding;
 import id.lifeoffoods.databinding.FragmentPengaturanTokoBinding;
 import id.lifeoffoods.databinding.ItemAnggotaTokoBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.BagikanWhatsapp;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
 
 /** M15 Pengaturan toko dan kasir (PRD-15). Dari baris "Pengaturan toko dan kasir" di M14. */
 public class PengaturanTokoFragment extends Fragment {
-
-    private static final String PAKET_WHATSAPP = "com.whatsapp";
 
     private FragmentPengaturanTokoBinding binding;
     private PengaturanTokoViewModel vm;
@@ -75,7 +72,7 @@ public class PengaturanTokoFragment extends Fragment {
                 p -> {
                     String teks = p.ambil();
                     if (teks != null) {
-                        bagikan(teks);
+                        BagikanWhatsapp.kirim(this, teks, R.string.m15_undang_bagikan);
                     }
                 });
         vm.sesiBerakhir.observe(
@@ -188,19 +185,6 @@ public class PengaturanTokoFragment extends Fragment {
                 .setNegativeButton(R.string.batal, null)
                 .setPositiveButton(R.string.m15_cabut, (dlg, w) -> vm.cabut(a))
                 .show();
-    }
-
-    /** Undangan dibagikan lewat WhatsApp kalau terpasang, selain itu lewat pemilih aplikasi. */
-    private void bagikan(String teks) {
-        Intent kirim =
-                new Intent(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, teks);
-        try {
-            startActivity(new Intent(kirim).setPackage(PAKET_WHATSAPP));
-        } catch (ActivityNotFoundException e) {
-            startActivity(Intent.createChooser(kirim, getString(R.string.m15_undang_bagikan)));
-        }
     }
 
     @Override

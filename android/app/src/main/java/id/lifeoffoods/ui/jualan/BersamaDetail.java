@@ -18,9 +18,11 @@ import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.ProfilToko;
+import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.pesanan.RingkasanPesananFragment;
+import id.lifeoffoods.ui.umum.BagikanWhatsapp;
 import id.lifeoffoods.ui.umum.Pil;
 import java.util.List;
 import java.util.Locale;
@@ -209,5 +211,49 @@ final class BersamaDetail {
             Snackbar.make(f.requireView(), R.string.k14_maps_tidak_ada, Snackbar.LENGTH_LONG)
                     .show();
         }
+    }
+
+    /**
+     * Bagikan jualan ke WhatsApp (Channels di BMC). K10 membagikan satu tas; K11 membagikan menu
+     * satuan toko itu dengan harga termurahnya. Tanpa tautan, karena aplikasi belum ada di Play
+     * Store; penerima mencari nama tokonya di aplikasi.
+     */
+    static void bagikan(
+            Fragment f,
+            ListingDetailDto d,
+            @Nullable List<? extends ListingDto> menu,
+            boolean menuSatuan) {
+        String toko = d.store == null || d.store.name == null ? "" : d.store.name;
+        String jam = FormatTampilan.rentangJam(d.pickupStart, d.pickupEnd);
+        String teks;
+        if (menuSatuan) {
+            long termurah = d.priceRupiah;
+            if (menu != null) {
+                for (ListingDto l : menu) {
+                    termurah = Math.min(termurah, l.priceRupiah);
+                }
+            }
+            teks =
+                    f.getString(
+                            R.string.k11_bagikan_teks, toko, FormatTampilan.rupiah(termurah), jam);
+        } else if (d.originalValueRupiah != null && d.originalValueRupiah > d.priceRupiah) {
+            teks =
+                    f.getString(
+                            R.string.k10_bagikan_teks,
+                            d.title,
+                            toko,
+                            FormatTampilan.rupiah(d.priceRupiah),
+                            FormatTampilan.rupiah(d.originalValueRupiah),
+                            jam);
+        } else {
+            teks =
+                    f.getString(
+                            R.string.k10_bagikan_teks_tanpa_asli,
+                            d.title,
+                            toko,
+                            FormatTampilan.rupiah(d.priceRupiah),
+                            jam);
+        }
+        BagikanWhatsapp.kirim(f, teks, R.string.bagikan_lewat);
     }
 }
