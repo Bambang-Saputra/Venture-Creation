@@ -223,6 +223,21 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
+            <!-- Bagikan jualan ke WhatsApp (Channels di BMC). Tampil setelah detail termuat. -->
+            <ImageButton
+                android:id="@+id/tombol_bagikan"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_tombol_foto"
+                android:contentDescription="@string/bagikan_jualan"
+                android:padding="11dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_bagikan"
+                android:visibility="gone"
+                app:tint="@color/teks_utama"
+                tools:visibility="visible" />
+
             <ImageButton
                 android:id="@+id/tombol_favorit"
                 android:layout_width="40dp"

@@ -44,6 +44,13 @@ public class CatatanSisaDto {
     @SerializedName("change_vs_last_week_percent")
     public Integer changeVsLastWeekPercent;
 
+    /**
+     * Jumlah jualan tidak laku yang dipakai mengisi awal catatan hari ini. 0 kalau hari ini sudah
+     * dicatat atau tanggalnya terkunci.
+     */
+    @SerializedName("prefilled_from_listings")
+    public int prefilledFromListings;
+
     @Nullable
     @SerializedName("products")
     public List<Produk> products;

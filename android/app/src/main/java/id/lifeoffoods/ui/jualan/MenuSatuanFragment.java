@@ -56,6 +56,13 @@ public class MenuSatuanFragment extends Fragment {
         binding.tombolKembali.setOnClickListener(
                 v -> NavHostFragment.findNavController(this).popBackStack());
         binding.tombolFavorit.setOnClickListener(v -> vm.ubahFavorit());
+        binding.tombolBagikan.setOnClickListener(
+                v -> {
+                    ListingDetailDto d = vm.detail.getValue();
+                    if (d != null) {
+                        BersamaDetail.bagikan(this, d, vm.menuToko.getValue(), true);
+                    }
+                });
         binding.tombolMaps.setOnClickListener(
                 v -> {
                     ListingDetailDto d = vm.detail.getValue();
@@ -131,6 +138,7 @@ public class MenuSatuanFragment extends Fragment {
         }
         LofApp app = (LofApp) requireActivity().getApplication();
         binding.tombolFavorit.setVisibility(app.sesi().sudahMasuk() ? View.VISIBLE : View.GONE);
+        binding.tombolBagikan.setVisibility(View.VISIBLE);
         binding.namaToko.setText(d.store.name);
         String alamat = d.store.address;
         binding.alamat.setVisibility(

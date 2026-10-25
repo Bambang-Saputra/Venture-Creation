@@ -95,7 +95,7 @@ Panah putus-putus adalah bagian yang membedakan Life of Foods dari sekadar aplik
 - Mitra memasang tas kejutan atau menu satuan dalam hitungan detik, dengan cetakan tas yang bisa dipakai ulang setiap hari.
 - Pembeli melihat jualan terdekat, langsung tersaring sesuai alergi di profilnya.
 - Pesanan dikunci dengan kode pickup, jadi mitra tidak perlu menyimpan makanan untuk orang yang tidak datang.
-- Mitra mencatat sisa yang tetap tidak laku, lalu mendapat laporan mingguan dan saran produksi untuk mengurangi sisa di hari berikutnya.
+- Jualan yang tetap tidak laku otomatis masuk catatan sisa, jadi mitra tinggal memeriksa. Dari catatan itu mitra mendapat laporan rupiah mingguan dan saran produksi untuk mengurangi sisa di hari berikutnya.
 
 ---
 
@@ -112,7 +112,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 | Beranda (K07) | Cari, kategori, "Tutup kurang dari satu jam", Populer hari ini, Terdekat dari kamu, banner iklan mitra |
 | Peta (K08) | Penanda harga per toko di OpenStreetMap, tab Daftar urut jarak, buka aplikasi peta lewat `geo:` |
 | Filter (K09) | Jenis jualan, alergi yang dihindari (terisi dari profil), pola makan, halal, jarak, dan jam ambil |
-| Detail jualan (K10, K11) | Foto, harga normal dan harga jual, stok, jam ambil, kandungan, status halal apa adanya, rating toko |
+| Detail jualan (K10, K11) | Foto, harga normal dan harga jual, stok, jam ambil, kandungan, status halal apa adanya, rating toko, bagikan jualan ke WhatsApp |
 | Ringkasan pesanan (K12, K13) | Satu tas utuh atau beberapa menu satuan dari toko yang sama, harga dicek ulang oleh server |
 | Kode pickup (K14) | Kode 6 karakter dan QR, status realtime, tombol batalkan, jumlah porsi yang diselamatkan |
 | Pesanan saya (K15) | Pesanan aktif dan riwayat, beri ulasan setelah pesanan selesai |
@@ -125,7 +125,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 |---|---|
 | Daftar usaha (M03, M04) | Pendaftaran dari aplikasi tanpa KTP, NIB opsional, disetujui tim sebelum toko tampil |
 | Dashboard (M05) | Kerugian yang tertahan minggu ini, pesanan menunggu, sisa harian rata-rata 7 hari |
-| Catat sisa (M06, M19) | Hitung per item atau timbang per kilogram; nilai rupiah disimpan saat dicatat |
+| Catat sisa (M06, M19) | Jualan yang tidak laku hari itu terisi otomatis, mitra tinggal memeriksa. Hitung per item atau timbang per kilogram; nilai rupiah disimpan saat dicatat |
 | Laporan dan saran (M07, M08) | Laporan mingguan dan saran jumlah produksi berdasarkan catatan sisa |
 | Pasang dan kelola jualan (M09, M10, M16, M17) | Tas kejutan dari cetakan, menu satuan, foto jualan, jeda jualan |
 | Pesanan masuk (M11, M21) | Catatan pembeli dan alergi tampil langsung di kartu pesanan, riwayat dengan "Muat lebih banyak" |
@@ -140,11 +140,14 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 
 | Sumber | Tarif | Keterangan |
 |---|---|---|
+| Langganan mitra | Rp50.000 per bulan | Sumber utama. Membuka laporan rupiah mingguan dan saran produksi (M07, M08). Pencatatan sisa tetap gratis |
 | Prioritas pencarian | Rp5.000 per hari tayang | Paling banyak 2 jualan berlabel "Iklan" di atas daftar utama. Filter alergi tetap berlaku |
 | Banner Beranda | Rp10.000 per hari tayang | Tampil di Beranda pembeli. Terpisah dari "Populer hari ini", yang murni dihitung dari pesanan |
-| Biaya layanan | Rp0 selama uji coba | Kolom `service_fee` sudah ada di setiap pesanan, sehingga tarifnya bisa diatur tanpa mengubah skema (ADR-0004) |
+| Biaya layanan | Rp1.000 per pesanan | Kolom `service_fee` sudah ada di setiap pesanan; tarifnya diatur lewat `SERVICE_FEE` di `.env` tanpa mengubah kode (ADR-0004) |
 
-Selama uji coba, tim tidak memegang uang mitra: pembeli membayar langsung di toko, dan tagihan iklan belum memotong saldo.
+Tidak ada komisi per transaksi. Komisi membuat pendapatan bergantung pada banyaknya makanan yang tersisa, padahal tujuan aplikasi ini justru mengurangi sisa. Langganan tumbuh mengikuti jumlah mitra.
+
+Selama uji coba semuanya gratis: langganan belum ditagih, `SERVICE_FEE` bernilai 0, tagihan iklan belum memotong saldo, dan tim tidak memegang uang mitra karena pembeli membayar langsung di toko.
 
 ---
 

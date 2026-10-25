@@ -53,6 +53,9 @@ public class TangkapanLayarTest {
     /** GET /favorites mengirim contoh Figma K16; tetap kosong untuk layar lain (hati K10). */
     private static volatile boolean isiFavorit;
 
+    /** M06 hari ini belum dicatat dan terisi otomatis dari jualan yang tidak laku. */
+    private static volatile boolean sisaOtomatis;
+
     /**
      * Akun mitra tanpa toko (M03/M04): null = toko sudah ada (bawaan), lainnya isi GET
      * /partner/application: "kosong" (belum mendaftar), "menunggu", atau "ditolak".
@@ -63,6 +66,7 @@ public class TangkapanLayarTest {
     public void siapkan() throws IOException {
         assumeTrue(Boolean.getBoolean("lof.tangkapan"));
         isiFavorit = false;
+        sisaOtomatis = false;
         pendaftaran = null;
         lepasPabrikViewModelLama();
         server = new MockWebServer();
@@ -383,6 +387,18 @@ public class TangkapanLayarTest {
         ((android.widget.EditText) pertama.findViewById(R.id.harga)).setText("9000");
         idle();
         tangkapPanjang("M16");
+    }
+
+    /** Hari ini belum dicatat: jualan yang tidak laku sudah terisi, mitra tinggal memeriksa. */
+    @Test
+    public void m06TerisiOtomatis() {
+        sisaOtomatis = true;
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_MITRA, false);
+        buka();
+        tunggu();
+        navigasi(R.id.m06_catat, null);
+        tunggu();
+        tangkapPanjang("M06-otomatis");
     }
 
     @Test
@@ -981,6 +997,26 @@ public class TangkapanLayarTest {
                                 java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)));
                 boolean ini = path.contains("week_start=" + senin);
                 return json("{\"data\":" + laporan(ini ? senin : senin.minusWeeks(1), ini) + "}");
+            }
+            if (sisaOtomatis && path.startsWith("/api/partner/stores/5/waste-logs")) {
+                String hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)).toString();
+                // Belum dicatat: 4 croissant dan 2 kopi dari menu satuan, 1 tas kejutan.
+                return json(
+                        "{\"data\":{\"log_date\":\""
+                                + hari
+                                + "\",\"is_recorded\":false,"
+                                + "\"is_locked\":false,\"method\":\"per_item\",\"note\":null,"
+                                + "\"total_value_rupiah\":0,\"total_weight_gram\":0,"
+                                + "\"total_items\":0,\"change_vs_last_week_percent\":null,"
+                                + "\"prefilled_from_listings\":3,"
+                                + "\"products\":["
+                                + produkSisa(7, "Croissant mentega", 28000, 4, 1100, "discarded")
+                                + ","
+                                + produkSisa(8, "Danish keju", 27000, 0, 600, "discarded")
+                                + ","
+                                + produkSisa(11, "Kopi susu botol", 25000, 2, 500, "discarded")
+                                + "],\"other_items\":[{\"label\":\"Tas Pastry Sore\","
+                                + "\"qty\":1,\"weight_gram\":null,\"value_rupiah\":18000}]}}");
             }
             if (path.startsWith("/api/partner/stores/5/waste-logs")) {
                 String hari = java.time.LocalDate.now(java.time.ZoneOffset.ofHours(7)).toString();

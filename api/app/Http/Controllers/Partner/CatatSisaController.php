@@ -38,19 +38,44 @@ class CatatSisaController extends Controller
         $semua = $log === null ? collect() : DB::table('waste_log_items')->where('waste_log_id', $log->id)->orderBy('id')->get();
         $item = $semua->whereNotNull('product_id')->keyBy('product_id');
 
+        // Hari yang belum dicatat diisi dari jualan hari itu yang tidak laku, supaya mitra cukup
+        // memeriksa lalu menyimpan. Sisa = stok - terjual - masih dipesan; pesanan no_show
+        // sudah melepas pesanannya, jadi ikut terhitung sebagai sisa.
+        // Hari yang sudah terkunci tidak diisi, karena isiannya tidak bisa disimpan lagi.
+        $tidakLaku = $log !== null || $this->terkunci($tanggal) ? collect() : DB::table('listings')
+            ->where('store_id', $store)
+            ->where('pickup_date', $tanggal->toDateString())
+            ->where('status', '!=', 'draft')
+            ->whereRaw('qty_total > qty_sold + qty_reserved')
+            ->orderBy('id')
+            ->get(['id', 'type', 'product_id', 'title', 'price_rupiah', 'qty_total', 'qty_sold', 'qty_reserved'])
+            ->map(function ($l) {
+                $l->sisa = $l->qty_total - $l->qty_sold - $l->qty_reserved;
+
+                return $l;
+            });
+
         // Semua produk aktif ditampilkan, termasuk yang belum tercatat (qty 0), supaya M06 cukup ketuk +.
-        $produk = DB::table('products')->where('store_id', $store)->where('is_active', true)->orderBy('name')
-            ->get(['id', 'name', 'unit', 'price_rupiah', 'cost_rupiah', 'weight_gram'])
-            ->map(fn ($p) => [
-                'product_id' => $p->id,
-                'name' => $p->name,
-                'unit' => $p->unit,
-                'price_rupiah' => $p->price_rupiah,
-                'unit_value_rupiah' => $this->nilaiSatuan($p),
-                'qty' => $item->get($p->id)?->qty ?? 0,
-                'weight_gram' => $item->get($p->id)?->weight_gram,
-                'disposition' => $item->get($p->id)?->disposition ?? 'discarded',
-            ]);
+        $aktif = DB::table('products')->where('store_id', $store)->where('is_active', true)->orderBy('name')
+            ->get(['id', 'name', 'unit', 'price_rupiah', 'cost_rupiah', 'weight_gram']);
+
+        // Menu satuan menambah jumlah produknya. Tas kejutan, dan menu yang produknya sudah
+        // dinonaktifkan, masuk sebagai item lain yang dinilai dari harga jualnya.
+        $keProduk = $tidakLaku->filter(fn ($l) => $l->type === 'menu_item' && $aktif->contains('id', $l->product_id));
+        $sisaProduk = $keProduk->groupBy('product_id')->map(fn ($g) => $g->sum('sisa'));
+        $sisaLain = $tidakLaku->reject(fn ($l) => $keProduk->contains('id', $l->id))->values()
+            ->map(fn ($l) => ['label' => $l->title, 'qty' => $l->sisa, 'weight_gram' => null, 'value_rupiah' => $l->sisa * $l->price_rupiah]);
+
+        $produk = $aktif->map(fn ($p) => [
+            'product_id' => $p->id,
+            'name' => $p->name,
+            'unit' => $p->unit,
+            'price_rupiah' => $p->price_rupiah,
+            'unit_value_rupiah' => $this->nilaiSatuan($p),
+            'qty' => $item->get($p->id)?->qty ?? (int) ($sisaProduk[$p->id] ?? 0),
+            'weight_gram' => $item->get($p->id)?->weight_gram,
+            'disposition' => $item->get($p->id)?->disposition ?? 'discarded',
+        ]);
 
         $pekanLalu = DB::table('waste_logs')->where('store_id', $store)
             ->where('log_date', $tanggal->copy()->subWeek()->toDateString())->value('total_value_rupiah');
@@ -66,8 +91,10 @@ class CatatSisaController extends Controller
             'total_items' => $log?->total_items ?? 0,
             // "naik 12% dari Kamis lalu" di M06. null kalau hari yang sama pekan lalu tidak dicatat.
             'change_vs_last_week_percent' => $log === null ? null : $this->persen($log->total_value_rupiah, $pekanLalu),
+            // Jumlah jualan tidak laku yang dipakai mengisi awal; 0 kalau hari itu sudah dicatat.
+            'prefilled_from_listings' => $tidakLaku->count(),
             'products' => $produk,
-            'other_items' => $semua->whereNull('product_id')->values()
+            'other_items' => $log === null ? $sisaLain : $semua->whereNull('product_id')->values()
                 ->map(fn ($i) => ['label' => $i->label, 'qty' => $i->qty, 'weight_gram' => $i->weight_gram, 'value_rupiah' => $i->value_rupiah]),
         ]]);
     }

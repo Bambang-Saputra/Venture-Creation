@@ -6,7 +6,7 @@
     <string name="k01_judul">Makanan baik,\ntidak berakhir di tempat sampah</string>
     <string name="k01_sub">Pilih cara kamu masuk. Konsumen mencari tas surplus di sekitar, mitra melepas stok sebelum jam tutup.</string>
     <string name="k01_konsumen_judul">Saya konsumen</string>
-    <string name="k01_konsumen_sub">Cari tas surplus di sekitar, bayar sepertiga harga</string>
+    <string name="k01_konsumen_sub">Cari tas surplus di sekitar, mulai setengah harga</string>
     <string name="k01_mitra_judul">Saya mitra usaha</string>
     <string name="k01_mitra_sub">Lepas stok sebelum tutup, pantau nilai yang tertahan</string>
     <string name="k01_belum_punya_akun">Belum punya akun?</string>
@@ -528,6 +528,11 @@
         <item quantity="one">%1$d item</item>
         <item quantity="other">%1$d item</item>
     </plurals>
+    <plurals name="m06_ket_otomatis">
+        <item quantity="one">Terisi otomatis dari %1$d jualan yang tidak laku hari ini. Periksa jumlahnya, lalu simpan.</item>
+        <item quantity="other">Terisi otomatis dari %1$d jualan yang tidak laku hari ini. Periksa jumlahnya, lalu simpan.</item>
+    </plurals>
+    <string name="m06_terisi_otomatis">terisi otomatis, belum disimpan</string>
     <string name="m06_naik">naik %1$d%% dari %2$s lalu</string>
     <string name="m06_turun">turun %1$d%% dari %2$s lalu</string>
     <string name="m06_sama">sama dengan %1$s lalu</string>
@@ -610,7 +615,7 @@
 
     <!-- K06 Onboarding -->
     <string name="k06_kicker_1">SATU KORIDOR, PILIHAN PADAT</string>
-    <string name="k06_judul_1">Makanan layak, harga sepertiga</string>
+    <string name="k06_judul_1">Makanan layak, mulai setengah harga</string>
     <string name="k06_isi_1">Kafe dan bakery di SCBD, Jakarta Selatan melepas stok yang tidak habis sebelum jam tutup. Kamu ambil sendiri di tempat.</string>
     <string name="k06_kicker_2">ALERGI SELALU TERLIHAT</string>
     <string name="k06_judul_2">Cek kandungan sebelum pesan</string>
@@ -871,4 +876,11 @@
     <string name="m22_status_terjadwal">Terjadwal</string>
     <string name="m22_status_selesai">Selesai</string>
     <string name="m22_bukan_pemilik">Hanya pemilik toko yang bisa membeli promosi.</string>
+
+    <!-- Bagikan jualan ke WhatsApp (K10, K11) -->
+    <string name="bagikan_jualan">Bagikan jualan</string>
+    <string name="bagikan_lewat">Bagikan lewat</string>
+    <string name="k10_bagikan_teks">Ada %1$s di %2$s, cuma %3$s dari harga normal %4$s. Ambil hari ini jam %5$s. Cek di aplikasi Life of Foods sebelum habis.</string>
+    <string name="k10_bagikan_teks_tanpa_asli">Ada %1$s di %2$s, cuma %3$s. Ambil hari ini jam %4$s. Cek di aplikasi Life of Foods sebelum habis.</string>
+    <string name="k11_bagikan_teks">%1$s lagi jual menu yang belum laku hari ini, mulai %2$s. Ambil jam %3$s. Cek di aplikasi Life of Foods sebelum habis.</string>
 </resources>
