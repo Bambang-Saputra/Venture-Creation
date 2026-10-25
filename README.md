@@ -140,14 +140,15 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 
 | Sumber | Tarif | Keterangan |
 |---|---|---|
-| Langganan mitra | Rp50.000 per bulan | Sumber utama. Membuka laporan rupiah mingguan dan saran produksi (M07, M08). Pencatatan sisa tetap gratis |
-| Prioritas pencarian | Rp5.000 per hari tayang | Paling banyak 2 jualan berlabel "Iklan" di atas daftar utama. Filter alergi tetap berlaku |
-| Banner Beranda | Rp10.000 per hari tayang | Tampil di Beranda pembeli. Terpisah dari "Populer hari ini", yang murni dihitung dari pesanan |
-| Biaya layanan | Rp1.000 per pesanan | Kolom `service_fee` sudah ada di setiap pesanan; tarifnya diatur lewat `SERVICE_FEE` di `.env` tanpa mengubah kode (ADR-0004) |
+| Biaya layanan | Rp1.000 per pesanan, dibayar pembeli | Sumber utama. Di awal ditanggung lewat voucher: gratis untuk pesanan pertama dan untuk program ajak teman. Kolom `service_fee` sudah ada di setiap pesanan; tarifnya diatur lewat `SERVICE_FEE` di `.env` tanpa mengubah kode (ADR-0004) |
+| Prioritas pencarian | Rp5.000 per hari tayang | Sukarela dari mitra. Paling banyak 2 jualan berlabel "Iklan" di atas daftar utama. Filter alergi tetap berlaku |
+| Banner Beranda | Rp10.000 per hari tayang | Sukarela dari mitra. Tampil di Beranda pembeli. Terpisah dari "Populer hari ini", yang murni dihitung dari pesanan |
 
-Tidak ada komisi per transaksi. Komisi membuat pendapatan bergantung pada banyaknya makanan yang tersisa, padahal tujuan aplikasi ini justru mengurangi sisa. Langganan tumbuh mengikuti jumlah mitra.
+**Mitra tidak membayar langganan maupun komisi.** Mitra sengaja melebihkan produksi supaya tidak kehabisan, jadi alat untuk "mengurangi produksi" bukan hal yang mau mereka bayar, dan di awal mitra adalah sisi yang paling sulit dicari. Laporan sisa dan saran produksi tetap gratis untuk membantu mitra tahu berapa kelebihan yang masih wajar. Kelebihan itulah yang disalurkan lewat aplikasi, sehingga pendapatan datang setiap kali makanan terselamatkan, bukan dari makanan yang terbuang.
 
-Selama uji coba semuanya gratis: langganan belum ditagih, `SERVICE_FEE` bernilai 0, tagihan iklan belum memotong saldo, dan tim tidak memegang uang mitra karena pembeli membayar langsung di toko.
+**Voucher di awal** menjaga harga tetap menarik: biaya layanan tetap tampil tapi dicoret ("ditanggung Life of Foods"), dan berlaku dengan batas yang jelas supaya pembeli tidak kaget saat promo berakhir. Program ajak teman sekaligus memanfaatkan temuan riset bahwa pengaruh sosial paling mendorong orang mau mencoba.
+
+Selama uji coba semuanya gratis: `SERVICE_FEE` bernilai 0, tagihan iklan belum memotong saldo, dan tim tidak memegang uang mitra karena pembeli membayar langsung di toko.
 
 ---
 
