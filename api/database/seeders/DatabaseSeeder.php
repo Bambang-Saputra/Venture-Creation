@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Services\DataDemo;
 use Illuminate\Database\Seeder;
 
 /**
@@ -19,6 +20,9 @@ class DatabaseSeeder extends Seeder
 
         if (! app()->environment('production')) {
             $this->call(SeederDemo::class);
+            // Ulasan dan sisa data aktif lain yang belum dibuat SeederDemo. Hari berikutnya
+            // cukup jalankan php artisan demo:segarkan, tanpa menghapus database.
+            app(DataDemo::class)->segarkan();
         }
     }
 }
