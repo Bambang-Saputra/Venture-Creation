@@ -478,6 +478,29 @@
         <item name="android:letterSpacing">0</item>
     </style>
 
+    <!-- ===== K01 foto peran: lingkaran bergaris putih 35% setebal 5dp ===== -->
+    <style name="FotoPeran">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:padding">2.5dp</item>
+        <item name="android:elevation">6dp</item>
+        <item name="shapeAppearance">@style/BentukBulat</item>
+        <item name="strokeColor">#59FFFFFF</item>
+        <item name="strokeWidth">5dp</item>
+    </style>
+
+    <style name="BentukBulat">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Label di atas foto peran; elevasinya di atas foto supaya tidak tertutup -->
+    <style name="LabelFotoPeran" parent="Teks.Pil">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:textColor">@color/teks_utama</item>
+    </style>
+
     <!-- ===== K01 kartu peran: padding 18, jarak 14, radius 20 ===== -->
     <style name="KartuPeran">
         <item name="android:layout_width">match_parent</item>

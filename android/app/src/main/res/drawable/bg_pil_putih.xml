@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pil label "Konsumen" di foto K01: putih penuh. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/latar_kartu" />
+    <corners android:radius="999dp" />
+</shape>

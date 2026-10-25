@@ -11,6 +11,8 @@
     <string name="k01_mitra_sub">Lepas stok sebelum tutup, pantau nilai yang tertahan</string>
     <string name="k01_belum_punya_akun">Belum punya akun?</string>
     <string name="k01_daftar">Daftar sekarang</string>
+    <string name="k01_foto_konsumen">Konsumen</string>
+    <string name="k01_foto_mitra">Mitra</string>
 
     <!-- Penanda layar yang belum dibuat -->
     <string name="segera_keterangan">Fitur ini sedang kami siapkan dan segera hadir.</string>
