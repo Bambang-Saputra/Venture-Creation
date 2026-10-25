@@ -10,7 +10,7 @@ Kode layar mengikuti `docs/figma/peta-layar.md`.
 - [ ] Cek foto jualan muncul di Beranda dan K10 dari APK terbaru.
 - [ ] Cek "Populer hari ini" muncul setelah ada pesanan hari itu.
 - [ ] Ganti "kode 6 digit" di form wawancara jadi "kode 6 karakter".
-- [ ] Sebelum tiap sesi: nyalakan MySQL, API, `schedule:work`, dan ngrok. Kalau beda hari, isi ulang database demo (`migrate:fresh --seed`, menghapus pesanan lama).
+- [ ] Sebelum tiap sesi: nyalakan MySQL, API, `schedule:work`, dan ngrok, lalu `php artisan demo:segarkan` supaya jualan, iklan, pesanan, dan ulasan demo hari itu terisi. Tidak perlu lagi `migrate:fresh --seed`, yang menghapus akun penguji.
 
 ## 2. Fitur baru dari masukan
 

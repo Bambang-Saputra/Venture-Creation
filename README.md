@@ -220,11 +220,21 @@ cd api
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate:fresh --seed   # isi database dengan data demo
+php artisan migrate:fresh --seed   # sekali di awal: isi database dengan data demo
 php artisan storage:link
 php artisan serve                  # http://127.0.0.1:8000/api
 php artisan schedule:work          # terminal kedua: menutup pesanan yang tidak diambil
 ```
+
+**Sebelum tiap sesi uji coba atau demo**
+
+```bash
+php artisan demo:segarkan
+```
+
+Jualan demo hanya tampil di hari yang sama, jadi sehari setelah seeding Beranda akan kosong. Perintah ini mengisi lagi data demo supaya aplikasi terasa aktif: jualan hari ini dan besok (dengan foto dan alergen), banner dan iklan prioritas pencarian, pesanan hari ini untuk "Populer hari ini", serta ulasan untuk rating toko. Tidak ada data yang dihapus, dan yang disentuh hanya akun serta toko demo bernomor `62811000…`, jadi akun penguji dan mitra sungguhan aman. Aman dijalankan berulang kali, dan menolak berjalan di production kecuali memakai `--force`.
+
+Akun mitra demo untuk masuk di halaman mitra: `62811000201` sampai `62811000208` (Roti Sari Bakery paling lengkap). Kode OTP tampil di layar selama `PILOT_MODE=true`.
 
 **Android**
 
