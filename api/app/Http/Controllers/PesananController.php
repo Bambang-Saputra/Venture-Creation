@@ -27,7 +27,8 @@ class PesananController extends Controller
     public function pratinjau(Request $request): JsonResponse
     {
         $this->khususKonsumen($request);
-        $h = $this->pesanan->hitung($request->user(), $this->validasiItem($request)['items']);
+        $data = $this->validasiItem($request);
+        $h = $this->pesanan->hitung($request->user(), $data['items'], userVoucherId: $data['user_voucher_id'] ?? null);
 
         return response()->json(['data' => [
             ...$h,
@@ -109,6 +110,7 @@ class PesananController extends Controller
         return $request->validate([
             'items' => ['required', 'array', 'min:1', 'max:'.$aturan['maks_item']],
             'items.*.listing_id' => ['required', 'integer', 'distinct'],
+            'user_voucher_id' => ['nullable', 'integer'],
             'items.*.qty' => ['required', 'integer', 'min:1', 'max:'.$aturan['maks_qty_per_item']],
             ...$tambahan,
         ]);

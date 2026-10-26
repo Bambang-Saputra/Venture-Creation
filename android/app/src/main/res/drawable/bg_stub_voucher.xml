@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sisi kiri kartu voucher: oranye war, sudut kiri 18dp mengikuti kartu. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="315"
+        android:endColor="@color/war_aksen"
+        android:startColor="@color/war_aksen_tekan" />
+    <corners
+        android:bottomLeftRadius="18dp"
+        android:topLeftRadius="18dp" />
+</shape>

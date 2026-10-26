@@ -33,6 +33,10 @@ public class PesananMitraDto {
     @SerializedName("total_rupiah")
     public long totalRupiah;
 
+    /** Potongan voucher pembeli; ditanggung Life of Foods, bukan mitra (ADR-0008). */
+    @SerializedName("discount_rupiah")
+    public long discountRupiah;
+
     /** {@code cash} atau {@code qris_static}. */
     @SerializedName("payment_method")
     public String paymentMethod;

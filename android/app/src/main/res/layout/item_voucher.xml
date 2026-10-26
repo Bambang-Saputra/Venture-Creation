@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kartu voucher K22: potongan besar di sisi kiri oranye, lalu judul, syarat, dan masa berlaku. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_kartu_jualan"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/nilai"
+        style="@style/Teks.WarJudul"
+        android:layout_width="96dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_stub_voucher"
+        android:gravity="center"
+        android:minHeight="88dp"
+        android:textSize="22sp"
+        tools:text="20%" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <TextView
+            android:id="@+id/judul"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Diskon 20% war hari ini" />
+
+        <TextView
+            android:id="@+id/syarat"
+            style="@style/Teks.Bantuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            tools:text="Min. belanja Rp15.000 · maks. potongan Rp10.000" />
+
+        <TextView
+            android:id="@+id/berlaku"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_pil_isian"
+            android:textColor="@color/teks_kuat"
+            tools:text="Berlaku sampai 29 Okt" />
+    </LinearLayout>
+</LinearLayout>

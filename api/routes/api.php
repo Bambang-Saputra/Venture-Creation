@@ -20,6 +20,7 @@ use App\Http\Controllers\Partner\TokoController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UlasanController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/otp/request', [OtpController::class, 'minta'])->middleware('throttle:otp-minta');
@@ -49,6 +50,11 @@ Route::middleware(['auth:sanctum', 'aktif'])->group(function () {
     Route::get('/favorites', [FavoritController::class, 'daftar']);
     Route::post('/favorites', [FavoritController::class, 'tambah'])->middleware('throttle:30,1');
     Route::delete('/favorites/{store}', [FavoritController::class, 'hapus'])->whereNumber('store');
+
+    // Voucher dan Gosok & Menang (ADR-0008).
+    Route::get('/vouchers', [VoucherController::class, 'daftar']);
+    Route::post('/vouchers/{voucher}/claim', [VoucherController::class, 'klaim'])->whereNumber('voucher')->middleware('throttle:10,1');
+    Route::post('/games/scratch', [VoucherController::class, 'gosok'])->middleware('throttle:10,1');
 
     Route::post('/orders/preview', [PesananController::class, 'pratinjau'])->middleware('throttle:60,1');
     Route::post('/orders', [PesananController::class, 'buat'])->middleware('throttle:10,1');

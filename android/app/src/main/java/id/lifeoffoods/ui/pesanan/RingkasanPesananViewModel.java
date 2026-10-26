@@ -11,10 +11,12 @@ import id.lifeoffoods.data.Keranjang;
 import id.lifeoffoods.data.RingkasanPesanan;
 import id.lifeoffoods.data.api.ApiCallback;
 import id.lifeoffoods.data.api.ApiError;
+import id.lifeoffoods.data.api.model.DaftarVoucherDto;
 import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PesananDto;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
 import id.lifeoffoods.data.api.model.Terbungkus;
+import id.lifeoffoods.data.api.model.VoucherDto;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,16 @@ public class RingkasanPesananViewModel extends AndroidViewModel {
 
     public final MutableLiveData<Peristiwa<Boolean>> sesiBerakhir = new MutableLiveData<>();
 
+    /** Voucher milik pembeli yang masih berlaku (GET /vouchers), untuk pilihan di kotak voucher. */
+    public final MutableLiveData<List<VoucherDto>> voucherSaya =
+            new MutableLiveData<>(new ArrayList<>());
+
+    /** Voucher yang sedang dipakai; null berarti tanpa voucher. */
+    public final MutableLiveData<VoucherDto> voucherDipakai = new MutableLiveData<>();
+
+    /** Id voucher dari pop up "Beli sekarang", dipasang begitu daftar voucher termuat. */
+    private long voucherAwal;
+
     /** Jumlah per jualan; di K13 bisa diubah dengan stepper. */
     public final Keranjang keranjang = new Keranjang();
 
@@ -68,12 +80,15 @@ public class RingkasanPesananViewModel extends AndroidViewModel {
     /**
      * @param stok sisa stok per jualan dari K10/K11, boleh null; server tetap memeriksa.
      */
-    public void mulai(long[] id, int[] qty, @Nullable int[] stok, boolean menuSatuan) {
+    public void mulai(
+            long[] id, int[] qty, @Nullable int[] stok, boolean menuSatuan, long voucherAwal) {
         if (sudahMulai) {
             return;
         }
         sudahMulai = true;
         this.menuSatuan = menuSatuan;
+        this.voucherAwal = voucherAwal;
+        muatVoucher();
         for (int i = 0; i < id.length; i++) {
             int s = stok != null && i < stok.length ? stok[i] : Keranjang.MAKS_PER_ITEM;
             // Harga di keranjang tidak dipakai untuk tampilan; total selalu dari pratinjau.
@@ -82,6 +97,43 @@ public class RingkasanPesananViewModel extends AndroidViewModel {
             urutan.add(id[i]);
         }
         muatUlang();
+    }
+
+    private void muatVoucher() {
+        app().api()
+                .voucher()
+                .enqueue(
+                        new ApiCallback<>() {
+                            @Override
+                            public void sukses(Terbungkus<DaftarVoucherDto> data) {
+                                List<VoucherDto> d =
+                                        data == null || data.data == null || data.data.mine == null
+                                                ? new ArrayList<>()
+                                                : data.data.mine;
+                                voucherSaya.setValue(d);
+                                for (VoucherDto v : d) {
+                                    if (v.id == voucherAwal) {
+                                        pakaiVoucher(v);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void gagal(ApiError e) {
+                                // Tanpa daftar voucher, pesanan tetap bisa dibuat seperti biasa.
+                            }
+                        });
+    }
+
+    /** Pilih voucher (atau null untuk tanpa voucher), lalu minta pratinjau baru. */
+    public void pakaiVoucher(@Nullable VoucherDto v) {
+        if (Boolean.TRUE.equals(membuat.getValue())) {
+            return;
+        }
+        voucherDipakai.setValue(v);
+        if (status.getValue() != Status.MEMUAT) {
+            minta(false);
+        }
     }
 
     public boolean menuSatuan() {
@@ -124,7 +176,13 @@ public class RingkasanPesananViewModel extends AndroidViewModel {
 
                             @Override
                             public void gagal(ApiError e) {
-                                if (e.perluMasukUlang()) {
+                                String galatVoucher = e.pesanField("user_voucher_id");
+                                if (galatVoucher != null && voucherDipakai.getValue() != null) {
+                                    // Misalnya belum mencapai minimal belanja: lepas vouchernya.
+                                    voucherDipakai.setValue(null);
+                                    galat.setValue(new Peristiwa<>(galatVoucher));
+                                    minta(awal);
+                                } else if (e.perluMasukUlang()) {
                                     sesiBerakhir.setValue(new Peristiwa<>(true));
                                 } else if (e.kode() == 422 && awal) {
                                     // Stok sudah habis sejak detail dibuka.
@@ -209,7 +267,10 @@ public class RingkasanPesananViewModel extends AndroidViewModel {
                 i++;
             }
         }
-        return PesananBody.dari(id, qty);
+        PesananBody b = PesananBody.dari(id, qty);
+        VoucherDto v = voucherDipakai.getValue();
+        b.userVoucherId = v == null ? null : v.id;
+        return b;
     }
 
     private LofApp app() {
