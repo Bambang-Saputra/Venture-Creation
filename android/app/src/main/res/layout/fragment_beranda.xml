@@ -23,9 +23,12 @@
         android:paddingEnd="20dp"
         android:paddingBottom="15dp">
 
+        <!-- Baris atas ikut disembunyikan saat isi digulir ke bawah; kolom cari tetap tampil. -->
         <LinearLayout
+            android:id="@+id/baris_atas"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginBottom="14dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -134,7 +137,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            android:layout_marginTop="14dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -184,11 +186,16 @@
     </LinearLayout>
 
     <!-- ===== Isi ===== -->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/gulir"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/segarkan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/gulir"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -196,6 +203,110 @@
             android:orientation="vertical"
             android:paddingTop="16dp"
             android:paddingBottom="18dp">
+
+            <!--
+                WAR JAM INI: jualan yang jam ambilnya paling cepat berakhir dengan diskon terbesar,
+                hitung mundur sampai jam ambil terdekat habis, dan tombol beli langsung. Disusun
+                dari daftar yang sama dengan bagian lain; disembunyikan kalau tidak ada jualan.
+            -->
+            <LinearLayout
+                android:id="@+id/bagian_war"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_kotak_war"
+                android:orientation="vertical"
+                android:paddingTop="18dp"
+                android:paddingBottom="16dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/Teks.WarKicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:text="@string/war_kicker" />
+
+                <TextView
+                    android:id="@+id/judul_war"
+                    style="@style/Teks.WarJudul"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="18dp"
+                    android:accessibilityHeading="true"
+                    android:text="@string/war_judul" />
+
+                <TextView
+                    android:id="@+id/sub_war"
+                    style="@style/Teks.WarSub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="18dp"
+                    tools:text="Diskon sampai 68%, cuma sampai jam 21.00. Siapa cepat dia dapat!" />
+
+                <LinearLayout
+                    android:id="@+id/baris_hitung"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="18dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ket_hitung"
+                        style="@style/Teks.Keterangan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/teks_di_gelap"
+                        tools:text="Berakhir jam 19.00, dalam" />
+
+                    <TextView
+                        android:id="@+id/hitung_jam"
+                        style="@style/HitungMundur"
+                        tools:text="01" />
+
+                    <TextView
+                        style="@style/HitungMundur.Pemisah" />
+
+                    <TextView
+                        android:id="@+id/hitung_menit"
+                        style="@style/HitungMundur"
+                        tools:text="42" />
+
+                    <TextView
+                        style="@style/HitungMundur.Pemisah" />
+
+                    <TextView
+                        android:id="@+id/hitung_detik"
+                        style="@style/HitungMundur"
+                        tools:text="13" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/daftar_war"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:clipToPadding="false"
+                    android:contentDescription="@string/war_kicker"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="4dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_kartu_war" />
+            </LinearLayout>
 
             <!--
                 Karusel iklan (paket banner Beranda, GET /promotions/banners). Disembunyikan kalau
@@ -524,6 +635,7 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
         android:id="@+id/nav"

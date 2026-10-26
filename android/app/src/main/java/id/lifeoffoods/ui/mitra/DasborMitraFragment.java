@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.CatatSisa;
 import id.lifeoffoods.data.DasborMitra;
@@ -22,6 +23,7 @@ import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.databinding.FragmentDasborMitraBinding;
 import id.lifeoffoods.databinding.ItemTasDasborBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.SegarkanTarik;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
 import java.util.List;
@@ -51,6 +53,7 @@ public class DasborMitraFragment extends Fragment {
         SisiAman.atas(binding.header);
         SisiAman.bawah(binding.nav.getRoot());
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.segarkan());
+        SwipeRefreshLayout segarkan = SegarkanTarik.bungkus(binding.gulir, vm::segarkan);
 
         binding.pengingat.setOnClickListener(v -> buka(R.id.m06_catat));
         binding.tombolCatat.setOnClickListener(v -> buka(R.id.m06_catat));
@@ -60,7 +63,12 @@ public class DasborMitraFragment extends Fragment {
         binding.tautanKelola.setOnClickListener(v -> buka(R.id.m10_kelola));
         NavMitra.pasang(this, binding.nav, R.id.m05_dashboard);
 
-        vm.status.observe(getViewLifecycleOwner(), s -> tampilkanStatus());
+        vm.status.observe(
+                getViewLifecycleOwner(),
+                s -> {
+                    tampilkanStatus();
+                    SegarkanTarik.selesai(segarkan, s);
+                });
         vm.ringkasan.observe(getViewLifecycleOwner(), this::isi);
         vm.tas.observe(getViewLifecycleOwner(), this::isiTas);
         vm.sesiBerakhir.observe(

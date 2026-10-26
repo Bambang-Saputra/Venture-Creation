@@ -48,6 +48,12 @@
     <color name="tanda_proses_teks">#8A5A08</color>
     <color name="tanda_bintang">#E0A82E</color>
     <color name="tanda_api">#C08A1E</color>
+
+    <!-- Aksen "war harga" di Beranda: diskon, stok menipis, hitung mundur, tombol beli. -->
+    <color name="war_aksen">#FF5A1F</color>
+    <color name="war_aksen_tekan">#E04A12</color>
+    <color name="war_latar">#FFF1EA</color>
+
     <color name="tanda_bahaya_latar">#FCEBE8</color>
     <color name="tanda_bahaya_teks">#C0392B</color>
 

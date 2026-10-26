@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Selubung bawah foto kartu: gelap di bawah supaya harga putih di atas foto terbaca. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="90"
+        android:centerColor="#590F2A1E"
+        android:endColor="#000F2A1E"
+        android:startColor="#D90F2A1E" />
+</shape>
