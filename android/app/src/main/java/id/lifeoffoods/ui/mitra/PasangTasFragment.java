@@ -11,6 +11,7 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavOptions;
@@ -25,6 +26,7 @@ import id.lifeoffoods.data.api.model.AlergenDto;
 import id.lifeoffoods.data.api.model.JualanMitraDto;
 import id.lifeoffoods.data.api.model.TemplateTasDto;
 import id.lifeoffoods.databinding.FragmentPasangTasBinding;
+import id.lifeoffoods.databinding.IncludeJudulLangkahBinding;
 import id.lifeoffoods.databinding.ItemPilihanTemplateBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.jualan.Stepper;
@@ -114,6 +116,19 @@ public class PasangTasFragment extends Fragment {
                 v -> NavHostFragment.findNavController(this).popBackStack());
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
 
+        isiLangkah(binding.langkahIsi, 1, R.string.m09_langkah_isi, R.string.m09_langkah_isi_ket);
+        isiLangkah(
+                binding.langkahHarga,
+                2,
+                R.string.m09_langkah_harga,
+                R.string.m09_langkah_harga_ket);
+        isiLangkah(
+                binding.langkahAlergen,
+                3,
+                R.string.m09_langkah_alergen,
+                R.string.m09_langkah_alergen_ket);
+        isiLangkah(binding.langkahJam, 4, R.string.m09_langkah_jam, R.string.m09_langkah_jam_ket);
+
         binding.segmen.tabTas.setSelected(true);
         binding.segmen.tabMenu.setSelected(false);
         binding.segmen.tabMenu.setOnClickListener(v -> keMenu());
@@ -123,9 +138,16 @@ public class PasangTasFragment extends Fragment {
                         s -> {
                             vm.ubahHargaCampur(angka(s));
                             binding.isianHarga.setError(null);
+                            perbaruiPratinjau();
                         }));
+        binding.hargaNormal.addTextChangedListener(
+                new PenontonTeks(
+                        s -> {
+                            binding.isianHargaNormal.setError(null);
+                            perbaruiPratinjau();
+                        }));
+        perbaruiPratinjau();
         hapusGalatSaatMengetik(binding.namaTas, binding.isianJudul);
-        hapusGalatSaatMengetik(binding.hargaNormal, binding.isianHargaNormal);
         hapusGalatSaatMengetik(binding.kandungan, binding.isianKandungan);
 
         TampilanPasang.pasangJam(this, binding.jam, vm);
@@ -267,8 +289,63 @@ public class PasangTasFragment extends Fragment {
 
     private void perbaruiHarga() {
         long h = vm.harga();
-        binding.hargaTampil.setText(h > 0 ? FormatTampilan.rupiah(h) : "–");
+        binding.hargaTampil.setText(FormatTampilan.rupiah(h));
         binding.aksi.potensi.setText(FormatTampilan.rupiah(vm.potensi()));
+    }
+
+    private static void isiLangkah(
+            IncludeJudulLangkahBinding b, int nomor, @StringRes int judul, @StringRes int ket) {
+        b.nomor.setText(String.valueOf(nomor));
+        b.judul.setText(judul);
+        b.ket.setText(ket);
+    }
+
+    /** Harga tas campur seperti yang dilihat pembeli, lengkap dengan besar diskonnya. */
+    private void perbaruiPratinjau() {
+        long jual = angka(teks(binding.harga));
+        long normal = angka(teks(binding.hargaNormal));
+        if (jual <= 0) {
+            binding.pratinjauHarga.setText(R.string.m09_pratinjau_kosong);
+        } else if (normal > jual) {
+            int hemat = (int) Math.round((normal - jual) * 100.0 / normal);
+            binding.pratinjauHarga.setText(
+                    getString(
+                            R.string.m09_pratinjau,
+                            FormatTampilan.rupiah(jual),
+                            hemat,
+                            FormatTampilan.rupiah(normal)));
+        } else {
+            binding.pratinjauHarga.setText(
+                    getString(R.string.m09_pratinjau_tanpa_normal, FormatTampilan.rupiah(jual)));
+        }
+    }
+
+    /** Gulir ke isian pertama yang ditandai salah, supaya mitra tidak perlu mencarinya. */
+    private void gulirKeGalatPertama() {
+        View[] urutan = {
+            binding.isianJudul,
+            binding.isianHarga,
+            binding.isianHargaNormal,
+            binding.isianKandungan,
+            binding.galatJumlah,
+            binding.galatAlergen,
+            binding.jam.galatJam
+        };
+        for (View v : urutan) {
+            boolean salah =
+                    v instanceof TextInputLayout
+                            ? ((TextInputLayout) v).getError() != null
+                            : v.getVisibility() == View.VISIBLE;
+            if (salah && v.isShown()) {
+                int y = 0;
+                for (View p = v; p != null && p != binding.gulir; p = (View) p.getParent()) {
+                    y += p.getTop();
+                }
+                int jarak = Math.round(24 * getResources().getDisplayMetrics().density);
+                binding.gulir.smoothScrollTo(0, Math.max(0, y - jarak));
+                return;
+            }
+        }
     }
 
     private void bangunAlergen(@Nullable List<AlergenDto> daftar) {
@@ -337,6 +414,9 @@ public class PasangTasFragment extends Fragment {
         TampilanPasang.tampilGalat(binding.galatJumlah, g, "qty_total");
         TampilanPasang.tampilGalat(binding.galatAlergen, g, "allergens", "template_id");
         TampilanPasang.tampilGalat(binding.jam.galatJam, g, "pickup_end", "pickup_start");
+        if (g != null && !g.isEmpty()) {
+            binding.gulir.post(this::gulirKeGalatPertama);
+        }
     }
 
     private static void galatIsian(TextInputLayout l, @Nullable Map<String, String> g, String f) {
