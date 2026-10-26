@@ -98,6 +98,18 @@
     <string name="k07_peta">Buka peta</string>
     <string name="k07_kategori">Kategori</string>
     <string name="k07_segera_tutup">Tutup kurang dari satu jam</string>
+    <!-- WAR JAM INI -->
+    <string name="war_kicker">JANGAN SAMPAI KEHABISAN</string>
+    <string name="war_judul">War harga terbaik</string>
+    <string name="war_sub">Diskon sampai %1$d%%, cuma sampai jam %2$s. Siapa cepat dia dapat!</string>
+    <string name="war_sub_tanpa_diskon">Harga terbaik cuma sampai jam %1$s. Siapa cepat dia dapat!</string>
+    <string name="war_hitung">Berakhir dalam</string>
+    <string name="war_hitung_desk">War berakhir dalam %1$d jam %2$d menit</string>
+    <string name="war_ambil_sekarang">Ambil sekarang</string>
+    <string name="war_sisa">Sisa %1$d, buruan!</string>
+    <string name="war_sisa_banyak">Tersedia %1$d</string>
+    <string name="war_diskon">-%1$d%%</string>
+    <string name="war_kartu_desk">%1$s di %2$s, %3$s. Tersisa %4$d.</string>
     <string name="k07_populer">Populer hari ini</string>
     <string name="k07_populer_ket">Paling banyak dipesan pembeli lain hari ini</string>
     <string name="k07_populer_geser">Geser ›</string>

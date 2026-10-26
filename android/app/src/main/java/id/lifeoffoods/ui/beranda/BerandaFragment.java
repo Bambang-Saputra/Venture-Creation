@@ -2,6 +2,9 @@ package id.lifeoffoods.ui.beranda;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +28,23 @@ import id.lifeoffoods.databinding.IncludeUbinKategoriBinding;
 import id.lifeoffoods.databinding.ItemBannerPromosiBinding;
 import id.lifeoffoods.databinding.ItemKartuFlashBinding;
 import id.lifeoffoods.databinding.ItemKartuTasBinding;
+import id.lifeoffoods.databinding.ItemKartuWarBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.filter.FilterBundle;
+import id.lifeoffoods.ui.jualan.BeliLangsung;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.FotoJualan;
+import id.lifeoffoods.ui.umum.HargaDiFoto;
 import id.lifeoffoods.ui.umum.SisiAman;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * K07 Beranda konsumen. Kolom cari membuka K09 Filter; hasilnya kembali lewat setFragmentResult.
@@ -42,6 +56,23 @@ public class BerandaFragment extends Fragment {
 
     private FragmentBerandaBinding binding;
     private BerandaViewModel vm;
+
+    /** Jumlah kartu di WAR JAM INI. */
+    private static final int MAKS_WAR = 6;
+
+    private final Handler detak = new Handler(Looper.getMainLooper());
+    @Nullable private OffsetDateTime akhirWar;
+    private BaseListAdapter<ListingDto, ItemKartuWarBinding> adapterWar;
+
+    /** Hitung mundur WAR JAM INI, berdetik selama Beranda tampil. */
+    private final Runnable hitungMundur =
+            new Runnable() {
+                @Override
+                public void run() {
+                    tampilkanHitungMundur();
+                    detak.postDelayed(this, 1000);
+                }
+            };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +143,16 @@ public class BerandaFragment extends Fragment {
                 new BaseListAdapter<>(
                         ItemKartuFlashBinding::inflate, this::isiKartuFlash, l -> l.id);
         binding.daftarSegera.setAdapter(adapterSegera);
+        adapterWar =
+                new BaseListAdapter<>(ItemKartuWarBinding::inflate, this::isiKartuWar, l -> l.id);
+        binding.daftarWar.setAdapter(adapterWar);
+        new LinearSnapHelper().attachToRecyclerView(binding.daftarWar);
+
+        // Tarik ke bawah untuk memuat ulang, seperti aplikasi lain.
+        binding.segarkan.setColorSchemeResources(R.color.merek_utama, R.color.war_aksen);
+        binding.segarkan.setOnRefreshListener(() -> vm.muatUlang());
+        pasangHeaderMengecil();
+
         BaseListAdapter<ListingDto, ItemKartuTasBinding> adapterTerdekat =
                 new BaseListAdapter<>(ItemKartuTasBinding::inflate, this::isiKartuTas, l -> l.id);
         binding.daftarTerdekat.setAdapter(adapterTerdekat);
@@ -184,7 +225,17 @@ public class BerandaFragment extends Fragment {
                     binding.bagianSegera.setVisibility(daftar.isEmpty() ? View.GONE : View.VISIBLE);
                 });
         vm.terdekat.observe(getViewLifecycleOwner(), adapterTerdekat::submitList);
-        vm.status.observe(getViewLifecycleOwner(), s -> tampilkanKeadaan());
+        vm.terdekat.observe(getViewLifecycleOwner(), d -> susunWar());
+        vm.segeraTutup.observe(getViewLifecycleOwner(), d -> susunWar());
+        vm.populer.observe(getViewLifecycleOwner(), d -> susunWar());
+        vm.status.observe(
+                getViewLifecycleOwner(),
+                s -> {
+                    tampilkanKeadaan();
+                    if (s != BerandaViewModel.Status.MEMUAT) {
+                        binding.segarkan.setRefreshing(false);
+                    }
+                });
         vm.terdekat.observe(getViewLifecycleOwner(), d -> tampilkanKeadaan());
         vm.kategori.observe(getViewLifecycleOwner(), this::tandaiKategori);
         vm.filter.observe(
@@ -200,6 +251,143 @@ public class BerandaFragment extends Fragment {
                         ((MainActivity) requireActivity()).sesiBerakhir();
                     }
                 });
+    }
+
+    /**
+     * Header mengecil: saat isi digulir ke bawah, baris logo/lokasi/notifikasi disembunyikan dan
+     * hanya kolom cari yang tersisa; saat digulir ke atas baris itu muncul lagi. Bayangan tipis
+     * memberi batas yang jelas antara header dan isi yang lewat di bawahnya.
+     */
+    private void pasangHeaderMengecil() {
+        float bayangan = 6 * getResources().getDisplayMetrics().density;
+        int ambang = Math.round(48 * getResources().getDisplayMetrics().density);
+        binding.gulir.setOnScrollChangeListener(
+                (androidx.core.widget.NestedScrollView.OnScrollChangeListener)
+                        (v, x, y, xLama, yLama) -> {
+                            binding.header.setElevation(y > 0 ? bayangan : 0f);
+                            boolean tampil = binding.barisAtas.getVisibility() == View.VISIBLE;
+                            boolean kecilkan = y > ambang && y > yLama;
+                            boolean besarkan = y < ambang || yLama - y > ambang / 4;
+                            if (tampil && kecilkan) {
+                                TransitionManager.beginDelayedTransition(binding.header);
+                                binding.barisAtas.setVisibility(View.GONE);
+                            } else if (!tampil && besarkan) {
+                                TransitionManager.beginDelayedTransition(binding.header);
+                                binding.barisAtas.setVisibility(View.VISIBLE);
+                            }
+                        });
+    }
+
+    /**
+     * WAR JAM INI: gabungan semua jualan yang sudah dimuat dan masih ada stoknya, diurutkan dari
+     * jam ambil yang paling cepat berakhir lalu diskon terbesar.
+     */
+    private void susunWar() {
+        Map<Long, ListingDto> unik = new LinkedHashMap<>();
+        List<List<ListingDto>> sumber = new ArrayList<>();
+        sumber.add(nilai(vm.segeraTutup.getValue()));
+        sumber.add(nilai(vm.populer.getValue()));
+        sumber.add(nilai(vm.terdekat.getValue()));
+        for (List<ListingDto> d : sumber) {
+            for (ListingDto l : d) {
+                if (l.qtyRemaining > 0 && l.minutesUntilEnd > 0) {
+                    unik.putIfAbsent(l.id, l);
+                }
+            }
+        }
+        List<ListingDto> war = new ArrayList<>(unik.values());
+        war.sort(
+                Comparator.comparingInt((ListingDto l) -> l.minutesUntilEnd)
+                        .thenComparing(l -> -HargaDiFoto.diskon(l)));
+        if (war.size() > MAKS_WAR) {
+            war = new ArrayList<>(war.subList(0, MAKS_WAR));
+        }
+        adapterWar.submitList(war);
+        binding.bagianWar.setVisibility(war.isEmpty() ? View.GONE : View.VISIBLE);
+        if (war.isEmpty()) {
+            akhirWar = null;
+            return;
+        }
+        int maksDiskon = 0;
+        for (ListingDto l : war) {
+            maksDiskon = Math.max(maksDiskon, HargaDiFoto.diskon(l));
+        }
+        String jamAkhir = FormatTampilan.jam(war.get(0).pickupEnd);
+        binding.subWar.setText(
+                maksDiskon > 0
+                        ? getString(R.string.war_sub, maksDiskon, jamAkhir)
+                        : getString(R.string.war_sub_tanpa_diskon, jamAkhir));
+        akhirWar = waktu(war.get(0).pickupEnd);
+        binding.ketHitung.setText(R.string.war_hitung);
+        tampilkanHitungMundur();
+    }
+
+    private void tampilkanHitungMundur() {
+        if (binding == null || akhirWar == null) {
+            return;
+        }
+        long detik = Math.max(0, Duration.between(OffsetDateTime.now(), akhirWar).getSeconds());
+        long j = detik / 3600;
+        long m = (detik % 3600) / 60;
+        binding.hitungJam.setText(String.format(Locale.ROOT, "%02d", j));
+        binding.hitungMenit.setText(String.format(Locale.ROOT, "%02d", m));
+        binding.hitungDetik.setText(String.format(Locale.ROOT, "%02d", detik % 60));
+        binding.barisHitung.setContentDescription(
+                getString(R.string.war_hitung_desk, (int) j, (int) m));
+    }
+
+    private void isiKartuWar(ItemKartuWarBinding b, ListingDto l) {
+        FotoJualan.muat(b.fotoJualan, l.photoUrl, 17, 0);
+        HargaDiFoto.isi(b.overlayHarga, l, true);
+        b.judul.setText(l.title);
+        String toko = l.store == null ? "" : l.store.name;
+        String jarak = FormatTampilan.jarak(l.distanceKm);
+        b.toko.setText(jarak == null ? toko : toko + " · " + jarak);
+        boolean menipis = l.qtyRemaining <= 3;
+        b.stok.setText(
+                getString(menipis ? R.string.war_sisa : R.string.war_sisa_banyak, l.qtyRemaining));
+        b.stok.setBackgroundResource(menipis ? R.drawable.bg_pil_war : R.drawable.bg_pil_lime);
+        b.stok.setTextColor(
+                androidx.core.content.ContextCompat.getColor(
+                        requireContext(), menipis ? R.color.teks_di_gelap : R.color.teks_utama));
+        b.getRoot()
+                .setContentDescription(
+                        getString(
+                                R.string.war_kartu_desk,
+                                l.title,
+                                toko,
+                                FormatTampilan.rupiah(l.priceRupiah),
+                                l.qtyRemaining));
+        b.getRoot().setOnClickListener(v -> bukaDetail(l));
+        b.tombolAmbil.setOnClickListener(v -> BeliLangsung.satu(this, l));
+    }
+
+    private static List<ListingDto> nilai(@Nullable List<ListingDto> d) {
+        return d == null ? new ArrayList<>() : d;
+    }
+
+    @Nullable
+    private static OffsetDateTime waktu(@Nullable String iso) {
+        if (iso == null) {
+            return null;
+        }
+        try {
+            return OffsetDateTime.parse(iso);
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        detak.post(hitungMundur);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        detak.removeCallbacks(hitungMundur);
     }
 
     private void pasangKategori(
@@ -311,6 +499,11 @@ public class BerandaFragment extends Fragment {
         b.toko.setText(l.store == null ? "" : l.store.name);
         b.sisaWaktu.setText(FormatTampilan.sisaWaktu(l.minutesUntilEnd));
         isiHarga(b.harga, b.hargaNormal, l);
+        // Uji coba: harga dan diskon ditaruh di dalam foto, jadi baris harga di bawah
+        // disembunyikan.
+        HargaDiFoto.isi(b.overlayHarga, l, true);
+        b.harga.setVisibility(View.GONE);
+        b.hargaNormal.setVisibility(View.GONE);
         b.getRoot().setOnClickListener(v -> bukaDetail(l));
     }
 
@@ -361,6 +554,8 @@ public class BerandaFragment extends Fragment {
         b.toko.setText(l.store == null ? "" : l.store.name);
         b.jamAmbil.setText(FormatTampilan.rentangJam(l.pickupStart, l.pickupEnd));
         isiHarga(b.harga, b.hargaNormal, l);
+        // Foto 94dp terlalu kecil untuk harga; cukup pil diskon di pojoknya.
+        HargaDiFoto.isi(b.overlayHarga, l, false);
         b.getRoot().setOnClickListener(v -> bukaDetail(l));
     }
 
