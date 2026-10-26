@@ -56,4 +56,7 @@
     <color name="grafik_batang_pasif">#D8ECDD</color>
     <!-- Tren sisa naik di kotak gelap M07; kontras 7:1 terhadap merek_tinta. -->
     <color name="tren_naik_di_gelap">#F5A196</color>
+
+    <!-- Notifikasi "War dimulai!": warna lampu, ikon, dan aksen pop up. -->
+    <color name="notif_aksen">#FF5A1F</color>
 </resources>

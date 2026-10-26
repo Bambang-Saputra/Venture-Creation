@@ -484,6 +484,7 @@ Hanya di dalam aplikasi; ambil saat layar dibuka atau aplikasi kembali ke depan.
 | `pengingat_ambil` | pembeli, kalau `notify_pickup_reminder` | 30 menit sebelum jam ambil | K14 (`order_id`) |
 | `porsi_terselamatkan` | pembeli | kode ditukar | K14 (`order_id`) |
 | `mitra_favorit_memasang` | yang memfavoritkan toko, kalau `notify_favorite_store` | jualan terbit, maks sekali per toko per hari | K10 (`listing_id`) |
+| `war_dimulai` | pembeli dengan `notify_promo` | `notifikasi:war` tiap 15 menit (10.00 sampai 22.00): jualan diskon ≥ 30% terbesar yang berakhir 20 menit sampai 3 jam lagi; maks 2 per orang per hari, tidak pernah untuk jualan yang sama dua kali | K10 (`listing_id`, `photo_url`) |
 
 ### POST /notifications/{id}/read, POST /notifications/read-all
 
