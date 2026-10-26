@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pop up notifikasi baru di atas layar saat aplikasi terbuka (PemantauNotifikasi). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:background="@drawable/bg_kartu_putih"
+    android:clickable="true"
+    android:elevation="12dp"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <ImageView
+        android:id="@+id/ikon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:background="@drawable/bg_ikon_mint"
+        android:contentDescription="@null"
+        android:padding="11dp"
+        android:src="@drawable/ic_lonceng"
+        app:tint="@color/merek_utama" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/judul"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            tools:text="War dimulai! Roti Sari Bakery diskon 65%" />
+
+        <TextView
+            android:id="@+id/isi"
+            style="@style/Teks.IsiKecil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="Tas Roti Sore cuma Rp21.000, tinggal 3." />
+    </LinearLayout>
+</LinearLayout>

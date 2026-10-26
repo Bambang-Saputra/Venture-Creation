@@ -100,6 +100,58 @@ class Notifikasi
         return $pesanan->count();
     }
 
+    /**
+     * "War dimulai!": jualan dengan diskon terbesar yang jam ambilnya berakhir dalam 20 menit
+     * sampai 3 jam lagi, ke pembeli yang menyalakan notify_promo. Paling banyak dua per orang per
+     * hari dan tidak pernah untuk jualan yang sama dua kali. Aman dipanggil berulang.
+     *
+     * @return int jumlah notifikasi yang dikirim
+     */
+    public function warDimulai(int $minimalDiskon = 30, int $maksPerHari = 2): int
+    {
+        $l = DB::table('listings as l')
+            ->join('stores as s', 's.id', '=', 'l.store_id')
+            ->where('l.status', 'active')
+            ->whereBetween('l.pickup_end', [now()->addMinutes(20), now()->addHours(3)])
+            ->whereRaw('l.qty_total - l.qty_reserved - l.qty_sold > 0')
+            ->whereNotNull('l.original_value_rupiah')
+            ->whereRaw('l.original_value_rupiah > l.price_rupiah')
+            ->whereRaw('(l.original_value_rupiah - l.price_rupiah) * 100 >= ? * l.original_value_rupiah', [$minimalDiskon])
+            ->orderByRaw('(l.original_value_rupiah - l.price_rupiah) / l.original_value_rupiah DESC')
+            ->orderBy('l.pickup_end')
+            ->select('l.id', 'l.store_id', 'l.title', 'l.price_rupiah', 'l.original_value_rupiah', 'l.pickup_end',
+                'l.photo_path', 's.name as store_name', 's.photo_path as store_photo_path',
+                DB::raw('l.qty_total - l.qty_reserved - l.qty_sold as sisa'))
+            ->first();
+
+        if ($l === null) {
+            return 0;
+        }
+
+        $penerima = DB::table('users as u')
+            ->join('consumer_profiles as p', 'p.user_id', '=', 'u.id')
+            ->where('u.role', 'consumer')->where('u.is_active', true)
+            ->where('p.notify_promo', true)
+            ->whereNotExists(fn ($q) => $q->from('notifications as n')->whereColumn('n.user_id', 'u.id')
+                ->where('n.type', 'war_dimulai')
+                ->whereRaw("JSON_UNQUOTE(JSON_EXTRACT(n.data, '$.listing_id')) = ?", [(string) $l->id]))
+            ->whereRaw('(select count(*) from notifications n2 where n2.user_id = u.id and n2.type = ? and n2.created_at >= ?) < ?',
+                ['war_dimulai', now()->startOfDay(), $maksPerHari])
+            ->pluck('u.id');
+
+        $diskon = (int) round(($l->original_value_rupiah - $l->price_rupiah) * 100 / $l->original_value_rupiah);
+        $harga = 'Rp'.number_format($l->price_rupiah, 0, ',', '.');
+        $jam = Carbon::parse($l->pickup_end)->format('H.i');
+        foreach ($penerima as $userId) {
+            $this->kirim($userId, 'war_dimulai', "War dimulai! {$l->store_name} diskon {$diskon}%",
+                "{$l->title} cuma {$harga}, tinggal {$l->sisa}. Ambil sebelum jam {$jam}, siapa cepat dia dapat!",
+                ['screen' => 'K10', 'listing_id' => $l->id, 'store_id' => $l->store_id,
+                    'photo_url' => FotoUnggahan::url($l->photo_path ?? $l->store_photo_path)]);
+        }
+
+        return $penerima->count();
+    }
+
     private function kirim(int $userId, string $jenis, string $judul, string $isi, array $data): void
     {
         DB::table('notifications')->insert([

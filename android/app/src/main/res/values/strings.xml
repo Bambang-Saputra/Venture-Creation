@@ -885,4 +885,11 @@
     <string name="k10_bagikan_teks">Ada %1$s di %2$s, cuma %3$s dari harga normal %4$s. Ambil hari ini jam %5$s. Cek di aplikasi Life of Foods sebelum habis.</string>
     <string name="k10_bagikan_teks_tanpa_asli">Ada %1$s di %2$s, cuma %3$s. Ambil hari ini jam %4$s. Cek di aplikasi Life of Foods sebelum habis.</string>
     <string name="k11_bagikan_teks">%1$s lagi jual menu yang belum laku hari ini, mulai %2$s. Ambil jam %3$s. Cek di aplikasi Life of Foods sebelum habis.</string>
+
+    <!-- Notifikasi sistem -->
+    <string name="notif_saluran_war">War harga</string>
+    <string name="notif_saluran_war_ket">Diskon besar yang sebentar lagi berakhir</string>
+    <string name="notif_saluran_pesanan">Pesanan</string>
+    <string name="notif_saluran_pesanan_ket">Pesanan baru, pengingat jam ambil, dan status pesanan</string>
+    <string name="notif_ambil_sekarang">Ambil sekarang</string>
 </resources>
