@@ -332,6 +332,58 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Voucher (ADR-0008): ketuk untuk memilih voucher milik pembeli. Potongannya
+                     ditanggung Life of Foods dan muncul di baris diskon rincian biaya. -->
+                <LinearLayout
+                    android:id="@+id/kotak_voucher"
+                    style="@style/KotakDetail"
+                    android:background="@drawable/bg_kotak_voucher"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_ikon_mint"
+                        android:contentDescription="@null"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_tiket"
+                        app:tint="@color/war_aksen" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/judul_voucher"
+                            style="@style/Teks.JudulKotak"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/k12_voucher_pakai" />
+
+                        <TextView
+                            android:id="@+id/ket_voucher"
+                            style="@style/Teks.Bantuan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/k12_voucher_kosong" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_chevron_kanan"
+                        app:tint="@color/teks_sekunder" />
+                </LinearLayout>
+
                 <!-- Rincian biaya. Baris layanan dan diskon hanya tampil kalau nilainya bukan nol;
                      ongkos kurir tidak ada karena pesanan selalu diambil sendiri. -->
                 <LinearLayout style="@style/KotakDetail">

@@ -44,7 +44,7 @@ Dokumen ini adalah rujukan tunggal saat menulis PRD, endpoint, dan layar Android
 | K19 | Edit profil | F-19 | SHOULD | `PATCH /me` | `users`, `consumer_profiles` |
 | K20 | Pengaturan | F-19 | SHOULD | `PATCH /me`, `DELETE /me` | `users` |
 | K21 | Metode pembayaran | — | WON'T | — | — |
-| K22 | Voucher saya | — | WON'T | — | — |
+| K22 | Voucher saya | — | SHOULD | `GET /vouchers`, `POST /vouchers/{id}/claim`, `POST /games/scratch` | `vouchers`, `user_vouchers`, `game_plays` |
 | K23 | Pusat bantuan | — | COULD | — | — |
 
 Catatan layar konsumen:
@@ -57,7 +57,8 @@ Catatan layar konsumen:
 - **K16** baru mendukung tab Mitra. Tab Tas belum ada karena `favorites` hanya menyimpan toko, sedangkan jualan berganti setiap hari.
 - **K17** hanya notifikasi di dalam aplikasi: Android membaca `GET /notifications` saat layar dibuka. Push lewat FCM belum ada. Jenis yang dibuat server: `pesanan_baru` (ke pemilik dan kasir), `pengingat_ambil` (30 menit sebelum jam ambil), `porsi_terselamatkan` (setelah kode ditukar), `mitra_favorit_memasang` (paling banyak satu per toko per hari). Contoh "Cek kandungan" dan voucher di Figma belum dibuat.
 - **K20** "Hapus akun" memanggil `DELETE /me` dengan `{"confirm": true}` setelah dialog konfirmasi. Ditolak 409 kalau masih ada pesanan yang belum diambil. Akun yang pernah memesan dianonimkan, bukan dihapus, supaya laporan mitra tetap utuh.
-- **K21 dan K22** tampilan saja. Pembayaran saat pilot dilakukan tunai atau QRIS milik mitra di tempat, dan tabel voucher belum ada di skema versi pertama.
+- **K21** tampilan saja. Pembayaran saat pilot dilakukan tunai atau QRIS milik mitra di tempat.
+- **K22** (ADR-0008) dibuka dari K18. Isinya kartu Gosok & Menang (sekali sehari), voucher pop up yang bisa diklaim, dan voucher milikku. Voucher dipakai di kotak voucher K12/K13. Pop up promo muncul sekali per sesi di K07 dengan jualan diskon terbesar yang sedang war; "Beli sekarang" mengklaim voucher lalu langsung membuka K12/K13 dengan voucher terpasang. Potongan ditanggung Life of Foods, dan M11/M12 menampilkannya ke kasir.
 
 ---
 

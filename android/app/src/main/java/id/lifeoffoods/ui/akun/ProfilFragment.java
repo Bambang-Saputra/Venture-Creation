@@ -81,6 +81,12 @@ public class ProfilFragment extends Fragment {
                 R.id.k17_notifikasi,
                 null);
         baris(
+                binding.barisVoucher,
+                R.drawable.ic_tiket,
+                R.string.k22_judul,
+                R.id.k22_voucher,
+                null);
+        baris(
                 binding.barisPengaturan,
                 R.drawable.ic_pengaturan,
                 R.string.k20_judul,

@@ -126,6 +126,16 @@ final class BersamaDetail {
             int tujuan,
             Map<Long, Integer> terpilih,
             @Nullable List<? extends ListingDto> sumber) {
+        lanjutKeRingkasan(f, tujuan, terpilih, sumber, 0);
+    }
+
+    /** Sama, dengan voucher milik pembeli yang langsung dipasang di ringkasan (0 = tanpa). */
+    static void lanjutKeRingkasan(
+            Fragment f,
+            int tujuan,
+            Map<Long, Integer> terpilih,
+            @Nullable List<? extends ListingDto> sumber,
+            long voucher) {
         long[] id = new long[terpilih.size()];
         int[] qty = new int[terpilih.size()];
         int[] stok = new int[terpilih.size()];
@@ -144,6 +154,9 @@ final class BersamaDetail {
         args.putIntArray(ARG_JUMLAH, qty);
         args.putIntArray(RingkasanPesananFragment.ARG_STOK, stok);
         args.putLongArray(RingkasanPesananFragment.ARG_HARGA_NORMAL, normal);
+        if (voucher > 0) {
+            args.putLong(RingkasanPesananFragment.ARG_VOUCHER, voucher);
+        }
         NavHostFragment.findNavController(f).navigate(tujuan, args);
     }
 

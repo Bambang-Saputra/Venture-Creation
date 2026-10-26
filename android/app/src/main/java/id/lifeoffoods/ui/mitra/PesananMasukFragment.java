@@ -317,7 +317,15 @@ public class PesananMasukFragment extends Fragment {
         b.pembeli.setText(p.buyerName);
         b.item.setText(PesananMitra.ringkasItem(p.items));
         b.total.setText(FormatTampilan.rupiah(p.totalRupiah));
-        b.bayar.setText(TampilanPesananMitra.caraBayar(requireContext(), p.paymentMethod));
+        String cara = TampilanPesananMitra.caraBayar(requireContext(), p.paymentMethod);
+        // Kasir menerima total setelah voucher; selisihnya ditanggung Life of Foods.
+        b.bayar.setText(
+                p.discountRupiah > 0
+                        ? getString(
+                                R.string.m11_bayar_voucher,
+                                cara,
+                                FormatTampilan.rupiah(p.discountRupiah))
+                        : cara);
         b.jam.setText(
                 getString(
                         R.string.m11_ambil_jam,

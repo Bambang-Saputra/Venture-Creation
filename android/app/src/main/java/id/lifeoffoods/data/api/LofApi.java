@@ -8,8 +8,10 @@ import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.data.api.model.BannerDto;
 import id.lifeoffoods.data.api.model.CatatSisaBody;
 import id.lifeoffoods.data.api.model.CatatanSisaDto;
+import id.lifeoffoods.data.api.model.DaftarVoucherDto;
 import id.lifeoffoods.data.api.model.FavoritDto;
 import id.lifeoffoods.data.api.model.GoogleLoginBody;
+import id.lifeoffoods.data.api.model.GosokDto;
 import id.lifeoffoods.data.api.model.HalamanListing;
 import id.lifeoffoods.data.api.model.HalamanPesanan;
 import id.lifeoffoods.data.api.model.HalamanPesananMitra;
@@ -41,6 +43,7 @@ import id.lifeoffoods.data.api.model.TokoDetailDto;
 import id.lifeoffoods.data.api.model.TokoMitraDto;
 import id.lifeoffoods.data.api.model.TukarKodeBody;
 import id.lifeoffoods.data.api.model.UlasanDto;
+import id.lifeoffoods.data.api.model.VoucherDto;
 import java.util.List;
 import java.util.Map;
 import okhttp3.MultipartBody;
@@ -131,6 +134,15 @@ public interface LofApi {
     Call<Void> hapusFavorit(@Path("store") long storeId);
 
     /** K12, K13 saat dibuka: harga, jam ambil, dan peringatan alergen. Tidak menyimpan apa pun. */
+    @GET("vouchers")
+    Call<Terbungkus<DaftarVoucherDto>> voucher();
+
+    @POST("vouchers/{id}/claim")
+    Call<Terbungkus<VoucherDto>> klaimVoucher(@Path("id") long id);
+
+    @POST("games/scratch")
+    Call<Terbungkus<GosokDto>> gosok();
+
     @POST("orders/preview")
     Call<Terbungkus<PratinjauPesananDto>> pratinjauPesanan(@Body PesananBody body);
 

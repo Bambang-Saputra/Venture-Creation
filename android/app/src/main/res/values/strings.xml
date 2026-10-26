@@ -98,6 +98,35 @@
     <string name="k07_peta">Buka peta</string>
     <string name="k07_kategori">Kategori</string>
     <string name="k07_segera_tutup">Tutup kurang dari satu jam</string>
+    <!-- Voucher, K22, Gosok & Menang, dan pop up promo (ADR-0008) -->
+    <string name="k22_judul">Voucher saya</string>
+    <string name="k22_bisa_diklaim">Bisa diklaim sekarang</string>
+    <string name="k22_klaim">Klaim voucher</string>
+    <string name="k22_diklaim">Voucher masuk ke Voucher saya. Pakai di ringkasan pesanan!</string>
+    <string name="k22_milikku">Voucher milikku</string>
+    <string name="k22_kosong">Belum ada voucher. Main Gosok &amp; Menang sekali sehari untuk dapat voucher!</string>
+    <string name="voucher_min_belanja">Min. belanja %1$s</string>
+    <string name="voucher_tanpa_min">Tanpa minimal belanja</string>
+    <string name="voucher_maks_potong">maks. potongan %1$s</string>
+    <string name="voucher_berlaku_sampai">Berlaku sampai %1$s</string>
+    <string name="voucher_berlaku_hari">Berlaku %1$d hari setelah diklaim</string>
+    <string name="gosok_kicker">MAIN SEKALI SEHARI</string>
+    <string name="gosok_judul">Gosok &amp; Menang</string>
+    <string name="gosok_ajak">Gosok kartunya, menangkan voucher sampai 50%!</string>
+    <string name="gosok_sudah_main">Kamu sudah main hari ini. Datang lagi besok!</string>
+    <string name="gosok_petunjuk">Gosok di sini</string>
+    <string name="gosok_buka_langsung">Buka langsung</string>
+    <string name="gosok_menang">Selamat! Vouchernya sudah masuk ke Voucher saya.</string>
+    <string name="gosok_zonk">Belum beruntung hari ini</string>
+    <string name="gosok_zonk_nilai">Coba lagi</string>
+    <string name="gosok_zonk_ajak">Jangan sedih, besok ada kesempatan baru. Cek war harga di Beranda!</string>
+    <string name="promo_kicker">WAR HARGA TERBAIK HARI INI</string>
+    <string name="promo_judul">Diskon sampai %1$d%%, cuma sampai jam %2$s!</string>
+    <string name="promo_judul_tanpa_diskon">Harga terbaik cuma sampai jam %1$s!</string>
+    <string name="promo_voucher">Plus voucher %1$s: %2$s. %3$s.</string>
+    <string name="promo_beli">Beli sekarang</string>
+    <string name="promo_klaim_saja">Klaim vouchernya saja</string>
+
     <!-- WAR JAM INI -->
     <string name="war_kicker">JANGAN SAMPAI KEHABISAN</string>
     <string name="war_judul">War harga terbaik</string>
@@ -234,6 +263,13 @@
     <string name="k12_rincian_biaya">Rincian biaya</string>
     <string name="k12_subtotal">Subtotal</string>
     <string name="k12_biaya_layanan">Biaya layanan</string>
+    <string name="k12_voucher_pakai">Pakai voucher</string>
+    <string name="k12_voucher_kosong">Belum punya voucher. Main Gosok &amp; Menang di Beranda untuk dapat voucher!</string>
+    <string name="k12_voucher_ada">%1$d voucher bisa dipakai di pesanan ini</string>
+    <string name="k12_voucher_hemat">Hemat %1$s, ditanggung Life of Foods</string>
+    <string name="k12_voucher_tanpa">Tanpa voucher</string>
+    <string name="k12_voucher_baris">%1$s (min. belanja %2$s)</string>
+    <string name="k12_voucher_pilih">Pilih voucher</string>
     <string name="k12_diskon">Diskon</string>
     <string name="k12_potongan">-%1$s</string>
     <string name="k12_total">Total</string>
@@ -385,6 +421,8 @@
     <string name="m12_terima_bayar">Terima bayar</string>
     <string name="m12_jam_ambil">Jam ambil</string>
     <string name="m12_bayar_nilai">%1$s · %2$s</string>
+    <string name="m12_voucher">Voucher %1$s ditanggung Life of Foods, masuk ke saldo toko</string>
+    <string name="m11_bayar_voucher">%1$s · voucher %2$s ditanggung Life of Foods</string>
 
     <!-- M10 Kelola jualan / M17 Kelola menu satuan (PRD-09) -->
     <string name="m10_judul">Kelola jualan</string>

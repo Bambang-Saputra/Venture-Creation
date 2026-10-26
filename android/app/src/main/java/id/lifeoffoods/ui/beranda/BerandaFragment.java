@@ -36,6 +36,8 @@ import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.FotoJualan;
 import id.lifeoffoods.ui.umum.HargaDiFoto;
 import id.lifeoffoods.ui.umum.SisiAman;
+import id.lifeoffoods.ui.voucher.GosokDialog;
+import id.lifeoffoods.ui.voucher.PromoPopup;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
@@ -171,6 +173,7 @@ public class BerandaFragment extends Fragment {
         binding.tombolPeta.setOnClickListener(v -> buka(R.id.k08_peta, null));
         binding.lihatSemua.setOnClickListener(v -> buka(R.id.k08_peta, null));
         binding.tombolNotifikasi.setOnClickListener(v -> buka(R.id.k17_notifikasi, null));
+        binding.tombolHadiah.setOnClickListener(v -> GosokDialog.tampil(this, null));
         binding.avatar.setOnClickListener(v -> buka(R.id.k18_profil, null));
         // Mengubah area dilakukan di K19 Edit profil.
         binding.lokasi.setOnClickListener(v -> buka(R.id.k18_profil, null));
@@ -318,6 +321,14 @@ public class BerandaFragment extends Fragment {
                         ? getString(R.string.war_sub, maksDiskon, jamAkhir)
                         : getString(R.string.war_sub_tanpa_diskon, jamAkhir));
         akhirWar = waktu(war.get(0).pickupEnd);
+        // Pop up promo sekali per sesi: jualan war dengan diskon terbesar.
+        ListingDto terbaik = war.get(0);
+        for (ListingDto l : war) {
+            if (HargaDiFoto.diskon(l) > HargaDiFoto.diskon(terbaik)) {
+                terbaik = l;
+            }
+        }
+        PromoPopup.tampilSekali(this, terbaik);
         binding.ketHitung.setText(R.string.war_hitung);
         tampilkanHitungMundur();
     }
