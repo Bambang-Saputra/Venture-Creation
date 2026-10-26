@@ -1,3 +1,4 @@
+import java.net.URI
 import java.util.Properties
 
 plugins {
@@ -39,6 +40,8 @@ android {
         // ADR-0005: peta Google Maps hanya menyala kalau ada kunci. Tanpa kunci, K08 memakai daftar + intent geo:.
         buildConfigField("boolean", "MAPS_ENABLED", mapsApiKey.isNotBlank().toString())
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        // Tautan bagikan /j/{id} di host API yang sama dibuka oleh aplikasi (TautanBagikan).
+        manifestPlaceholders["HOST_BAGIKAN"] = URI(apiBaseUrl).host
     }
 
     buildTypes {

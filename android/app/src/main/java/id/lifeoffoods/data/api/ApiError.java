@@ -23,6 +23,22 @@ public final class ApiError {
             "Tidak bisa terhubung ke server. Periksa koneksi internet lalu coba lagi.";
     private static final String PESAN_UMUM = "Terjadi kesalahan di server. Coba lagi sebentar.";
 
+    /** Pesan bawaan Laravel yang belum diterjemahkan server. */
+    private static final java.util.Set<String> PESAN_BAWAAN =
+            new java.util.HashSet<>(
+                    java.util.Arrays.asList(
+                            "Server Error",
+                            "Not Found",
+                            "Not Found.",
+                            "Unauthenticated.",
+                            "This action is unauthorized.",
+                            "Too Many Attempts.",
+                            "Forbidden",
+                            "Service Unavailable",
+                            "Method Not Allowed",
+                            "Content Too Large",
+                            "Page Expired"));
+
     private final int kode;
     private final String pesan;
     @Nullable private final String kodeGalat;
@@ -49,10 +65,36 @@ public final class ApiError {
                 // Misalnya halaman HTML dari ngrok atau proxy; pakai pesan umum.
             }
         }
-        String pesan = isi != null && isi.message != null ? isi.message : PESAN_UMUM;
+        String pesan = pesanRamah(kode, isi != null ? isi.message : null);
         Map<String, List<String>> field =
                 isi != null && isi.errors != null ? isi.errors : Collections.emptyMap();
         return new ApiError(kode, pesan, isi == null ? null : isi.code, field);
+    }
+
+    /**
+     * Pesan server dipakai apa adanya, kecuali kosong atau masih pesan bawaan Laravel berbahasa
+     * Inggris ("Server Error", "Not Found"); itu diganti kalimat yang dipahami pengguna.
+     */
+    static String pesanRamah(int kode, @Nullable String dariServer) {
+        if (dariServer != null && !dariServer.isEmpty() && !PESAN_BAWAAN.contains(dariServer)) {
+            return dariServer;
+        }
+        switch (kode) {
+            case 401:
+                return "Sesi kamu sudah berakhir. Silakan masuk lagi.";
+            case 403:
+                return "Kamu tidak punya akses untuk ini.";
+            case 404:
+                return "Data yang dicari tidak ditemukan. Mungkin sudah dihapus atau habis.";
+            case 409:
+                return "Datanya baru saja berubah. Muat ulang lalu coba lagi.";
+            case 413:
+                return "Fotonya terlalu besar. Pilih foto lain yang lebih kecil.";
+            case 429:
+                return "Terlalu sering mencoba. Tunggu sebentar lalu coba lagi.";
+            default:
+                return PESAN_UMUM;
+        }
     }
 
     public static ApiError jaringan() {

@@ -1,5 +1,6 @@
 package id.lifeoffoods.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.IdRes;
@@ -12,8 +13,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import id.lifeoffoods.LofApp;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.SesiPengguna;
+import id.lifeoffoods.data.TautanBagikan;
 import id.lifeoffoods.data.api.model.AuthResponse;
 import id.lifeoffoods.databinding.ActivityMainBinding;
+import id.lifeoffoods.ui.beranda.BerandaFragment;
 
 /**
  * Satu-satunya activity. Graf navigasi dipilih sesuai peran (peta layar, catatan K01): nav_awal
@@ -61,6 +64,40 @@ public class MainActivity extends AppCompatActivity {
                     R.navigation.nav_awal,
                     sesi.perkenalanSelesai() ? R.id.k01_pilih_peran : R.id.k06_onboarding);
         }
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            bukaTautan(getIntent());
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        bukaTautan(intent);
+    }
+
+    /**
+     * Tautan bagikan /j/{id}: buka K10 (atau K11 untuk menu satuan) kalau pembeli sudah masuk dan
+     * profilnya lengkap. Selain itu aplikasi terbuka seperti biasa.
+     */
+    private void bukaTautan(@Nullable Intent intent) {
+        Long id = TautanBagikan.idDari(intent == null ? null : intent.getData());
+        if (id == null
+                || !sesi.sudahMasuk()
+                || !SesiPengguna.PERAN_KONSUMEN.equals(sesi.peran())
+                || sesi.perluProfil()
+                || grafAktif != R.navigation.nav_konsumen) {
+            return;
+        }
+        Bundle args = new Bundle();
+        args.putLong(BerandaFragment.ARG_LISTING_ID, id);
+        nav.navigate(
+                TautanBagikan.menu(intent.getData()) ? R.id.k11_detail_menu : R.id.k10_detail_tas,
+                args);
     }
 
     @Override
