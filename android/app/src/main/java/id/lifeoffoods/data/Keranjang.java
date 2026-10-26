@@ -4,14 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Jumlah yang dipilih di K10 dan K11 sebelum ringkasan pesanan. Batasnya sama dengan server
- * (kontrak API POST /orders/preview): maksimal 5 per item, 10 item per pesanan, dan tidak melebihi
- * stok.
+ * Jumlah yang dipilih di K10 dan K11 sebelum ringkasan pesanan. Satu-satunya batas adalah stok,
+ * sama dengan server (kontrak API POST /orders/preview).
  */
 public final class Keranjang {
-
-    public static final int MAKS_PER_ITEM = 5;
-    public static final int MAKS_TOTAL = 10;
 
     private static final class Baris {
         final long harga;
@@ -43,7 +39,7 @@ public final class Keranjang {
 
     public boolean bisaTambah(long id) {
         Baris b = baris.get(id);
-        return b != null && b.qty < batasItem(b) && totalQty() < MAKS_TOTAL;
+        return b != null && b.qty < batasItem(b);
     }
 
     public boolean bisaKurang(long id, int minimal) {
@@ -73,8 +69,7 @@ public final class Keranjang {
         if (b == null) {
             return;
         }
-        int sisaTotal = MAKS_TOTAL - (totalQty() - b.qty);
-        b.qty = Math.max(0, Math.min(qty, Math.min(batasItem(b), sisaTotal)));
+        b.qty = Math.max(0, Math.min(qty, batasItem(b)));
     }
 
     public int totalQty() {
@@ -105,6 +100,6 @@ public final class Keranjang {
     }
 
     private static int batasItem(Baris b) {
-        return Math.min(MAKS_PER_ITEM, b.stok);
+        return b.stok;
     }
 }

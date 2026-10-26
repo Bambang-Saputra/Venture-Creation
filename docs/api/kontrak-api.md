@@ -412,7 +412,7 @@ Tidak menyimpan apa pun.
 Aturan (422 dengan pesan di `errors.items` atau `errors.items.N.listing_id`):
 
 - satu pesanan untuk satu toko, dan jam ambil semua item harus beririsan;
-- maksimal 5 per item dan 10 item per pesanan;
+- jumlah per item tidak dibatasi selain oleh stok;
 - maksimal 3 pesanan yang belum diambil per pembeli;
 - stok tidak cukup atau jualan sudah tidak tersedia.
 

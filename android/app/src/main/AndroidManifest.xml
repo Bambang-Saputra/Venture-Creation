@@ -36,6 +36,19 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!--
+                Tautan bagikan jualan dari WhatsApp. Tanpa autoVerify karena host ngrok berganti,
+                jadi Android menawarkan pilihan buka di aplikasi atau browser.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="${HOST_BAGIKAN}" />
+                <data android:pathPrefix="/j/" />
+            </intent-filter>
         </activity>
 
         <!--

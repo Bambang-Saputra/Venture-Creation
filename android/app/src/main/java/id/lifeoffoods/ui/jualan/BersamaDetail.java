@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.ProfilToko;
+import id.lifeoffoods.data.TautanBagikan;
 import id.lifeoffoods.data.api.model.ListingDetailDto;
 import id.lifeoffoods.data.api.model.ListingDto;
 import id.lifeoffoods.ui.MainActivity;
@@ -215,8 +216,8 @@ final class BersamaDetail {
 
     /**
      * Bagikan jualan ke WhatsApp (Channels di BMC). K10 membagikan satu tas; K11 membagikan menu
-     * satuan toko itu dengan harga termurahnya. Tanpa tautan, karena aplikasi belum ada di Play
-     * Store; penerima mencari nama tokonya di aplikasi.
+     * satuan toko itu dengan harga termurahnya. Pesan diberi tautan /j/{id}: WhatsApp menampilkan
+     * pratinjau berfoto, dan penerima yang punya aplikasi langsung masuk ke detail jualannya.
      */
     static void bagikan(
             Fragment f,
@@ -254,6 +255,9 @@ final class BersamaDetail {
                             FormatTampilan.rupiah(d.priceRupiah),
                             jam);
         }
+        // Tautan membuat WhatsApp menampilkan pratinjau berfoto dan bisa langsung dibuka.
+        teks += System.lineSeparator() + System.lineSeparator();
+        teks += TautanBagikan.jualan(d.id, menuSatuan);
         BagikanWhatsapp.kirim(f, teks, R.string.bagikan_lewat);
     }
 }
