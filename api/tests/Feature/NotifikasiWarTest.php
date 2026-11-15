@@ -59,6 +59,22 @@ class NotifikasiWarTest extends TestCase
         $this->assertSame(2, DB::table('notifications')->where('user_id', $pembeli)->count());
     }
 
+    public function test_tiap_pembeli_mendapat_jualan_terbaik_yang_belum_dikirim_kepadanya(): void
+    {
+        $lama = $this->pembeli('6281234500001', true);
+        $terbaik = $this->listing(['price_rupiah' => 10000, 'original_value_rupiah' => 40000]);
+        app(Notifikasi::class)->warDimulai();
+
+        $baru = $this->pembeli('6281234500002', true);
+        $kedua = $this->listing(['price_rupiah' => 12000, 'original_value_rupiah' => 30000]);
+
+        $this->assertSame(2, app(Notifikasi::class)->warDimulai());
+        $dikirim = fn (int $user) => json_decode(
+            DB::table('notifications')->where('user_id', $user)->latest('id')->value('data'))->listing_id;
+        $this->assertSame($kedua, $dikirim($lama));
+        $this->assertSame($terbaik, $dikirim($baru));
+    }
+
     public function test_diskon_kecil_atau_sudah_lewat_tidak_dikirim(): void
     {
         $this->pembeli('6281234500001', true);
