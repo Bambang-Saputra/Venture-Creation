@@ -144,7 +144,7 @@ class ListingMitraController extends Controller
                 'items.*.product_id' => ['required', 'integer', 'distinct', Rule::exists('products', 'id')->where('store_id', $store)->where('is_active', true)],
                 'items.*.qty_total' => ['required', 'integer', 'min:1', 'max:200'],
                 'items.*.price_rupiah' => ['required', 'integer', 'min:500', 'max:1000000'],
-                'items.*.original_value_rupiah' => ['nullable', 'integer', 'max:5000000'],
+                'items.*.original_value_rupiah' => ['nullable', 'integer', 'gte:items.*.price_rupiah', 'max:5000000'],
                 'items.*.ingredients_text' => ['nullable', 'string', 'max:2000'],
                 ...$this->aturanAlergen('items.*.allergens'),
             ]),
@@ -287,8 +287,10 @@ class ListingMitraController extends Controller
             'product_id' => $item['product_id'],
             'title' => $produk[$item['product_id']]->name,
             'price_rupiah' => $item['price_rupiah'],
-            // Harga normal produk jadi harga coret bila mitra tidak mengisinya.
-            'original_value_rupiah' => $item['original_value_rupiah'] ?? ($produk[$item['product_id']]->price_rupiah ?: null),
+            // Harga normal produk jadi harga coret bila mitra tidak mengisinya, asal tidak lebih
+            // murah dari harga jual hari ini: harga coret di bawah harga jual membuat diskon negatif.
+            'original_value_rupiah' => $item['original_value_rupiah']
+                ?? (($produk[$item['product_id']]->price_rupiah ?? 0) >= $item['price_rupiah'] ? $produk[$item['product_id']]->price_rupiah : null),
             'qty_total' => $item['qty_total'],
             'ingredients_text' => $item['ingredients_text'] ?? $produk[$item['product_id']]->ingredients_text ?? $toko->default_ingredients_text,
             'halal_label' => $halal,

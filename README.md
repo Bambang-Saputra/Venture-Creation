@@ -109,15 +109,17 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 |---|---|
 | Onboarding (K06) | Tiga halaman pengenalan sebelum login, halaman terakhir meminta izin lokasi |
 | Masuk (K02-K05) | Nomor HP dan OTP, lengkapi profil, simpan alergi dan pantangan |
-| Beranda (K07) | Cari, kategori, "Tutup kurang dari satu jam", Populer hari ini, Terdekat dari kamu, banner iklan mitra |
+| Beranda (K07) | Cari, kategori, "Tutup kurang dari satu jam", Populer hari ini, Terdekat dari kamu, banner iklan mitra, tarik untuk menyegarkan |
+| War harga (K07) | Kotak "War harga terbaik" berisi jualan dengan diskon terbesar hari itu dan hitung mundurnya, plus pop up promo sekali per sesi |
 | Peta (K08) | Penanda harga per toko di OpenStreetMap, tab Daftar urut jarak, buka aplikasi peta lewat `geo:` |
 | Filter (K09) | Jenis jualan, alergi yang dihindari (terisi dari profil), pola makan, halal, jarak, dan jam ambil |
 | Detail jualan (K10, K11) | Foto, harga normal dan harga jual, stok, jam ambil, kandungan, status halal apa adanya, rating toko, bagikan jualan ke WhatsApp |
-| Ringkasan pesanan (K12, K13) | Satu tas utuh atau beberapa menu satuan dari toko yang sama, harga dicek ulang oleh server |
+| Ringkasan pesanan (K12, K13) | Satu tas utuh atau beberapa menu satuan dari toko yang sama, pasang voucher, harga dicek ulang oleh server |
 | Kode pickup (K14) | Kode 6 karakter dan QR, status realtime, tombol batalkan, jumlah porsi yang diselamatkan |
 | Pesanan saya (K15) | Pesanan aktif dan riwayat, beri ulasan setelah pesanan selesai |
-| Favorit dan notifikasi (K16, K17) | Simpan toko, pengingat 30 menit sebelum jam ambil, kabar saat toko favorit memasang jualan |
-| Profil (K18-K20) | Ubah profil dan alergi, pengaturan, hapus akun |
+| Favorit dan notifikasi (K16, K17) | Simpan toko, pengingat 30 menit sebelum jam ambil, kabar saat toko favorit memasang jualan. Notifikasi sistem berbunyi untuk war harga, paling banyak dua kali sehari, tanpa Firebase |
+| Voucher dan Gosok & Menang (K22) | Klaim voucher dari pop up promo, main Gosok & Menang sekali sehari, pakai voucher di ringkasan pesanan. Potongan ditanggung Life of Foods, bukan mitra (ADR-0008) |
+| Profil (K18-K20) | Ubah profil dan alergi, Voucher saya, pengaturan notifikasi, hapus akun |
 
 ### Untuk mitra
 
@@ -127,7 +129,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 | Dashboard (M05) | Kerugian yang tertahan minggu ini, pesanan menunggu, sisa harian rata-rata 7 hari |
 | Catat sisa (M06, M19) | Jualan yang tidak laku hari itu terisi otomatis, mitra tinggal memeriksa. Hitung per item atau timbang per kilogram; nilai rupiah disimpan saat dicatat |
 | Laporan dan saran (M07, M08) | Laporan mingguan dan saran jumlah produksi berdasarkan catatan sisa |
-| Pasang dan kelola jualan (M09, M10, M16, M17) | Tas kejutan dari cetakan, menu satuan, foto jualan, jeda jualan |
+| Pasang dan kelola jualan (M09, M10, M16, M17) | Form tas kejutan terpandu 4 langkah, menu satuan, foto jualan, jeda jualan. Harga normal tidak boleh lebih murah dari harga jual |
 | Pesanan masuk (M11, M21) | Catatan pembeli dan alergi tampil langsung di kartu pesanan, riwayat dengan "Muat lebih banyak" |
 | Cocokkan kode (M12, M18) | Ketik kode atau pindai QR; kode ganda, kode toko lain, dan setiap penukaran tercatat di audit log |
 | Saldo (M13) | Riwayat transaksi; pencairan tampil tapi nonaktif selama uji coba |
@@ -148,6 +150,8 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 
 **Voucher di awal** menjaga harga tetap menarik: biaya layanan tetap tampil tapi dicoret ("ditanggung Life of Foods"), dan berlaku dengan batas yang jelas supaya pembeli tidak kaget saat promo berakhir. Program ajak teman sekaligus memanfaatkan temuan riset bahwa pengaruh sosial paling mendorong orang mau mencoba.
 
+**Voucher diskon makanan (uji coba).** Selain voucher biaya layanan, aplikasi sudah punya voucher potongan harga makanan: voucher pop up (misalnya 20%, maksimal Rp10.000) dan hadiah Gosok & Menang (sampai 50%, maksimal Rp20.000). Potongan ini ditanggung Life of Foods dan dicatat sebagai penyesuaian saldo mitra. Besarnya masih lebih tinggi dari anggaran voucher Rp1.000 per pesanan di BMC, jadi nilainya perlu disesuaikan sebelum dipakai di luar uji coba. Datanya ada di tabel `vouchers` dan bisa diubah tanpa mengubah kode.
+
 Selama uji coba semuanya gratis: `SERVICE_FEE` bernilai 0, tagihan iklan belum memotong saldo, dan tim tidak memegang uang mitra karena pembeli membayar langsung di toko.
 
 ---
@@ -159,10 +163,12 @@ Selama uji coba semuanya gratis: `SERVICE_FEE` bernilai 0, tagihan iklan belum m
 | Alur pembeli ujung ke ujung (K01-K20) | Selesai, tersambung ke API |
 | Alur mitra: pasang jualan, pesanan, cocokkan kode, catat sisa, laporan | Selesai, tersambung ke API |
 | Rating dan ulasan | Selesai |
+| War harga, pop up promo, dan notifikasi sistem | Selesai |
+| Voucher dan Gosok & Menang | Selesai; nilai voucher masih menunggu keputusan tim |
 | Iklan per hari tayang | Selesai, tagihan sungguhan belum aktif |
 | Upload foto oleh mitra | Selesai |
 | Pendaftaran mitra dari aplikasi | Selesai, persetujuan lewat `php artisan mitra:setujui` |
-| Uji otomatis | 145 uji API (PHPUnit) dan 169 uji unit Android, dijalankan CI di setiap PR |
+| Uji otomatis | 167 uji API (PHPUnit) dan 175 uji unit Android, dijalankan CI di setiap PR |
 | Login Google | Kode siap (ADR-0006), menunggu setup Google Cloud Console |
 | OTP lewat SMS atau WhatsApp | Belum; saat ini `PILOT_MODE` menampilkan kode di layar |
 | Hosting API di server sendiri | Belum; masih laptop tim + ngrok |
@@ -185,6 +191,7 @@ Daftar lengkapnya ada di [docs/rencana-lanjutan.md](docs/rencana-lanjutan.md).
 | SDK Android | `minSdk 27` (Android 8.1) · `compileSdk 36` · `targetSdk 36` |
 | Peta | osmdroid + OpenStreetMap tanpa API key (ADR-0005); jarak dihitung server |
 | Pindai QR | zxing-android-embedded |
+| Notifikasi | WorkManager memeriksa API secara berkala, tanpa Firebase |
 | Server uji | Laragon di laptop + ngrok, dengan cadangan hotspot LAN |
 | CI | GitHub Actions: uji API, lint + uji + build APK debug, gitleaks, pemeriksaan judul PR |
 
@@ -220,13 +227,17 @@ cd api
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate:fresh --seed   # sekali di awal: isi database dengan data demo
+php artisan migrate:fresh --seed   # HANYA sekali saat instalasi baru, lihat peringatan di bawah
 php artisan storage:link
 php artisan serve                  # http://127.0.0.1:8000/api
-php artisan schedule:work          # terminal kedua: menutup pesanan yang tidak diambil
+php artisan schedule:work          # terminal kedua: tutup pesanan lewat jam, pengingat ambil, notifikasi war
 ```
 
+> **Peringatan:** `migrate:fresh` menghapus semua tabel, termasuk akun penguji dan data mitra. Setelah database uji coba terisi, jangan jalankan lagi. Setelah menarik kode terbaru, cukup jalankan `composer install` lalu `php artisan migrate`. Perintah artisan dengan `--env=testing` juga tetap memakai `.env` (database uji coba) karena repo ini tidak punya `.env.testing`; database tes `life_of_foods_test` hanya dipakai oleh `php artisan test`. Buat cadangan dengan `mysqldump` sebelum mengubah skema.
+
 **Sebelum tiap sesi uji coba atau demo**
+
+Nyalakan MySQL, `php artisan serve`, `php artisan schedule:work`, dan ngrok (domain yang sama dengan `API_BASE_URL` di APK), lalu:
 
 ```bash
 php artisan demo:segarkan
