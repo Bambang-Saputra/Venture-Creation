@@ -26,6 +26,11 @@ public class PesananBody {
     @SerializedName("payment_method")
     public String paymentMethod;
 
+    /** Voucher milik pembeli (ADR-0008); null berarti tanpa voucher dan tidak ikut dikirim. */
+    @Nullable
+    @SerializedName("user_voucher_id")
+    public Long userVoucherId;
+
     /** Dari argumen navigasi K10/K11: {@code id_jualan} dan {@code jumlah} sejajar. */
     public static PesananBody dari(long[] idJualan, int[] jumlah) {
         if (idJualan == null || jumlah == null || idJualan.length != jumlah.length) {
@@ -44,6 +49,7 @@ public class PesananBody {
     public PesananBody untukDibuat(@Nullable String catatan, String metodeBayar) {
         PesananBody body = new PesananBody();
         body.items.addAll(items);
+        body.userVoucherId = userVoucherId;
         String rapi = catatan == null ? "" : catatan.trim();
         if (rapi.length() > MAKS_CATATAN) {
             rapi = rapi.substring(0, MAKS_CATATAN);

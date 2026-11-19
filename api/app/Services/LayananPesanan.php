@@ -18,6 +18,8 @@ use Illuminate\Validation\ValidationException;
  */
 class LayananPesanan
 {
+    public function __construct(private readonly Voucher $voucher) {}
+
     // Tanpa 0/O, 1/I/L supaya kasir tidak salah baca.
     private const HURUF_KODE = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
@@ -26,7 +28,7 @@ class LayananPesanan
      *
      * @param  array<int, array{listing_id: int, qty: int}>  $item
      */
-    public function hitung(User $user, array $item, bool $kunci = false): array
+    public function hitung(User $user, array $item, bool $kunci = false, ?int $userVoucherId = null): array
     {
         $qty = collect($item)->mapWithKeys(fn (array $i) => [$i['listing_id'] => $i['qty']]);
 
@@ -78,6 +80,9 @@ class LayananPesanan
         $subtotal = $baris->sum('line_total_rupiah');
         $biaya = config('lof.service_fee');
         $toko = $listing->first();
+        // Potongan voucher ditanggung Life of Foods (ADR-0008); total tidak pernah negatif.
+        $voucher = $userVoucherId === null ? null : $this->voucher->hitungPotongan($user->id, $userVoucherId, $subtotal, $kunci);
+        $potongan = $voucher['discount_rupiah'] ?? 0;
 
         return [
             'store' => ['id' => $toko->store_id, 'name' => $toko->store_name, 'address' => $toko->store_address],
@@ -86,8 +91,9 @@ class LayananPesanan
             'pickup_end' => $akhir,
             'subtotal_rupiah' => $subtotal,
             'service_fee_rupiah' => $biaya,
-            'discount_rupiah' => 0,
-            'total_rupiah' => $subtotal + $biaya,
+            'discount_rupiah' => $potongan,
+            'total_rupiah' => max(0, $subtotal + $biaya - $potongan),
+            'voucher' => $voucher === null ? null : ['id' => $voucher['id'], 'title' => $voucher['title']],
             'allergen_warnings' => $this->peringatanAlergen($user->id, $qty->keys()),
         ];
     }
@@ -109,7 +115,7 @@ class LayananPesanan
         }
 
         return DB::transaction(function () use ($user, $data) {
-            $h = $this->hitung($user, $data['items'], kunci: true);
+            $h = $this->hitung($user, $data['items'], kunci: true, userVoucherId: $data['user_voucher_id'] ?? null);
 
             foreach ($h['items'] as $i) {
                 DB::table('listings')->where('id', $i['listing_id'])->increment('qty_reserved', $i['qty']);
@@ -125,7 +131,7 @@ class LayananPesanan
                 'status' => 'pending_pickup',
                 'subtotal_rupiah' => $h['subtotal_rupiah'],
                 'service_fee_rupiah' => $h['service_fee_rupiah'],
-                'discount_rupiah' => 0,
+                'discount_rupiah' => $h['discount_rupiah'],
                 'total_rupiah' => $h['total_rupiah'],
                 'payment_method' => $data['payment_method'] ?? 'cash',
                 'payment_status' => 'unpaid',
@@ -164,6 +170,9 @@ class LayananPesanan
             ]);
 
             $this->ubahSaldoTertunda($h['store']['id'], $h['total_rupiah']);
+            if ($h['voucher'] !== null) {
+                $this->voucher->tandaiDipakai($h['voucher']['id'], $orderId);
+            }
 
             return $orderId;
         });
@@ -194,6 +203,7 @@ class LayananPesanan
             ]);
             DB::table('pickup_codes')->where('order_id', $o->id)->update(['status' => 'cancelled', 'updated_at' => now()]);
             $this->ubahSaldoTertunda($o->store_id, -$o->total_rupiah);
+            $this->voucher->kembalikan($o->id);
         });
     }
 

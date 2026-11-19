@@ -53,7 +53,38 @@ class DataDemo
             'iklan' => $this->iklan(),
             ...$this->pesanan(),
             'ulasan' => $this->ulasan(),
+            'voucher' => $this->voucher(),
         ];
+    }
+
+    /**
+     * Voucher demo (ADR-0008): satu voucher pop up Beranda dan hadiah Gosok & Menang. Hanya dibuat
+     * kalau kodenya belum ada; voucher pop up diperpanjang supaya tetap bisa diklaim saat demo.
+     */
+    public function voucher(): int
+    {
+        $daftar = [
+            ['WARHEMAT', 'Diskon 20% war hari ini', 'percent', 20, 10000, 15000, 'popup', 0],
+            ['GOSOK5RB', 'Potongan Rp5.000', 'rupiah', 5000, null, 15000, 'game', 30],
+            ['GOSOK3RB', 'Potongan Rp3.000', 'rupiah', 3000, null, 10000, 'game', 40],
+            ['GOSOK15', 'Diskon 15%', 'percent', 15, 8000, 12000, 'game', 20],
+            ['GOSOK50', 'Jackpot diskon 50%', 'percent', 50, 20000, 20000, 'game', 3],
+        ];
+        $dibuat = 0;
+        foreach ($daftar as [$kode, $judul, $jenis, $nilai, $maks, $min, $sumber, $bobot]) {
+            if (DB::table('vouchers')->where('code', $kode)->exists()) {
+                continue;
+            }
+            DB::table('vouchers')->insert([
+                'code' => $kode, 'title' => $judul, 'type' => $jenis, 'value' => $nilai,
+                'max_discount_rupiah' => $maks, 'min_spend_rupiah' => $min, 'valid_days' => 3,
+                'source' => $sumber, 'weight' => $bobot, 'is_active' => true,
+                'created_at' => now(), 'updated_at' => now(),
+            ]);
+            $dibuat++;
+        }
+
+        return $dibuat;
     }
 
     /**

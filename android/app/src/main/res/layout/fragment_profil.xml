@@ -179,6 +179,10 @@
                             layout="@layout/item_baris_toko" />
 
                         <include
+                            android:id="@+id/baris_voucher"
+                            layout="@layout/item_baris_toko" />
+
+                        <include
                             android:id="@+id/baris_pengaturan"
                             layout="@layout/item_baris_toko" />
                     </LinearLayout>

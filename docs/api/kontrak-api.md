@@ -416,6 +416,8 @@ Aturan (422 dengan pesan di `errors.items` atau `errors.items.N.listing_id`):
 - maksimal 3 pesanan yang belum diambil per pembeli;
 - stok tidak cukup atau jualan sudah tidak tersedia.
 
+`user_voucher_id` opsional (ADR-0008). Kalau dikirim, respons berisi `discount_rupiah` dan `voucher` (`{ id, title }`), dan `total_rupiah` sudah dipotong. Voucher yang bukan milik pembeli, sudah dipakai, kedaluwarsa, atau belanjanya belum mencapai minimal ditolak 422 dengan pesan di `errors.user_voucher_id`. Aplikasi lalu melepas voucher itu dan meminta pratinjau tanpa voucher.
+
 ### POST /orders
 
 Body sama dengan preview, ditambah `note` (opsional, maks 300) dan `payment_method` (`cash` bawaan, atau `qris_static`). **201** berisi detail pesanan seperti `GET /orders/{id}`.
@@ -455,7 +457,17 @@ Body sama dengan preview, ditambah `note` (opsional, maks 300) dan `payment_meth
 
 ### POST /orders/{id}/cancel
 
-`{ "reason": "..." }` opsional. **200** detail pesanan. Stok kembali. 409 kalau statusnya bukan `pending_pickup`.
+`{ "reason": "..." }` opsional. **200** detail pesanan. Stok kembali, dan voucher yang dipakai kembali bisa dipakai. 409 kalau statusnya bukan `pending_pickup`.
+
+### Voucher dan Gosok & Menang (K22, ADR-0008)
+
+Khusus akun pembeli (403 untuk mitra). Potongan ditanggung Life of Foods: saat kode pickup ditukar (`POST /pickup-codes/redeem`), `discount_rupiah` pesanan masuk ke saldo toko sebagai transaksi `adjustment`. Detail pesanan mitra (M11/M12) ikut berisi `discount_rupiah`.
+
+| Endpoint | Isi |
+|---|---|
+| `GET /vouchers` | `{ mine: [...], promo: {...} \| null, can_scratch_today: bool }`. `mine` berisi voucher milikku yang masih berlaku: `id` (dikirim sebagai `user_voucher_id`), `code`, `title`, `type` (`percent` atau `rupiah`), `value`, `max_discount_rupiah`, `min_spend_rupiah`, `expires_at`. `promo` adalah voucher pop up yang belum diklaim, dengan `valid_days` sebagai pengganti `expires_at`. |
+| `POST /vouchers/{id}/claim` | **201** voucher milikku yang baru. 409 kalau sudah diklaim, kuota habis, atau masa klaim lewat. |
+| `POST /games/scratch` | **200** `{ won: bool, voucher: {...} \| null }`. Sekali per hari per pembeli (409 "Kamu sudah main hari ini…"). Hadiah diundi server menurut `vouchers.weight` untuk `source = game`. |
 
 ---
 

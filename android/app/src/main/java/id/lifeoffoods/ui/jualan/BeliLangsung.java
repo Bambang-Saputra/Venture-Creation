@@ -15,6 +15,11 @@ public final class BeliLangsung {
     private BeliLangsung() {}
 
     public static void satu(Fragment f, ListingDto l) {
+        satu(f, l, 0);
+    }
+
+    /** Dengan voucher milik pembeli yang langsung dipasang (pop up promo Beranda). */
+    public static void satu(Fragment f, ListingDto l, long voucher) {
         Map<Long, Integer> terpilih = Collections.singletonMap(l.id, 1);
         BersamaDetail.lanjutKeRingkasan(
                 f,
@@ -22,6 +27,7 @@ public final class BeliLangsung {
                         ? R.id.k13_ringkasan_menu
                         : R.id.k12_ringkasan_tas,
                 terpilih,
-                Collections.singletonList(l));
+                Collections.singletonList(l),
+                voucher);
     }
 }

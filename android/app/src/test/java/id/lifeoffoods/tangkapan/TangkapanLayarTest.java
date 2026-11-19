@@ -64,6 +64,8 @@ public class TangkapanLayarTest {
 
     @Before
     public void siapkan() throws IOException {
+        // Pop up promo Beranda hanya ditangkap di tesnya sendiri (k07PopupPromo).
+        id.lifeoffoods.ui.voucher.PromoPopup.aturUntukUji(false);
         assumeTrue(Boolean.getBoolean("lof.tangkapan"));
         isiFavorit = false;
         sisaOtomatis = false;
@@ -212,6 +214,38 @@ public class TangkapanLayarTest {
         navigasi(R.id.k11_detail_menu, args);
         tunggu();
         tangkap("K11");
+    }
+
+    @Test
+    public void k07PopupPromo() {
+        id.lifeoffoods.ui.voucher.PromoPopup.aturUntukUji(true);
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        tunggu();
+        tangkap("K07-promo");
+    }
+
+    @Test
+    public void k22VoucherSaya() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        navigasi(R.id.k22_voucher, null);
+        tunggu();
+        tangkap("K22");
+    }
+
+    /** K12 dari pop up promo: voucher langsung terpasang. */
+    @Test
+    public void k12DenganVoucher() {
+        app().sesi().simpan("token-uji", SesiPengguna.PERAN_KONSUMEN, false);
+        buka();
+        Bundle args = new Bundle();
+        args.putLongArray("id_jualan", new long[] {31});
+        args.putIntArray("jumlah", new int[] {1});
+        args.putLong("voucher", 7);
+        navigasi(R.id.k12_ringkasan_tas, args);
+        tunggu();
+        tangkapPanjang("K12-voucher");
     }
 
     @Test
@@ -963,6 +997,18 @@ public class TangkapanLayarTest {
             }
             if (path.startsWith("/api/notifications")) {
                 return json("{\"data\":[],\"unread_count\":3,\"current_page\":1,\"last_page\":1}");
+            }
+            if (path.startsWith("/api/vouchers")) {
+                return json(
+                        "{\"data\":{\"can_scratch_today\":true,\"promo\":{\"id\":1,\"code\":\"WARHEMAT\","
+                                + "\"title\":\"Diskon 20% war hari ini\",\"type\":\"percent\",\"value\":20,"
+                                + "\"max_discount_rupiah\":10000,\"min_spend_rupiah\":15000,\"valid_days\":3},"
+                                + "\"mine\":[{\"id\":7,\"code\":\"GOSOK5RB\",\"title\":\"Potongan Rp5.000\","
+                                + "\"type\":\"rupiah\",\"value\":5000,\"max_discount_rupiah\":null,"
+                                + "\"min_spend_rupiah\":15000,\"expires_at\":\"2026-10-29T23:59:59+07:00\"},"
+                                + "{\"id\":8,\"code\":\"GOSOK15\",\"title\":\"Diskon 15%\",\"type\":\"percent\","
+                                + "\"value\":15,\"max_discount_rupiah\":8000,\"min_spend_rupiah\":12000,"
+                                + "\"expires_at\":\"2026-10-30T23:59:59+07:00\"}]}}");
             }
             if (path.startsWith("/api/orders/preview")) {
                 return json("{\"data\":" + pratinjau(r.getBody().readUtf8()) + "}");

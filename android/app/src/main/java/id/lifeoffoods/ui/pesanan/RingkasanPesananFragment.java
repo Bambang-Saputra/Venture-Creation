@@ -21,6 +21,7 @@ import id.lifeoffoods.data.FormatTampilan;
 import id.lifeoffoods.data.RingkasanPesanan;
 import id.lifeoffoods.data.api.model.PesananBody;
 import id.lifeoffoods.data.api.model.PratinjauPesananDto;
+import id.lifeoffoods.data.api.model.VoucherDto;
 import id.lifeoffoods.databinding.FragmentRingkasanPesananBinding;
 import id.lifeoffoods.databinding.ItemBarisRingkasanBinding;
 import id.lifeoffoods.ui.MainActivity;
@@ -41,6 +42,10 @@ public class RingkasanPesananFragment extends Fragment {
     public static final String ARG_JUMLAH = "jumlah";
     public static final String ARG_STOK = "stok";
     public static final String ARG_HARGA_NORMAL = "harga_normal";
+
+    /** Id voucher milik pembeli yang langsung dipasang (dari pop up promo Beranda). */
+    public static final String ARG_VOUCHER = "voucher";
+
     public static final String ARG_MENU_SATUAN = "menu_satuan";
 
     /** Kunci SavedStateHandle K10/K11: true berarti detail perlu dimuat ulang (stok berubah). */
@@ -70,7 +75,13 @@ public class RingkasanPesananFragment extends Fragment {
             NavHostFragment.findNavController(this).popBackStack();
             return;
         }
-        vm.mulai(id, qty, args.getIntArray(ARG_STOK), args.getBoolean(ARG_MENU_SATUAN, false));
+        vm.mulai(
+                id,
+                qty,
+                args.getIntArray(ARG_STOK),
+                args.getBoolean(ARG_MENU_SATUAN, false),
+                args.getLong(ARG_VOUCHER, 0));
+        binding.kotakVoucher.setOnClickListener(v -> pilihVoucher());
 
         SisiAman.atas(binding.kepala.getRoot());
         SisiAman.bawah(binding.bilahAksi);
@@ -107,6 +118,8 @@ public class RingkasanPesananFragment extends Fragment {
 
         vm.status.observe(getViewLifecycleOwner(), this::tampilkanStatus);
         vm.pratinjau.observe(getViewLifecycleOwner(), this::isi);
+        vm.voucherSaya.observe(getViewLifecycleOwner(), d -> tampilkanVoucher());
+        vm.voucherDipakai.observe(getViewLifecycleOwner(), v -> tampilkanVoucher());
         vm.membuat.observe(
                 getViewLifecycleOwner(),
                 jalan -> {
@@ -189,6 +202,63 @@ public class RingkasanPesananFragment extends Fragment {
         isiPeringatan(p);
         isiRincianBiaya(p);
         binding.total.setText(FormatTampilan.rupiah(p.totalRupiah));
+        tampilkanVoucher();
+    }
+
+    /** Kotak voucher: voucher terpakai dan hematnya, atau jumlah voucher yang bisa dipakai. */
+    private void tampilkanVoucher() {
+        VoucherDto v = vm.voucherDipakai.getValue();
+        List<VoucherDto> d = vm.voucherSaya.getValue();
+        int jumlah = d == null ? 0 : d.size();
+        PratinjauPesananDto p = vm.pratinjau.getValue();
+        if (v != null) {
+            binding.judulVoucher.setText(v.title);
+            long hemat = p == null ? 0 : p.discountRupiah;
+            binding.ketVoucher.setText(
+                    getString(R.string.k12_voucher_hemat, FormatTampilan.rupiah(hemat)));
+        } else if (jumlah > 0) {
+            binding.judulVoucher.setText(R.string.k12_voucher_pakai);
+            binding.ketVoucher.setText(getString(R.string.k12_voucher_ada, jumlah));
+        } else {
+            binding.judulVoucher.setText(R.string.k12_voucher_pakai);
+            binding.ketVoucher.setText(R.string.k12_voucher_kosong);
+        }
+    }
+
+    private void pilihVoucher() {
+        List<VoucherDto> d = vm.voucherSaya.getValue();
+        if (d == null || d.isEmpty()) {
+            Snackbar.make(binding.getRoot(), R.string.k12_voucher_kosong, Snackbar.LENGTH_LONG)
+                    .show();
+            return;
+        }
+        String[] pilihan = new String[d.size() + 1];
+        pilihan[0] = getString(R.string.k12_voucher_tanpa);
+        int terpilih = 0;
+        VoucherDto dipakai = vm.voucherDipakai.getValue();
+        for (int i = 0; i < d.size(); i++) {
+            VoucherDto v = d.get(i);
+            pilihan[i + 1] =
+                    v.minSpendRupiah > 0
+                            ? getString(
+                                    R.string.k12_voucher_baris,
+                                    v.title,
+                                    FormatTampilan.rupiah(v.minSpendRupiah))
+                            : v.title;
+            if (dipakai != null && dipakai.id == v.id) {
+                terpilih = i + 1;
+            }
+        }
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.k12_voucher_pilih)
+                .setSingleChoiceItems(
+                        pilihan,
+                        terpilih,
+                        (dialog, i) -> {
+                            vm.pakaiVoucher(i == 0 ? null : d.get(i - 1));
+                            dialog.dismiss();
+                        })
+                .show();
     }
 
     /** Kotak "Rincian biaya" Figma. Layanan dan diskon disembunyikan kalau nilainya nol. */

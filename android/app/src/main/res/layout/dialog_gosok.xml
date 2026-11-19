@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gosok & Menang: kartu gosok di atas hasil (voucher atau "belum beruntung"), sekali sehari. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_kotak_war"
+    android:orientation="vertical"
+    android:padding="22dp">
+
+    <TextView
+        style="@style/Teks.WarKicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gosok_kicker" />
+
+    <TextView
+        style="@style/Teks.WarJudul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:accessibilityHeading="true"
+        android:text="@string/gosok_judul" />
+
+    <TextView
+        style="@style/Teks.WarSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/gosok_ajak" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_kartu_putih">
+
+        <!-- Hasil di bawah lapisan gosok. -->
+        <LinearLayout
+            android:id="@+id/hasil"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ProgressBar
+                android:id="@+id/progres"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:indeterminateTint="@color/war_aksen" />
+
+            <TextView
+                android:id="@+id/nilai"
+                style="@style/Teks.WarJudul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/war_aksen"
+                android:textSize="40sp"
+                android:visibility="gone"
+                tools:text="Rp5rb"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/judul_hasil"
+                style="@style/Teks.JudulKartu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:text="Potongan Rp5.000"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/syarat_hasil"
+                style="@style/Teks.Bantuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:text="Min. belanja Rp15.000"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <id.lifeoffoods.ui.voucher.KartuGosok
+            android:id="@+id/kartu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/gosok_petunjuk" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/pesan"
+        style="@style/Teks.WarSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="Selamat! Voucher sudah masuk ke Voucher saya."
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tombol_buka"
+            style="@style/Teks.TombolWar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_hitung_mundur"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/gosok_buka_langsung" />
+
+        <TextView
+            android:id="@+id/tombol_tutup"
+            style="@style/Teks.TombolWar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_tombol_war"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/tutup" />
+    </LinearLayout>
+</LinearLayout>

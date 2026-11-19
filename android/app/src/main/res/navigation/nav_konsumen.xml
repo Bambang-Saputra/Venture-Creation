@@ -99,6 +99,11 @@
         android:id="@+id/k16_favorit"
         android:name="id.lifeoffoods.ui.favorit.FavoritFragment" />
 
+    <!-- K22 Voucher saya (ADR-0008). Dari K18 Profil. -->
+    <fragment
+        android:id="@+id/k22_voucher"
+        android:name="id.lifeoffoods.ui.voucher.VoucherSayaFragment" />
+
     <!-- K17 Notifikasi (PRD-18). Dari lonceng K07 dan dari K18. -->
     <fragment
         android:id="@+id/k17_notifikasi"

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Pop up promo saat Beranda dibuka (sekali per sesi): diskon terbesar yang sedang war, voucher
+    yang bisa diklaim, lalu "Beli sekarang" langsung ke ringkasan pesanan dengan voucher terpasang.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_kotak_war"
+    android:orientation="vertical"
+    android:paddingBottom="18dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp">
+
+        <ImageView
+            android:id="@+id/foto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_selubung_harga" />
+
+        <TextView
+            android:id="@+id/diskon"
+            style="@style/Teks.WarJudul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_margin="14dp"
+            android:background="@drawable/bg_pil_war"
+            android:paddingStart="14dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="4dp"
+            android:textSize="22sp"
+            tools:text="-65%" />
+
+        <ImageButton
+            android:id="@+id/tombol_tutup"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_hitung_mundur"
+            android:contentDescription="@string/tutup"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_tutup"
+            app:tint="@color/teks_di_gelap" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/judul_jualan"
+                style="@style/Teks.TombolWar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Tas Roti Sore · Roti Sari Bakery" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/harga"
+                    style="@style/Teks.WarJudul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Rp21.000" />
+
+                <TextView
+                    android:id="@+id/harga_coret"
+                    style="@style/Teks.HargaFotoCoret"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    tools:text="Rp60.000" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        style="@style/Teks.WarKicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/promo_kicker" />
+
+    <TextView
+        android:id="@+id/judul"
+        style="@style/Teks.WarJudul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="18dp"
+        android:accessibilityHeading="true"
+        tools:text="Diskon sampai 65%, cuma sampai jam 21.00!" />
+
+    <!-- Voucher yang bisa diklaim; disembunyikan kalau sudah diklaim atau tidak ada. -->
+    <LinearLayout
+        android:id="@+id/kotak_voucher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/bg_hitung_mundur"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_tiket"
+            app:tint="@color/merek_lime" />
+
+        <TextView
+            android:id="@+id/teks_voucher"
+            style="@style/Teks.WarSub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            tools:text="Plus voucher WARHEMAT: diskon 20%, maks. Rp10.000" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tombol_beli"
+        style="@style/Teks.TombolWar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/bg_tombol_war"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/promo_beli"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tombol_klaim"
+        style="@style/Teks.WarSub"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="18dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/promo_klaim_saja" />
+</LinearLayout>

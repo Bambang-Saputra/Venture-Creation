@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Partner;
 use App\Console\Commands\TutupPesananLewat;
 use App\Http\Controllers\Controller;
 use App\Services\Notifikasi;
+use App\Services\Voucher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -129,6 +130,8 @@ class PesananMitraController extends Controller
                 'description' => "Pesanan {$o->code}", 'created_by_user_id' => $kasir->id,
                 'created_at' => now(), 'updated_at' => now(),
             ]);
+            // Pembeli membayar total setelah voucher; potongannya ditanggung Life of Foods.
+            app(Voucher::class)->subsidiKeMitra($o, $kasir->id);
 
             // Kamus data: jangan simpan nomor HP lengkap atau kode mentah di meta.
             DB::table('audit_logs')->insert([
@@ -168,6 +171,8 @@ class PesananMitraController extends Controller
             'items' => $item->map(fn ($i) => ['title' => $i->title, 'qty' => $i->qty, 'line_total_rupiah' => $i->line_total_rupiah])->values(),
             'item_count' => (int) $item->sum('qty'),
             'total_rupiah' => $o->total_rupiah,
+            // M11/M12: "Voucher RpX ditanggung Life of Foods" supaya kasir tidak bingung menerima uang kurang.
+            'discount_rupiah' => (int) ($o->discount_rupiah ?? 0),
             'payment_method' => $o->payment_method,
             'payment_status' => $o->payment_status,
             'note' => $o->note,

@@ -188,11 +188,19 @@ public class CocokkanKodeFragment extends Fragment {
         sembunyikanKeyboard();
         binding.barisPelanggan.nilai.setText(p.buyerName);
         binding.barisPesanan.nilai.setText(PesananMitra.ringkasItem(p.items));
-        binding.barisBayar.nilai.setText(
+        String bayar =
                 getString(
                         R.string.m12_bayar_nilai,
                         FormatTampilan.rupiah(p.totalRupiah),
-                        TampilanPesananMitra.caraBayar(requireContext(), p.paymentMethod)));
+                        TampilanPesananMitra.caraBayar(requireContext(), p.paymentMethod));
+        binding.barisBayar.nilai.setText(
+                p.discountRupiah > 0
+                        ? bayar
+                                + System.lineSeparator()
+                                + getString(
+                                        R.string.m12_voucher,
+                                        FormatTampilan.rupiah(p.discountRupiah))
+                        : bayar);
         binding.barisJam.nilai.setText(FormatTampilan.rentangJam(p.pickupStart, p.pickupEnd));
         TampilanPesananMitra.isiCatatan(requireContext(), binding.catatan, p);
     }

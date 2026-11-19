@@ -90,6 +90,27 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Gosok & Menang: sekali sehari, hadiahnya voucher (ADR-0008). -->
+            <FrameLayout
+                android:id="@+id/tombol_hadiah"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_tombol_ikon"
+                android:clickable="true"
+                android:contentDescription="@string/gosok_judul"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_hadiah"
+                    app:tint="@color/war_aksen" />
+            </FrameLayout>
+
             <FrameLayout
                 android:id="@+id/tombol_notifikasi"
                 android:layout_width="40dp"
