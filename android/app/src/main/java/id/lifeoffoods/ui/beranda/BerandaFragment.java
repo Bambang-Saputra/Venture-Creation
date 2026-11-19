@@ -35,6 +35,7 @@ import id.lifeoffoods.ui.jualan.BeliLangsung;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.FotoJualan;
 import id.lifeoffoods.ui.umum.HargaDiFoto;
+import id.lifeoffoods.ui.umum.KeluarDuaKali;
 import id.lifeoffoods.ui.umum.SisiAman;
 import id.lifeoffoods.ui.voucher.GosokDialog;
 import id.lifeoffoods.ui.voucher.PromoPopup;
@@ -107,6 +108,7 @@ public class BerandaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(BerandaViewModel.class);
+        KeluarDuaKali.pasang(this);
         SisiAman.atas(binding.header);
         SisiAman.bawah(binding.nav.getRoot());
         SisiAman.ikonGelap(requireActivity(), true);

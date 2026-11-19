@@ -412,7 +412,7 @@ Tidak menyimpan apa pun.
 Aturan (422 dengan pesan di `errors.items` atau `errors.items.N.listing_id`):
 
 - satu pesanan untuk satu toko, dan jam ambil semua item harus beririsan;
-- maksimal 5 per item dan 10 item per pesanan;
+- jumlah per item tidak dibatasi selain oleh stok;
 - maksimal 3 pesanan yang belum diambil per pembeli;
 - stok tidak cukup atau jualan sudah tidak tersedia.
 
@@ -496,6 +496,7 @@ Hanya di dalam aplikasi; ambil saat layar dibuka atau aplikasi kembali ke depan.
 | `pengingat_ambil` | pembeli, kalau `notify_pickup_reminder` | 30 menit sebelum jam ambil | K14 (`order_id`) |
 | `porsi_terselamatkan` | pembeli | kode ditukar | K14 (`order_id`) |
 | `mitra_favorit_memasang` | yang memfavoritkan toko, kalau `notify_favorite_store` | jualan terbit, maks sekali per toko per hari | K10 (`listing_id`) |
+| `war_dimulai` | pembeli dengan `notify_promo` | `notifikasi:war` tiap 15 menit (10.00 sampai 22.00): per pembeli, jualan diskon ≥ 30% terbesar yang berakhir 20 menit sampai 3 jam lagi dan belum pernah dikirim ke orang itu; satu per orang per putaran, maks 2 per orang per hari (sesuai teks K20) | K10 (`listing_id`, `photo_url`) |
 
 ### POST /notifications/{id}/read, POST /notifications/read-all
 
