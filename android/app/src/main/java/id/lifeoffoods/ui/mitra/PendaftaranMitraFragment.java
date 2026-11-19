@@ -73,18 +73,21 @@ public class PendaftaranMitraFragment extends Fragment {
         BantuanIsian bNib = new BantuanIsian(binding.isianNib, binding.bantuanNib);
         BantuanIsian bHalal = new BantuanIsian(binding.isianHalal, binding.bantuanHalal);
 
-        // Di langkah 2 tombol kembali (bilah atas dan sistem) kembali ke langkah 1.
+        // Di langkah 2 tombol kembali (bilah atas dan sistem) kembali ke langkah 1. Di langkah 1
+        // M03 menggantikan M05, jadi tidak ada layar sebelumnya: tawarkan keluar ke K01.
         OnBackPressedCallback keLangkahSatu =
-                new OnBackPressedCallback(false) {
+                new OnBackPressedCallback(true) {
                     @Override
                     public void handleOnBackPressed() {
-                        vm.mundur();
+                        if (!vm.mundur()) {
+                            KeluarAkun.tanya(PendaftaranMitraFragment.this);
+                        }
                     }
                 };
         requireActivity()
                 .getOnBackPressedDispatcher()
                 .addCallback(getViewLifecycleOwner(), keLangkahSatu);
-        binding.kepala.tombolKembali.setOnClickListener(v -> vm.mundur());
+        binding.kepala.tombolKembali.setOnClickListener(v -> keLangkahSatu.handleOnBackPressed());
 
         pasangChipKategori();
         binding.tombolJamBuka.setOnClickListener(v -> pilihJam(true));
@@ -97,7 +100,6 @@ public class PendaftaranMitraFragment extends Fragment {
         vm.tahap.observe(
                 getViewLifecycleOwner(),
                 t -> {
-                    keLangkahSatu.setEnabled(t == Tahap.PEMILIK);
                     tampilkanTahap(t);
                 });
         vm.kategori.observe(

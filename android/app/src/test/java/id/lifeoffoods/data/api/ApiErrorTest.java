@@ -127,4 +127,19 @@ public class ApiErrorTest {
         assertEquals(ApiError.TANPA_JARINGAN, galat.kode());
         assertTrue(galat.pesan().startsWith("Tidak bisa terhubung"));
     }
+
+    @Test
+    public void pesanBawaanLaravelDiganti() {
+        assertEquals(
+                "Data yang dicari tidak ditemukan. Mungkin sudah dihapus atau habis.",
+                ApiError.dariRespons(404, "{\"message\":\"Not Found\"}").pesan());
+        assertTrue(
+                ApiError.dariRespons(500, "{\"message\":\"Server Error\"}")
+                        .pesan()
+                        .startsWith("Terjadi kesalahan"));
+        assertEquals(
+                "Email ini sudah dipakai akun lain.",
+                ApiError.dariRespons(422, "{\"message\":\"Email ini sudah dipakai akun lain.\"}")
+                        .pesan());
+    }
 }

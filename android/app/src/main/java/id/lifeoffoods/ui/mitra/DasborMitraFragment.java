@@ -23,6 +23,7 @@ import id.lifeoffoods.data.api.model.RingkasanTokoDto;
 import id.lifeoffoods.databinding.FragmentDasborMitraBinding;
 import id.lifeoffoods.databinding.ItemTasDasborBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.KeluarDuaKali;
 import id.lifeoffoods.ui.umum.SegarkanTarik;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class DasborMitraFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(DasborMitraViewModel.class);
+        KeluarDuaKali.pasang(this);
 
         SisiAman.atas(binding.header);
         SisiAman.bawah(binding.nav.getRoot());
