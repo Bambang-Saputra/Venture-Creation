@@ -31,6 +31,10 @@
             android:scaleType="centerCrop"
             android:visibility="gone" />
 
+        <include
+            android:id="@+id/overlay_harga"
+            layout="@layout/include_harga_di_foto" />
+
         <TextView
             android:id="@+id/sisa_waktu"
             style="@style/Teks.Pil"

@@ -104,12 +104,11 @@ class PesananController extends Controller
 
     private function validasiItem(Request $request, array $tambahan = []): array
     {
-        $aturan = config('lof.pesanan');
-
+        // Tanpa batas jumlah: LayananPesanan menolak kalau melebihi stok ("tinggal N").
         return $request->validate([
-            'items' => ['required', 'array', 'min:1', 'max:'.$aturan['maks_item']],
+            'items' => ['required', 'array', 'min:1'],
             'items.*.listing_id' => ['required', 'integer', 'distinct'],
-            'items.*.qty' => ['required', 'integer', 'min:1', 'max:'.$aturan['maks_qty_per_item']],
+            'items.*.qty' => ['required', 'integer', 'min:1'],
             ...$tambahan,
         ]);
     }

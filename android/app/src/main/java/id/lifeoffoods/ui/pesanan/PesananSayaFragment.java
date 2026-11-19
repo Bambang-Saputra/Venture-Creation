@@ -22,6 +22,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
@@ -35,6 +36,7 @@ import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.Peristiwa;
 import id.lifeoffoods.ui.umum.Pil;
+import id.lifeoffoods.ui.umum.SegarkanTarik;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -100,6 +102,7 @@ public class PesananSayaFragment extends Fragment {
         binding.tabRiwayat.setOnClickListener(v -> vm.pilihTab(PesananSayaViewModel.Tab.RIWAYAT));
         binding.tombolBeranda.setOnClickListener(v -> keBeranda());
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
+        SwipeRefreshLayout segarkan = SegarkanTarik.bungkus(binding.daftar, vm::muatUlang);
 
         binding.nav.tabPesanan.setSelected(true);
         binding.nav.tabBeranda.setOnClickListener(v -> keBeranda());
@@ -113,7 +116,12 @@ public class PesananSayaFragment extends Fragment {
                     adapter.submitList(d);
                     tampilkanKeadaan();
                 });
-        vm.status.observe(getViewLifecycleOwner(), s -> tampilkanKeadaan());
+        vm.status.observe(
+                getViewLifecycleOwner(),
+                s -> {
+                    tampilkanKeadaan();
+                    SegarkanTarik.selesai(segarkan, s);
+                });
         vm.galat.observe(
                 getViewLifecycleOwner(),
                 p -> {

@@ -17,6 +17,7 @@ import id.lifeoffoods.data.api.model.MeResponse;
 import id.lifeoffoods.databinding.FragmentLengkapiProfilBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BantuanIsian;
+import id.lifeoffoods.ui.umum.KeluarAkun;
 import id.lifeoffoods.ui.umum.SisiAman;
 
 /**
@@ -51,6 +52,25 @@ public class LengkapiProfilFragment extends Fragment {
         binding.kepala.judul.setText(R.string.k04_judul_bar);
         binding.kepala.subjudul.setText(R.string.k04_langkah);
         binding.kepala.subjudul.setVisibility(View.VISIBLE);
+        // K04 adalah layar pertama sesudah akun baru dibuat, jadi tidak ada layar sebelumnya.
+        // Tombol kembali menawarkan keluar ke K01, bukan menutup aplikasi diam-diam.
+        requireActivity()
+                .getOnBackPressedDispatcher()
+                .addCallback(
+                        getViewLifecycleOwner(),
+                        new androidx.activity.OnBackPressedCallback(true) {
+                            @Override
+                            public void handleOnBackPressed() {
+                                if (NavHostFragment.findNavController(LengkapiProfilFragment.this)
+                                                .getPreviousBackStackEntry()
+                                        != null) {
+                                    NavHostFragment.findNavController(LengkapiProfilFragment.this)
+                                            .popBackStack();
+                                } else {
+                                    KeluarAkun.tanya(LengkapiProfilFragment.this);
+                                }
+                            }
+                        });
         binding.kepala.tombolKembali.setOnClickListener(
                 v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
 

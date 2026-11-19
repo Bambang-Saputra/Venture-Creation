@@ -10,9 +10,9 @@ return [
     // Rupiah penuh per pesanan. Nol selama pilot (orders.service_fee_rupiah).
     'service_fee' => (int) env('SERVICE_FEE', 0),
 
+    // Jumlah per pesanan hanya dibatasi stok. Batas pesanan aktif tetap, supaya satu orang
+    // tidak memborong lalu tidak datang mengambil.
     'pesanan' => [
-        'maks_qty_per_item' => 5,
-        'maks_item' => 10,
         'maks_pesanan_aktif' => 3,
     ],
 

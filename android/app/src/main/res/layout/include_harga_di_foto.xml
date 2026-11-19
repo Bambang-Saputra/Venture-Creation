@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Uji coba "harga di dalam foto": selubung gelap di bawah foto, pil diskon oranye di pojok, dan
+    harga jual besar di atas foto. Diisi HargaDiFoto; cabut include ini untuk kembali ke kartu lama.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:importantForAccessibility="noHideDescendants">
+
+    <View
+        android:id="@+id/selubung"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_selubung_harga" />
+
+    <TextView
+        android:id="@+id/pil_diskon"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="8dp"
+        style="@style/Teks.PilDiskon"
+        android:background="@drawable/bg_pil_war"
+        android:paddingStart="9dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="9dp"
+        android:paddingBottom="3dp"
+        tools:text="-65%" />
+
+    <LinearLayout
+        android:id="@+id/baris_harga"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="8dp"
+        android:baselineAligned="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/harga_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Teks.HargaFoto"
+            tools:text="Rp21.000" />
+
+        <TextView
+            android:id="@+id/harga_coret_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            style="@style/Teks.HargaFotoCoret"
+            tools:text="Rp60.000" />
+    </LinearLayout>
+</FrameLayout>
