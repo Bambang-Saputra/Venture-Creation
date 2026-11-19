@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.recyclerview)
+    implementation(libs.work.runtime)
     implementation(libs.swiperefreshlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)

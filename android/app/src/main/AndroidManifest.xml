@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Notifikasi sistem "War dimulai!" dan pesanan baru (Android 13+ meminta izin). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- M18 Pindai QR (kasir). Diminta pemindai saat dibuka, bukan saat aplikasi dipasang. -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature
