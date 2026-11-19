@@ -462,6 +462,8 @@
     <string name="m09_judul_bantuan">Nama yang dilihat pembeli di aplikasi.</string>
     <string name="m09_judul_contoh">Contoh: Tas roti campur sore</string>
     <string name="m09_harga_campur">Harga jual (wajib)</string>
+    <!-- Kolom harga di baris menu satuan sempit: "(wajib)" terpotong. -->
+    <string name="m16_harga_jual">Harga jual</string>
     <string name="m09_harga_bantuan">Yang dibayar pembeli di toko.</string>
     <string name="m09_harga_contoh">15000</string>
     <string name="m09_harga_normal_bantuan">Harga asli isinya, untuk diskon.</string>
