@@ -123,7 +123,22 @@ class PesananTest extends TestCase
         $this->kirim('/api/orders/preview', ['items' => [['listing_id' => $jeda, 'qty' => 1]]])->assertUnprocessable();
         $this->kirim('/api/orders/preview', ['items' => [['listing_id' => $lewat, 'qty' => 1]]])->assertUnprocessable();
         $this->kirim('/api/orders/preview', ['items' => [['listing_id' => 999999, 'qty' => 1]]])->assertUnprocessable();
-        $this->kirim('/api/orders/preview', ['items' => [['listing_id' => $jeda, 'qty' => 6]]])->assertJsonValidationErrors('items.0.qty');
+    }
+
+    public function test_jumlah_hanya_dibatasi_stok(): void
+    {
+        $id = $this->listing(['qty_total' => 30]);
+
+        $this->kirim('/api/orders/preview', ['items' => [['listing_id' => $id, 'qty' => 20]]])->assertOk();
+        $this->kirim('/api/orders/preview', ['items' => [['listing_id' => $id, 'qty' => 31]]])
+            ->assertJsonValidationErrors('items');
+    }
+
+    public function test_pesan_galat_berbahasa_indonesia(): void
+    {
+        $this->kirim('/api/orders/preview', ['items' => []])
+            ->assertUnprocessable()
+            ->assertJsonPath('errors.items.0', 'Isi pesanan wajib diisi.');
     }
 
     public function test_batas_pesanan_aktif(): void

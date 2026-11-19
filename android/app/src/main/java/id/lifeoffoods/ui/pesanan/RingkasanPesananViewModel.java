@@ -75,7 +75,8 @@ public class RingkasanPesananViewModel extends AndroidViewModel {
         sudahMulai = true;
         this.menuSatuan = menuSatuan;
         for (int i = 0; i < id.length; i++) {
-            int s = stok != null && i < stok.length ? stok[i] : Keranjang.MAKS_PER_ITEM;
+            // Tanpa info stok, jumlah awal dipakai sebagai batas; server tetap memeriksa stok.
+            int s = stok != null && i < stok.length ? stok[i] : qty[i];
             // Harga di keranjang tidak dipakai untuk tampilan; total selalu dari pratinjau.
             keranjang.daftarkan(id[i], 0, Math.max(s, qty[i]));
             keranjang.atur(id[i], qty[i]);
