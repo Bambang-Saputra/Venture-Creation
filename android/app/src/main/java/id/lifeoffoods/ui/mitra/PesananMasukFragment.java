@@ -18,6 +18,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.FormatTampilan;
@@ -32,6 +33,7 @@ import id.lifeoffoods.databinding.ItemPesananMasukBinding;
 import id.lifeoffoods.databinding.ItemRiwayatMitraBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
+import id.lifeoffoods.ui.umum.SegarkanTarik;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
 import java.util.Date;
@@ -100,7 +102,15 @@ public class PesananMasukFragment extends Fragment {
         binding.saringSemua.setOnClickListener(
                 v -> riwayatVm.pilih(RiwayatPesananMitraViewModel.Saringan.SEMUA));
         binding.tombolMuatLagi.setOnClickListener(v -> riwayatVm.muatLagi());
-        riwayatVm.status.observe(getViewLifecycleOwner(), s -> tampilkan());
+        // Tarik untuk segarkan memuat ulang tab yang sedang dibuka, sama seperti "Coba lagi".
+        SwipeRefreshLayout segarkan =
+                SegarkanTarik.bungkus(binding.gulir, () -> binding.tombolCobaLagi.callOnClick());
+        riwayatVm.status.observe(
+                getViewLifecycleOwner(),
+                s -> {
+                    tampilkan();
+                    SegarkanTarik.selesai(segarkan, s);
+                });
         riwayatVm.daftar.observe(getViewLifecycleOwner(), d -> tampilkan());
         riwayatVm.ringkasan.observe(getViewLifecycleOwner(), r -> tampilkan());
         riwayatVm.adaBerikutnya.observe(getViewLifecycleOwner(), a -> tampilkan());
@@ -130,7 +140,12 @@ public class PesananMasukFragment extends Fragment {
         vm.tab.observe(getViewLifecycleOwner(), t -> tampilkan());
         vm.menunggu.observe(getViewLifecycleOwner(), d -> tampilkan());
         vm.riwayat.observe(getViewLifecycleOwner(), d -> tampilkan());
-        vm.status.observe(getViewLifecycleOwner(), s -> tampilkan());
+        vm.status.observe(
+                getViewLifecycleOwner(),
+                s -> {
+                    tampilkan();
+                    SegarkanTarik.selesai(segarkan, s);
+                });
         vm.jualanAktif.observe(getViewLifecycleOwner(), n -> tampilkan());
         vm.hitungan.observe(
                 getViewLifecycleOwner(),

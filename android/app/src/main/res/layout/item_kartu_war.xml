@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kartu "WAR JAM INI" di Beranda: foto besar dengan harga di dalam foto, pil stok menipis, lalu
+    tombol "Ambil sekarang" yang langsung membuka ringkasan pesanan (K12/K13) dengan jumlah 1.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="12dp"
+    android:background="@drawable/bg_kartu_jualan"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="1dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/bg_slot_foto_atas">
+
+        <include
+            layout="@layout/include_isi_slot_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/foto_jualan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/overlay_harga"
+            layout="@layout/include_harga_di_foto" />
+
+        <TextView
+            android:id="@+id/stok"
+            style="@style/Teks.Pil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_pil_lime"
+            android:textColor="@color/teks_utama"
+            tools:text="Sisa 2, buruan!" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/judul"
+            style="@style/Teks.JudulKartu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Tas Roti Sore" />
+
+        <TextView
+            android:id="@+id/toko"
+            style="@style/Teks.NamaToko"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="Roti Sari Bakery · 0,4 km" />
+
+        <TextView
+            android:id="@+id/tombol_ambil"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_tombol_war"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/war_ambil_sekarang"
+            style="@style/Teks.TombolWar" />
+    </LinearLayout>
+</LinearLayout>

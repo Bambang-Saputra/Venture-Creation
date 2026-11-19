@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import id.lifeoffoods.R;
 import id.lifeoffoods.data.AkunPembeli;
@@ -19,6 +20,7 @@ import id.lifeoffoods.databinding.FragmentNotifikasiBinding;
 import id.lifeoffoods.databinding.ItemNotifikasiBinding;
 import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.pesanan.KodePickupFragment;
+import id.lifeoffoods.ui.umum.SegarkanTarik;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -54,9 +56,15 @@ public class NotifikasiFragment extends Fragment {
         binding.kepala.tombolKembali.setOnClickListener(
                 v -> NavHostFragment.findNavController(this).navigateUp());
         binding.keadaan.tombolCobaLagi.setOnClickListener(v -> vm.muatUlang());
+        SwipeRefreshLayout segarkan = SegarkanTarik.bungkus(binding.gulir, vm::muatUlang);
         binding.tombolMuatLagi.setOnClickListener(v -> vm.muatLagi());
 
-        vm.status.observe(getViewLifecycleOwner(), s -> tampilkan());
+        vm.status.observe(
+                getViewLifecycleOwner(),
+                s -> {
+                    tampilkan();
+                    SegarkanTarik.selesai(segarkan, s);
+                });
         vm.daftar.observe(getViewLifecycleOwner(), d -> tampilkan());
         vm.adaBerikutnya.observe(getViewLifecycleOwner(), a -> tampilkan());
         vm.pesan.observe(

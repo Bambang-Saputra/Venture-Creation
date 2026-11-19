@@ -57,8 +57,8 @@
     <style name="Teks.JudulSeksi">
         <item name="android:fontFamily">@font/gabarito_extrabold</item>
         <item name="fontFamily">@font/gabarito_extrabold</item>
-        <item name="android:textSize">15sp</item>
-        <item name="lineHeight">18sp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="lineHeight">21sp</item>
         <item name="android:letterSpacing">-0.013</item>
     </style>
 
@@ -173,8 +173,8 @@
     <style name="Teks.Harga">
         <item name="android:fontFamily">@font/gabarito_extrabold</item>
         <item name="fontFamily">@font/gabarito_extrabold</item>
-        <item name="android:textSize">15sp</item>
-        <item name="lineHeight">18sp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="lineHeight">20sp</item>
         <item name="android:textColor">@color/teks_merek</item>
     </style>
 
@@ -499,6 +499,84 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:elevation">8dp</item>
         <item name="android:textColor">@color/teks_utama</item>
+    </style>
+
+    <!-- ===== Hitung mundur WAR JAM INI: angka dalam kotak bening, putih tebal ===== -->
+    <style name="HitungMundur">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">38dp</item>
+        <item name="android:background">@drawable/bg_hitung_mundur</item>
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textColor">@color/teks_di_gelap</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <!-- Teks di kotak WAR JAM INI dan kartu war -->
+    <style name="Teks.WarKicker">
+        <item name="android:fontFamily">@font/figtree_bold</item>
+        <item name="fontFamily">@font/figtree_bold</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/merek_lime</item>
+    </style>
+
+    <style name="Teks.WarJudul">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="lineHeight">31sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/teks_di_gelap</item>
+    </style>
+
+    <style name="Teks.WarSub">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">13.5sp</item>
+        <item name="lineHeight">19sp</item>
+        <item name="android:textColor">#E6FFFFFF</item>
+    </style>
+
+    <style name="Teks.HargaFoto">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/teks_di_gelap</item>
+    </style>
+
+    <style name="Teks.HargaFotoCoret">
+        <item name="android:fontFamily">@font/figtree_semibold</item>
+        <item name="fontFamily">@font/figtree_semibold</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:textColor">#CCFFFFFF</item>
+    </style>
+
+    <style name="Teks.PilDiskon">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/teks_di_gelap</item>
+    </style>
+
+    <style name="Teks.TombolWar">
+        <item name="android:fontFamily">@font/gabarito_extrabold</item>
+        <item name="fontFamily">@font/gabarito_extrabold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/teks_di_gelap</item>
+    </style>
+
+    <style name="HitungMundur.Pemisah">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:text">:</item>
     </style>
 
     <!-- ===== K01 kartu peran: padding 18, jarak 14, radius 20 ===== -->

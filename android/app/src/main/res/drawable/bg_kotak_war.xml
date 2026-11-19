@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kotak "WAR JAM INI" di Beranda: gradasi tinta hijau ke oranye war, sudut 22dp. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="315"
+        android:centerColor="#7A2E14"
+        android:endColor="@color/war_aksen"
+        android:startColor="@color/merek_tinta" />
+    <corners android:radius="22dp" />
+</shape>
