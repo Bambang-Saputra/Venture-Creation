@@ -29,6 +29,7 @@ import id.lifeoffoods.ui.MainActivity;
 import id.lifeoffoods.ui.filter.FilterBundle;
 import id.lifeoffoods.ui.umum.BaseListAdapter;
 import id.lifeoffoods.ui.umum.FotoJualan;
+import id.lifeoffoods.ui.umum.KeluarDuaKali;
 import id.lifeoffoods.ui.umum.SisiAman;
 import java.util.List;
 
@@ -74,6 +75,7 @@ public class BerandaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         vm = new ViewModelProvider(this).get(BerandaViewModel.class);
+        KeluarDuaKali.pasang(this);
         SisiAman.atas(binding.header);
         SisiAman.bawah(binding.nav.getRoot());
         SisiAman.ikonGelap(requireActivity(), true);

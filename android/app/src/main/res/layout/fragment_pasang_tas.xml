@@ -45,6 +45,31 @@
                 android:paddingEnd="20dp"
                 android:paddingBottom="24dp">
 
+                <!-- Panduan singkat supaya mitra baru tahu apa saja yang harus diisi. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_catatan_merek"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        style="@style/Teks.JudulSeksi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/m09_panduan_judul"
+                        android:textColor="@color/teks_merek_gelap" />
+
+                    <TextView
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/m09_panduan_isi"
+                        android:textColor="@color/teks_merek_gelap" />
+                </LinearLayout>
+
                 <TextView
                     style="@style/Teks.Label"
                     android:layout_width="match_parent"
@@ -128,13 +153,10 @@
                         android:visibility="gone" />
                 </FrameLayout>
 
-                <!-- Cetakan -->
-                <TextView
-                    style="@style/Teks.Label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/m09_pilih_template" />
+                <!-- Langkah 1: cetakan atau tas campur -->
+                <include
+                    android:id="@+id/langkah_isi"
+                    layout="@layout/include_judul_langkah" />
 
                 <LinearLayout
                     android:id="@+id/daftar_template"
@@ -157,7 +179,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="@string/m09_judul">
+                        android:hint="@string/m09_judul"
+                        app:helperText="@string/m09_judul_bantuan"
+                        app:placeholderText="@string/m09_judul_contoh">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/nama_tas"
@@ -182,6 +206,8 @@
                             android:layout_marginTop="12dp"
                             android:layout_weight="1"
                             android:hint="@string/m09_harga_campur"
+                            app:helperText="@string/m09_harga_bantuan"
+                            app:placeholderText="@string/m09_harga_contoh"
                             app:prefixText="Rp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -203,6 +229,8 @@
                             android:layout_marginTop="12dp"
                             android:layout_weight="1"
                             android:hint="@string/m09_harga_normal"
+                            app:helperText="@string/m09_harga_normal_bantuan"
+                            app:placeholderText="@string/m09_harga_normal_contoh"
                             app:prefixText="Rp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -216,13 +244,30 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
+                    <!-- Pratinjau harga seperti yang dilihat pembeli, diperbarui saat mengetik. -->
+                    <TextView
+                        android:id="@+id/pratinjau_harga"
+                        style="@style/Teks.Bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_pil_isian_14"
+                        android:paddingStart="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="8dp"
+                        android:textColor="@color/teks_kuat"
+                        tools:text="Pembeli melihat Rp15.000, hemat 63% dari Rp40.000" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/isian_perkiraan"
                         style="@style/IsianBulat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:hint="@string/m09_perkiraan_isi">
+                        android:hint="@string/m09_perkiraan_isi"
+                        app:helperText="@string/m09_perkiraan_bantuan"
+                        app:placeholderText="@string/m09_perkiraan_contoh">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/perkiraan"
@@ -241,7 +286,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:hint="@string/m09_kandungan"
-                        app:helperText="@string/m09_kandungan_bantuan">
+                        app:helperText="@string/m09_kandungan_bantuan"
+                        app:placeholderText="@string/m09_kandungan_contoh">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/kandungan"
@@ -254,11 +300,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
-                <!-- Jumlah dan harga -->
+                <!-- Langkah 2: jumlah dan harga -->
+                <include
+                    android:id="@+id/langkah_harga"
+                    layout="@layout/include_judul_langkah" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -324,19 +374,16 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Kandungan dan label -->
-                <TextView
-                    style="@style/Teks.Label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/m09_alergen" />
+                <!-- Langkah 3: alergen dan label -->
+                <include
+                    android:id="@+id/langkah_alergen"
+                    layout="@layout/include_judul_langkah" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/grup_alergen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     app:chipSpacingHorizontal="8dp"
                     app:chipSpacingVertical="8dp" />
 
@@ -353,6 +400,11 @@
                 <include
                     android:id="@+id/label_toko"
                     layout="@layout/include_label_toko" />
+
+                <!-- Langkah 4: jam ambil -->
+                <include
+                    android:id="@+id/langkah_jam"
+                    layout="@layout/include_judul_langkah" />
 
                 <include
                     android:id="@+id/jam"

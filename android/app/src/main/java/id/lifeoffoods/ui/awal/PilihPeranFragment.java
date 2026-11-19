@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import id.lifeoffoods.data.SesiPengguna;
 import id.lifeoffoods.databinding.FragmentPilihPeranBinding;
 import id.lifeoffoods.ui.MainActivity;
+import id.lifeoffoods.ui.umum.KeluarDuaKali;
 import id.lifeoffoods.ui.umum.SisiAman;
 
 /** K01 Pilih peran. Tidak memanggil API, hanya memilih graf navigasi. */
@@ -29,6 +30,7 @@ public class PilihPeranFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) requireActivity();
+        KeluarDuaKali.pasang(this);
         // Gradien mengisi sampai ke balik status bar dan navbar, seperti Figma; isinya diberi
         // jarak. Ikon sistem putih di atas latar hijau.
         SisiAman.atasBawah(binding.isi);
