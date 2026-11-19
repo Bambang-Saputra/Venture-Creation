@@ -80,6 +80,20 @@ class ListingMitraTest extends TestCase
         $this->sebagai($this->pemilik)->getJson($this->url('/listings?type=menu_item'))->assertOk()->assertJsonCount(2, 'data');
     }
 
+    public function test_m16_harga_normal_tidak_boleh_di_bawah_harga_jual(): void
+    {
+        $croissant = $this->produk('Croissant mentega', 28000);
+
+        $this->buat(['type' => 'menu_item', 'pickup_start' => '18:00', 'pickup_end' => '20:00', 'items' => [
+            ['product_id' => $croissant, 'qty_total' => 2, 'price_rupiah' => 15000, 'original_value_rupiah' => 10000],
+        ]])->assertUnprocessable()->assertJsonValidationErrors('items.0.original_value_rupiah');
+
+        // Harga normal produk lebih murah dari harga jual hari ini: tidak dipakai sebagai harga coret.
+        $this->buat(['type' => 'menu_item', 'pickup_start' => '18:00', 'pickup_end' => '20:00', 'items' => [
+            ['product_id' => $croissant, 'qty_total' => 2, 'price_rupiah' => 30000],
+        ]])->assertCreated()->assertJsonPath('data.0.original_value_rupiah', null);
+    }
+
     public function test_tanpa_kandungan_tidak_bisa_terbit_tapi_bisa_disimpan_draf(): void
     {
         DB::table('stores')->where('id', $this->toko)->update(['default_ingredients_text' => null]);
