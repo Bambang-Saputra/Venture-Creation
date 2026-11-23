@@ -248,7 +248,7 @@ Nyalakan MySQL, `php artisan serve`, `php artisan schedule:work`, dan ngrok (dom
 php artisan demo:segarkan
 ```
 
-Jualan demo hanya tampil di hari yang sama, jadi sehari setelah seeding Beranda akan kosong. Perintah ini mengisi lagi data demo supaya aplikasi terasa aktif: jualan hari ini dan besok (dengan foto dan alergen), banner dan iklan prioritas pencarian, pesanan hari ini untuk "Populer hari ini", serta ulasan untuk rating toko. Tidak ada data yang dihapus, dan yang disentuh hanya akun serta toko demo bernomor `62811000…`, jadi akun penguji dan mitra sungguhan aman. Aman dijalankan berulang kali, dan menolak berjalan di production kecuali memakai `--force`.
+Jualan demo hanya tampil di hari yang sama, jadi sehari setelah seeding Beranda akan kosong. Perintah ini mengisi lagi data demo supaya aplikasi terasa aktif: jualan hari ini dan besok (dengan foto dan alergen), banner dan iklan prioritas pencarian, pesanan hari ini untuk "Populer hari ini", riwayat empat minggu terakhir (jualan, pesanan, saldo, dan catatan sisa harian yang makin turun, supaya laporan mingguan dan saran produksi terisi), serta ulasan untuk rating toko. Produk demo yang belum punya angka produksi harian diberi angka bawaan, dan ada 24 pembeli demo tambahan (`62811000111` dan seterusnya) supaya riwayat pesanan toko memuat banyak nama. Tidak ada data yang dihapus, dan yang disentuh hanya akun serta toko demo bernomor `62811000…`, jadi akun penguji dan mitra sungguhan aman. Aman dijalankan berulang kali, dan menolak berjalan di production kecuali memakai `--force`.
 
 Akun mitra demo untuk masuk di halaman mitra: `62811000201` sampai `62811000208` (Roti Sari Bakery paling lengkap). Kode OTP tampil di layar selama `PILOT_MODE=true`.
 
