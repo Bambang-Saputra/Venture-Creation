@@ -11,14 +11,15 @@ use Illuminate\Console\Command;
  *   php artisan demo:segarkan
  *
  * Jalankan sebelum tiap sesi uji coba atau demo. Isinya jualan hari ini dan besok, iklan,
- * pesanan hari ini ("Populer hari ini"), dan ulasan (rating toko), hanya untuk akun dan
- * toko demo dari SeederDemo. Aman dijalankan berulang kali.
+ * pesanan hari ini ("Populer hari ini"), riwayat empat minggu (jualan, pesanan, dan catatan
+ * sisa untuk laporan mingguan dan saran produksi), dan ulasan (rating toko), hanya untuk akun
+ * dan toko demo dari SeederDemo. Aman dijalankan berulang kali.
  */
 class SegarkanDemo extends Command
 {
     protected $signature = 'demo:segarkan {--force : tetap jalan di production}';
 
-    protected $description = 'Segarkan data demo: jualan hari ini, iklan, pesanan, dan ulasan';
+    protected $description = 'Segarkan data demo: jualan hari ini, iklan, pesanan, riwayat empat minggu, dan ulasan';
 
     public function handle(DataDemo $demo): int
     {

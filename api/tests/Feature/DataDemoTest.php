@@ -69,8 +69,8 @@ class DataDemoTest extends TestCase
         $this->assertCount(3, $besok);
         $this->assertTrue($hariIni->every(fn ($l) => $l->status === 'active' && $l->pickup_end === '2026-10-25 23:00:00'));
         $this->assertTrue($besok->every(fn ($l) => $l->qty_sold === 0 && $l->qty_reserved === 0));
-        // Alergen ikut tersalin (1 asli + 2 salinan), supaya filter alergi tetap bekerja.
-        $this->assertSame(3, DB::table('listing_allergens')->count());
+        // Alergen ikut tersalin ke jualan hari ini dan besok, supaya filter alergi tetap bekerja.
+        $this->assertSame(2, DB::table('listing_allergens')->whereIn('listing_id', $hariIni->pluck('id')->merge($besok->pluck('id')))->count());
 
         $this->assertSame(1, DB::table('listings')->where('store_id', $this->tokoAsli)->count());
     }
@@ -84,7 +84,7 @@ class DataDemoTest extends TestCase
         $this->assertTrue($pesanan->every(fn ($o) => in_array($o->user_id, $this->pembeli, true)));
         $this->assertSame(0, DB::table('orders')->where('user_id', $this->penguji)->count());
         $this->assertSame(0, DB::table('orders')->where('store_id', $this->tokoAsli)->count());
-        $this->assertSame($pesanan->count(), DB::table('pickup_codes')->count());
+        $this->assertSame($pesanan->count(), DB::table('pickup_codes')->whereIn('order_id', $pesanan->pluck('id'))->count());
 
         // Setiap jualan hari ini masih menyisakan stok, supaya tetap tampil di Beranda.
         DB::table('listings')->whereDate('pickup_date', '2026-10-25')->get()
@@ -92,9 +92,10 @@ class DataDemoTest extends TestCase
 
         $selesai = $pesanan->where('status', 'completed')->count();
         $this->assertGreaterThan(0, $selesai);
-        $this->assertSame($selesai, DB::table('reviews')->count());
+        $this->assertSame($selesai, DB::table('reviews')->whereIn('order_id', $pesanan->pluck('id'))->count());
+        // Saldo sama dengan semua pesanan selesai toko itu, termasuk riwayat empat minggu.
         $this->assertSame(
-            $pesanan->where('status', 'completed')->sum('total_rupiah'),
+            (int) DB::table('orders')->where('store_id', $this->tokoDemo)->where('status', 'completed')->sum('total_rupiah'),
             (int) DB::table('store_balances')->where('store_id', $this->tokoDemo)->value('available_rupiah'),
         );
 
@@ -137,7 +138,53 @@ class DataDemoTest extends TestCase
 
         $this->assertSame(0, DB::table('listings')->whereDate('pickup_date', '2026-10-25')->count());
         $this->assertSame(3, DB::table('listings')->whereDate('pickup_date', '2026-10-26')->count());
-        $this->assertSame(0, DB::table('orders')->count());
+        $this->assertSame(0, DB::table('orders')->whereDate('placed_at', '2026-10-25')->count());
+    }
+
+    public function test_riwayat_empat_minggu_mengisi_laporan_saran_dan_saldo(): void
+    {
+        $pemilik = User::find(DB::table('stores')->where('id', $this->tokoDemo)->value('owner_user_id'));
+        foreach ([['Roti sobek', 'pcs', 16000, 7000], ['Donat gula', 'pcs', 8000, 3500]] as [$nama, $satuan, $harga, $hpp]) {
+            DB::table('products')->insert(['store_id' => $this->tokoDemo, 'name' => $nama, 'unit' => $satuan, 'price_rupiah' => $harga, 'cost_rupiah' => $hpp, 'weight_gram' => 80]);
+        }
+        DB::table('products')->insert(['store_id' => $this->tokoAsli, 'name' => 'Kopi asli', 'unit' => 'botol', 'price_rupiah' => 20000]);
+
+        $this->artisan('demo:segarkan')->assertSuccessful();
+
+        // 28 hari ke belakang (27 Sep sampai 24 Okt), tanpa hari ini. Tanggal 23 Okt sudah punya jualan sendiri.
+        $this->assertSame(28, DB::table('waste_logs')->where('store_id', $this->tokoDemo)->count());
+        $this->assertSame('2026-09-27', DB::table('waste_logs')->min('log_date'));
+        $this->assertSame('2026-10-24', DB::table('waste_logs')->max('log_date'));
+        $this->assertSame(28, DB::table('listings')->where('store_id', $this->tokoDemo)->whereDate('pickup_date', '<', '2026-10-25')->distinct()->count('pickup_date'));
+        $this->assertSame(1, DB::table('listings')->whereDate('pickup_date', '2026-10-23')->where('store_id', $this->tokoDemo)->where('title', 'Tas Roti Sore')->count());
+
+        // Pesanan lama sudah selesai di masa lalu, dengan kode yang sudah dipakai dan transaksi saldo.
+        $lama = DB::table('orders')->where('store_id', $this->tokoDemo)->whereDate('placed_at', '<', '2026-10-25')->get();
+        $this->assertGreaterThan(28, $lama->where('status', 'completed')->count());
+        $this->assertTrue($lama->every(fn ($o) => $o->status !== 'pending_pickup'));
+        $this->assertSame($lama->where('status', 'completed')->count(), DB::table('balance_transactions')->whereIn('order_id', $lama->pluck('id'))->count());
+        $this->assertSame(0, DB::table('pickup_codes')->whereIn('order_id', $lama->pluck('id'))->where('status', 'active')->count());
+
+        // Produksi harian terisi untuk produk demo saja, jadi saran produksi bisa dihitung.
+        $this->assertSame([30, 30], DB::table('products')->where('store_id', $this->tokoDemo)->pluck('daily_production_qty')->all());
+        $this->assertNull(DB::table('products')->where('store_id', $this->tokoAsli)->value('daily_production_qty'));
+
+        $this->app['auth']->forgetGuards();
+        $token = $pemilik->createToken('uji')->plainTextToken;
+        $laporan = $this->withToken($token)->getJson("/api/partner/stores/{$this->tokoDemo}/reports/weekly?week_start=2026-10-19")
+            ->assertOk()->json('data');
+        $this->assertSame(6, $laporan['logged_days']);
+        $this->assertGreaterThan(0, $laporan['rescued_value_rupiah']);
+        $this->assertNotEmpty($laporan['top_wasted_products']);
+        // Sisa makin sedikit dari minggu ke minggu.
+        $this->assertLessThan(0, $laporan['wasted_change_percent']);
+        $this->assertNotEmpty($this->withToken($token)->getJson("/api/partner/stores/{$this->tokoDemo}/suggestions")->assertOk()->json('data.items'));
+
+        // Pembeli tambahan hanya bernomor demo; toko dan penguji sungguhan tidak tersentuh.
+        $this->assertSame(24, DB::table('users')->where('phone', 'like', '62811000%')->where('role', 'consumer')->count() - 3);
+        $this->assertSame(0, DB::table('waste_logs')->where('store_id', $this->tokoAsli)->count());
+        $this->assertSame(0, DB::table('orders')->where('store_id', $this->tokoAsli)->count());
+        $this->assertSame(0, DB::table('orders')->where('user_id', $this->penguji)->count());
     }
 
     public function test_menolak_di_production_tanpa_force(): void
@@ -148,12 +195,13 @@ class DataDemoTest extends TestCase
 
         $this->assertSame(4, DB::table('listings')->count());
         $this->assertSame(0, DB::table('store_promotions')->count());
+        $this->assertSame(0, DB::table('waste_logs')->count());
     }
 
     /** @return array<string,int> */
     private function hitung(): array
     {
-        return collect(['listings', 'orders', 'store_promotions', 'reviews', 'pickup_codes'])
+        return collect(['listings', 'orders', 'store_promotions', 'reviews', 'pickup_codes', 'waste_logs', 'waste_log_items', 'users', 'balance_transactions'])
             ->mapWithKeys(fn ($t) => [$t => DB::table($t)->count()])->all();
     }
 }
