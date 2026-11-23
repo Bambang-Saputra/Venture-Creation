@@ -66,11 +66,11 @@ Panah putus-putus adalah bagian yang membedakan Life of Foods dari sekadar aplik
 
 ## Coba Aplikasinya
 
-**APK:** belum ada rilis publik. Setiap kali tag `v*` didorong ke repo, workflow `android-apk-rilis` membangun APK debug dan melampirkannya di halaman [Releases](https://github.com/Bambang-Saputra/Venture-Creation/releases).
+**Unduh APK:** [folder Google Drive "Aplikasi"](https://drive.google.com/drive/folders/1yR7UVr51-BgEAXpmtjM6qg_KC0I1S9Y3). Pilih file `Life-of-Foods-….apk` dengan tanggal paling baru. Aplikasi ini belum ada di Play Store.
 
 **Cara install di HP Android (minimal Android 8.1):**
 
-1. Buka file APK yang sudah diunduh.
+1. Unduh file APK dari folder di atas, lalu buka file tersebut.
 2. Jika muncul *"Install unknown apps"*, izinkan untuk browser atau aplikasi file yang dipakai.
 3. Jika Google Play Protect memberi peringatan, pilih **More details**, lalu **Install anyway**. Peringatan ini muncul karena aplikasi tidak dipasang dari Play Store.
 
@@ -82,7 +82,10 @@ Panah putus-putus adalah bagian yang membedakan Life of Foods dari sekadar aplik
 | Alur mitra | Pilih peran **Mitra**. Nomor yang belum terdaftar diarahkan ke formulir **Daftar usaha**, lalu menunggu tim menyetujui |
 | Menukar kode | Pesan dari HP pembeli, lalu buka **Cocokkan kode** di HP mitra dan ketik kodenya atau pindai QR-nya |
 
-> Selama uji coba, API berjalan di laptop tim dan dibuka lewat ngrok, jadi aplikasi hanya tersambung saat sesi demo berlangsung. Gateway OTP berbayar belum dipakai: dengan `PILOT_MODE=true`, kode OTP ditampilkan di layar dengan spanduk "mode uji coba". Pembayaran tidak lewat aplikasi; aplikasi hanya mencatat transaksi.
+> **Perlu diketahui selama uji coba:**
+> - Server aplikasi masih berjalan di laptop tim, jadi aplikasi hanya bisa dipakai saat sesi demo berlangsung. Di luar jam itu, aplikasi akan gagal memuat data.
+> - Kode OTP belum dikirim lewat SMS atau WhatsApp. Kodenya langsung muncul di layar dengan tanda "mode uji coba".
+> - Pembayaran tidak dilakukan di aplikasi. Pembeli membayar langsung di toko, dan aplikasi hanya mencatat transaksinya.
 
 ---
 
@@ -101,24 +104,24 @@ Panah putus-putus adalah bagian yang membedakan Life of Foods dari sekadar aplik
 
 ## Fitur Utama
 
-Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/figma/peta-layar.md).
+Kode di dalam kurung adalah nomor layar: K untuk layar konsumen (pembeli), M untuk layar mitra (toko). Nomornya mengikuti [peta layar Figma](docs/figma/peta-layar.md), kecuali M22 yang hanya ada di aplikasi.
 
 ### Untuk pembeli
 
 | Fitur | Keterangan |
 |---|---|
-| Onboarding (K06) | Tiga halaman pengenalan sebelum login, halaman terakhir meminta izin lokasi |
-| Masuk (K02-K05) | Nomor HP dan OTP, lengkapi profil, simpan alergi dan pantangan |
-| Beranda (K07) | Cari, kategori, "Tutup kurang dari satu jam", Populer hari ini, Terdekat dari kamu, banner iklan mitra, tarik untuk menyegarkan |
-| War harga (K07) | Kotak "War harga terbaik" berisi jualan dengan diskon terbesar hari itu dan hitung mundurnya, plus pop up promo sekali per sesi |
-| Peta (K08) | Penanda harga per toko di OpenStreetMap, tab Daftar urut jarak, buka aplikasi peta lewat `geo:` |
+| Pengenalan aplikasi (K06) | Tiga halaman pengenalan sebelum masuk, halaman terakhir meminta izin lokasi |
+| Masuk (K02-K05) | Masuk dengan nomor HP dan kode OTP, lengkapi profil, simpan alergi dan pantangan |
+| Beranda (K07) | Cari, kategori, "Tutup kurang dari satu jam", Populer hari ini, Terdekat dari kamu, banner iklan mitra, tarik layar ke bawah untuk memuat ulang |
+| War harga (K07) | Kotak "War harga terbaik" berisi jualan dengan diskon terbesar hari itu beserta hitung mundurnya, plus jendela promo yang muncul sekali setiap aplikasi dibuka |
+| Peta (K08) | Harga tiap toko tampil di peta, tab Daftar diurutkan dari yang terdekat, dan rute bisa dibuka di aplikasi peta seperti Google Maps |
 | Filter (K09) | Jenis jualan, alergi yang dihindari (terisi dari profil), pola makan, halal, jarak, dan jam ambil |
 | Detail jualan (K10, K11) | Foto, harga normal dan harga jual, stok, jam ambil, kandungan, status halal apa adanya, rating toko, bagikan jualan ke WhatsApp |
-| Ringkasan pesanan (K12, K13) | Satu tas utuh atau beberapa menu satuan dari toko yang sama, pasang voucher, harga dicek ulang oleh server |
-| Kode pickup (K14) | Kode 6 karakter dan QR, status realtime, tombol batalkan, jumlah porsi yang diselamatkan |
+| Ringkasan pesanan (K12, K13) | Satu tas utuh atau beberapa menu satuan dari toko yang sama, pasang voucher. Total harga dihitung ulang oleh sistem, jadi tidak bisa diakali dari HP |
+| Kode ambil pesanan (K14) | Kode 6 karakter dan QR untuk ditunjukkan ke kasir, status pesanan yang langsung diperbarui, tombol batalkan, jumlah porsi yang diselamatkan |
 | Pesanan saya (K15) | Pesanan aktif dan riwayat, beri ulasan setelah pesanan selesai |
-| Favorit dan notifikasi (K16, K17) | Simpan toko, pengingat 30 menit sebelum jam ambil, kabar saat toko favorit memasang jualan. Notifikasi sistem berbunyi untuk war harga, paling banyak dua kali sehari, tanpa Firebase |
-| Voucher dan Gosok & Menang (K22) | Klaim voucher dari pop up promo, main Gosok & Menang sekali sehari, pakai voucher di ringkasan pesanan. Potongan ditanggung Life of Foods, bukan mitra (ADR-0008) |
+| Favorit dan notifikasi (K16, K17) | Simpan toko, pengingat 30 menit sebelum jam ambil, kabar saat toko favorit memasang jualan. Notifikasi di HP untuk war harga, paling banyak dua kali sehari |
+| Voucher dan Gosok & Menang (K22) | Klaim voucher dari jendela promo, main Gosok & Menang sekali sehari, pakai voucher di ringkasan pesanan. Potongan ditanggung Life of Foods, bukan mitra |
 | Profil (K18-K20) | Ubah profil dan alergi, Voucher saya, pengaturan notifikasi, hapus akun |
 
 ### Untuk mitra
@@ -131,7 +134,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 | Laporan dan saran (M07, M08) | Laporan mingguan dan saran jumlah produksi berdasarkan catatan sisa |
 | Pasang dan kelola jualan (M09, M10, M16, M17) | Form tas kejutan terpandu 4 langkah, menu satuan, foto jualan, jeda jualan. Harga normal tidak boleh lebih murah dari harga jual |
 | Pesanan masuk (M11, M21) | Catatan pembeli dan alergi tampil langsung di kartu pesanan, riwayat dengan "Muat lebih banyak" |
-| Cocokkan kode (M12, M18) | Ketik kode atau pindai QR; kode ganda, kode toko lain, dan setiap penukaran tercatat di audit log |
+| Cocokkan kode (M12, M18) | Kasir mengetik kode atau memindai QR pembeli. Kode yang sudah dipakai atau milik toko lain ditolak, dan setiap penukaran tercatat |
 | Saldo (M13) | Riwayat transaksi; pencairan tampil tapi nonaktif selama uji coba |
 | Profil dan pengaturan toko (M14, M15) | Foto, jam buka, anggota toko dengan peran pemilik atau kasir |
 | Promosikan toko (M22) | Pasang iklan per hari tayang: prioritas pencarian atau banner Beranda |
@@ -142,7 +145,7 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 
 | Sumber | Tarif | Keterangan |
 |---|---|---|
-| Biaya layanan | Rp1.000 per pesanan, dibayar pembeli | Sumber utama. Di awal ditanggung lewat voucher: gratis untuk pesanan pertama dan untuk program ajak teman. Kolom `service_fee` sudah ada di setiap pesanan; tarifnya diatur lewat `SERVICE_FEE` di `.env` tanpa mengubah kode (ADR-0004) |
+| Biaya layanan | Rp1.000 per pesanan, dibayar pembeli | Sumber utama. Di awal ditanggung lewat voucher: gratis untuk pesanan pertama dan untuk program ajak teman. Sudah tercatat di setiap pesanan, dan tarifnya bisa diubah tanpa memperbarui aplikasi |
 | Prioritas pencarian | Rp5.000 per hari tayang | Sukarela dari mitra. Paling banyak 2 jualan berlabel "Iklan" di atas daftar utama. Filter alergi tetap berlaku |
 | Banner Beranda | Rp10.000 per hari tayang | Sukarela dari mitra. Tampil di Beranda pembeli. Terpisah dari "Populer hari ini", yang murni dihitung dari pesanan |
 
@@ -150,9 +153,9 @@ Kode layar (K untuk konsumen, M untuk mitra) mengikuti [peta layar Figma](docs/f
 
 **Voucher di awal** menjaga harga tetap menarik: biaya layanan tetap tampil tapi dicoret ("ditanggung Life of Foods"), dan berlaku dengan batas yang jelas supaya pembeli tidak kaget saat promo berakhir. Program ajak teman sekaligus memanfaatkan temuan riset bahwa pengaruh sosial paling mendorong orang mau mencoba.
 
-**Voucher diskon makanan (uji coba).** Selain voucher biaya layanan, aplikasi sudah punya voucher potongan harga makanan: voucher pop up (misalnya 20%, maksimal Rp10.000) dan hadiah Gosok & Menang (sampai 50%, maksimal Rp20.000). Potongan ini ditanggung Life of Foods dan dicatat sebagai penyesuaian saldo mitra. Besarnya masih lebih tinggi dari anggaran voucher Rp1.000 per pesanan di BMC, jadi nilainya perlu disesuaikan sebelum dipakai di luar uji coba. Datanya ada di tabel `vouchers` dan bisa diubah tanpa mengubah kode.
+**Voucher diskon makanan (uji coba).** Selain voucher biaya layanan, aplikasi sudah punya voucher potongan harga makanan: voucher pop up (misalnya 20%, maksimal Rp10.000) dan hadiah Gosok & Menang (sampai 50%, maksimal Rp20.000). Potongan ini ditanggung Life of Foods, bukan mitra, dan dicatat di saldo mitra. Besarnya masih lebih tinggi dari anggaran voucher Rp1.000 per pesanan di BMC, jadi nilainya perlu disesuaikan sebelum dipakai di luar uji coba. Nilainya bisa diubah tanpa memperbarui aplikasi.
 
-Selama uji coba semuanya gratis: `SERVICE_FEE` bernilai 0, tagihan iklan belum memotong saldo, dan tim tidak memegang uang mitra karena pembeli membayar langsung di toko.
+Selama uji coba semuanya gratis: biaya layanan Rp0, tagihan iklan belum memotong saldo, dan tim tidak memegang uang mitra karena pembeli membayar langsung di toko.
 
 ---
 
@@ -160,24 +163,26 @@ Selama uji coba semuanya gratis: `SERVICE_FEE` bernilai 0, tagihan iklan belum m
 
 | Bagian | Status |
 |---|---|
-| Alur pembeli ujung ke ujung (K01-K20) | Selesai, tersambung ke API |
-| Alur mitra: pasang jualan, pesanan, cocokkan kode, catat sisa, laporan | Selesai, tersambung ke API |
+| Alur pembeli dari awal sampai akhir (K01-K20) | Selesai dan tersambung ke server |
+| Alur mitra: pasang jualan, pesanan, cocokkan kode, catat sisa, laporan | Selesai dan tersambung ke server |
 | Rating dan ulasan | Selesai |
 | War harga, pop up promo, dan notifikasi sistem | Selesai |
 | Voucher dan Gosok & Menang | Selesai; nilai voucher masih menunggu keputusan tim |
 | Iklan per hari tayang | Selesai, tagihan sungguhan belum aktif |
 | Upload foto oleh mitra | Selesai |
-| Pendaftaran mitra dari aplikasi | Selesai, persetujuan lewat `php artisan mitra:setujui` |
-| Uji otomatis | 167 uji API (PHPUnit) dan 175 uji unit Android, dijalankan CI di setiap PR |
-| Login Google | Kode siap (ADR-0006), menunggu setup Google Cloud Console |
-| OTP lewat SMS atau WhatsApp | Belum; saat ini `PILOT_MODE` menampilkan kode di layar |
-| Hosting API di server sendiri | Belum; masih laptop tim + ngrok |
-| Pembayaran online | Ditunda (ADR-0004) |
-| APK rilis bertanda tangan dan Play Store | Belum |
+| Pendaftaran mitra dari aplikasi | Selesai; persetujuannya masih dilakukan tim secara manual |
+| Uji otomatis | 167 uji server dan 175 uji aplikasi Android, dijalankan otomatis setiap ada perubahan kode |
+| Masuk dengan akun Google | Kode sudah siap, tinggal pengaturan di Google Cloud |
+| Kode OTP lewat SMS atau WhatsApp | Belum; selama uji coba kodenya muncul di layar |
+| Server yang menyala terus | Belum; masih di laptop tim |
+| Pembayaran online | Ditunda; pembeli membayar di toko |
+| Rilis di Play Store | Belum |
 
 Daftar lengkapnya ada di [docs/rencana-lanjutan.md](docs/rencana-lanjutan.md).
 
 ---
+
+> Bagian di bawah ini untuk developer yang ingin membaca atau menjalankan kode.
 
 ## Tech Stack
 
@@ -247,6 +252,19 @@ Jualan demo hanya tampil di hari yang sama, jadi sehari setelah seeding Beranda 
 
 Akun mitra demo untuk masuk di halaman mitra: `62811000201` sampai `62811000208` (Roti Sari Bakery paling lengkap). Kode OTP tampil di layar selama `PILOT_MODE=true`.
 
+**Pengaturan selama uji coba**
+
+| Hal | Cara kerjanya sekarang |
+|---|---|
+| Server | API berjalan di laptop tim dan dibuka ke internet lewat ngrok |
+| OTP | Belum memakai gateway SMS atau WhatsApp berbayar. `PILOT_MODE=true` menampilkan kode di layar dengan spanduk "mode uji coba" |
+| Biaya layanan | Kolom `service_fee` tercatat di setiap pesanan. Tarifnya diatur lewat `SERVICE_FEE` di `.env`, sekarang 0 (ADR-0004) |
+| Voucher | Nilainya ada di tabel `vouchers`. Potongan dicatat sebagai penyesuaian saldo mitra (ADR-0008) |
+| Persetujuan mitra | `php artisan mitra:setujui` (ADR-0007) |
+| Login Google | Kodenya siap (ADR-0006), tapi tombolnya tersembunyi selama client ID di Google Cloud Console belum diisi |
+| Notifikasi | WorkManager memeriksa API secara berkala, tanpa Firebase |
+| APK | Mendorong tag `v*` menjalankan workflow `android-apk-rilis`, yang membangun APK debug dan melampirkannya di [Releases](https://github.com/Bambang-Saputra/Venture-Creation/releases). APK uji coba saat ini dibagikan lewat folder Google Drive di bagian [Coba Aplikasinya](#coba-aplikasinya) |
+
 **Android**
 
 Buat `android/local.properties` dan isi `API_BASE_URL`. Kosongkan untuk emulator (bawaannya `http://10.0.2.2:8000/api/`), atau isi URL ngrok + `/api/` untuk HP fisik.
@@ -264,7 +282,7 @@ cd android
 - Branch: `<tipe>/<lingkup>-<deskripsi>`, contoh `fitur/api-kode-pickup`. Hanya ada `main`.
 - Commit: Conventional Commits berbahasa Indonesia, contoh `feat(api): tambah endpoint penukaran kode pickup`.
 - **Push selalu lewat skill `/qc`**, yang membaca kode sebelum commit dan menolak atribusi AI.
-- PR wajib: CI hijau, satu persetujuan, tangkapan layar untuk perubahan UI, squash merge.
+- PR: CI hijau, satu persetujuan dari anggota lain, tangkapan layar untuk perubahan UI, squash merge. Aturan ini disepakati tim, belum dipaksakan lewat pengaturan GitHub.
 - `.env` dan data mitra sungguhan tidak pernah masuk repo.
 
 Selengkapnya di [docs/panduan/alur-kerja-git.md](docs/panduan/alur-kerja-git.md).
@@ -273,7 +291,7 @@ Selengkapnya di [docs/panduan/alur-kerja-git.md](docs/panduan/alur-kerja-git.md)
 
 ## Desain
 
-Prototipe Figma **Life of Foods v2**, 44 layar: 23 layar konsumen (K01-K23) dan 21 layar mitra (M01-M21). Pemetaan tiap layar ke fitur, endpoint, dan tabel ada di [docs/figma/peta-layar.md](docs/figma/peta-layar.md).
+Prototipe Figma **Life of Foods v2**, 44 layar: 23 layar konsumen (K01-K23) dan 21 layar mitra (M01-M21). Layar M22 (Promosikan toko) dibuat langsung di aplikasi dan belum ada di Figma. Pemetaan tiap layar ke fitur, endpoint, dan tabel ada di [docs/figma/peta-layar.md](docs/figma/peta-layar.md).
 
 Perubahan warna, tipografi, jarak, dan komponen dilakukan di Figma lewat variables dan styles, bukan di layar satu per satu. Di aplikasi, warnanya ada di `android/app/src/main/res/values/colors.xml` dengan font Gabarito (judul) dan Figtree (teks).
 
